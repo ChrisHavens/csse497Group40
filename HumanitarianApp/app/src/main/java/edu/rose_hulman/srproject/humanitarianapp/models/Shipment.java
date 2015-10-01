@@ -10,17 +10,15 @@ public class Shipment implements Serialisable<Shipment> {
     String from;
     String to;
     String time;
-    String date;
 
     public Shipment() {
     }
 
-    public Shipment(String contents, String from, String to, String time, String date) {
+    public Shipment(String contents, String from, String to, String time) {
         this.contents = contents;
         this.from = from;
         this.to = to;
         this.time = time;
-        this.date=date;
     }
 
     public String getContents() {
@@ -53,14 +51,6 @@ public class Shipment implements Serialisable<Shipment> {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     @Override

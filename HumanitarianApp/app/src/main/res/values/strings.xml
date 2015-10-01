@@ -20,4 +20,10 @@
     <string name="people">People</string>
     <string name="checklists">Checklists</string>
     <string name="notes">Notes</string>
+    <string name="to">To: </string>
+    <string name="from">From: </string>
+    <string name="date">Date: </string>
+    <string name="time">Time: </string>
+    <string name="lastLoc">Last Known Location:</string>
+    <string name="myLoc">My Location</string>
 </resources>

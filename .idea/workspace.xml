@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2f520ca-c9c9-4571-bd38-08a5dcfe3289" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Location.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Group.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Project.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/ProjectGroupCombo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Shipment.java" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Shipment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java" afterPath="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="csse497Group40.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,7 +28,146 @@
     <favorites_list name="csse497Group40" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="ProjectGroupCombo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/ProjectGroupCombo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+              <folding>
+                <element signature="e#471#472#0" expanded="true" />
+                <element signature="e#501#502#0" expanded="true" />
+                <element signature="e#548#549#0" expanded="true" />
+                <element signature="e#586#587#0" expanded="true" />
+                <element signature="e#631#632#0" expanded="true" />
+                <element signature="e#667#668#0" expanded="true" />
+                <element signature="e#730#731#0" expanded="true" />
+                <element signature="e#780#781#0" expanded="true" />
+                <element signature="e#825#826#0" expanded="true" />
+                <element signature="e#861#862#0" expanded="true" />
+                <element signature="e#924#925#0" expanded="true" />
+                <element signature="e#974#975#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Group.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Group.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#505#506#0" expanded="true" />
+                <element signature="e#532#533#0" expanded="true" />
+                <element signature="e#595#596#0" expanded="true" />
+                <element signature="e#622#623#0" expanded="true" />
+                <element signature="e#648#649#0" expanded="true" />
+                <element signature="e#673#674#0" expanded="true" />
+                <element signature="e#706#707#0" expanded="true" />
+                <element signature="e#734#735#0" expanded="true" />
+                <element signature="e#769#770#0" expanded="true" />
+                <element signature="e#799#800#0" expanded="true" />
+                <element signature="e#846#847#0" expanded="true" />
+                <element signature="e#884#885#0" expanded="true" />
+                <element signature="e#915#916#0" expanded="true" />
+                <element signature="e#942#943#0" expanded="true" />
+                <element signature="e#982#983#0" expanded="true" />
+                <element signature="e#1009#1010#0" expanded="true" />
+                <element signature="e#1049#1050#0" expanded="true" />
+                <element signature="e#1079#1080#0" expanded="true" />
+                <element signature="e#1131#1132#0" expanded="true" />
+                <element signature="e#1169#1170#0" expanded="true" />
+                <element signature="e#1202#1203#0" expanded="true" />
+                <element signature="e#1231#1232#0" expanded="true" />
+                <element signature="e#1275#1276#0" expanded="true" />
+                <element signature="e#1311#1312#0" expanded="true" />
+                <element signature="e#1349#1350#0" expanded="true" />
+                <element signature="e#1383#1384#0" expanded="true" />
+                <element signature="e#1437#1438#0" expanded="true" />
+                <element signature="e#1483#1484#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Project.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Project.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.23225807">
+              <caret line="12" column="37" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#548#549#0" expanded="true" />
+                <element signature="e#576#577#0" expanded="true" />
+                <element signature="e#623#624#0" expanded="true" />
+                <element signature="e#650#651#0" expanded="true" />
+                <element signature="e#713#714#0" expanded="true" />
+                <element signature="e#740#741#0" expanded="true" />
+                <element signature="e#766#767#0" expanded="true" />
+                <element signature="e#791#792#0" expanded="true" />
+                <element signature="e#829#830#0" expanded="true" />
+                <element signature="e#858#859#0" expanded="true" />
+                <element signature="e#907#908#0" expanded="true" />
+                <element signature="e#943#944#0" expanded="true" />
+                <element signature="e#977#978#0" expanded="true" />
+                <element signature="e#1007#1008#0" expanded="true" />
+                <element signature="e#1053#1054#0" expanded="true" />
+                <element signature="e#1091#1092#0" expanded="true" />
+                <element signature="e#1122#1123#0" expanded="true" />
+                <element signature="e#1149#1150#0" expanded="true" />
+                <element signature="e#1189#1190#0" expanded="true" />
+                <element signature="e#1221#1222#0" expanded="true" />
+                <element signature="e#1259#1260#0" expanded="true" />
+                <element signature="e#1293#1294#0" expanded="true" />
+                <element signature="e#1347#1348#0" expanded="true" />
+                <element signature="e#1393#1394#0" expanded="true" />
+                <element signature="e#1437#1438#0" expanded="true" />
+                <element signature="e#1469#1470#0" expanded="true" />
+                <element signature="e#1527#1528#0" expanded="true" />
+                <element signature="e#1569#1570#0" expanded="true" />
+                <element signature="e#1609#1610#0" expanded="true" />
+                <element signature="e#1639#1640#0" expanded="true" />
+                <element signature="e#1691#1692#0" expanded="true" />
+                <element signature="e#1729#1730#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Worker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+              <folding>
+                <element signature="e#1025#1026#0" expanded="true" />
+                <element signature="e#1053#1054#0" expanded="true" />
+                <element signature="e#1095#1096#0" expanded="true" />
+                <element signature="e#1129#1130#0" expanded="true" />
+                <element signature="e#1181#1182#0" expanded="true" />
+                <element signature="e#1212#1213#0" expanded="true" />
+                <element signature="e#1277#1278#0" expanded="true" />
+                <element signature="e#1317#1318#0" expanded="true" />
+                <element signature="e#1357#1358#0" expanded="true" />
+                <element signature="e#1395#1396#0" expanded="true" />
+                <element signature="e#1455#1456#0" expanded="true" />
+                <element signature="e#1509#1510#0" expanded="true" />
+                <element signature="e#1549#1550#0" expanded="true" />
+                <element signature="e#1583#1584#0" expanded="true" />
+                <element signature="e#1639#1640#0" expanded="true" />
+                <element signature="e#1685#1686#0" expanded="true" />
+                <element signature="e#1729#1730#0" expanded="true" />
+                <element signature="e#1761#1762#0" expanded="true" />
+                <element signature="e#1819#1820#0" expanded="true" />
+                <element signature="e#1861#1862#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -47,6 +191,11 @@
         <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/serialisation/Serialisable.java" />
         <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/serialisation/Serialiser.java" />
         <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Location.java" />
+        <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Shipment.java" />
+        <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/ProjectGroupCombo.java" />
+        <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Group.java" />
+        <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java" />
+        <option value="$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Project.java" />
       </list>
     </option>
   </component>
@@ -92,6 +241,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="csse497Group40" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -304,17 +463,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="csse497Group40" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -444,10 +592,11 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="project.structure.last.edited" value="SDKs" />
@@ -455,6 +604,8 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Test" />
     <property name="FullScreen" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RunManager" selected="Android Application.main">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -668,34 +819,34 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28111112" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23560767" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15778251" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15778251" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -749,43 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14119601">
           <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Shipment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.89499193">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding>
-            <element signature="e#618#619#0" expanded="true" />
-            <element signature="e#649#650#0" expanded="true" />
-            <element signature="e#697#698#0" expanded="true" />
-            <element signature="e#737#738#0" expanded="true" />
-            <element signature="e#768#769#0" expanded="true" />
-            <element signature="e#795#796#0" expanded="true" />
-            <element signature="e#835#836#0" expanded="true" />
-            <element signature="e#867#868#0" expanded="true" />
-            <element signature="e#896#897#0" expanded="true" />
-            <element signature="e#921#922#0" expanded="true" />
-            <element signature="e#957#958#0" expanded="true" />
-            <element signature="e#985#986#0" expanded="true" />
-            <element signature="e#1016#1017#0" expanded="true" />
-            <element signature="e#1043#1044#0" expanded="true" />
-            <element signature="e#1083#1084#0" expanded="true" />
-            <element signature="e#1115#1116#0" expanded="true" />
-            <element signature="e#1146#1147#0" expanded="true" />
-            <element signature="e#1173#1174#0" expanded="true" />
-            <element signature="e#1213#1214#0" expanded="true" />
-            <element signature="e#1245#1246#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24717286">
-          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -927,7 +1041,144 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19224556">
           <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Shipment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/ProjectGroupCombo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding>
+            <element signature="e#471#472#0" expanded="true" />
+            <element signature="e#501#502#0" expanded="true" />
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#586#587#0" expanded="true" />
+            <element signature="e#631#632#0" expanded="true" />
+            <element signature="e#667#668#0" expanded="true" />
+            <element signature="e#730#731#0" expanded="true" />
+            <element signature="e#780#781#0" expanded="true" />
+            <element signature="e#825#826#0" expanded="true" />
+            <element signature="e#861#862#0" expanded="true" />
+            <element signature="e#924#925#0" expanded="true" />
+            <element signature="e#974#975#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Worker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <folding>
+            <element signature="e#1025#1026#0" expanded="true" />
+            <element signature="e#1053#1054#0" expanded="true" />
+            <element signature="e#1095#1096#0" expanded="true" />
+            <element signature="e#1129#1130#0" expanded="true" />
+            <element signature="e#1181#1182#0" expanded="true" />
+            <element signature="e#1212#1213#0" expanded="true" />
+            <element signature="e#1277#1278#0" expanded="true" />
+            <element signature="e#1317#1318#0" expanded="true" />
+            <element signature="e#1357#1358#0" expanded="true" />
+            <element signature="e#1395#1396#0" expanded="true" />
+            <element signature="e#1455#1456#0" expanded="true" />
+            <element signature="e#1509#1510#0" expanded="true" />
+            <element signature="e#1549#1550#0" expanded="true" />
+            <element signature="e#1583#1584#0" expanded="true" />
+            <element signature="e#1639#1640#0" expanded="true" />
+            <element signature="e#1685#1686#0" expanded="true" />
+            <element signature="e#1729#1730#0" expanded="true" />
+            <element signature="e#1761#1762#0" expanded="true" />
+            <element signature="e#1819#1820#0" expanded="true" />
+            <element signature="e#1861#1862#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#505#506#0" expanded="true" />
+            <element signature="e#532#533#0" expanded="true" />
+            <element signature="e#595#596#0" expanded="true" />
+            <element signature="e#622#623#0" expanded="true" />
+            <element signature="e#648#649#0" expanded="true" />
+            <element signature="e#673#674#0" expanded="true" />
+            <element signature="e#706#707#0" expanded="true" />
+            <element signature="e#734#735#0" expanded="true" />
+            <element signature="e#769#770#0" expanded="true" />
+            <element signature="e#799#800#0" expanded="true" />
+            <element signature="e#846#847#0" expanded="true" />
+            <element signature="e#884#885#0" expanded="true" />
+            <element signature="e#915#916#0" expanded="true" />
+            <element signature="e#942#943#0" expanded="true" />
+            <element signature="e#982#983#0" expanded="true" />
+            <element signature="e#1009#1010#0" expanded="true" />
+            <element signature="e#1049#1050#0" expanded="true" />
+            <element signature="e#1079#1080#0" expanded="true" />
+            <element signature="e#1131#1132#0" expanded="true" />
+            <element signature="e#1169#1170#0" expanded="true" />
+            <element signature="e#1202#1203#0" expanded="true" />
+            <element signature="e#1231#1232#0" expanded="true" />
+            <element signature="e#1275#1276#0" expanded="true" />
+            <element signature="e#1311#1312#0" expanded="true" />
+            <element signature="e#1349#1350#0" expanded="true" />
+            <element signature="e#1383#1384#0" expanded="true" />
+            <element signature="e#1437#1438#0" expanded="true" />
+            <element signature="e#1483#1484#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HumanitarianApp/app/src/main/java/edu/rose_hulman/srproject/humanitarianapp/models/Project.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23225807">
+          <caret line="12" column="37" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#576#577#0" expanded="true" />
+            <element signature="e#623#624#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#713#714#0" expanded="true" />
+            <element signature="e#740#741#0" expanded="true" />
+            <element signature="e#766#767#0" expanded="true" />
+            <element signature="e#791#792#0" expanded="true" />
+            <element signature="e#829#830#0" expanded="true" />
+            <element signature="e#858#859#0" expanded="true" />
+            <element signature="e#907#908#0" expanded="true" />
+            <element signature="e#943#944#0" expanded="true" />
+            <element signature="e#977#978#0" expanded="true" />
+            <element signature="e#1007#1008#0" expanded="true" />
+            <element signature="e#1053#1054#0" expanded="true" />
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="e#1122#1123#0" expanded="true" />
+            <element signature="e#1149#1150#0" expanded="true" />
+            <element signature="e#1189#1190#0" expanded="true" />
+            <element signature="e#1221#1222#0" expanded="true" />
+            <element signature="e#1259#1260#0" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+            <element signature="e#1347#1348#0" expanded="true" />
+            <element signature="e#1393#1394#0" expanded="true" />
+            <element signature="e#1437#1438#0" expanded="true" />
+            <element signature="e#1469#1470#0" expanded="true" />
+            <element signature="e#1527#1528#0" expanded="true" />
+            <element signature="e#1569#1570#0" expanded="true" />
+            <element signature="e#1609#1610#0" expanded="true" />
+            <element signature="e#1639#1640#0" expanded="true" />
+            <element signature="e#1691#1692#0" expanded="true" />
+            <element signature="e#1729#1730#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

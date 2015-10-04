@@ -11,6 +11,7 @@ public class Shipment implements Serialisable<Shipment> {
     String to;
     String time;
     String date;
+    int ID;
 
     public Shipment() {
     }

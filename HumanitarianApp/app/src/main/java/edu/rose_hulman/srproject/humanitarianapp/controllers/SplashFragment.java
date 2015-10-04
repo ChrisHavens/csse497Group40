@@ -31,7 +31,7 @@ public class SplashFragment extends Fragment {
         shipmentsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onShipmentsButtonClicked();
+                mListener.onProjectsButtonClicked();
             }
         });
         checklistsLayout.setOnClickListener(new View.OnClickListener() {

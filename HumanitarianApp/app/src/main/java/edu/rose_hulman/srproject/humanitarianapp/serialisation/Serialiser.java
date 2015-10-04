@@ -1,8 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.serialisation;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
 /**
  * Created by daveyle on 9/21/2015.

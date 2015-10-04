@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
-
 /**
  * Created by daveyle on 9/21/2015.
  */

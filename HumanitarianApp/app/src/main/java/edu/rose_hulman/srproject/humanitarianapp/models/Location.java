@@ -17,5 +17,11 @@ public class Location {
         this.lat = lngHour + hourMinAsFloat;
     }
 
+    public Location(String name) {
+        this.name = name;
+    }
 
+    public String getName() {
+        return name;
+    }
 }

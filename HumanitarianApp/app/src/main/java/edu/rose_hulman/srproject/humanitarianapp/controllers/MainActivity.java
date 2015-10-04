@@ -1,7 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +8,7 @@ import android.view.MenuItem;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 
-public class MainActivity extends Activity implements TabSwitchListener{
+public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +39,5 @@ public class MainActivity extends Activity implements TabSwitchListener{
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onShipmentsButtonClicked() {
 
-    }
-
-    @Override
-    public void onPeopleButtonClicked() {
-
-    }
-
-    @Override
-    public void onNotesButtonClicked() {
-
-    }
-
-    @Override
-    public void onChecklistsButtonClicked() {
-
-    }
 }

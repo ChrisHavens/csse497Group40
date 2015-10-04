@@ -10,11 +10,20 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 public class Group implements Serialisable{
     private int ID;
     private Project project;
-    private String Name;
+    private String name;
     private List<Worker> workers;
     private Worker leader;
     private String description;
+    private List<Note> notes;
+    private List<Checklist> checklists;
+    private List<Shipment> shipments;
     //private List<Worker> admins; ???
+
+
+    public Group(String name, Project project) {
+        this.name = name;
+        this.project = project;
+    }
 
     @Override
     public String serialise() {
@@ -43,11 +52,11 @@ public class Group implements Serialisable{
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public List<Worker> getWorkers() {
@@ -73,4 +82,6 @@ public class Group implements Serialisable{
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

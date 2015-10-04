@@ -2,7 +2,6 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.widgets;
 
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -44,11 +43,11 @@ public class TabHeader extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_tab_header, container, false);
-        Tab shipments=new Tab(this.getActivity(),null, getResources().getString(R.string.shipments));
-        shipments.setOnClickListener(new View.OnClickListener() {
+        Tab projects=new Tab(this.getActivity(),null, getResources().getString(R.string.projects));
+        projects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onShipmentsButtonClicked();
+                mListener.onProjectsButtonClicked();
             }
         });
         Tab people=new Tab(this.getActivity(),null, getResources().getString(R.string.people));
@@ -73,7 +72,7 @@ public class TabHeader extends Fragment {
             }
         });
         LinearLayout layout=(LinearLayout) v.findViewById(R.id.tab_header_layout);
-        layout.addView(shipments);
+        layout.addView(projects);
         layout.addView(people);
         layout.addView(notes);
         layout.addView(checklists);

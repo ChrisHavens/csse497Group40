@@ -11,7 +11,7 @@ public class Shipment implements Serialisable<Shipment> {
     String to;
     String time;
     String date;
-    int ID;
+    private int ID;
 
     public Shipment() {
     }
@@ -72,5 +72,13 @@ public class Shipment implements Serialisable<Shipment> {
     @Override
     public Shipment deserialise(String s) {
         return null;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

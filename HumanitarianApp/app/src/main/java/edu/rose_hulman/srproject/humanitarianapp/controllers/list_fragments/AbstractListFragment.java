@@ -1,19 +1,17 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.ListSelectable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 
 /**
@@ -67,6 +65,7 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.wtf("s40", "Selected item");
         onItemSelected(mAdapter.getItem(position));
     }
     public abstract ListArrayAdapter<T> getAdapter();

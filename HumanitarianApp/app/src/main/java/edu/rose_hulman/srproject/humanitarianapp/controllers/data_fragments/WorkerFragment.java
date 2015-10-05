@@ -5,13 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
 
@@ -44,9 +48,29 @@ public class WorkerFragment extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_worker, container, false);
         TextView name=(TextView) v.findViewById(R.id.nameField);
-        TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
+        final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
         name.setText(mListener.getSelectedWorker().getName());
         phone.setText(mListener.getSelectedWorker().getPhoneNumber());
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu=new PopupMenu(getActivity(), phone);
+                menu.getMenuInflater().inflate(R.menu.menu_call, menu.getMenu());
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId()==R.id.action_call) {
+                            ((MainActivity) getActivity()).makePhoneCall(mListener.getSelectedWorker().getPhoneNumber());
+                        }
+                        else{
+                            ((MainActivity) getActivity()).makeText(mListener.getSelectedWorker().getPhoneNumber());
+                        }
+                        return true;
+                    }
+                });
+                menu.show();
+            }
+        });
         return v;
     }
 

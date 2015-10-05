@@ -28,4 +28,6 @@
     <string name="time">Time: </string>
     <string name="lastLoc">Last Known Location:</string>
     <string name="myLoc">My Location</string>
+    <string name="action_call">Call</string>
+    <string name="action_text">Text</string>
 </resources>

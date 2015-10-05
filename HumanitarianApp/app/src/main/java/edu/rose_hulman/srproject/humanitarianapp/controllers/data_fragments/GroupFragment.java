@@ -30,16 +30,10 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
  * to handle interaction events.
  *
  */
-public class GroupFragment extends Fragment implements ChecklistsListFragment.ChecklistsListListener,
-        NotesListFragment.NotesListListener, PeopleListFragment.PeopleListListener, ShipmentsListFragment.ShipmentsListListener,
-        ShipmentFragment.ShipmentFragmentListener, WorkerFragment.WorkerFragmentListener,
-        ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener{
+public class GroupFragment extends Fragment {
 
     private Group group;
-    private Checklist selectedChecklist;
-    private Note selectedNote;
-    private Worker selectedWorker;
-    private Shipment selectedShipment;
+
     private OnFragmentInteractionListener mListener;
 
 
@@ -69,25 +63,25 @@ public class GroupFragment extends Fragment implements ChecklistsListFragment.Ch
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPeople();
+                mListener.showPeople();
             }
         });
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNotes();
+                mListener.showNotes();
             }
         });
         checklistsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChecklists();
+                mListener.showChecklists();
             }
         });
         shipmentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showShipments();
+                mListener.showShipments();
             }
         });
         return v;
@@ -112,98 +106,7 @@ public class GroupFragment extends Fragment implements ChecklistsListFragment.Ch
         super.onDetach();
         mListener = null;
     }
-    private void showPeople(){
-        Fragment fragment = new PeopleListFragment();
 
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-    private void showNotes(){
-        Fragment fragment = new NotesListFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-    private void showChecklists(){
-        Fragment fragment = new ChecklistsListFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-    private void showShipments(){
-        Fragment fragment = new ShipmentsListFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void onItemSelected(Checklist t) {
-        selectedChecklist=t;
-        Fragment fragment = new ChecklistFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void onItemSelected(Note t) {
-        selectedNote=t;
-        Fragment fragment = new NoteFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void onItemSelected(Worker t) {
-        selectedWorker=t;
-        Fragment fragment = new WorkerFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void onItemSelected(Shipment t) {
-        selectedShipment=t;
-        Fragment fragment = new ShipmentFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-
-    public Checklist getSelectedChecklist() {
-        return selectedChecklist;
-    }
-
-    public Note getSelectedNote() {
-        return selectedNote;
-    }
-
-    public Shipment getSelectedShipment() {
-        return selectedShipment;
-    }
-
-    public Worker getSelectedWorker() {
-        return selectedWorker;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -217,6 +120,10 @@ public class GroupFragment extends Fragment implements ChecklistsListFragment.Ch
      */
     public interface OnFragmentInteractionListener {
         public Group getSelectedGroup();
+        void showPeople();
+        void showNotes();
+        void showChecklists();
+        void showShipments();
     }
 
 }

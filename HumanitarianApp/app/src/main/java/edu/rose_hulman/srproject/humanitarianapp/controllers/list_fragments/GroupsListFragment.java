@@ -3,13 +3,12 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.rose_hulman.srproject.humanitarianapp.controllers.ListSelectable;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -19,7 +18,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link ListSelectable}
+ * Activities containing this fragment MUST implement the {@link Backable}
  * interface.
  */
 public class GroupsListFragment extends AbstractListFragment<Group>{

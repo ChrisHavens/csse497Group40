@@ -89,6 +89,9 @@ public class Checklist {
             this.item = item;
         }
         public String getCheckBoxInfoString(){
+            if (getAssigned()==null){
+                return getItem();
+            }
             return getItem()+" ("+getAssigned().getName()+")";
 
         }

@@ -1,9 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,15 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.ListSelectable;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.GroupsListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.PeopleListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ShipmentsListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
-import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +19,10 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
  * to handle interaction events.
  *
  */
-public class ProjectFragment extends Fragment implements PeopleListFragment.PeopleListListener, GroupsListFragment.GroupsListListener,
-        WorkerFragment.WorkerFragmentListener, GroupFragment.OnFragmentInteractionListener {
+public class ProjectFragment extends Fragment{
 
-    private Group selectedGroup;
-    private Worker selectedWorker;
+//    private Group selectedGroup;
+//    private Worker selectedWorker;
     private ProjectFragmentListener mListener;
 
 
@@ -60,13 +48,13 @@ public class ProjectFragment extends Fragment implements PeopleListFragment.Peop
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPeople();
+                mListener.showPeople();
             }
         });
         groupsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showGroups();
+                mListener.showGroups();
             }
         });
         return view;
@@ -90,46 +78,6 @@ public class ProjectFragment extends Fragment implements PeopleListFragment.Peop
         super.onDetach();
         mListener = null;
     }
-
-    @Override
-    public void onItemSelected(Group group) {
-        selectedGroup=group;
-        Fragment fragment = new GroupFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-
-    }
-
-    @Override
-    public Project getSelectedProject() {
-        return mListener.getSelectedProject();
-    }
-
-    @Override
-    public void onItemSelected(Worker t) {
-        selectedWorker=t;
-        Fragment fragment = new WorkerFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-
-    }
-
-    @Override
-    public Group getSelectedGroup() {
-        return selectedGroup;
-    }
-
-    @Override
-    public Worker getSelectedWorker() {
-        return selectedWorker;
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -142,24 +90,10 @@ public class ProjectFragment extends Fragment implements PeopleListFragment.Peop
      */
     public interface ProjectFragmentListener {
         public Project getSelectedProject();
+        public void showGroups();
+        public void showPeople();
     }
 
 
-    private void showGroups(){
-        Fragment fragment = new GroupsListFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
-    private void showPeople(){
-        Fragment fragment = new PeopleListFragment();
-
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentContainer, fragment);
-        transaction.commit();
-    }
 
 }

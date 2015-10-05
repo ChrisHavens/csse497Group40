@@ -2,14 +2,14 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.rose_hulman.srproject.humanitarianapp.controllers.ListSelectable;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
@@ -18,7 +18,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link ListSelectable}
+ * Activities containing this fragment MUST implement the {@link Backable}
  * interface.
  */
 public class ProjectsListFragment extends AbstractListFragment<Project>{
@@ -54,7 +54,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
         try {
             mListener = (ProjectsListListener) getParentFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(getParentFragment().toString()
                     + " must implement ListSelectable<T>");
         }
         if (mListener==null){
@@ -75,6 +75,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
 
     @Override
     public void onItemSelected(Project project) {
+        Log.wtf("s40", "Project Selected");
         mListener.onItemSelected(project);
     }
     public List<Project> getItems(){

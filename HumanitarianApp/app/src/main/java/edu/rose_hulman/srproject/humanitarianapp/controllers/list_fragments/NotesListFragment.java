@@ -1,9 +1,8 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 import android.app.Activity;
-import android.widget.ListAdapter;
 
-import edu.rose_hulman.srproject.humanitarianapp.controllers.ListSelectable;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 
@@ -11,7 +10,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link ListSelectable}
+ * Activities containing this fragment MUST implement the {@link Backable}
  * interface.
  */
 public class NotesListFragment extends AbstractListFragment<Note>{

@@ -122,7 +122,7 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface ChecklistFragmentListener {
-        // TODO: Update argument type and name
+
        public Checklist getSelectedChecklist();
     }
 

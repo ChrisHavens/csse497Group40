@@ -103,7 +103,7 @@ public class WorkerFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface WorkerFragmentListener {
-        // TODO: Update argument type and name
+
         public Worker getSelectedWorker();
     }
 

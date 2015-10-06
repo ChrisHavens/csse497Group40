@@ -130,11 +130,14 @@
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="5dp" />
 
-    <view
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        class="com.google.android.gms.maps.MapView"
-        android:id="@+id/view"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/map_container"></FrameLayout>
 
 </LinearLayout>

@@ -45,6 +45,7 @@ public class ProjectFragment extends Fragment{
         title.setText(mListener.getSelectedProject().getName());
         Button peopleButton=(Button) view.findViewById(R.id.peopleButton);
         Button groupsButton=(Button) view.findViewById(R.id.groupsButton);
+        Button locationsButton=(Button)view.findViewById(R.id.locationsButton);
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +56,12 @@ public class ProjectFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 mListener.showGroups();
+            }
+        });
+        locationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.showLocations();
             }
         });
         return view;
@@ -92,6 +99,7 @@ public class ProjectFragment extends Fragment{
         public Project getSelectedProject();
         public void showGroups();
         public void showPeople();
+        public void showLocations();
     }
 
 

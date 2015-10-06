@@ -25,6 +25,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 
 public class MainActivity extends Activity implements TabSwitchListener{
+    public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

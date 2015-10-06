@@ -32,6 +32,12 @@
             android:text="@string/groups"
             android:id="@+id/groupsButton" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/locations"
+            android:id="@+id/locationsButton" />
+
     </LinearLayout>
 
 

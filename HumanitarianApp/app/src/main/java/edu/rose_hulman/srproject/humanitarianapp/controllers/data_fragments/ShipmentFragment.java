@@ -1,12 +1,19 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -18,7 +25,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
  * to handle interaction events.
  *
  */
-public class ShipmentFragment extends Fragment {
+public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
 
 
     private ShipmentFragmentListener mListener;
@@ -34,6 +41,7 @@ public class ShipmentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        attachMapFragment();
 
     }
 
@@ -54,6 +62,9 @@ public class ShipmentFragment extends Fragment {
             fromLabel.setText(shipment.getFrom());
             dateLabel.setText(shipment.getDate());
             timeLabel.setText(shipment.getTime());
+            MapFragment mapFragment = (MapFragment) getChildFragmentManager()
+                    .findFragmentById(R.id.map_container);
+            mapFragment.getMapAsync(this);
         }
         return view;
     }
@@ -72,12 +83,27 @@ public class ShipmentFragment extends Fragment {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    private void attachMapFragment(){
+        MapFragment myMapFragment = MapFragment.newInstance();
+        FragmentTransaction fragmentTransaction =
+                getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.map_container, myMapFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(shipment.getLastLocation().getLat(), shipment.getLastLocation().getLng()))
+                .title("Shipment"));
     }
 
     /**

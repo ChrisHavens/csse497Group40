@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ChecklistFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.GroupFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.LocationFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.NoteFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ProjectFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ShipmentFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.WorkerFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ChecklistsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.GroupsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.LocationsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.NotesListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.PeopleListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
@@ -25,6 +27,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.Ship
 import edu.rose_hulman.srproject.humanitarianapp.controllers.widgets.TabHeader;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -45,6 +48,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         NotesListFragment.NotesListListener,  ShipmentsListFragment.ShipmentsListListener,
         ShipmentFragment.ShipmentFragmentListener,
         ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener,
+        LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener,
     Backable{
 
 
@@ -52,10 +56,11 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     private Worker selectedWorker;
     private Checklist selectedChecklist;
     private Note selectedNote;
+    private Location selectedLocation;
 
 
     private Shipment selectedShipment;
-   Project selected;
+   Project selectedProject;
 
     public MainFragment() {
         // Required empty public constructor
@@ -145,7 +150,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
 
     @Override
     public void onItemSelected(Project project) {
-        this.selected=project;
+        this.selectedProject =project;
         Fragment fragment = new ProjectFragment();
 
         FragmentManager fm = getChildFragmentManager();
@@ -159,7 +164,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
 
     @Override
     public Project getSelectedProject() {
-        return selected;
+        return selectedProject;
     }
 
     @Override
@@ -200,6 +205,15 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     }
     public void showPeople(){
         Fragment fragment = new PeopleListFragment();
+
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
+        transaction.commit();
+    }
+    public void showLocations(){
+        Fragment fragment = new LocationsListFragment();
 
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -292,6 +306,15 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         return selectedNote;
     }
 
+    @Override
+    public void saveNote(String title, String body) {
+        selectedNote.setTitle(title);
+        selectedNote.setBody(body);
+
+    }
+
+
+
     public Shipment getSelectedShipment() {
         return selectedShipment;
     }
@@ -305,5 +328,22 @@ public class MainFragment extends Fragment implements TabSwitchListener,
 
         FragmentManager fm = getChildFragmentManager();
         fm.popBackStack();
+    }
+
+    @Override
+    public Location getSelectedLocation() {
+        return selectedLocation;
+    }
+
+    @Override
+    public void onItemSelected(Location t) {
+        this.selectedLocation=t;
+        Fragment fragment = new LocationFragment();
+
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
+        transaction.commit();
     }
 }

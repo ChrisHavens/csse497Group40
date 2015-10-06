@@ -11,6 +11,7 @@ public class Shipment implements Serialisable<Shipment> {
     String to;
     String time;
     String date;
+    Location lastLocation;
     private int ID;
 
     public Shipment() {
@@ -80,5 +81,13 @@ public class Shipment implements Serialisable<Shipment> {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public Location getLastLocation() {
+        return lastLocation;
+    }
+
+    public void setLastLocation(Location lastLocation) {
+        this.lastLocation = lastLocation;
     }
 }

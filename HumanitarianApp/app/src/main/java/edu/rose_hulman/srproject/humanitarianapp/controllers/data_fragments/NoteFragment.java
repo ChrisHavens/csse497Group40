@@ -7,6 +7,11 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
@@ -21,7 +26,9 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 public class NoteFragment extends Fragment {
     
     private NoteFragmentListener mListener;
-
+    EditText title;
+    EditText body;
+    Note note;
    
 
     public NoteFragment() {
@@ -38,7 +45,34 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note, container, false);
+        note=mListener.getSelectedNote();
+        View view= inflater.inflate(R.layout.fragment_note, container, false);
+        title=(EditText) view.findViewById(R.id.title);
+        title.setText(note.getTitle());
+        body=(EditText) view.findViewById(R.id.noteBody);
+        body.setText(note.getBody());
+        final TextView lastMod=(TextView) view.findViewById(R.id.dateTime);
+        lastMod.setText(note.getLastModified());
+        Button saveButton=(Button)view.findViewById(R.id.saveButton);
+        Button cancelButton=(Button) view.findViewById(R.id.cancelButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                String d=c.get(Calendar.YEAR)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH);
+                String t=c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+                lastMod.setText(d+" "+t);
+                mListener.saveNote(title.getText().toString(), body.getText().toString());
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelNote();
+            }
+        });
+
+        return view;
     }
 
     @Override
@@ -57,6 +91,10 @@ public class NoteFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    private void cancelNote(){
+        title.setText(note.getTitle());
+        body.setText(note.getBody());
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -69,8 +107,10 @@ public class NoteFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface NoteFragmentListener {
-        // TODO: Update argument type and name
+
         public Note getSelectedNote();
+        void saveNote(String title, String body);
+
     }
 
 }

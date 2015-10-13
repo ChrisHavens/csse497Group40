@@ -1,0 +1,242 @@
+PUT s40/project/prj01000
+{
+  "name": "Stop the Reapers",
+  "groupIDs": [
+    {
+      "groupID": "grp00000"
+    },
+    {
+      "groupID": "grp01000"
+    }
+    ]
+    
+}
+PUT s40/project/prj01001
+{
+  "name": "Run the country",
+  "groupIDs": [
+    {
+      "groupID": "grp02001"
+    },
+    {
+      "groupID": "grp00004"
+    }
+    ]
+    
+}
+PUT s40/project/prj00002
+{
+  "name": "Bring Mark Watney Home",
+  "groupIDs": [
+    {
+      "groupID": "grp01002"
+    }
+    ]
+    
+}
+PUT s40/project/prj01010
+{
+  "name": "EWB Ghana",
+  "groupIDs": [
+    {
+      "groupID": "grp01010"
+    },
+    {"groupID": "grp01011"}
+    ]
+    
+}
+PUT s40/person/psn000
+{
+  "location": "lcn01000",
+  "name": "Fem!Shep",
+  "email": "notDeadYet@normandy.extranet.org",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "prj01000"},
+  {"parentID": "grp00000"}
+  ]
+}
+PUT s40/person/psn001
+{
+  "location": "lcn01001",
+  "name": "Jed Bartlet",
+  "email": "whatsNext@thewhitehouse.gov",
+  "phone": "555-555-5556",
+  "parentIDs": [
+  {"parentID": "prj01001"},
+  {"parentID": "grp02001"}
+  ]
+}
+PUT s40/person/psn002
+{
+  "location": "lcn00002",
+  "name": "Mark Watney",
+  "email": "kingOfMars@ares3.nasa.gov",
+  "phone": "Unavailable",
+  "parentIDs": [
+  {"parentID": "prj00002"},
+  {"parentID": "grp01002"}
+  ]
+}
+PUT s40/person/psn003
+{
+  "location": "lcn01001",
+  "name": "C.J. Cregg",
+  "email": "flamingo@thewhitehouse.gov",
+  "phone": "555-555-5557",
+  "parentIDs": [
+  {"parentID": "prj01001"},
+  {"parentID": "grp00004"},
+  {"parentID": "grp02001"}
+  ]
+}
+PUT s40/person/psn004
+{
+  "location": "lcn01001",
+  "name": "Leo McGarry",
+  "email": "iKnowTheWayOut@thewhitehouse.gov",
+  "phone": "555-555-5558",
+  "parentIDs": [
+  {"parentID": "prj01001"},
+  {"parentID": "grp02001"},
+  {"parentID": "grp00004"}
+  ]
+}
+PUT s40/person/psn010
+{
+  "location": "lcn00010",
+  "name": "John Smith",
+  "email": "jsmith@gmail.com",
+  "phone": "555-555-5556",
+  "parentIDs": [
+  {"parentID": "prj01010"},
+  {"parentID": "grp00010"}, 
+  {"parentID": "grp01010"}
+  ]
+}
+PUT s40/person/psn011
+{
+  "location": "lcn00011",
+  "name": "Jane Jones",
+  "email": "jjones@gmail.com",
+  "phone": "555-555-5557",
+  "parentIDs": [
+  {"parentID": "prj01010"},
+  {"parentID": "grp00010"},
+  {"parentID": "grp01011"}
+  ]
+}
+PUT s40/person/psn012
+{
+  "location": "lcn00010",
+  "name": "Michael Evans",
+  "email": "mevans@gmail.com",
+  "phone": "555-555-5558",
+  "parentIDs": [
+  {"parentID": "prj01010"},
+  {"parentID": "grp01010"}
+  ]
+}
+PUT s40/person/psn013
+{
+  "location": "lcn00011",
+  "name": "Edward Brown",
+  "email": "ebrown@gmail.com",
+  "phone": "555-555-5559",
+  "parentIDs": [
+  {"parentID": "prj01010"},
+  {"parentID": "grp01011"}
+  ]
+}
+PUT s40/group/grp00000
+{
+  "name": "Normandy Crew",
+  "projectIDs": [
+  {"projectID": "prj01000"}
+  ]
+}
+PUT s40/group/grp01000
+{
+  "name": "Spectres",
+  "projectIDs": [
+  {"projectID": "prj01000"}
+  ]
+}
+PUT s40/group/grp02001
+{
+  "name": "White House Senior Staff",
+  "projectIDs": [
+  {"projectID": "prj01001"}
+  ]
+}
+PUT s40/group/grp00004
+{
+  "name": "White House Senior Staff No Pres",
+  "projectIDs": [
+  {"projectID": "prj01001"}
+  ]
+}
+PUT s40/group/grp01002
+{
+  "name": "Mars Inhabitants",
+  "projectIDs": [
+  {"projectID": "prj00002"}
+  ]
+}
+PUT s40/group/grp00010
+{
+  "name": "Supervisors",
+  "projectIDs": [
+  {"projectID": "prj01010"}
+  ]
+}
+PUT s40/group/grp01010
+{
+  "name": "Little Village Workers",
+  "projectIDs": [
+  {"projectID": "prj01010"}
+  ]
+}
+PUT s40/group/grp01011
+{
+  "name": "HQ Workers",
+  "projectIDs": [
+  {"projectID": "prj01010"}
+  ]
+}
+PUT s40/location/lcn01000
+{
+  "lat": "45.01",
+  "lng": "57.34",
+  "name": "Normandy SR-2"
+}
+PUT s40/location/lcn01001
+{
+  "lat": "38.8977",
+  "lng": "-77.0365",
+  "name": "The White House"
+}
+PUT s40/location/lcn02001
+{
+  "lat": "38.889803", 
+  "lng": "-77.009114",
+  "name": "The U.S. Capitol"
+}
+PUT s40/location/lcn00002
+{
+  "lat": "32.47", 
+  "lng": "-27.9",
+  "name": "Mars"
+}
+PUT s40/location/lcn00011
+{
+  "lat": "5.55", 
+  "lng": "-.2",
+  "name": "HQ"
+}
+PUT s40/location/lcn00010
+{
+  "lat": "6.55", 
+  "lng": "-1.3",
+  "name": "Little Village"
+}

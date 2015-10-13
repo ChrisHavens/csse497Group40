@@ -1,0 +1,20 @@
+Users: 000, 010, 001, 002
+Projects: 
+	01000 (stop the reapers), 
+	01001 (run the country), 
+	00002 (bring Watney home)
+	01010 (EWB Ghana)
+Groups: 
+	00000,01000, (reapers)
+	02001, 00004(gov)
+	01002, (mars)
+	01010, 01011, 00010(ghana)
+Location: 
+	01000, (Normandy reapers)
+	01001, (White House gov)
+	02001, (Capitol gov)
+	00002 (mars),
+	00010, 00011 (Ghana)
+	
+
+	

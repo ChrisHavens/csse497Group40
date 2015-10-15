@@ -30,7 +30,9 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
+import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -40,9 +42,12 @@ import retrofit.client.Response;
 //import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
-public class MainActivity extends Activity implements TabSwitchListener, AddPersonDialogFragment.AddPersonListener, MainFragment.AddListener{
+public class MainActivity extends Activity implements TabSwitchListener,
+        AddPersonDialogFragment.AddPersonListener, MainFragment.AddListener,
+        AddProjectDialogFragment.AddProjectListener,
+        AddGroupDialogFragment.AddGroupListener{
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
-
+    NonLocalDataService service=new NonLocalDataService();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +152,7 @@ private String getCurrentLocation(){
 }
 @Override
     public void addPerson(final String name, String phone, String email, Roles.PersonRoles role) {
-        final Person p=new Person(name, phone, email);
+        Person p=new Person(name, phone, email);
     Random rand=new Random();
     int i= rand.nextInt(900)+100;
     p.updateID(i);
@@ -167,8 +172,69 @@ private String getCurrentLocation(){
             Log.e("RetrofitError", error.getMessage());
         }
     };
-    NonLocalDataService service=new NonLocalDataService();
+    //NonLocalDataService service=new NonLocalDataService();
     service.addNewPerson(p, responseCallback);
+    }
+    @Override
+    public void addProject(final String name) {
+        Random rand=new Random();
+        int i= rand.nextInt(900)+100;
+        Project p= new Project(name);
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful adding of new project: "+name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+
+        service.addNewProject(p, responseCallback);
+    }
+    @Override
+    public void addGroup(final String name) {
+        Random rand=new Random();
+        int i= rand.nextInt(900)+100;
+        MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
+        Project project=f.getSelectedProject();
+        Group g= new Group(i);
+        g.setName(name);
+        g.setProject(project);
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful adding of new group: "+name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+
+        service.addNewGroup(g, responseCallback);
+        Callback<Response> responseCallback2=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful editing of project", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        StringBuilder sb= new StringBuilder();
+        sb.append("{\"doc\": {");
+        sb.append(project.getGroupString());
+        sb.append("}}");
+        service.updateProject(project.getID(), sb.toString(), responseCallback2);
+
+
+
     }
 
     @Override
@@ -177,8 +243,9 @@ private String getCurrentLocation(){
     }
 
     @Override
-    public void addGroup() {
-
+    public void addGroup(Project project) {
+        DialogFragment newFragment = new AddGroupDialogFragment();
+        newFragment.show(getFragmentManager(), "addGroup");
     }
 
     @Override
@@ -198,13 +265,15 @@ private String getCurrentLocation(){
 
     @Override
     public void addPerson() {
-        DialogFragment newFragment = new AddPersonDialogFragment();
-        newFragment.show(getFragmentManager(), "addPerson");
+        DialogFragment newFragment = new AddProjectDialogFragment();
+        newFragment.show(getFragmentManager(), "addProject");
     }
 
     @Override
     public void addShipment() {
 
     }
+
+
 
 }

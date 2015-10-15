@@ -226,6 +226,27 @@ public class Group implements Serialisable{
         }
         return null;
     }
+    public String toJSON(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("{");
+        sb.append("\"name\": \"" + getName() + "\",");
+        //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");
+
+        sb.append(getParentString());
+        sb.append("}");
+        return sb.toString();
+    }
+    public String getParentString(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("\"projectIDs\": [");
+
+
+            String formatted = String.format("prj%05d",projectID);
+            sb.append("{\"projectID\": \""+formatted+"\"}");
+
+        sb.append("]");
+        return sb.toString();
+    }
 
     public static List<Group> getKnownGroups() {
         return knownGroups;

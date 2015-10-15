@@ -2,16 +2,26 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -24,6 +34,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 public class GroupsListFragment extends AbstractListFragment<Group>{
     protected GroupsListListener mListener;
     ArrayList<Group> groups=new ArrayList<>();
+    ListArrayAdapter<Group> adapter;
     public GroupsListFragment(){
 
     }
@@ -31,8 +42,8 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
     @Override
     public ListArrayAdapter<Group> getAdapter() {
-      ListArrayAdapter<Group> adapter=new ListArrayAdapter<Group>(getActivity(),
-        android.R.layout.simple_list_item_1, getItems()){
+        adapter=new ListArrayAdapter<Group>(getActivity(),
+                android.R.layout.simple_list_item_1, groups){
 
             @Override
             public View customiseView(View v, Group group) {
@@ -41,6 +52,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                 return v;
             }
         };
+
         return adapter;
     }
     @Override
@@ -55,10 +67,12 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        Group a=new Group("Group 40", mListener.getSelectedProject());
-        Group b=new Group("Group 41", mListener.getSelectedProject());
-        groups.add(a);
-        groups.add(b);
+        NonLocalDataService service=new NonLocalDataService();
+        service.getAllGroups(mListener.getSelectedProject(), new GroupListCallback());
+//        Group a=new Group("Group 40", mListener.getSelectedProject());
+//        Group b=new Group("Group 41", mListener.getSelectedProject());
+//        groups.add(a);
+//        groups.add(b);
 
     }
 
@@ -81,6 +95,42 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     public List<Group> getItems(){
 
         return groups;
+    }
+    public class GroupListCallback implements Callback<Response> {
+
+        @Override
+        public void success(Response response, Response response2) {
+            Log.e("here", "success");
+            ObjectMapper mapper=new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference=
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try {
+                HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
+
+                ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
+                for (HashMap<String, Object> map: list){
+
+                    HashMap<String, Object> source=(HashMap)map.get("_source");
+                    for (String s: source.keySet()){
+                        Log.e("Result", s);
+                    }
+                    Group p=new Group(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    p.setName((String) source.get("name"));
+                    groups.add(p);
+                    adapter.notifyDataSetChanged();
+                    //adapter.add(p);
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("RetrofitError", error.getMessage());
+        }
     }
     public interface GroupsListListener{
         void onItemSelected(Group t);

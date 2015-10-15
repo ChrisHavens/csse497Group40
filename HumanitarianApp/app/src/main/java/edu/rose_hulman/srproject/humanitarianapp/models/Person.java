@@ -207,13 +207,15 @@ public class Person implements Serializable {
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");
         //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");
-        sb.append("\"parentIDs\": [");
-        sb.append(getLocationString());
-        sb.append("]}");
+        sb.append(getParentString());
+        sb.append("}");
         return sb.toString();
     }
-    private String getLocationString(){
+    public String getParentString(){
         StringBuilder sb=new StringBuilder();
+        sb.append("\"parentIDs\": [");
+
+
         for (int i=0; i<projectIDs.size()-1; i++){
             String formatted = String.format("prj%05d", projectIDs.get(i));
             sb.append("{\"parentID\": \""+formatted+"\"},");
@@ -234,7 +236,7 @@ public class Person implements Serializable {
             String formatted = String.format("grp%05d",groupIDs.get(groupIDs.size()-1));
             sb.append("{\"parentID\": \""+formatted+"\"}");
         }
-
+        sb.append("]");
         return sb.toString();
     }
 

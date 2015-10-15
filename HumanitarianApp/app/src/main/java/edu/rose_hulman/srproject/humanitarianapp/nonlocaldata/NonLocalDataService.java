@@ -1,12 +1,16 @@
 package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
+import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import retrofit.Callback;
 
 import retrofit.RestAdapter;
@@ -30,10 +34,48 @@ public class NonLocalDataService {
     Service service=adapter.create(Service.class);
     public void addNewPerson(Person person, Callback<Response> callback){
         TypedInput typedInput=new TypedString(person.toJSON());
-        service.addPerson("psn"+person.getID(), typedInput, callback);
+        service.add("person","psn"+person.getID(), typedInput, callback);
+    }
+    public void addNewProject(Project project, Callback<Response> callback){
+        TypedInput typedInput=new TypedString(project.toJSON());
+        service.add("project", "prj"+String.format("%05d", project.getID()), typedInput, callback);
+    }
+    public void addNewGroup(Group group, Callback<Response> callback){
+        TypedInput typedInput=new TypedString(group.toJSON());
+        service.add("group", "grp"+String.format("%05d", group.getID()), typedInput, callback);
+    }
+    public void updateProject(int projectID, String json, Callback<Response> callback){
+        TypedInput typedInput=new TypedString(json);
+        service.add("project", "prj"+String.format("%05d", projectID), typedInput, callback);
     }
     public void getAllProjects(Callback<Response> callback){
         service.getAllProjects(callback);
+    }
+    /*
+    {
+"query": {
+  "filtered": {
+
+    "filter": {
+      "bool": {
+        "must": [
+          {"term": {
+            "projectIDs.projectID": "prj01010"
+          }}
+        ]
+      }
+    }
+  }
+}
+}
+     */
+    public void getAllGroups(Project p, Callback<Response> callback){
+        StringBuilder sb= new StringBuilder();
+        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
+        sb.append(String.format("prj%05d", p.getID()));
+        sb.append("\"}}]}}}}}");
+        Log.w("JSON", sb.toString());
+        service.getAllGroups(new TypedString(sb.toString()), callback);
     }
 //    Retrofit retrofit=new Retrofit.Builder()
 //            .baseUrl("http://s40server.csse.rose-hulman.edu:9200/")
@@ -57,10 +99,17 @@ public class NonLocalDataService {
 //
 //    }
     public interface Service{
-        @PUT("/s40/person/{id}")
-        void addPerson(@Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
+        @PUT("/s40/{type}/{id}")
+        void add(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
+        @POST("/s40/{type}/{id}/_update")
+        void update(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
+
+
+
         @GET("/s40/project/_search")
         void getAllProjects(Callback<Response> callback);
+    @POST("/s40/group/_search")
+    void getAllGroups(@Body TypedInput body,  Callback<Response> callback);
     }
 
 }

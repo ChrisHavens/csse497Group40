@@ -187,7 +187,44 @@ public class Project implements Serialisable{
             group.updateWorkerID(oldID, newID);
         }
     }
+    /*
+    {
+  "name": "Stop the Reapers",
+  "groupIDs": [
+    {
+      "groupID": "grp00000"
+    },
+    {
+      "groupID": "grp01000"
+    }
+    ]
 
+}
+     */
+    public String toJSON(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("{");
+        sb.append("\"name\": \"" + getName() + "\",");
+        //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");
+
+        sb.append(getGroupString());
+        sb.append("}");
+        return sb.toString();
+    }
+    public String getGroupString(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("\"groupIDs\": [");
+        for (int i=0; i<groupIDs.size()-1; i++){
+            String formatted = String.format("grp%05d", groupIDs.get(i));
+            sb.append("{\"groupID\": \""+formatted+"\"},");
+        }
+        if (groupIDs.size()>0){
+            String formatted = String.format("grp%05d",groupIDs.get(groupIDs.size()-1));
+            sb.append("{\"groupID\": \""+formatted+"\"}");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 
     public static Project getProjectByID(int ID) {
         for (Project project: knownProjects){

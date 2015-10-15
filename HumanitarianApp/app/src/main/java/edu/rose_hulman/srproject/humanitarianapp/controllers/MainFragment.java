@@ -356,11 +356,12 @@ public class MainFragment extends Fragment implements TabSwitchListener,
 	@Override
     public void add() {
         Fragment f=getChildFragmentManager().findFragmentById(R.id.tabContentContainer);
+
         if (f instanceof ProjectsListFragment){
             mListener.addProject();
         }
         else if (f instanceof GroupsListFragment){
-            mListener.addGroup();
+            mListener.addGroup(selectedProject);
         }
         else if (f instanceof ChecklistsListFragment){
             mListener.addChecklist();
@@ -383,7 +384,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     public interface AddListener{
         //will probably need additional parameters added
         void addProject();
-        void addGroup();
+        void addGroup(Project project);
         void addChecklist();
         void addLocation();
         void addNote();

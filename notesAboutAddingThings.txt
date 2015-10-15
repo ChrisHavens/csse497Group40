@@ -1,0 +1,69 @@
+OK, since I can't do much work right now, here's my daily contribution:
+
+An explanation of how you put things into the server database.
+
+Basically, fill in the blanks with the proper info 
+(Type is "project", "person", "checklist", "group", "location", "shipment" or "note")
+
+The data that you actually want to put in there just needs to be a string that is a valid json, 
+See some examples below, and don't forget escape characters
+
+Client client = new TransportClient()
+   .addTransportAddress(new InetSocketTransportAddress("s40server.csse.rose-hulman.edu", 9300));
+
+IndexResponse response = client.prepareIndex("s40", "<type>", "<id>")
+        .setSource(<json>)
+        .execute()
+        .actionGet();
+
+UpdateRequest updateRequest = new UpdateRequest();
+updateRequest.index("index");
+updateRequest.type("type");
+updateRequest.id("1");
+updateRequest.doc(jsonBuilder()
+        .startObject()
+            .field("gender", "male")
+        .endObject());
+client.update(updateRequest).get();
+
+
+
+
+JSON Forms:
+project----
+{
+  "name": "Stop the Reapers",
+  "groupIDs": [
+    {
+      "groupID": "grp00000"
+    },
+    {
+      "groupID": "grp01000"
+    }
+    ]
+    
+}
+person----
+{
+  "location": "lcn01000",
+  "name": "Fem!Shep",
+  "email": "notDeadYet@normandy.extranet.org",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "prj01000"},
+  {"parentID": "grp00000"}
+  ]
+}
+group----
+{
+  "name": "Normandy Crew",
+  "projectIDs": [
+  {"projectID": "prj01000"}
+  ]
+}
+location----
+{
+  "lat": "45.01",
+  "lng": "57.34",
+  "name": "Normandy SR-2"
+}

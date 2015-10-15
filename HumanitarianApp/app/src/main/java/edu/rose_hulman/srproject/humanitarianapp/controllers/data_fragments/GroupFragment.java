@@ -1,9 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,15 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ChecklistsListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.NotesListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.PeopleListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ShipmentsListFragment;
-import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Note;
-import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
 
 /**
  * A simple {@link Fragment} subclass.

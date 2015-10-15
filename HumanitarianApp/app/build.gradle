@@ -17,13 +17,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    packagingOptions{
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:gridlayout-v7:19.0.0'
+    compile 'com.android.support:gridlayout-v7:22.0.0'
     compile 'com.google.android.gms:play-services:8.1.0'
-    compile 'org.elasticsearch:elasticsearch:1.7'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.5.4'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.4'
+    compile 'com.squareup.retrofit:converter-jackson:1.9.0'
+
+
+
+
 
 }

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.AddInterface;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.TabSwitchListener;
@@ -23,6 +24,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.TabSwitchListener;
 public class TabHeader extends Fragment {
 
     private Backable mListener;
+    private AddInterface addInterface;
     public TabHeader() {
         // Required empty public constructor
     }
@@ -60,6 +62,13 @@ public class TabHeader extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Checking In", Toast.LENGTH_LONG).show();
                 ((MainActivity)getActivity()).checkIn();
+            }
+        });
+        Button addButton=(Button)v.findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addInterface.add();
             }
         });
 //        Tab projects=new Tab(this.getActivity(),null, getResources().getString(R.string.projects));
@@ -103,6 +112,7 @@ public class TabHeader extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (Backable) getParentFragment();
+            addInterface=(AddInterface)getParentFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement TabSwitchListener");

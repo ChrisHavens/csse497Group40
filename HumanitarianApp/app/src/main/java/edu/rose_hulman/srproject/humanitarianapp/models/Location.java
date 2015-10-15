@@ -1,6 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
 public class Location {
+    private int ID;
     private float lng;
     private float lat;
     private String name;
@@ -15,6 +16,14 @@ public class Location {
         hourMinAsInt = lngMinute * Float.intBitsToFloat(60) + lngSecond;
         hourMinAsFloat = hourMinAsInt / 3600;
         this.lat = lngHour + hourMinAsFloat;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Location(String name) {

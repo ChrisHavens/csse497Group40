@@ -22,6 +22,13 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/addButton"
+        android:background="@drawable/ic_add" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/button2"
         android:background="@drawable/ic_menu_mylocation" />
 

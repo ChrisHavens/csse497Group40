@@ -44,7 +44,7 @@ public class Checklist {
 
     public static class ChecklistItem{
         private String item;
-        private Worker assigned;
+        private Person assigned;
         private boolean done;
 
         public ChecklistItem(String item) {
@@ -55,21 +55,21 @@ public class Checklist {
             this(item, done, null);
         }
 
-        public ChecklistItem(String item, Worker assigned) {
+        public ChecklistItem(String item, Person assigned) {
             this(item, false, assigned);
         }
 
-        public ChecklistItem(String item, boolean done, Worker assigned) {
+        public ChecklistItem(String item, boolean done, Person assigned) {
             this.item = item;
             this.done = done;
             this.assigned = assigned;
         }
 
-        public Worker getAssigned() {
+        public Person getAssigned() {
             return assigned;
         }
 
-        public void setAssigned(Worker assigned) {
+        public void setAssigned(Person assigned) {
             this.assigned = assigned;
         }
 

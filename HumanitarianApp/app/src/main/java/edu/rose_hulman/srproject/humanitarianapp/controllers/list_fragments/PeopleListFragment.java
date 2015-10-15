@@ -11,7 +11,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 
 
 /**
@@ -21,26 +21,26 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
  * Activities containing this fragment MUST implement the {@link Backable}
  * interface.
  */
-public class PeopleListFragment extends AbstractListFragment<Worker>{
+public class PeopleListFragment extends AbstractListFragment<Person>{
     protected PeopleListListener mListener;
-    ArrayList<Worker> workers=new ArrayList<>();
+    ArrayList<Person> persons =new ArrayList<>();
     public PeopleListFragment(){
-        Worker a=new Worker("Alice Jones", "555-555-5555");
+        Person a=new Person("Alice Jones", "555-555-5555");
         a.setLastCheckin(new Location("Little Village"));
-        workers.add(a);
-        Worker b=new Worker("Bob Smith", "555-555-5556");
+        persons.add(a);
+        Person b=new Person("Bob Smith", "555-555-5556");
         b.setLastCheckin(new Location("HQ"));
-        workers.add(b);
+        persons.add(b);
     }
 
 
     @Override
-    public ListArrayAdapter<Worker> getAdapter() {
-        ListArrayAdapter<Worker> adapter=new ListArrayAdapter<Worker>(getActivity(),
+    public ListArrayAdapter<Person> getAdapter() {
+        ListArrayAdapter<Person> adapter=new ListArrayAdapter<Person>(getActivity(),
                 android.R.layout.simple_list_item_2, getItems()){
 
             @Override
-            public View customiseView(View v, Worker worker) {
+            public View customiseView(View v, Person worker) {
                 TextView line1=(TextView) v.findViewById(android.R.id.text1);
                 TextView line2=(TextView) v.findViewById(android.R.id.text2);
                 line1.setText(worker.getName());
@@ -77,16 +77,16 @@ public class PeopleListFragment extends AbstractListFragment<Worker>{
     }
 
     @Override
-    public void onItemSelected(Worker worker) {
-        mListener.onItemSelected(worker);
+    public void onItemSelected(Person person) {
+        mListener.onItemSelected(person);
     }
 
-    public List<Worker> getItems(){
+    public List<Person> getItems(){
 
-        return workers;
+        return persons;
     }
     public interface PeopleListListener{
-        void onItemSelected(Worker t);
+        void onItemSelected(Person t);
     }
 
 

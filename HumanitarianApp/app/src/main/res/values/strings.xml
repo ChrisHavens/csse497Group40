@@ -33,4 +33,5 @@
     <string name="action_text">Text</string>
     <string name="save">Save</string>
     <string name="lastMod">Last Modified:</string>
+    <string name="addPerson">Add a new Person:</string>
     </resources>

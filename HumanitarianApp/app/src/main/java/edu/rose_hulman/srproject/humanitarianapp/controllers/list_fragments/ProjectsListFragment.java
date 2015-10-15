@@ -6,12 +6,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -25,12 +34,12 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
     protected ProjectsListListener mListener;
     private ArrayList<Project> projects=new ArrayList<>();
     public ProjectsListFragment(){
-        Project project=new Project(1);
-        project.setName("Project 1");
-        Project project2=new Project(2);
-        project2.setName("Project 2");
-        projects.add(project);
-        projects.add(project2);
+//        Project project=new Project(1);
+//        project.setName("Project 1");
+//        Project project2=new Project(2);
+//        project2.setName("Project 2");
+//        projects.add(project);
+//        projects.add(project2);
     }
 
 
@@ -79,11 +88,40 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
         mListener.onItemSelected(project);
     }
     public List<Project> getItems(){
-
+        NonLocalDataService service=new NonLocalDataService();
+        service.getAllProjects(new ProjectListCallback());
         return projects;
     }
     public interface ProjectsListListener{
         void onItemSelected(Project t);
+    }
+    public class ProjectListCallback implements Callback<Response>{
+
+        @Override
+        public void success(Response response, Response response2) {
+            ObjectMapper mapper=new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference=
+                    new TypeReference<HashMap<String, Object>>() {
+            };
+            try {
+                HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
+                ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
+                for (HashMap<String, Object> map: list){
+                    HashMap<String, Object> source=(HashMap)map.get("_source");
+
+                    Project p=new Project(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    p.setName((String)source.get("name"));
+                   projects.add(p);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("RetrofitError", error.getMessage());
+        }
     }
 
 }

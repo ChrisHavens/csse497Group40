@@ -10,7 +10,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 
 
 /**
@@ -24,12 +24,12 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     protected ChecklistsListListener mListener;
     ArrayList<Checklist> checklists=new ArrayList<>();
     public ChecklistsListFragment(){
-        Worker aWorker=new Worker("Alice Jones", "555-555-5555");
-        Worker bWorker=new Worker("Bob Smith", "555-555-5556");
+        Person aPerson =new Person("Alice Jones", "555-555-5555");
+        Person bPerson =new Person("Bob Smith", "555-555-5556");
         Checklist a=new Checklist("To-do for 11/15");
 
-        a.addItem(new Checklist.ChecklistItem("Pick up Potatoes", aWorker));
-        a.addItem(new Checklist.ChecklistItem("Build a house",true, bWorker));
+        a.addItem(new Checklist.ChecklistItem("Pick up Potatoes", aPerson));
+        a.addItem(new Checklist.ChecklistItem("Build a house",true, bPerson));
         Checklist b=new Checklist("To-do for 11/16");
         b.addItem(new Checklist.ChecklistItem("Cook dinner"));
         checklists.add(a);

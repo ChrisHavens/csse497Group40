@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,9 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,11 +50,12 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         ShipmentFragment.ShipmentFragmentListener,
         ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener,
         LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener,
-    Backable{
+    Backable, AddInterface{
 
-
+	private AddListener mListener;
+	
     private Group selectedGroup;
-    private Worker selectedWorker;
+    private Person selectedPerson;
     private Checklist selectedChecklist;
     private Note selectedNote;
     private Location selectedLocation;
@@ -110,6 +112,11 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try{
+            mListener=(AddListener) activity;
+        }catch(ClassCastException e){
+            Log.e("Class Cast Exception", e.getMessage());
+        }
 
     }
 
@@ -275,8 +282,8 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     }
 
     @Override
-    public void onItemSelected(Worker t) {
-        selectedWorker=t;
+    public void onItemSelected(Person t) {
+        selectedPerson =t;
         Fragment fragment = new WorkerFragment();
 
         FragmentManager fm = getChildFragmentManager();
@@ -319,8 +326,8 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         return selectedShipment;
     }
 
-    public Worker getSelectedWorker() {
-        return selectedWorker;
+    public Person getSelectedPerson() {
+        return selectedPerson;
     }
 
     @Override
@@ -345,5 +352,42 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         transaction.replace(R.id.tabContentContainer, fragment);
         transaction.addToBackStack("backstack");
         transaction.commit();
+    }
+	@Override
+    public void add() {
+        Fragment f=getChildFragmentManager().findFragmentById(R.id.tabContentContainer);
+        if (f instanceof ProjectsListFragment){
+            mListener.addProject();
+        }
+        else if (f instanceof GroupsListFragment){
+            mListener.addGroup();
+        }
+        else if (f instanceof ChecklistsListFragment){
+            mListener.addChecklist();
+        }
+        else if (f instanceof LocationsListFragment){
+            mListener.addLocation();
+        }
+        else if (f instanceof NotesListFragment){
+            mListener.addNote();
+        }
+        else if (f instanceof PeopleListFragment){
+            mListener.addPerson();
+        }
+        else if (f instanceof ShipmentsListFragment){
+            mListener.addShipment();
+        }
+
+
+    }
+    public interface AddListener{
+        //will probably need additional parameters added
+        void addProject();
+        void addGroup();
+        void addChecklist();
+        void addLocation();
+        void addNote();
+        void addPerson();
+        void addShipment();
     }
 }

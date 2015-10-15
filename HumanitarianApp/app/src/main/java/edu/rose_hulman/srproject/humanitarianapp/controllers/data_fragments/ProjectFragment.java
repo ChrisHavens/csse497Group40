@@ -22,7 +22,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 public class ProjectFragment extends Fragment{
 
 //    private Group selectedGroup;
-//    private Worker selectedWorker;
+//    private Person selectedWorker;
     private ProjectFragmentListener mListener;
 
 

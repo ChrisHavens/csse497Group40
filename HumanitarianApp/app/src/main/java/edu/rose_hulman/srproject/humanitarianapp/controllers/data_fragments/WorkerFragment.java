@@ -1,7 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
-import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Worker;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +44,8 @@ public class WorkerFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_worker, container, false);
         TextView name=(TextView) v.findViewById(R.id.nameField);
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
-        name.setText(mListener.getSelectedWorker().getName());
-        phone.setText(mListener.getSelectedWorker().getPhoneNumber());
+        name.setText(mListener.getSelectedPerson().getName());
+        phone.setText(mListener.getSelectedPerson().getPhoneNumber());
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,10 +55,10 @@ public class WorkerFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId()==R.id.action_call) {
-                            ((MainActivity) getActivity()).makePhoneCall(mListener.getSelectedWorker().getPhoneNumber());
+                            ((MainActivity) getActivity()).makePhoneCall(mListener.getSelectedPerson().getPhoneNumber());
                         }
                         else{
-                            ((MainActivity) getActivity()).makeText(mListener.getSelectedWorker().getPhoneNumber());
+                            ((MainActivity) getActivity()).makeText(mListener.getSelectedPerson().getPhoneNumber());
                         }
                         return true;
                     }
@@ -104,7 +99,7 @@ public class WorkerFragment extends Fragment {
      */
     public interface WorkerFragmentListener {
 
-        public Worker getSelectedWorker();
+        public Person getSelectedPerson();
     }
 
 }

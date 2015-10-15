@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import java.util.Random;
 
 import com.google.android.gms.location.LocationResult;
 
@@ -101,9 +102,23 @@ public class MainActivity extends Activity implements TabSwitchListener{
         }
     }
     public void checkIn(){
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_LONG).show();
-
+        Client client = new TransportClient()
+   .addTransportAddress(new InetSocketTransportAddress("s40server.csse.rose-hulman.edu", 9300));
+	UpdateRequest updateRequest = new UpdateRequest();
+	updateRequest.index("s40");
+	updateRequest.type("person");
+	updateRequest.id("psn000");
+	updateRequest.doc(jsonBuilder()
+        .startObject()
+            .field("location", getCurrentLocation())
+        .endObject());
+	client.update(updateRequest).get();
 
     }
+private String getCurrentLocation(){
+	String[] locations={"lcn01000", "lcn00002", "lcn02001", "lcn01001"};
+	 Random rand=new Random();
+	return location[rand.nextInt(4)];
+}
 
 }

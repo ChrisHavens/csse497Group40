@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by daveyle on 9/21/2015.
@@ -28,7 +29,7 @@ public class Person implements Serializable {
     //New worker count allows the local system to have their own ids that
     // will never interfere with the IDs given by the server. These ids
     // will be changed to new ones next time a sync happens.
-    private static int newWorkerCount = 1;
+    private static int newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();
 
 
@@ -53,6 +54,14 @@ public class Person implements Serializable {
     public Person(String name, String phoneNumber, int ID) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.ID = ID;
+        knownPersons.add(this);
+    }
+
+    public Person(String name, String phoneNumber, String email, int ID) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
         this.ID = ID;
         knownPersons.add(this);
     }
@@ -133,6 +142,12 @@ public class Person implements Serializable {
         return this.ID;
     }
 
+    /**
+     * With the current configuration for ID generation this method should
+     * almost never be called. This function is for if the server says that
+     * the local version of an ID is wrong and this is the one to update to.
+     * @param newID
+     */
     public void updateID(int newID) {
         int oldID = this.ID;
         this.ID = newID;
@@ -238,6 +253,14 @@ public class Person implements Serializable {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    public Roles.PersonRoles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles.PersonRoles role) {
+        this.role = role;
     }
 
 //    @Override

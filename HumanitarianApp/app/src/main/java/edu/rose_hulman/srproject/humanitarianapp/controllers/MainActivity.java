@@ -45,7 +45,8 @@ import retrofit.client.Response;
 public class MainActivity extends Activity implements TabSwitchListener,
         AddPersonDialogFragment.AddPersonListener, MainFragment.AddListener,
         AddProjectDialogFragment.AddProjectListener,
-        AddGroupDialogFragment.AddGroupListener{
+        AddGroupDialogFragment.AddGroupListener,
+        EditPersonDialogFragment.EditPersonListener{
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
     NonLocalDataService service=new NonLocalDataService();
     @Override
@@ -152,10 +153,7 @@ private String getCurrentLocation(){
 }
 @Override
     public void addPerson(final String name, String phone, String email, Roles.PersonRoles role) {
-        Person p=new Person(name, phone, email);
-    Random rand=new Random();
-    int i= rand.nextInt(900)+100;
-    p.updateID(i);
+    Person p=new Person(name, phone, email);
     edu.rose_hulman.srproject.humanitarianapp.models.Location location=new edu.rose_hulman.srproject.humanitarianapp.models.Location("Omega 4 Relay");
     location.setID(10000);
     p.setLastCheckin(location);
@@ -174,6 +172,28 @@ private String getCurrentLocation(){
     };
     //NonLocalDataService service=new NonLocalDataService();
     service.addNewPerson(p, responseCallback);
+    }
+
+
+    @Override
+    public void editPerson(final String name, String phone, String email, Roles.PersonRoles role, int personID){
+        Person person = Person.getWorkerByID(personID);
+        person.setName(name);
+        person.setPhoneNumber(phone);
+        person.setEmail(email);
+        person.setRole(role);
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful editing of new person: "+name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.updatePerson(person, responseCallback);
     }
     @Override
     public void addProject(final String name) {

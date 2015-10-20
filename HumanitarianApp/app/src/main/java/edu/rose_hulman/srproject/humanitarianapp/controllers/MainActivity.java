@@ -30,10 +30,13 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
+import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -43,7 +46,7 @@ import retrofit.client.Response;
 
 
 public class MainActivity extends Activity implements TabSwitchListener,
-        AddPersonDialogFragment.AddPersonListener, MainFragment.AddListener,
+        AddPersonDialogFragment.AddPersonListener, MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener{
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
@@ -274,6 +277,40 @@ private String getCurrentLocation(){
 
     }
 
+    @Override
+    public void editProject(Project p) {
+
+    }
+
+    @Override
+    public void editGroup(Group g) {
+
+    }
+
+    @Override
+    public void editChecklist(Checklist c) {
+
+    }
+
+    @Override
+    public void editLocation(edu.rose_hulman.srproject.humanitarianapp.models.Location l) {
+
+    }
+
+    @Override
+    public void editNote(Note n) {
+
+    }
+
+    @Override
+    public void editPerson(Person p) {
+
+    }
+
+    @Override
+    public void editShipment(Shipment s) {
+
+    }
 
 
 }

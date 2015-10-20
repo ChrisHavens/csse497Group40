@@ -48,6 +48,10 @@ public class NonLocalDataService {
         TypedInput typedInput=new TypedString(json);
         service.add("project", "prj"+String.format("%05d", projectID), typedInput, callback);
     }
+    public void updatePerson(Person person, Callback<Response> callback){
+        TypedInput typedInput=new TypedString(person.toJSON());
+        service.update("person","psn"+person.getID(), typedInput, callback);
+    }
     public void getAllProjects(Callback<Response> callback){
         service.getAllProjects(callback);
     }

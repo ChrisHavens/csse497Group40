@@ -52,19 +52,21 @@ public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
         View view= inflater.inflate(R.layout.fragment_shipment, container, false);
         shipment=mListener.getSelectedShipment();
         if (shipment!=null){
+            TextView titleLabel=(TextView)view.findViewById(R.id.titleLabel);
             TextView contentsLabel=(TextView)view.findViewById(R.id.contentsLabel);
             TextView toLabel=(TextView) view.findViewById(R.id.toLabel);
             TextView fromLabel=(TextView) view.findViewById(R.id.fromLabel);
             TextView dateLabel=(TextView) view.findViewById(R.id.dateLabel);
             TextView timeLabel=(TextView) view.findViewById(R.id.timeLabel);
+            titleLabel.setText(shipment.getName());
             contentsLabel.setText(shipment.getContents());
-            toLabel.setText(shipment.getTo());
-            fromLabel.setText(shipment.getFrom());
+            toLabel.setText(shipment.getToName());
+            fromLabel.setText(shipment.getFromName());
             dateLabel.setText(shipment.getDate());
             timeLabel.setText(shipment.getTime());
-            MapFragment mapFragment = (MapFragment) getChildFragmentManager()
-                    .findFragmentById(R.id.map_container);
-            mapFragment.getMapAsync(this);
+//            MapFragment mapFragment = (MapFragment) getChildFragmentManager()
+//                    .findFragmentById(R.id.map_container);
+//            mapFragment.getMapAsync(this);
         }
         return view;
     }

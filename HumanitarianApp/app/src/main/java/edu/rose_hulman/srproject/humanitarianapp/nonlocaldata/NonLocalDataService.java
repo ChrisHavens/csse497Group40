@@ -71,24 +71,7 @@ public class NonLocalDataService {
     public void getAllProjects(Callback<Response> callback){
         service.getAllProjects(callback);
     }
-    /*
-    {
-"query": {
-  "filtered": {
 
-    "filter": {
-      "bool": {
-        "must": [
-          {"term": {
-            "projectIDs.projectID": "prj01010"
-          }}
-        ]
-      }
-    }
-  }
-}
-}
-     */
     public void getAllGroups(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
@@ -161,6 +144,9 @@ public class NonLocalDataService {
         service.getAllLocations(new TypedString(sb.toString()), callback);
 
     }
+    public void get(String type, String id, Callback<Response> callback){
+        service.get(type, id, callback);
+    }
 
 
 
@@ -189,6 +175,8 @@ public class NonLocalDataService {
     public interface Service{
         @PUT("/s40/{type}/{id}")
         void add(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
+        @GET("/s40/{type}/{id}")
+        void get(@Path(value="type") String type, @Path(value = "id") String id, Callback<Response> callback);
         @POST("/s40/{type}/{id}/_update")
         void update(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
 
@@ -213,6 +201,8 @@ public class NonLocalDataService {
 
     @POST("/s40/location/_search")
     void getAllLocations(@Body TypedInput body,  Callback<Response> callback);
+
+
 
     }
 

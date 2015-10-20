@@ -9,6 +9,8 @@ public class Shipment implements Serialisable<Shipment> {
     String contents;
     String from;
     String to;
+    String fromName;
+    String toName;
     String time;
     String date;
     Location lastLocation;
@@ -119,6 +121,23 @@ public class Shipment implements Serialisable<Shipment> {
 
     public void setParentID(String parentID) {
         this.parentID = parentID;
+    }
+
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
     }
 
     public String toJSON(){

@@ -16,7 +16,7 @@ public class Person implements Serializable {
     private String phoneNumber;
     private String email;
     private Roles.PersonRoles role;
-    private Location lastCheckin;
+    private PersonLocation lastCheckin;
     private Date lastCheckinTime;
     private List<Integer> groupIDs =  new ArrayList<Integer>();
     private List<Integer> projectIDs =  new ArrayList<Integer>();
@@ -119,11 +119,11 @@ public class Person implements Serializable {
         this.lastCheckinTime = lastCheckinTime;
     }
 
-    public Location getLastCheckin() {
+    public PersonLocation getLastCheckin() {
         return lastCheckin;
     }
 
-    public void setLastCheckin(Location lastCheckin) {
+    public void setLastCheckin(PersonLocation lastCheckin) {
         this.lastCheckin = lastCheckin;
     }
 
@@ -220,7 +220,7 @@ public class Person implements Serializable {
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        sb.append("\"location\": \"lcn"+getLastCheckin().getID()+""+getID()+"\",");
+        sb.append(lastCheckin.toJSON()+",");
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");
@@ -264,6 +264,58 @@ public class Person implements Serializable {
 
     public void setRole(Roles.PersonRoles role) {
         this.role = role;
+    }
+
+    public static class PersonLocation{
+        private float lat;
+        private float lng;
+        private String name;
+        private String time;
+        public PersonLocation(){
+
+        }
+
+        public float getLat() {
+            return lat;
+        }
+
+        public void setLat(float lat) {
+            this.lat = lat;
+        }
+
+        public float getLng() {
+            return lng;
+        }
+
+        public void setLng(float lng) {
+            this.lng = lng;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+        public String toJSON(){
+            StringBuilder sb=new StringBuilder();
+            sb.append("\"lastLocation\": {");
+            sb.append("\"lat\": \""+lat+"\",");
+            sb.append("\"lng\": \""+lng+"\",");
+            sb.append("\"name\": \""+name+"\",");
+            sb.append("\"time\": \""+time+"\"");
+            sb.append("}");
+            return sb.toString();
+        }
     }
 
 //    @Override

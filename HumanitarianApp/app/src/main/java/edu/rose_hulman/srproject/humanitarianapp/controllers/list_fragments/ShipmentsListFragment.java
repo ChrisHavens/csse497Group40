@@ -17,6 +17,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -34,13 +35,14 @@ import retrofit.client.Response;
 public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     protected ShipmentsListListener mListener;
     ArrayList<Shipment> shipments=new ArrayList<>();
+    NonLocalDataService service;
     ListArrayAdapter<Shipment> adapter;
     //public Shipment(String contents, String from, String to, String time, String date) {
 
 
     public ShipmentsListFragment(){
-        shipments.add(new Shipment("Potatoes", "HQ", "Little Village", "14:30", "2016/11/15"));
-        shipments.add(new Shipment("Lumber", "Big Village", "Small Village", "17:15", "2016/11/21"));
+//        shipments.add(new Shipment("Potatoes", "HQ", "Little Village", "14:30", "2016/11/15"));
+//        shipments.add(new Shipment("Lumber", "Big Village", "Small Village", "17:15", "2016/11/21"));
     }
 
 
@@ -53,8 +55,8 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             public View customiseView(View v, Shipment shipment) {
                 TextView line1=(TextView) v.findViewById(android.R.id.text1);
                 TextView line2=(TextView) v.findViewById(android.R.id.text2);
-                line1.setText(shipment.getContents());
-                line2.setText(shipment.getFrom()+"->"+shipment.getTo()+" ("+shipment.getDate()+" "+shipment.getTime()+")");
+                line1.setText(shipment.getName()+" ("+shipment.getContents()+")");
+                line2.setText(shipment.getFromName()+"->"+shipment.getToName()+" ("+shipment.getDate()+" "+shipment.getTime()+")");
                 return v;
             }
         };
@@ -73,8 +75,8 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        service.getAllLocations(mListener.getSelectedGroup(), new LocationListCallback());
+        service=new NonLocalDataService();
+        service.getAllShipments(mListener.getSelectedGroup(), new ShipmentListCallback());
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 
         return shipments;
     }
-    public class LocationListCallback implements Callback<Response> {
+    public class ShipmentListCallback implements Callback<Response> {
 
         @Override
         public void success(Response response, Response response2) {
@@ -123,9 +125,15 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                     s.setContents((String) source.get("contents"));
                     s.setFrom((String) source.get("fromLocationID"));
                     s.setTo((String) source.get("toLocationID"));
+                    service.get("location", s.getTo(), new ShipmentToLocationCallbacks(s));
+                    service.get("location", s.getFrom(), new ShipmentFromLocationCallbacks(s));
                     //s.setLast((String) source.get("fromLocationID"));
-                    s.setName((String)source.get("name"));
-                    s.setDate((String) source.get("pickupTime"));
+                    s.setName((String) source.get("name"));
+                    String[] split=((String) source.get("pickupTime")).split(" ");
+                    if (split.length==2) {
+                        s.setDate(split[0]);
+                        s.setTime(split[1]);
+                    }
                     s.setStatus((String) source.get("status"));
                     shipments.add(s);
                     adapter.notifyDataSetChanged();
@@ -135,6 +143,78 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("RetrofitError", error.getMessage());
+        }
+    }
+    public class ShipmentToLocationCallbacks implements Callback<Response>{
+        private Shipment s;
+
+        public ShipmentToLocationCallbacks(Shipment s){
+            this.s=s;
+        }
+
+        @Override
+        public void success(Response response, Response response2) {
+            ObjectMapper mapper=new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference=
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try{
+                HashMap<String, Object> map=mapper.readValue(response.getBody().in(), typeReference);
+                HashMap<String, Object> source=(HashMap)map.get("_source");
+                for (String s: source.keySet()){
+                    Log.e("Result", s);
+                }
+//                Location l=new Location(Integer.parseInt(((String)map.get("_id")).substring(3)));
+//                l.setName((String) source.get("name"));
+//                l.setLat(Float.parseFloat((String) source.get("lat")));
+//                l.setLng(Float.parseFloat((String) source.get("lng")));
+                s.setToName((String) source.get("name"));
+                adapter.notifyDataSetChanged();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("RetrofitError", error.getMessage());
+        }
+    }
+    public class ShipmentFromLocationCallbacks implements Callback<Response>{
+        private Shipment s;
+
+        public ShipmentFromLocationCallbacks(Shipment s){
+            this.s=s;
+        }
+
+        @Override
+        public void success(Response response, Response response2) {
+            ObjectMapper mapper=new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference=
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try{
+                HashMap<String, Object> map=mapper.readValue(response.getBody().in(), typeReference);
+                HashMap<String, Object> source=(HashMap)map.get("_source");
+                for (String s: source.keySet()){
+                    Log.e("Result", s);
+                }
+//                Location l=new Location(Integer.parseInt(((String)map.get("_id")).substring(3)));
+//                l.setName((String) source.get("name"));
+//                l.setLat(Float.parseFloat((String) source.get("lat")));
+//                l.setLng(Float.parseFloat((String) source.get("lng")));
+                s.setFromName((String) source.get("name"));
+                adapter.notifyDataSetChanged();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
         @Override

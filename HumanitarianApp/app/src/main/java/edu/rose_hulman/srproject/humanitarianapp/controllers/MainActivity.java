@@ -157,8 +157,12 @@ private String getCurrentLocation(){
 @Override
     public void addPerson(final String name, String phone, String email, Roles.PersonRoles role) {
     Person p=new Person(name, phone, email);
-    edu.rose_hulman.srproject.humanitarianapp.models.Location location=new edu.rose_hulman.srproject.humanitarianapp.models.Location("Omega 4 Relay");
-    location.setID(10000);
+    edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
+    location.setName("Omega 4 Relay");
+    location.setTime("2185-04-05 14:45");
+    location.setLat(34.56f);
+    location.setLng(-5.45f);
+    //location.setID(10000);
     p.setLastCheckin(location);
     p.addProjectID(1000);
     p.addGroupID(0);

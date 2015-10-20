@@ -59,7 +59,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 TextView line1=(TextView) v.findViewById(android.R.id.text1);
                 TextView line2=(TextView) v.findViewById(android.R.id.text2);
                 line1.setText(worker.getName());
-                line2.setText(worker.getLastCheckin().getName());
+                if (worker.getLastCheckin()!=null) {
+                    line2.setText(worker.getLastCheckin().getName());
+                }
+                else{
+                    line2.setText("");
+                }
                 return v;
             }
         };
@@ -134,6 +139,14 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     p.setName((String) source.get("name"));
                     p.setEmail((String) source.get("email"));
                     p.setPhoneNumber((String) source.get("phone"));
+                    //Log.w("Type of lastLocation", .get("lastLocation"))
+                    HashMap<String, Object> lastLoc=(HashMap)source.get("lastLocation");
+                    Person.PersonLocation personLoc=new Person.PersonLocation();
+                    personLoc.setLat(Float.parseFloat((String)lastLoc.get("lat")));
+                    personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
+                    personLoc.setName((String) lastLoc.get("name"));
+                    personLoc.setTime((String) lastLoc.get("time"));
+                    p.setLastCheckin(personLoc);
                     persons.add(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

@@ -87,6 +87,9 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
         Log.wtf("s40", "Project Selected");
         mListener.onItemSelected(project);
     }
+    public void checkForArgs(){
+
+    }
     public List<Project> getItems(){
         NonLocalDataService service=new NonLocalDataService();
         service.getAllProjects(new ProjectListCallback());

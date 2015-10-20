@@ -1,16 +1,25 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -81,14 +90,20 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     public void onItemSelected(Checklist checklist) {
         mListener.onItemSelected(checklist);
     }
+    public void checkForArgs(){
+
+    }
+
 
     public List<Checklist> getItems(){
 
         return checklists;
     }
+
     public interface ChecklistsListListener{
         void onItemSelected(Checklist t);
     }
+
 
 
 }

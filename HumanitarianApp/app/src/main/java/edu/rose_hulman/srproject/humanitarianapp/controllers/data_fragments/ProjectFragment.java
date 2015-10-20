@@ -49,7 +49,7 @@ public class ProjectFragment extends Fragment{
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.showPeople();
+                mListener.showPeople(true);
             }
         });
         groupsButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class ProjectFragment extends Fragment{
     public interface ProjectFragmentListener {
         public Project getSelectedProject();
         public void showGroups();
-        public void showPeople();
+        public void showPeople(boolean fromProjects);
         public void showLocations();
     }
 

@@ -37,6 +37,9 @@ public class Person implements Serializable {
         this.setUpID();
     }
 
+    public Person(int id){
+        this.ID=id;
+    }
     public Person(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;

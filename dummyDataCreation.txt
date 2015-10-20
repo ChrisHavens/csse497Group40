@@ -47,7 +47,15 @@ PUT s40/project/prj01010
 }
 PUT s40/person/psn000
 {
-  "location": "lcn01000",
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "Normandy SR-2",
+         "time": "2185-07-28 09:01"
+        }
+    ,
   "name": "Fem!Shep",
   "email": "notDeadYet@normandy.extranet.org",
   "phone": "555-555-5555",
@@ -58,7 +66,15 @@ PUT s40/person/psn000
 }
 PUT s40/person/psn001
 {
-  "location": "lcn01001",
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "The White House",
+         "time": "2000-03-01 15:57"
+        }
+    ,
   "name": "Jed Bartlet",
   "email": "whatsNext@thewhitehouse.gov",
   "phone": "555-555-5556",
@@ -69,9 +85,17 @@ PUT s40/person/psn001
 }
 PUT s40/person/psn002
 {
-  "location": "lcn00002",
+  "lastLocation": 
+    
+        {
+         "lat": "32.47",
+         "lng": "-27.9",
+         "name": "Mars",
+         "time": "2025-1-20 7:28"
+        }
+    ,
   "name": "Mark Watney",
-  "email": "kingOfMars@ares3.nasa.gov",
+  "email": "spacePirate@ares3.nasa.gov",
   "phone": "Unavailable",
   "parentIDs": [
   {"parentID": "prj00002"},
@@ -80,7 +104,15 @@ PUT s40/person/psn002
 }
 PUT s40/person/psn003
 {
-  "location": "lcn01001",
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "The White House",
+         "time": "2000-03-01 15:58"
+        }
+    ,
   "name": "C.J. Cregg",
   "email": "flamingo@thewhitehouse.gov",
   "phone": "555-555-5557",
@@ -92,7 +124,15 @@ PUT s40/person/psn003
 }
 PUT s40/person/psn004
 {
-  "location": "lcn01001",
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "The White House",
+         "time": "2000-03-01 15:56"
+        }
+    ,
   "name": "Leo McGarry",
   "email": "iKnowTheWayOut@thewhitehouse.gov",
   "phone": "555-555-5558",
@@ -104,7 +144,15 @@ PUT s40/person/psn004
 }
 PUT s40/person/psn010
 {
-  "location": "lcn00010",
+  "lastLocation": 
+    
+        {
+         "lat": "6.55",
+         "lng": "-1.3",
+         "name": "Little Village",
+         "time": "2015-10-20 16:34"
+        }
+    ,
   "name": "John Smith",
   "email": "jsmith@gmail.com",
   "phone": "555-555-5556",
@@ -116,7 +164,15 @@ PUT s40/person/psn010
 }
 PUT s40/person/psn011
 {
-  "location": "lcn00011",
+  "lastLocation": 
+    
+        {
+         "lat": "5.55",
+         "lng": "-.2",
+         "name": "HQ",
+         "time": "2015-10-20 16:34"
+        }
+    ,
   "name": "Jane Jones",
   "email": "jjones@gmail.com",
   "phone": "555-555-5557",
@@ -128,7 +184,15 @@ PUT s40/person/psn011
 }
 PUT s40/person/psn012
 {
-  "location": "lcn00010",
+  "lastLocation": 
+    
+        {
+         "lat": "6.55",
+         "lng": "-1.3",
+         "name": "Little Village",
+         "time": "2015-10-20 16:34"
+        }
+    ,
   "name": "Michael Evans",
   "email": "mevans@gmail.com",
   "phone": "555-555-5558",
@@ -139,7 +203,15 @@ PUT s40/person/psn012
 }
 PUT s40/person/psn013
 {
-  "location": "lcn00011",
+  "lastLocation": 
+    
+        {
+         "lat": "5.55",
+         "lng": "-.2",
+         "name": "HQ",
+         "time": "2015-10-20 16:34"
+        }
+    ,
   "name": "Edward Brown",
   "email": "ebrown@gmail.com",
   "phone": "555-555-5559",
@@ -210,6 +282,13 @@ PUT s40/location/lcn01000
   "lng": "57.34",
   "name": "Normandy SR-2"
 }
+PUT s40/location/lcn02000
+{
+  "lat": "38.9",
+  "lng": "43.61",
+  "name": "The Citadel"
+}
+
 PUT s40/location/lcn01001
 {
   "lat": "38.8977",
@@ -228,6 +307,12 @@ PUT s40/location/lcn00002
   "lng": "-27.9",
   "name": "Mars"
 }
+PUT s40/location/lcn01002
+{
+  "lat": "29.6",
+  "lng": "-9.1",
+  "name": "Mars-Earth route"
+}
 PUT s40/location/lcn00011
 {
   "lat": "5.55", 
@@ -239,4 +324,39 @@ PUT s40/location/lcn00010
   "lat": "6.55", 
   "lng": "-1.3",
   "name": "Little Village"
+}
+PUT s40/note/not01000
+{
+  "contents": "Commander Shepard is no longer allowed to drive the Mako. --The Crew",
+  "lastModTime": "2183-05-17 14:32",
+  "name": "Things the Commander is Not Allowed To Do",
+  "parentID": "grp00000"
+}
+PUT s40/note/not01002
+{
+  "contents": "How come Aquaman can control whales? They're mammals! Makes no sense.",
+  "lastModTime": "2025-03-17 14:32",
+  "name": "Log Entry: Sol 61",
+  "parentID": "grp01002"
+}
+
+PUT s40/shipment/shp01002
+{
+  "contents": "One MAV, one space pirate named Mark Watney",
+  "toLocationID": "lcn01002",
+  "fromLocationID": "lcn00002",
+  "name": "The Watneymobile",
+  "parentID": "grp01002",
+  "pickupTime": "2026-01-04 21:56",
+  "status": "En-route"
+}
+PUT s40/shipment/shp01000
+{
+  "contents": "Something that someone else couldn't be bothered to get so they had Shepard do it",
+  "toLocationID": "lcn02000",
+  "fromLocationID": "lcn01000",
+  "name": "Yet another fetch quest",
+  "parentID": "grp00000",
+  "pickupTime": "2185-10-12 04:08",
+  "status": "En-route"
 }

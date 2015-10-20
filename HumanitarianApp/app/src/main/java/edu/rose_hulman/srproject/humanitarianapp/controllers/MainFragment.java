@@ -60,6 +60,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     private Note selectedNote;
     private Location selectedLocation;
     private TabHeader tabHeader;
+    private boolean isFromProject;
 
     private Shipment selectedShipment;
    Project selectedProject;
@@ -213,8 +214,12 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         transaction.addToBackStack("backstack");
         transaction.commit();
     }
-    public void showPeople(){
+    public void showPeople(boolean fromProject){
         Fragment fragment = new PeopleListFragment();
+        this.isFromProject=fromProject;
+        Bundle args=new Bundle();
+        args.putBoolean("isFromProject", fromProject);
+        fragment.setArguments(args);
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
@@ -302,6 +307,11 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         transaction.replace(R.id.tabContentContainer, fragment);
         transaction.addToBackStack("backstack");
         transaction.commit();
+    }
+
+    @Override
+    public boolean isFromProject() {
+        return this.isFromProject;
     }
 
     @Override

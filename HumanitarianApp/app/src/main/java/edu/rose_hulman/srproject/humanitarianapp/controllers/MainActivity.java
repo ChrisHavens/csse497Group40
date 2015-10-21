@@ -59,8 +59,8 @@ public class MainActivity extends Activity implements TabSwitchListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Startup Code Here
-        LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
+        //SQLiteDatabase db = dbHelper.getWritableDatabase();
         setContentView(R.layout.activity_main);
     }
 

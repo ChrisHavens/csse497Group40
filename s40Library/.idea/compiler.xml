@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="s40Library" />
+        <module name="s40-library" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="s40Library" target="1.5" />
+      <module name="s40-library" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

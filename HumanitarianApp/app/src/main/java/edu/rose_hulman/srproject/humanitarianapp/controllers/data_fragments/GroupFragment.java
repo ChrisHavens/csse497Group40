@@ -52,7 +52,7 @@ public class GroupFragment extends Fragment {
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.showPeople();
+                mListener.showPeople(false);
             }
         });
         notesButton.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +109,7 @@ public class GroupFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public Group getSelectedGroup();
-        void showPeople();
+        void showPeople(boolean fromProjects);
         void showNotes();
         void showChecklists();
         void showShipments();

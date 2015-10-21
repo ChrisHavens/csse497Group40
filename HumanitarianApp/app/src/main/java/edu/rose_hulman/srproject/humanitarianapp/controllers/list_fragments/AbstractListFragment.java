@@ -37,6 +37,7 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkForArgs();
 
 
         // TODO: Change Adapter to display your content
@@ -74,6 +75,8 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
 
 
     public abstract void onItemSelected(T t);
+
+    public abstract void checkForArgs();
 
 
     /**

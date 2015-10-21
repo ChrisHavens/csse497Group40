@@ -41,11 +41,18 @@ public class WorkerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Person p=mListener.getSelectedPerson();
         View v=inflater.inflate(R.layout.fragment_worker, container, false);
         TextView name=(TextView) v.findViewById(R.id.nameField);
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
-        name.setText(mListener.getSelectedPerson().getName());
-        phone.setText(mListener.getSelectedPerson().getPhoneNumber());
+        TextView email=(TextView)v.findViewById(R.id.emailField);
+        TextView lastLoc=(TextView) v.findViewById(R.id.lastLocField);
+        name.setText(p.getName());
+        phone.setText(p.getPhoneNumber());
+        email.setText(p.getEmail());
+        if (p.getLastCheckin()!=null){
+            lastLoc.setText(p.getLastCheckin().getName()+" "+p.getLastCheckin().getTime());
+        }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

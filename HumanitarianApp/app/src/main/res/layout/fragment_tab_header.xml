@@ -17,6 +17,12 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight=".7" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editButton"
+        android:background="@drawable/ic_edit" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

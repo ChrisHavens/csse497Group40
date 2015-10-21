@@ -22,4 +22,20 @@
         android:id="@+id/phoneNumberField"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/emailField"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/lastLocField"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

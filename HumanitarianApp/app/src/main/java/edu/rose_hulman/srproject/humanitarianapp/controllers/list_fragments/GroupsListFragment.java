@@ -91,6 +91,9 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     public void onItemSelected(Group group) {
         mListener.onItemSelected(group);
     }
+    public void checkForArgs(){
+
+    }
 
     public List<Group> getItems(){
 

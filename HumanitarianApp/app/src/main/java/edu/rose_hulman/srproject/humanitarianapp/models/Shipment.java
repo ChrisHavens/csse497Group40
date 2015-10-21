@@ -9,12 +9,20 @@ public class Shipment implements Serialisable<Shipment> {
     String contents;
     String from;
     String to;
+    String fromName;
+    String toName;
     String time;
     String date;
     Location lastLocation;
+    String name;
+    String status;
+    String parentID;
     private int ID;
 
     public Shipment() {
+    }
+    public Shipment(int id){
+        this.ID=id;
     }
 
     public Shipment(String contents, String from, String to, String time, String date) {
@@ -89,5 +97,63 @@ public class Shipment implements Serialisable<Shipment> {
 
     public void setLastLocation(Location lastLocation) {
         this.lastLocation = lastLocation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getParentID() {
+        return parentID;
+    }
+
+    public void setParentID(String parentID) {
+        this.parentID = parentID;
+    }
+
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
+    public String toJSON(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("{");
+        sb.append("\"contents\": \""+getContents()+"\",");
+        sb.append("\"lastLocationID\": \"lcn"+getLastLocation().getID()+"\",");
+        sb.append("\"name\": \""+getName()+"\",");
+        sb.append("\"parentID\": \""+getParentID()+"\",");
+        sb.append("\"fromLocationID\": \""+getFrom()+"\",");
+        sb.append("\"toLocationID\": \""+getTo()+"\",");
+        sb.append("\"pickupTime\": \""+getDate()+"\",");
+        sb.append("\"status\": \""+getStatus()+"\"");
+
+
+        sb.append("}");
+        return sb.toString();
     }
 }

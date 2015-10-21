@@ -9,22 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.AddInterface;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.CRUDInterface;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.TabSwitchListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TabHeader extends Fragment {
-
+    private Button addButton;
+    private Button editButton;
     private Backable mListener;
-    private AddInterface addInterface;
+    private CRUDInterface CRUDInterface;
     public TabHeader() {
         // Required empty public constructor
     }
@@ -64,11 +63,19 @@ public class TabHeader extends Fragment {
                 ((MainActivity)getActivity()).checkIn();
             }
         });
-        Button addButton=(Button)v.findViewById(R.id.addButton);
+        addButton=(Button)v.findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addInterface.add();
+                CRUDInterface.add();
+            }
+        });
+
+        editButton=(Button)v.findViewById(R.id.editButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CRUDInterface.edit();
             }
         });
 //        Tab projects=new Tab(this.getActivity(),null, getResources().getString(R.string.projects));
@@ -112,7 +119,7 @@ public class TabHeader extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (Backable) getParentFragment();
-            addInterface=(AddInterface)getParentFragment();
+            CRUDInterface =(CRUDInterface)getParentFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement TabSwitchListener");
@@ -123,6 +130,12 @@ public class TabHeader extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    public void setAddButtonVisible(int visible){
+        addButton.setVisibility(visible);
+    }
+    public void setEditButtonVisible(int visible){
+        editButton.setVisibility(visible);
     }
 
 

@@ -373,7 +373,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     public void goBack() {
 
         FragmentManager fm = getChildFragmentManager();
-        if (fm.getBackStackEntryCount()>1) {
+        if (fm.getBackStackEntryCount()>=1) {
             fm.popBackStack();
         }
     }
@@ -420,6 +420,9 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         else if (f instanceof ShipmentsListFragment){
             mListener.addShipment();
         }
+        else if (f instanceof WorkerFragment) {
+            mListener.editPerson(((WorkerFragment) f).getSelectedPerson());
+        }
 
 
     }
@@ -443,7 +446,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         else if (f instanceof NoteFragment){
             mListener.editNote(selectedNote);
         }
-        else if (f instanceof PeopleListFragment){
+        else if (f instanceof WorkerFragment){
             mListener.editPerson(selectedPerson);
         }
         else if (f instanceof ShipmentFragment){

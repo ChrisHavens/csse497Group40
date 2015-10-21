@@ -31,11 +31,22 @@ public class EditPersonDialogFragment extends DialogFragment {
     private EditText emailField;
     private Spinner roleSpinner;
     private int personToEditID;
+    private Person personToEdit;
 
 
 
     public EditPersonDialogFragment() {
         // Required empty public constructor
+    }
+
+    public EditPersonDialogFragment(int personID) {
+        this.personToEditID = personID;
+        this.personToEdit = Person.getWorkerByID(personID);
+    }
+
+    public EditPersonDialogFragment(Person person) {
+        // Required empty public constructor
+        this.personToEdit = person;
     }
 
     @Override
@@ -77,7 +88,8 @@ public class EditPersonDialogFragment extends DialogFragment {
         nameField=(EditText) view.findViewById(R.id.nameField);
         phoneField=(EditText) view.findViewById(R.id.phoneField);
         emailField=(EditText)view.findViewById(R.id.emailField);
-        Person person = Person.getWorkerByID(personToEditID);
+        //Person person = Person.getWorkerByID(personToEditID);
+        Person person = this.personToEdit;
         nameField.setText(person.getName(), TextView.BufferType.EDITABLE);
         phoneField.setText(person.getPhoneNumber(), TextView.BufferType.EDITABLE);
         emailField.setText(person.getEmail(), TextView.BufferType.EDITABLE);

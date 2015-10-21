@@ -191,6 +191,9 @@ private String getCurrentLocation(){
     @Override
     public void editPerson(final String name, String phone, String email, Roles.PersonRoles role, int personID){
         Person person = Person.getWorkerByID(personID);
+        if (person == null) {
+            person = new Person(personID);
+        }
         person.setName(name);
         person.setPhoneNumber(phone);
         person.setEmail(email);
@@ -272,7 +275,8 @@ private String getCurrentLocation(){
 
     @Override
     public void addProject() {
-
+        DialogFragment newFragment = new AddProjectDialogFragment();
+        newFragment.show(getFragmentManager(), "addProject");
     }
 
     @Override
@@ -298,8 +302,8 @@ private String getCurrentLocation(){
 
     @Override
     public void addPerson() {
-        DialogFragment newFragment = new AddProjectDialogFragment();
-        newFragment.show(getFragmentManager(), "addProject");
+        DialogFragment newFragment = new AddPersonDialogFragment();
+        newFragment.show(getFragmentManager(), "addPerson");
     }
 
     @Override
@@ -334,7 +338,8 @@ private String getCurrentLocation(){
 
     @Override
     public void editPerson(Person p) {
-
+        DialogFragment newFragment = new EditPersonDialogFragment(p);
+        newFragment.show(getFragmentManager(), "editPerson");
     }
 
     @Override

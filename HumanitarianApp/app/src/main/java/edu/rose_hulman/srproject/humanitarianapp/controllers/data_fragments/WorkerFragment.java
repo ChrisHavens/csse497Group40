@@ -24,6 +24,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 public class WorkerFragment extends Fragment {
 
     private WorkerFragmentListener mListener;
+    private Person selectedPerson;
 
 
 
@@ -41,17 +42,17 @@ public class WorkerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Person p=mListener.getSelectedPerson();
+        selectedPerson=mListener.getSelectedPerson();
         View v=inflater.inflate(R.layout.fragment_worker, container, false);
         TextView name=(TextView) v.findViewById(R.id.nameField);
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
         TextView email=(TextView)v.findViewById(R.id.emailField);
         TextView lastLoc=(TextView) v.findViewById(R.id.lastLocField);
-        name.setText(p.getName());
-        phone.setText(p.getPhoneNumber());
-        email.setText(p.getEmail());
-        if (p.getLastCheckin()!=null){
-            lastLoc.setText(p.getLastCheckin().getName()+" "+p.getLastCheckin().getTime());
+        name.setText(selectedPerson.getName());
+        phone.setText(selectedPerson.getPhoneNumber());
+        email.setText(selectedPerson.getEmail());
+        if (selectedPerson.getLastCheckin()!=null){
+            lastLoc.setText(selectedPerson.getLastCheckin().getName()+" "+selectedPerson.getLastCheckin().getTime());
         }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +93,11 @@ public class WorkerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        this.selectedPerson = null;
+    }
+
+    public Person getSelectedPerson() {
+        return this.selectedPerson;
     }
 
     /**

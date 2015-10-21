@@ -220,8 +220,11 @@ public class Person implements Serializable {
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        sb.append(lastCheckin.toJSON()+",");
-        sb.append("\"name\": \""+getName()+"\",");
+        if (lastCheckin != null) {
+            sb.append(lastCheckin.toJSON()+",");
+        }
+        sb.append("\"name\": \"" + getName() + "\",");
+        String email = getEmail();
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");
         //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");

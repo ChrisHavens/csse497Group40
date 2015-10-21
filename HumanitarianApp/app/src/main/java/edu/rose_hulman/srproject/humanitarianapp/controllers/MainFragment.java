@@ -33,6 +33,10 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -336,9 +340,22 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     }
 
     @Override
-    public void saveNote(String title, String body) {
+    public void saveNote(String title, String body){
+        body=body.replaceAll("\n", "\\\n");
         selectedNote.setTitle(title);
         selectedNote.setBody(body);
+        NonLocalDataService service=new NonLocalDataService();
+        service.updateNote(selectedNote.getID(), title, body, new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.w("RetrofitError", error.getMessage());
+            }
+        });
 
     }
 

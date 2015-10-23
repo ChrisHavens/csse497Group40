@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
-    private int ID;
+    private double ID;
     private float lng;
     private float lat;
     private String name;
-    private List<Integer> projectIDs=new ArrayList<Integer>();
-    private List<Integer> groupIDs=new ArrayList<Integer>();
+    private List<Double> projectIDs=new ArrayList<Double>();
+    private List<Double> groupIDs=new ArrayList<Double>();
 
-    public Location(int id){
+    public Location(double id){
         this.ID=id;
     }
 
@@ -30,11 +30,11 @@ public class Location {
         this.name = name;
     }
 
-    public int getID() {
+    public double getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(double ID) {
         this.ID = ID;
     }
 
@@ -82,7 +82,7 @@ public class Location {
             sb.append("{\"projectID\": \""+formatted+"\"},");
         }
         if (projectIDs.size()>0){
-            int proj=projectIDs.get(projectIDs.size()-1);
+            double proj=projectIDs.get(projectIDs.size()-1);
             String formatted = String.format("prj%05d", proj);
             sb.append("{\"projectID\": \""+formatted+"\"}");
             if (groupIDs.size()>0){

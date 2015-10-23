@@ -9,10 +9,10 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
  * Created by Chris Havens on 10/4/2015.
  */
 public class Group implements Serialisable{
-    private int ID;
-    private int projectID;
+    private double ID;
+    private double projectID;
     private String name;
-    private List<Integer> workerIDs;
+    private List<Double> workerIDs;
     private Person leader;
     private String description;
     private List<Note> notes = new ArrayList<>();
@@ -22,14 +22,14 @@ public class Group implements Serialisable{
 
     private static List<Group> knownGroups = new ArrayList<Group>();
 
-    private static int newGroupCount = 1;
+    private static double newGroupCount = 1;
     private static List<Group> localIDGroups = new ArrayList<Group>();
 
     public Group() {
         this.setUpID();
     }
 
-    public Group(int ID) {
+    public Group(double ID) {
         this.ID = ID;
         knownGroups.add(this);
     }
@@ -39,7 +39,7 @@ public class Group implements Serialisable{
         this.setUpID();
     }
 
-    public Group(String name, int ID) {
+    public Group(String name, double ID) {
         this.name = name;
         this.ID = ID;
         knownGroups.add(this);
@@ -62,7 +62,7 @@ public class Group implements Serialisable{
         this.setUpID();
     }
 /*
-    public Group(String name, Project project, List<Integer> workerIDs) {
+    public Group(String name, Project project, List<Double> workerIDs) {
         this.name = name;
         this.workerIDs = workerIDs;
         this.projectID = project.getID();
@@ -86,11 +86,11 @@ public class Group implements Serialisable{
         return null;
     }
 
-    public int getID() {
+    public double getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(double ID) {
         this.ID = ID;
     }
 
@@ -102,7 +102,7 @@ public class Group implements Serialisable{
         this.projectID = project.getID();
     }
 
-    public void setProjectID(int ID) {
+    public void setProjectID(double ID) {
         this.projectID = ID;
     }
 
@@ -149,7 +149,7 @@ public class Group implements Serialisable{
 
     public List<Person> getWorkers() {
         List<Person> persons = new ArrayList<Person>();
-        for (Integer ID: this.workerIDs) {
+        for (Double ID: this.workerIDs) {
             persons.add(Person.getWorkerByID(ID));
         }
         return persons;
@@ -159,15 +159,15 @@ public class Group implements Serialisable{
         this.workerIDs.add(person.getID());
     }
 
-    public void addWorkerByID(int ID) {
+    public void addWorkerByID(double ID) {
         if (this.workerIDs == null) {
-            this.workerIDs = new ArrayList<Integer>();
+            this.workerIDs = new ArrayList<Double>();
         }
         this.workerIDs.add(ID);
     }
 
     public void setWorkers(List<Person> persons) {
-        List<Integer> newWorkerIDs = new ArrayList<Integer>();
+        List<Double> newWorkerIDs = new ArrayList<Double>();
         for(Person person : persons) {
             newWorkerIDs.add(person.getID());
         }
@@ -190,8 +190,8 @@ public class Group implements Serialisable{
         this.description = description;
     }
 
-    public void updateID(int newID) {
-        int oldID = this.ID;
+    public void updateID(double newID) {
+        double oldID = this.ID;
         this.ID = newID;
         localIDGroups.remove(this);
         for (Person person : Person.getKnownPersons()){
@@ -202,7 +202,7 @@ public class Group implements Serialisable{
         }
     }
 
-    public void updateWorkerID(int oldID, int newID){
+    public void updateWorkerID(double oldID, double newID){
         if (this.workerIDs.contains(oldID)){
             this.workerIDs.remove(oldID);
             this.workerIDs.add(newID);
@@ -210,7 +210,7 @@ public class Group implements Serialisable{
         }
     }
 
-    public void updateProjectID(int oldID, int newID){
+    public void updateProjectID(double oldID, double newID){
         if (this.projectID == oldID) {
             this.projectID = newID;
         }
@@ -218,7 +218,7 @@ public class Group implements Serialisable{
 
 
 
-    public static Group getGroupByID(int ID) {
+    public static Group getGroupByID(double ID) {
         for (Group group: knownGroups){
             if (group.ID == ID){
                 return group;

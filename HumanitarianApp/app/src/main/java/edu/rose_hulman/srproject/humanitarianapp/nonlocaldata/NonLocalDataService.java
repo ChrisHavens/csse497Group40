@@ -60,7 +60,7 @@ public class NonLocalDataService {
         service.add("note", "shp"+String.format("%05d", shipment.getID()), typedInput, callback);
     }
 
-    public void updateProject(int projectID, String json, Callback<Response> callback){
+    public void updateProject(double projectID, String json, Callback<Response> callback){
         TypedInput typedInput=new TypedString(json);
         service.add("project", "prj"+String.format("%05d", projectID), typedInput, callback);
     }
@@ -68,7 +68,7 @@ public class NonLocalDataService {
         TypedInput typedInput=new TypedString(person.toJSON());
         service.update("person", "psn" + String.format("%03d", person.getID()), typedInput, callback);
     }
-    public void updateNote(int id, String title, String body, Callback<Response> callback){
+    public void updateNote(double id, String title, String body, Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());

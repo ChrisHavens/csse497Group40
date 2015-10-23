@@ -18,10 +18,10 @@ public class Person implements Serializable {
     private Roles.PersonRoles role;
     private PersonLocation lastCheckin;
     private Date lastCheckinTime;
-    private List<Integer> groupIDs =  new ArrayList<Integer>();
-    private List<Integer> projectIDs =  new ArrayList<Integer>();
+    private List<Double> groupIDs =  new ArrayList<Double>();
+    private List<Double> projectIDs =  new ArrayList<Double>();
     private List<Location> locations =  new ArrayList<Location>();
-    private int ID;
+    private double ID;
 
     //Maybe pull these off into a list of global values
     private static List<Person> knownPersons = new ArrayList<Person>();
@@ -29,7 +29,7 @@ public class Person implements Serializable {
     //New worker count allows the local system to have their own ids that
     // will never interfere with the IDs given by the server. These ids
     // will be changed to new ones next time a sync happens.
-    private static int newWorkerCount = (new Random()).nextInt(900)+100;
+    private static double newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();
 
 
@@ -37,7 +37,7 @@ public class Person implements Serializable {
         this.setUpID();
     }
 
-    public Person(int id){
+    public Person(double id){
         this.ID=id;
     }
     public Person(String name, String phoneNumber) {
@@ -54,14 +54,14 @@ public class Person implements Serializable {
 
 
 
-    public Person(String name, String phoneNumber, int ID) {
+    public Person(String name, String phoneNumber, double ID) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.ID = ID;
         knownPersons.add(this);
     }
 
-    public Person(String name, String phoneNumber, String email, int ID) {
+    public Person(String name, String phoneNumber, String email, double ID) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -141,7 +141,7 @@ public class Person implements Serializable {
     }
 
 
-    public int getID(){
+    public double getID(){
         return this.ID;
     }
 
@@ -151,8 +151,8 @@ public class Person implements Serializable {
      * the local version of an ID is wrong and this is the one to update to.
      * @param newID
      */
-    public void updateID(int newID) {
-        int oldID = this.ID;
+    public void updateID(double newID) {
+        double oldID = this.ID;
         this.ID = newID;
         localIDPersons.remove(this);
         for (Group group : Group.getKnownGroups()) {
@@ -163,7 +163,7 @@ public class Person implements Serializable {
         }
     }
 
-    public static Person getWorkerByID(int ID) {
+    public static Person getWorkerByID(double ID) {
         for (Person person : knownPersons){
             if (person.ID == ID){
                 return person;
@@ -172,21 +172,21 @@ public class Person implements Serializable {
         return null;
     }
 
-    public void updateGroupIDs(int oldID, int newID){
+    public void updateGroupIDs(double oldID, double newID){
         if (this.groupIDs.contains(oldID)) {
             this.groupIDs.remove(oldID);
             this.groupIDs.add(newID);
         }
     }
-    public void addGroupID(int id){
+    public void addGroupID(double id){
         this.groupIDs.add(id);
     }
-    public void addProjectID(int id){
+    public void addProjectID(double id){
         this.projectIDs.add(id);
     }
 
 
-    public void updateProjectIDs(int oldID, int newID){
+    public void updateProjectIDs(double oldID, double newID){
         if (this.projectIDs.contains(oldID)) {
             this.projectIDs.remove(oldID);
             this.projectIDs.add(newID);
@@ -239,7 +239,7 @@ public class Person implements Serializable {
             sb.append("{\"parentID\": \""+formatted+"\"},");
         }
         if (projectIDs.size()>0){
-            int proj=projectIDs.get(projectIDs.size()-1);
+            double proj=projectIDs.get(projectIDs.size()-1);
             String formatted = String.format("prj%05d", proj);
             sb.append("{\"parentID\": \""+formatted+"\"}");
             if (groupIDs.size()>0){

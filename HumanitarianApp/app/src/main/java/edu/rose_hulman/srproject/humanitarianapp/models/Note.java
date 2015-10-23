@@ -11,9 +11,9 @@ public class Note {
     private String date;
     private String time;
     private String parentID;
-    private int id;
+    private double id;
 
-    public Note(int id) {
+    public Note(double id) {
         this.id = id;
     }
 
@@ -63,11 +63,11 @@ public class Note {
         return date+" "+time;
     }
 
-    public int getID() {
+    public double getID() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setID(double id) {
         this.id = id;
     }
 

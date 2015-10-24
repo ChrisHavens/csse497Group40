@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
+import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
  * Created by Chris Havens on 10/4/2015.
  */
-public class Group implements Serialisable{
+public class Group implements Serialisable {
     private long ID;
     private long projectID;
     private String name;
@@ -19,12 +20,32 @@ public class Group implements Serialisable{
     private List<Note> notes = new ArrayList<>();
     private List<Checklist> checklists = new ArrayList<>();
     private List<Shipment> shipments = new ArrayList<>();
-    //private List<Person> admins; ???
 
     private static List<Group> knownGroups = new ArrayList<Group>();
-
     private static long newGroupCount = 1;
     private static List<Group> localIDGroups = new ArrayList<Group>();
+
+    /**
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
+
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[9];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     private long ID;
+     private long projectID;
+     private String name;
+     private Person leader;
+     private String description;
+     private List<Long> workerIDs;
+     private List<Note> notes = new ArrayList<>();
+     private List<Checklist> checklists = new ArrayList<>();
+     private List<Shipment> shipments = new ArrayList<>();
+     */
+
 
     public Group() {
         this.setUpID();
@@ -62,17 +83,20 @@ public class Group implements Serialisable{
         this.projectID = project.getID();
         this.setUpID();
     }
-/*
+
+    /*
     public Group(String name, Project project, List<Long> workerIDs) {
         this.name = name;
         this.workerIDs = workerIDs;
         this.projectID = project.getID();
         this.setUpID();
     }
-*/
-    private void setUpID(){
-        Random rand=new Random();
-        this.ID = rand.nextLong();
+    */
+    private void setUpID() {
+        Random rand = new Random();
+        int localIDNum = rand.nextInt();
+        //TODO: Add the user ID to the id as well
+        this.ID = ((long) localIDNum) | SerilizationConstants.GROUP_NUM;
         knownGroups.add(this);
         localIDGroups.add(this);
     }
@@ -116,7 +140,7 @@ public class Group implements Serialisable{
     }
 
 
-    public List<Shipment> getShipments(){
+    public List<Shipment> getShipments() {
         return this.shipments;
     }
 
@@ -150,7 +174,7 @@ public class Group implements Serialisable{
 
     public List<Person> getWorkers() {
         List<Person> persons = new ArrayList<Person>();
-        for (Long ID: this.workerIDs) {
+        for (Long ID : this.workerIDs) {
             persons.add(Person.getWorkerByID(ID));
         }
         return persons;
@@ -169,7 +193,7 @@ public class Group implements Serialisable{
 
     public void setWorkers(List<Person> persons) {
         List<Long> newWorkerIDs = new ArrayList<Long>();
-        for(Person person : persons) {
+        for (Person person : persons) {
             newWorkerIDs.add(person.getID());
         }
         this.workerIDs = newWorkerIDs;
@@ -195,40 +219,40 @@ public class Group implements Serialisable{
         long oldID = this.ID;
         this.ID = newID;
         localIDGroups.remove(this);
-        for (Person person : Person.getKnownPersons()){
+        for (Person person : Person.getKnownPersons()) {
             person.updateGroupIDs(oldID, newID);
         }
-        for (Project project : Project.getKnownProjects()){
+        for (Project project : Project.getKnownProjects()) {
             project.updateGroupIDs(oldID, newID);
         }
     }
 
-    public void updateWorkerID(long oldID, long newID){
-        if (this.workerIDs.contains(oldID)){
+    public void updateWorkerID(long oldID, long newID) {
+        if (this.workerIDs.contains(oldID)) {
             this.workerIDs.remove(oldID);
             this.workerIDs.add(newID);
             return;
         }
     }
 
-    public void updateProjectID(long oldID, long newID){
+    public void updateProjectID(long oldID, long newID) {
         if (this.projectID == oldID) {
             this.projectID = newID;
         }
     }
 
 
-
     public static Group getGroupByID(long ID) {
-        for (Group group: knownGroups){
-            if (group.ID == ID){
+        for (Group group : knownGroups) {
+            if (group.ID == ID) {
                 return group;
             }
         }
         return null;
     }
-    public String toJSON(){
-        StringBuilder sb=new StringBuilder();
+
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
         sb.append("{");
         sb.append("\"name\": \"" + getName() + "\",");
         //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");
@@ -237,13 +261,14 @@ public class Group implements Serialisable{
         sb.append("}");
         return sb.toString();
     }
-    public String getParentString(){
-        StringBuilder sb=new StringBuilder();
+
+    public String getParentString() {
+        StringBuilder sb = new StringBuilder();
         sb.append("\"projectIDs\": [");
 
 
-            String formatted = String.format("prj%05d",projectID);
-            sb.append("{\"projectID\": \""+formatted+"\"}");
+        String formatted = String.format("prj%05d", projectID);
+        sb.append("{\"projectID\": \"" + formatted + "\"}");
 
         sb.append("]");
         return sb.toString();

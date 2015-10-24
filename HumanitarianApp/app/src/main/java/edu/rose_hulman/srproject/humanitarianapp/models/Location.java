@@ -11,6 +11,24 @@ public class Location {
     private List<Long> projectIDs=new ArrayList<Long>();
     private List<Long> groupIDs=new ArrayList<Long>();
 
+    /**
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
+
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[6];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     private long ID;
+     private float lng;
+     private float lat;
+     private String name;
+     private List<Long> projectIDs=new ArrayList<Long>();
+     private List<Long> groupIDs=new ArrayList<Long>();
+     */
+
     public Location(long id){
         this.ID=id;
     }

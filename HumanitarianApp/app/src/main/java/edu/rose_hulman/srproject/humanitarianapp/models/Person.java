@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
+
 /**
  * Created by daveyle on 9/21/2015.
  */
@@ -28,8 +30,32 @@ public class Person implements Serializable {
     private static long newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();
 
+    /**
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
 
-    public Person() {
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[10];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     private long ID;
+     private Date lastCheckinTime;
+     private Roles.PersonRoles role;
+     private String name;
+     private String phoneNumber;
+     private String email;
+     private PersonLocation lastCheckin;
+
+     private List<Long> groupIDs =  new ArrayList<Long>();
+     private List<Long> projectIDs =  new ArrayList<Long>();
+     private List<Location> locations =  new ArrayList<Location>();
+
+     */
+
+
+     public Person() {
         this.setUpID();
     }
 
@@ -67,7 +93,9 @@ public class Person implements Serializable {
 
     private void setUpID(){
         Random rand=new Random();
-        this.ID = rand.nextLong();
+        int localIDNum = rand.nextInt();
+        //TODO: Add the user ID to the id as well
+        this.ID = ((long) localIDNum) | SerilizationConstants.PERSON_NUM;
         knownPersons.add(this);
         localIDPersons.add(this);
     }

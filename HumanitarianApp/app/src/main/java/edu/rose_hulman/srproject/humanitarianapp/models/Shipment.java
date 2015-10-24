@@ -19,6 +19,30 @@ public class Shipment implements Serialisable<Shipment> {
     String parentID;
     private long ID;
 
+    /**
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
+
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[12];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     private long ID;
+     private Location lastLocation;
+     private String contents;
+     private String from;
+     private String to;
+     private String fromName;
+     private String toName;
+     private String time;
+     private String date;
+     private String name;
+     private String status;
+     private String parentID;
+     */
+
     public Shipment() {
     }
     public Shipment(long id){

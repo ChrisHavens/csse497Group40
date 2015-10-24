@@ -10,6 +10,22 @@ public class Checklist {
     private long id;
     private String title;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
+
+    /**
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
+
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[3];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     private long id;
+     private String title;
+     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
+     */
+
     public Checklist(){
 
     }

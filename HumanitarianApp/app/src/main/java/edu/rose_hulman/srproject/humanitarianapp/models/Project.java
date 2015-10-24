@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
+import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
  * Created by Chris Havens on 10/4/2015.
@@ -23,7 +24,6 @@ public class Project implements Serialisable{
     private List<Location> locations =  new ArrayList<Location>();
     private List<Checklist> checklists = new ArrayList<Checklist>();
 
-    private static final long PROJECTENUM = 2 << 48;
     private static List<Project> knownProjects = new ArrayList<Project>();
     private static long newProjectCount = 1;
     private static List<Project> localIDProjects = new ArrayList<Project>();
@@ -49,7 +49,6 @@ public class Project implements Serialisable{
      private List<Checklist> checklists = new ArrayList<Checklist>();
      private List<Shipment> shipments = new ArrayList<Shipment>();
 
-     private static List<Project> knownProjects = new ArrayList<Project>();
      */
 
     public Project() {
@@ -75,7 +74,9 @@ public class Project implements Serialisable{
 
     private void setUpDefaultID(){
         Random rand=new Random();
-        this.ID = rand.nextLong();
+        int localIDNum = rand.nextInt();
+        //TODO: Add the user ID to the id as well
+        this.ID = ((long) localIDNum) | SerilizationConstants.PROJECT_NUM;
         localIDProjects.add(this);
         knownProjects.add(this);
     }

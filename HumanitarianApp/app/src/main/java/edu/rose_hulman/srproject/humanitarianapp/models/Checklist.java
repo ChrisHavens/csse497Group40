@@ -7,7 +7,7 @@ import java.util.List;
  * Created by daveyle on 10/4/2015.
  */
 public class Checklist {
-    private double id;
+    private long id;
     private String title;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
     public Checklist(){
@@ -23,12 +23,12 @@ public class Checklist {
         this.itemList = itemList;
     }
 
-    public Checklist(String title, double id) {
+    public Checklist(String title, long id) {
         this.title = title;
         this.id = id;
     }
 
-    public Checklist(String title, List<ChecklistItem> itemList, double id) {
+    public Checklist(String title, List<ChecklistItem> itemList, long id) {
         this.title = title;
         this.itemList = itemList;
         this.id = id;

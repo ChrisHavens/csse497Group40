@@ -17,11 +17,11 @@ public class Shipment implements Serialisable<Shipment> {
     String name;
     String status;
     String parentID;
-    private double ID;
+    private long ID;
 
     public Shipment() {
     }
-    public Shipment(double id){
+    public Shipment(long id){
         this.ID=id;
     }
 
@@ -83,11 +83,11 @@ public class Shipment implements Serialisable<Shipment> {
         return null;
     }
 
-    public double getID() {
+    public long getID() {
         return ID;
     }
 
-    public void setID(double ID) {
+    public void setID(long ID) {
         this.ID = ID;
     }
 

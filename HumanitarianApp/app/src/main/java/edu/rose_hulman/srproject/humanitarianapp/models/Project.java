@@ -1,7 +1,9 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 
@@ -9,25 +11,52 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
  * Created by Chris Havens on 10/4/2015.
  */
 public class Project implements Serialisable{
-    private double ID;
-    private double managerID;
+    private boolean[] isDirty = new boolean[8];
+
+    private long ID;
+    private long managerID;
     private String name;
     private String description;
 
-    private List<Double> groupIDs =  new ArrayList<Double>();
-    private List<Double> workerIDs =  new ArrayList<Double>();
+    private List<Long> groupIDs =  new ArrayList<Long>();
+    private List<Long> workerIDs =  new ArrayList<Long>();
     private List<Location> locations =  new ArrayList<Location>();
     private List<Checklist> checklists = new ArrayList<Checklist>();
 
+    private static final long PROJECTENUM = 2 << 48;
     private static List<Project> knownProjects = new ArrayList<Project>();
-    private static double newProjectCount = 1;
+    private static long newProjectCount = 1;
     private static List<Project> localIDProjects = new ArrayList<Project>();
+
+    /*
+     * All of the variables post refactoring. Also, the order is important and based off type NOT
+     * what logically belongs where.
+
+     // A flag for each field denoting if it needs to be updated on the server.
+     // This will need to be initulized in the constructors.
+     private boolean[] isDirty = new boolean[9];
+     //A flag for if the object was synced from the server or created locally
+     private boolean[] onServer = false;
+
+     // Any project with the same ID is said to be the same project, across all instances
+     private long ID;
+     private String name;
+     private String description;
+     private List<Long> groupIDs =  new ArrayList<Long>();
+     private List<Long> workerIDs =  new ArrayList<Long>();
+     private List<Long> adminIDs =  new ArrayList<Long>();
+     private List<Location> locations =  new ArrayList<Location>();
+     private List<Checklist> checklists = new ArrayList<Checklist>();
+     private List<Shipment> shipments = new ArrayList<Shipment>();
+
+     private static List<Project> knownProjects = new ArrayList<Project>();
+     */
 
     public Project() {
         this.setUpDefaultID();
     }
 
-    public Project(double ID) {
+    public Project(long ID) {
         this.ID = ID;
         knownProjects.add(this);
     }
@@ -37,7 +66,7 @@ public class Project implements Serialisable{
         this.setUpDefaultID();
     }
 
-    public Project (String name, double ID) {
+    public Project (String name, long ID) {
         this.name = name;
         this.ID = ID;
         knownProjects.add(this);
@@ -45,13 +74,13 @@ public class Project implements Serialisable{
     }
 
     private void setUpDefaultID(){
-        this.ID = newProjectCount;
-        newProjectCount ++;
+        Random rand=new Random();
+        this.ID = rand.nextLong();
         localIDProjects.add(this);
         knownProjects.add(this);
     }
 
-    public static Project createFullProject(String name, String description, double managerID) {
+    public static Project createFullProject(String name, String description, long managerID) {
         Project project = new Project();
         if (name == null || name.length() == 0) {
             return null;
@@ -72,7 +101,7 @@ public class Project implements Serialisable{
         return null;
     }
 
-    public double getID() {
+    public long getID() {
         return ID;
     }
 
@@ -126,14 +155,14 @@ public class Project implements Serialisable{
 
     public List<Person> getWorkers() {
         List<Person> persons = new ArrayList<Person>();
-        for (Double ID: this.workerIDs) {
+        for (Long ID: this.workerIDs) {
             persons.add(Person.getWorkerByID(ID));
         }
         return persons;
     }
 
     public void setWorkers(List<Person> persons) {
-        List<Double> newWorkerIDs = new ArrayList<Double>();
+        List<Long> newWorkerIDs = new ArrayList<Long>();
         for(Person person : persons) {
             newWorkerIDs.add(person.getID());
         }
@@ -142,42 +171,42 @@ public class Project implements Serialisable{
 
     public List<Group> getGroups() {
         List<Group> groups = new ArrayList<Group>();
-        for (Double ID: this.groupIDs) {
+        for (Long ID: this.groupIDs) {
             groups.add(Group.getGroupByID(ID));
         }
         return groups;
     }
 
-    public void updateWorkerID(double oldID, double newID) {
+    public void updateWorkerID(long oldID, long newID) {
             if (this.workerIDs.contains(oldID)) {
                 this.workerIDs.remove(oldID);
                 this.workerIDs.add(newID);
             }
     }
 
-    public void updateGroupIDs(double oldID, double newID){
+    public void updateGroupIDs(long oldID, long newID){
             if (this.groupIDs.contains(oldID)) {
                 this.groupIDs.remove(oldID);
                 this.groupIDs.add(newID);
             }
     }
 
-    public void addWorkerByID(double ID) {
+    public void addWorkerByID(long ID) {
         if (this.workerIDs == null) {
-            this.workerIDs = new ArrayList<Double>();
+            this.workerIDs = new ArrayList<Long>();
         }
         this.workerIDs.add(ID);
     }
 
-    public void addGroupByID(double ID) {
+    public void addGroupByID(long ID) {
         if (this.groupIDs == null) {
-            this.groupIDs = new ArrayList<Double>();
+            this.groupIDs = new ArrayList<Long>();
         }
         this.groupIDs.add(ID);
     }
 
-    public void updateID(double newID){
-        double oldID = this.ID;
+    public void updateID(long newID){
+        long oldID = this.ID;
         this.ID = newID;
         localIDProjects.remove(this);
         for (Person person : Person.getKnownPersons()){
@@ -226,7 +255,7 @@ public class Project implements Serialisable{
         return sb.toString();
     }
 
-    public static Project getProjectByID(double ID) {
+    public static Project getProjectByID(long ID) {
         for (Project project: knownProjects){
             if (project.ID == ID){
                 return project;

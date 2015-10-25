@@ -25,7 +25,7 @@ public class Group implements Serialisable {
     private static long newGroupCount = 1;
     private static List<Group> localIDGroups = new ArrayList<Group>();
 
-    /**
+    /*
      * All of the variables post refactoring. Also, the order is important and based off type NOT
      * what logically belongs where.
 

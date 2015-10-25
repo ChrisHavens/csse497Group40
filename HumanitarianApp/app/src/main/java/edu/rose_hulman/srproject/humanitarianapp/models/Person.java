@@ -30,7 +30,7 @@ public class Person implements Serializable {
     private static long newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();
 
-    /**
+    /*
      * All of the variables post refactoring. Also, the order is important and based off type NOT
      * what logically belongs where.
 

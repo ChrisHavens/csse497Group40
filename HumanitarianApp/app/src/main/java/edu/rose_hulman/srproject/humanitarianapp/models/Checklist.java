@@ -1,6 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,9 +22,9 @@ public class Checklist {
      //A flag for if the object was synced from the server or created locally
      private boolean[] onServer = false;
 
-     private long id;
-     private String title;
-     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
+     private long id; //0
+     private String title; //1
+     private List<ChecklistItem> itemList; //2
      */
 
     public Checklist(){
@@ -49,6 +50,96 @@ public class Checklist {
         this.itemList = itemList;
         this.id = id;
     }
+
+    /*
+     * New constructors
+     //Creates a new checklist, but does not give it an ID, or add it to the list of knowns
+     public Checklist() {
+     }
+
+     //Note: if you are passing in the ID, but it is not on the server, you have to manually set that.
+     public Checklist(long id) {
+        this.itemsList = new ArrayList<ChecklistItem>();
+        this.id = id;
+        this.title = "";
+        Arrays.fill(this.isDirty, false);
+        this.onServer = true;
+        ApplicationWideData.addExistingChecklist(this);
+     }
+
+     public Checklist(long id, String title) {
+        this.itemsList = new ArrayList<ChecklistItem>();
+        this.id = id;
+        this.title = title;
+        Arrays.fill(this.isDirty, false);
+        this.onServer = true;
+        ApplicationWideData.addExistingChecklist(this);
+     }
+
+     public Checklist(long id, String title, List<ChecklistItem> itemsList) {
+        this.itemsList = itemsList;
+        this.id = id;
+        this.title = title;
+        Arrays.fill(this.isDirty, false);
+        this.onServer = true;
+        ApplicationWideData.addExistingChecklist(this);
+     }
+
+     public Checklist(String title) {
+        this.setupAsNew();
+        this.title = title;
+     }
+
+     public Checklist(String title, List<ChecklistItem> itemsList) {
+        this.setupAsNew();
+        this.itemsList = itemsList;
+        this.title = title;
+
+     }
+
+     public setupAsNew() {
+        this.id = SerilizationConstants.generateID(SerilizationConstants.CHECKLIST_NUM);
+        this.title = "";
+        this.itemsList = new ArrayList<ChecklistItem>();
+        Arrays.fill(this.isDirty, true);
+        this.onServer = false;
+        ApplicationWideData.addNewChecklist(this);
+     }
+
+     public void fullClean() {
+        Arrays.fill(this.isDirty, false);
+        this.onServer = true;
+     }
+
+    public void setItemList(List<ChecklistItem> itemList) {
+        this.itemList = itemList;
+        this.isDirty[2] = true;
+    }
+
+    public void setItemListClean(List<ChecklistItem> itemList) {
+        this.itemList = itemList;
+        this.isDirty[2] = false;
+    }
+
+    public void setItemListMaintain(List<ChecklistItem> itemList) {
+        this.itemList = itemList;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.isDirty[1] = true;
+    }
+
+    public void setTitleClean(String title) {
+        this.title = title;
+        this.isDirty[1] = false;
+    }
+
+    public void setTitleMaintain(String title) {
+        this.title = title;
+    }
+
+     */
 
     public List<ChecklistItem> getItemList() {
         return itemList;

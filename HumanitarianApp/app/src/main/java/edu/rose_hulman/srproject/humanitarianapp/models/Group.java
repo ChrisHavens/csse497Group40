@@ -21,6 +21,8 @@ public class Group implements Serialisable {
     private List<Checklist> checklists = new ArrayList<>();
     private List<Shipment> shipments = new ArrayList<>();
 
+    //Maybe pull these off into a list of global values?
+    //Yes, established elsewhere, but not used yet.
     private static List<Group> knownGroups = new ArrayList<Group>();
     private static long newGroupCount = 1;
     private static List<Group> localIDGroups = new ArrayList<Group>();

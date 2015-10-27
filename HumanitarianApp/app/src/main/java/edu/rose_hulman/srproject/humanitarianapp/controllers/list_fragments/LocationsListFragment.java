@@ -132,6 +132,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             Log.e("RetrofitError", error.getMessage());
         }
     }
+
     public interface LocationsListListener{
         void onItemSelected(Location t);
         Project getSelectedProject();

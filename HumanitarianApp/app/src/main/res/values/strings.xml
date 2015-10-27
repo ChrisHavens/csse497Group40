@@ -36,4 +36,5 @@
     <string name="addPerson">Add a new Person:</string>
     <string name="addProject">Add a new Project:</string>
     <string name="addGroup">Add a new Group:</string>
+    <string name="addLocation">Add a new Location:</string>
     </resources>

@@ -15,34 +15,34 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     "[Name] [nchar](50) NOT NULL,"+"[Lat] [int] NOT NULL,"+
 
     "[Lon] [int] NOT NULL,"+
-    "[NameDirty] [bit] NOT NULL,"+
-    "[LatDirty] [bit] NOT NULL,"+
-    "[LonDirty] [bit] NOT NULL,"+
+    "[NameDirty] [boolean] NOT NULL,"+
+    "[LatDirty] [boolean] NOT NULL,"+
+    "[LonDirty] [boolean] NOT NULL,"+
     "CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED ( [ID] ASC))";
     private static final String SQL_PEOPLE = "CREATE TABLE [People]("+
             "[ID] [int] NOT NULL,"+
     "[Name] [nchar](50) NOT NULL,"+
-    "[NameDirty] [bit] NOT NULL,"+
+    "[NameDirty] [boolean] NOT NULL,"+
     "CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED"+
             "[ID] ASC))";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
-            "\t[NameDirty] [bit] NOT NULL,\n" +
+            "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
-            "\t[SuperIDDirty] [bit] NOT NULL,\n" +
+            "\t[SuperIDDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_Checklist] PRIMARY KEY CLUSTERED ([ID] ASC ))";
     private static final String SQL_PROJECT = "CREATE TABLE [Project]("+
     "[ID] [int] NOT NULL,"+
     "[Name] [nchar](50) NOT NULL,"+
-    "[NameDirty] [bit] NOT NULL,"+
+    "[NameDirty] [boolean] NOT NULL,"+
     "CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED ( [ID] ASC ))";
     private static final String SQL_GROUP = "CREATE TABLE [Group](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
-            "\t[NameDirty] [bit] NOT NULL,\n" +
+            "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
-            "\t[SuperIDDirty] [bit] NOT NULL,\n" +
+            "\t[SuperIDDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_Group] PRIMARY KEY CLUSTERED \n" +
             "(\n" +
             "\t[ID] ASC\n" +
@@ -50,27 +50,27 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     private static final String SQL_EMAIL = "CREATE TABLE [Email](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Email] [nchar](30) NOT NULL,\n" +
-            "\t[EmailDirty] [bit] NOT NULL\n" +
+            "\t[EmailDirty] [boolean] NOT NULL\n" +
             ")";
     private static final String SQL_PHONE = "CREATE TABLE [Phone](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Phone#] [nchar](20) NOT NULL,\n" +
-            "\t[PhoneDirty] [bit] NOT NULL\n" +
+            "\t[PhoneDirty] [boolean] NOT NULL\n" +
             ")";
     private static final String SQL_SHIPMENT = "CREATE TABLE [Shipment](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
-            "\t[NameDirty] [bit] NOT NULL,\n" +
+            "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[Status] [nchar](20) NOT NULL,\n" +
-            "\t[StatusDirty] [bit] NOT NULL,\n" +
+            "\t[StatusDirty] [boolean] NOT NULL,\n" +
             "\t[ToLoc] [int] NOT NULL,\n" +
-            "\t[ToLocDirty] [bit] NOT NULL,\n" +
+            "\t[ToLocDirty] [boolean] NOT NULL,\n" +
             "\t[LastLoc] [int] NOT NULL,\n" +
-            "\t[LastLocDirty] [bit] NOT NULL,\n" +
+            "\t[LastLocDirty] [boolean] NOT NULL,\n" +
             "\t[FromLoc] [int] NOT NULL,\n" +
-            "\t[FromLocDirty] [bit] NOT NULL,\n" +
+            "\t[FromLocDirty] [boolean] NOT NULL,\n" +
             "\t[Description] [nchar](140) NOT NULL,\n" +
-            "\t[DescriptionDirty] [bit] NOT NULL,\n" +
+            "\t[DescriptionDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_Shipment] PRIMARY KEY CLUSTERED \n" +
             "(\n" +
             "\t[ID] ASC\n" +
@@ -78,11 +78,11 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     private static final String SQL_NOTE = "CREATE TABLE [Note](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
-            "\t[NameDirty] [bit] NOT NULL,\n" +
+            "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[Contents] [nchar](140) NOT NULL,\n" +
-            "\t[ContentsDirty] [bit] NOT NULL,\n" +
+            "\t[ContentsDirty] [boolean] NOT NULL,\n" +
             "\t[OwnerID] [int] NOT NULL,\n" +
-            "\t[OwnerIDDirty] [bit] NOT NULL,\n" +
+            "\t[OwnerIDDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_Notes] PRIMARY KEY CLUSTERED \n" +
             "(\n" +
             "\t[ID] ASC\n" +
@@ -91,11 +91,11 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[ID] [nchar](10) NOT NULL,\n" +
             "\t[List] [int] NOT NULL,\n" +
             "\t[Person?] [int] NULL,\n" +
-            "\t[PersonDirty] [bit] NOT NULL,\n" +
-            "\t[Done] [bit] NOT NULL,\n" +
-            "\t[DoneDirty] [bit] NOT NULL,\n" +
+            "\t[PersonDirty] [boolean] NOT NULL,\n" +
+            "\t[Done] [boolean] NOT NULL,\n" +
+            "\t[DoneDirty] [boolean] NOT NULL,\n" +
             "\t[Info] [nchar](140) NOT NULL,\n" +
-            "\t[InfoDirty] [bit] NOT NULL,\n" +
+            "\t[InfoDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_ChecklistItem] PRIMARY KEY CLUSTERED \n" +
             "(\n" +
             "\t[ID] ASC\n" +

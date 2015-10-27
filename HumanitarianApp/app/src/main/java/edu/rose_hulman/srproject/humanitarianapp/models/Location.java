@@ -31,9 +31,14 @@ public class Location {
 
     public Location(long id){
         this.ID=id;
+        this.projectIDs=new ArrayList<>();
+        this.groupIDs=new ArrayList<>();
     }
 
     public Location(String name, int latHour, int latMinute, int latSecond, int lngHour, int lngMinute, int lngSecond) {
+        this.projectIDs=new ArrayList<>();
+        this.groupIDs=new ArrayList<>();
+        this.name=name;
         float hourMinAsFloat;
         float hourMinAsInt;
         hourMinAsInt = latMinute * Float.intBitsToFloat(60) + latSecond;
@@ -46,6 +51,8 @@ public class Location {
     }
     public Location(String name) {
         this.name = name;
+        this.projectIDs=new ArrayList<>();
+        this.groupIDs=new ArrayList<>();
     }
 
     public long getID() {
@@ -78,6 +85,22 @@ public class Location {
 
     public void setLng(float lng) {
         this.lng = lng;
+    }
+
+    public List<Long> getProjectIDs() {
+        return projectIDs;
+    }
+
+    public void setProjectIDs(List<Long> projectIDs) {
+        this.projectIDs = projectIDs;
+    }
+
+    public List<Long> getGroupIDs() {
+        return groupIDs;
+    }
+
+    public void setGroupIDs(List<Long> groupIDs) {
+        this.groupIDs = groupIDs;
     }
 
     public String toJSON(){

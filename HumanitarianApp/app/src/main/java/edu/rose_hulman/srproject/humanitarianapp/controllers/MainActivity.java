@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
+
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -35,6 +35,7 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataContract;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -52,7 +53,8 @@ public class MainActivity extends Activity implements TabSwitchListener,
         AddPersonDialogFragment.AddPersonListener, MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
-        EditPersonDialogFragment.EditPersonListener{
+        EditPersonDialogFragment.EditPersonListener,
+        AddLocationDialogFragment.AddLocationListener, EditGroupDialogFragment.AddGroupListener{
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
     NonLocalDataService service=new NonLocalDataService();
     @Override
@@ -162,6 +164,12 @@ private String getCurrentLocation(){
 }
 @Override
     public void addPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+    MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
+    long projectID=f.getSelectedProject().getID();
+    long groupID=-1;
+    if (f.getSelectedGroup()!=null) {
+        groupID = f.getSelectedGroup().getID();
+    }
     Person p=new Person(name, phone, email);
     edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
     location.setName("Omega 4 Relay");
@@ -170,8 +178,10 @@ private String getCurrentLocation(){
     location.setLng(-5.45f);
     //location.setID(10000);
     p.setLastCheckin(location);
-    p.addProjectID(1000);
-    p.addGroupID(0);
+    p.addProjectID(projectID);
+    if (groupID!=-1) {
+        p.addGroupID(groupID);
+    }
     Callback<Response> responseCallback=new Callback<Response>() {
         @Override
         public void success(Response response, Response response2) {
@@ -211,8 +221,9 @@ private String getCurrentLocation(){
     @Override
     public void addProject(final String name) {
         Random rand=new Random();
-        int i= rand.nextInt(900)+100;
-        Project p= new Project(name);
+        long i= rand.nextInt(900)+100;
+        Project p= new Project(name, i);
+
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -260,13 +271,38 @@ private String getCurrentLocation(){
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        StringBuilder sb= new StringBuilder();
-        sb.append("{\"doc\": {");
-        sb.append(project.getGroupString());
-        sb.append("}}");
-        service.updateProject(project.getID(), sb.toString(), responseCallback2);
+        service.addNewProject(project, responseCallback);
+//        sb.append("{\"doc\": {");
+//        sb.append(project.getGroupString());
+//        sb.append("}}");
+        //service.updateProject(project.getID(), sb.toString(), responseCallback2);
 
 
+
+    }
+    @Override
+    public void addLocation(final String name, String lat, String lng) {
+        Random rand=new Random();
+        int i= rand.nextInt(900)+100;
+        MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
+        Project project=f.getSelectedProject();
+        Location l=new Location(name);
+        l.setLat(Float.parseFloat(lat));
+        l.setLng(Float.parseFloat(lng));
+        l.getProjectIDs().add(project.getID());
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful adding of new location: "+name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+
+        service.addNewLocation(l, responseCallback);
 
     }
 
@@ -288,7 +324,8 @@ private String getCurrentLocation(){
 
     @Override
     public void addLocation() {
-
+        DialogFragment newFragment = new AddLocationDialogFragment();
+        newFragment.show(getFragmentManager(), "addLocation");
     }
 
     @Override
@@ -315,6 +352,11 @@ private String getCurrentLocation(){
     @Override
     public void editGroup(Group g) {
 
+        DialogFragment newFragment = new EditGroupDialogFragment();
+        Bundle b=new Bundle();
+        b.putString("groupID", "grp"+g.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "ediGroup");
     }
 
     @Override
@@ -341,6 +383,7 @@ private String getCurrentLocation(){
     public void editShipment(Shipment s) {
 
     }
+
 
 
 }

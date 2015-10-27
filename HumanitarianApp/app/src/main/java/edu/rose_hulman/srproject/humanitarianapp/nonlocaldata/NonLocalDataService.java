@@ -135,7 +135,7 @@ public class NonLocalDataService {
     }
     public void getAllLocations(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
         sb.append(String.format("prj%05d", p.getID()));
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
@@ -144,7 +144,7 @@ public class NonLocalDataService {
     }
     public void getAllLocations(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.groupID\": \"");
         sb.append(String.format("grp%05d", g.getID()));
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());

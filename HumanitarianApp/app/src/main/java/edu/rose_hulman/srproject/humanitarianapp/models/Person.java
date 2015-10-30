@@ -25,7 +25,8 @@ public class Person implements Serializable {
     private List<Location> locations =  new ArrayList<Location>();
     private long ID;
 
-    //Maybe pull these off into a list of global values
+    //Maybe pull these off into a list of global values?
+    //Yes, established elsewhere, but not used yet.
     private static List<Person> knownPersons = new ArrayList<Person>();
     private static long newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();

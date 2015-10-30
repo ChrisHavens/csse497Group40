@@ -41,7 +41,7 @@ public class EditGroupDialogFragment extends DialogFragment {
 
     private AddGroupListener mListener;
     private EditText nameField;
-    private String groupID;
+    private long groupID;
 
 
 
@@ -51,44 +51,9 @@ public class EditGroupDialogFragment extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState!=null){
-            groupID=savedInstanceState.getString("groupID");
-            Log.w("Got groupID", groupID);
+            groupID=savedInstanceState.getLong("groupID");
+            Log.w("Got groupID", ""+groupID);
         }
-        NonLocalDataService service=new NonLocalDataService();
-        service.get("group", groupID, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Log.e("here2", "success");
-                ObjectMapper mapper=new ObjectMapper();
-                TypeReference<HashMap<String, Object>> typeReference=
-                        new TypeReference<HashMap<String, Object>>() {
-                        };
-                try {
-                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
-
-
-                    HashMap<String, Object> source = (HashMap) o.get("_source");
-                    for (String s : source.keySet()) {
-                        Log.e("Result", s);
-                    }
-                    Group p = new Group(Integer.parseInt(((String) o.get("_id")).substring(3)));
-                    p.setName((String) source.get("name"));
-                    nameField.setText(p.getName());
-                    //adapter.add(p);
-                } catch (JsonMappingException e) {
-                    e.printStackTrace();
-                } catch (JsonParseException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.w("RetroFit Error: ", error.getMessage());
-            }
-        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -123,6 +88,8 @@ public class EditGroupDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_group_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
+        Group g= Group.getGroupByID(groupID);
+        nameField.setText(g.getName());
 
         return view;
     }

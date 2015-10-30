@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -84,7 +85,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
     @Override
     public String getTitle() {
-        return null;
+        return getResources().getString(R.string.groups);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Group p=new Group(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Group p=new Group(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String) source.get("name"));
                     groups.add(p);
                     adapter.notifyDataSetChanged();

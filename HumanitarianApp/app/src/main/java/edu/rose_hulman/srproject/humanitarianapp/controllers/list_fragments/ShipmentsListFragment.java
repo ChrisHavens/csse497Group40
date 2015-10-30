@@ -121,7 +121,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Shipment s=new Shipment(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Shipment s=new Shipment(Integer.parseInt(((String)map.get("_id"))));
                     s.setContents((String) source.get("contents"));
                     s.setFrom((String) source.get("fromLocationID"));
                     s.setTo((String) source.get("toLocationID"));

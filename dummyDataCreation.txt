@@ -1,51 +1,51 @@
-PUT s40/project/prj01000
+PUT s40/project/101000
 {
   "name": "Stop the Reapers",
   "groupIDs": [
     {
-      "groupID": "grp00000"
+      "groupID": "200000"
     },
     {
-      "groupID": "grp01000"
+      "groupID": "201000"
     }
     ]
     
 }
-PUT s40/project/prj01001
+PUT s40/project/101001
 {
   "name": "Run the country",
   "groupIDs": [
     {
-      "groupID": "grp02001"
+      "groupID": "202001"
     },
     {
-      "groupID": "grp00004"
+      "groupID": "200004"
     }
     ]
     
 }
-PUT s40/project/prj00002
+PUT s40/project/100002
 {
   "name": "Bring Mark Watney Home",
   "groupIDs": [
     {
-      "groupID": "grp01002"
+      "groupID": "201002"
     }
     ]
     
 }
-PUT s40/project/prj01010
+PUT s40/project/101010
 {
   "name": "EWB Ghana",
   "groupIDs": [
     {
-      "groupID": "grp01010"
+      "groupID": "201010"
     },
-    {"groupID": "grp01011"}
+    {"groupID": "201011"}
     ]
     
 }
-PUT s40/person/psn000
+PUT s40/person/3000
 {
   "lastLocation": 
     
@@ -60,11 +60,11 @@ PUT s40/person/psn000
   "email": "notDeadYet@normandy.extranet.org",
   "phone": "555-555-5555",
   "parentIDs": [
-  {"parentID": "prj01000"},
-  {"parentID": "grp00000"}
+  {"parentID": "101000"},
+  {"parentID": "200000"}
   ]
 }
-PUT s40/person/psn001
+PUT s40/person/3001
 {
   "lastLocation": 
     
@@ -79,11 +79,11 @@ PUT s40/person/psn001
   "email": "whatsNext@thewhitehouse.gov",
   "phone": "555-555-5556",
   "parentIDs": [
-  {"parentID": "prj01001"},
-  {"parentID": "grp02001"}
+  {"parentID": "101001"},
+  {"parentID": "202001"}
   ]
 }
-PUT s40/person/psn002
+PUT s40/person/3002
 {
   "lastLocation": 
     
@@ -98,11 +98,11 @@ PUT s40/person/psn002
   "email": "spacePirate@ares3.nasa.gov",
   "phone": "Unavailable",
   "parentIDs": [
-  {"parentID": "prj00002"},
-  {"parentID": "grp01002"}
+  {"parentID": "100002"},
+  {"parentID": "201002"}
   ]
 }
-PUT s40/person/psn003
+PUT s40/person/3003
 {
   "lastLocation": 
     
@@ -117,12 +117,12 @@ PUT s40/person/psn003
   "email": "flamingo@thewhitehouse.gov",
   "phone": "555-555-5557",
   "parentIDs": [
-  {"parentID": "prj01001"},
-  {"parentID": "grp00004"},
-  {"parentID": "grp02001"}
+  {"parentID": "101001"},
+  {"parentID": "200004"},
+  {"parentID": "202001"}
   ]
 }
-PUT s40/person/psn004
+PUT s40/person/3004
 {
   "lastLocation": 
     
@@ -137,12 +137,12 @@ PUT s40/person/psn004
   "email": "iKnowTheWayOut@thewhitehouse.gov",
   "phone": "555-555-5558",
   "parentIDs": [
-  {"parentID": "prj01001"},
-  {"parentID": "grp02001"},
-  {"parentID": "grp00004"}
+  {"parentID": "101001"},
+  {"parentID": "202001"},
+  {"parentID": "200004"}
   ]
 }
-PUT s40/person/psn010
+PUT s40/person/3010
 {
   "lastLocation": 
     
@@ -157,12 +157,12 @@ PUT s40/person/psn010
   "email": "jsmith@gmail.com",
   "phone": "555-555-5556",
   "parentIDs": [
-  {"parentID": "prj01010"},
-  {"parentID": "grp00010"}, 
-  {"parentID": "grp01010"}
+  {"parentID": "101010"},
+  {"parentID": "200010"}, 
+  {"parentID": "201010"}
   ]
 }
-PUT s40/person/psn011
+PUT s40/person/3011
 {
   "lastLocation": 
     
@@ -177,12 +177,12 @@ PUT s40/person/psn011
   "email": "jjones@gmail.com",
   "phone": "555-555-5557",
   "parentIDs": [
-  {"parentID": "prj01010"},
-  {"parentID": "grp00010"},
-  {"parentID": "grp01011"}
+  {"parentID": "101010"},
+  {"parentID": "200010"},
+  {"parentID": "201011"}
   ]
 }
-PUT s40/person/psn012
+PUT s40/person/3012
 {
   "lastLocation": 
     
@@ -197,11 +197,11 @@ PUT s40/person/psn012
   "email": "mevans@gmail.com",
   "phone": "555-555-5558",
   "parentIDs": [
-  {"parentID": "prj01010"},
-  {"parentID": "grp01010"}
+  {"parentID": "101010"},
+  {"parentID": "201010"}
   ]
 }
-PUT s40/person/psn013
+PUT s40/person/3013
 {
   "lastLocation": 
     
@@ -216,147 +216,210 @@ PUT s40/person/psn013
   "email": "ebrown@gmail.com",
   "phone": "555-555-5559",
   "parentIDs": [
-  {"parentID": "prj01010"},
-  {"parentID": "grp01011"}
+  {"parentID": "101010"},
+  {"parentID": "201011"}
   ]
 }
-PUT s40/group/grp00000
+PUT s40/group/200000
 {
   "name": "Normandy Crew",
   "projectIDs": [
-  {"projectID": "prj01000"}
+  {"projectID": "101000"}
   ]
 }
-PUT s40/group/grp01000
+PUT s40/group/201000
 {
   "name": "Spectres",
   "projectIDs": [
-  {"projectID": "prj01000"}
+  {"projectID": "101000"}
   ]
 }
-PUT s40/group/grp02001
+PUT s40/group/202001
 {
   "name": "White House Senior Staff",
   "projectIDs": [
-  {"projectID": "prj01001"}
+  {"projectID": "101001"}
   ]
 }
-PUT s40/group/grp00004
+PUT s40/group/200004
 {
   "name": "White House Senior Staff No Pres",
   "projectIDs": [
-  {"projectID": "prj01001"}
+  {"projectID": "101001"}
   ]
 }
-PUT s40/group/grp01002
+PUT s40/group/201002
 {
   "name": "Mars Inhabitants",
   "projectIDs": [
-  {"projectID": "prj00002"}
+  {"projectID": "100002"}
   ]
 }
-PUT s40/group/grp00010
+PUT s40/group/200010
 {
   "name": "Supervisors",
   "projectIDs": [
-  {"projectID": "prj01010"}
+  {"projectID": "101010"}
   ]
 }
-PUT s40/group/grp01010
+PUT s40/group/201010
 {
   "name": "Little Village Workers",
   "projectIDs": [
-  {"projectID": "prj01010"}
+  {"projectID": "101010"}
   ]
 }
-PUT s40/group/grp01011
+PUT s40/group/201011
 {
   "name": "HQ Workers",
   "projectIDs": [
-  {"projectID": "prj01010"}
+  {"projectID": "101010"}
   ]
 }
-PUT s40/location/lcn01000
+PUT s40/location/401000
 {
   "lat": "45.01",
   "lng": "57.34",
-  "name": "Normandy SR-2"
+  "name": "Normandy SR-2",
+  "parentIDs": [
+  {"projectID": "101000"}
+  ]
 }
-PUT s40/location/lcn02000
+PUT s40/location/402000
 {
   "lat": "38.9",
   "lng": "43.61",
-  "name": "The Citadel"
+  "name": "The Citadel",
+  "parentIDs": [
+  {"projectID": "101000"}
+  ]
 }
 
-PUT s40/location/lcn01001
+PUT s40/location/401001
 {
   "lat": "38.8977",
   "lng": "-77.0365",
-  "name": "The White House"
+  "name": "The White House",
+  "parentIDs": [
+  {"projectID": "101001"}
+  ]
 }
-PUT s40/location/lcn02001
+PUT s40/location/402001
 {
   "lat": "38.889803", 
   "lng": "-77.009114",
-  "name": "The U.S. Capitol"
+  "name": "The U.S. Capitol",,
+  "parentIDs": [
+  {"projectID": "101001"}
+  ]
 }
-PUT s40/location/lcn00002
+PUT s40/location/400002
 {
   "lat": "32.47", 
   "lng": "-27.9",
-  "name": "Mars"
+  "name": "Mars",
+  "parentIDs": [
+  {"projectID": "100002"}
+  ]
 }
-PUT s40/location/lcn01002
+PUT s40/location/401002
 {
   "lat": "29.6",
   "lng": "-9.1",
-  "name": "Mars-Earth route"
+  "name": "Mars-Earth route",
+  "parentIDs": [
+  {"projectID": "100002"}
+  ]
 }
-PUT s40/location/lcn00011
+PUT s40/location/400011
 {
   "lat": "5.55", 
   "lng": "-.2",
-  "name": "HQ"
+  "name": "HQ",
+  "parentIDs": [
+  {"projectID": "101010"}
+  ]
 }
-PUT s40/location/lcn00010
+PUT s40/location/400010
 {
   "lat": "6.55", 
   "lng": "-1.3",
-  "name": "Little Village"
+  "name": "Little Village",
+  "parentIDs": [
+  {"projectID": "101010"}
+  ]
 }
-PUT s40/note/not01000
+PUT s40/note/501000
 {
   "contents": "Commander Shepard is no longer allowed to drive the Mako. --The Crew",
   "lastModTime": "2183-05-17 14:32",
   "name": "Things the Commander is Not Allowed To Do",
-  "parentID": "grp00000"
+  "parentID": "200000"
 }
-PUT s40/note/not01002
+PUT s40/note/501002
 {
   "contents": "How come Aquaman can control whales? They're mammals! Makes no sense.",
   "lastModTime": "2025-03-17 14:32",
   "name": "Log Entry: Sol 61",
-  "parentID": "grp01002"
+  "parentID": "201002"
 }
 
-PUT s40/shipment/shp01002
+PUT s40/shipment/601002
 {
   "contents": "One MAV, one space pirate named Mark Watney",
-  "toLocationID": "lcn01002",
-  "fromLocationID": "lcn00002",
+  "toLocationID": "401002",
+  "fromLocationID": "400002",
   "name": "The Watneymobile",
-  "parentID": "grp01002",
+  "parentID": "201002",
   "pickupTime": "2026-01-04 21:56",
   "status": "En-route"
 }
-PUT s40/shipment/shp01000
+PUT s40/shipment/601000
 {
   "contents": "Something that someone else couldn't be bothered to get so they had Shepard do it",
-  "toLocationID": "lcn02000",
-  "fromLocationID": "lcn01000",
+  "toLocationID": "402000",
+  "fromLocationID": "401000",
   "name": "Yet another fetch quest",
-  "parentID": "grp00000",
+  "parentID": "200000",
   "pickupTime": "2185-10-12 04:08",
   "status": "En-route"
+}
+PUT s40/checklist/701000
+{
+  "name": "Shepard's to do list",
+  "parentID":"200000",
+  "checklistItems": [
+      {"checklistItemID": "7010001",
+      "isDone": false,
+      "personID": "3000",
+      "task": "Show people how you really feel",
+      "sublistItems": [
+        {
+          "sublistItemID": "70100011",
+          "task": "Tell the Council where to shove it.",
+          "isDone": false,
+          "personID": "3000"
+        },
+        {
+          "sublistItemID": "70100012",
+          "task": "Punch a reporter",
+          "isDone": true,
+          "personID": "3000"
+        },
+        {
+          "sublistItemID": "70100013",
+          "task": "Headbutt a reporter",
+          "isDone": false,
+          "personID": "3000"
+        },
+        {
+          "sublistItemID": "70100014",
+          "task": "Call a hanar a 'big stupid jellyfish'",
+          "isDone": true,
+          "personID": "3000"
+        }
+        ]
+      }
+    ]
+  
 }

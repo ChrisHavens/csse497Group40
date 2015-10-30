@@ -267,7 +267,7 @@ public class Group implements Serialisable {
         sb.append("\"projectIDs\": [");
 
 
-        String formatted = String.format("prj%05d", projectID);
+        String formatted = ""+projectID;
         sb.append("{\"projectID\": \"" + formatted + "\"}");
 
         sb.append("]");

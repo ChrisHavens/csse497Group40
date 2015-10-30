@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -33,6 +34,7 @@ import retrofit.client.Response;
 public class ProjectsListFragment extends AbstractListFragment<Project>{
     protected ProjectsListListener mListener;
     private ArrayList<Project> projects=new ArrayList<>();
+    ListArrayAdapter<Project> adapter;
     public ProjectsListFragment(){
 //        Project project=new Project(1);
 //        project.setName("Project 1");
@@ -45,8 +47,8 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
 
     @Override
     public ListArrayAdapter<Project> getAdapter() {
-        ListArrayAdapter<Project> adapter=new ListArrayAdapter<Project>(getActivity(),
-                android.R.layout.simple_list_item_1, getItems()){
+        adapter=new ListArrayAdapter<Project>(getActivity(),
+                android.R.layout.simple_list_item_1, projects){
 
             @Override
             public View customiseView(View v, Project project) {
@@ -69,6 +71,8 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        NonLocalDataService service=new NonLocalDataService();
+        service.getAllProjects(new ProjectListCallback());
     }
 
     @Override
@@ -79,7 +83,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
 
     @Override
     public String getTitle() {
-        return null;
+        return getResources().getString(R.string.projects);
     }
 
     @Override
@@ -91,8 +95,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
 
     }
     public List<Project> getItems(){
-        NonLocalDataService service=new NonLocalDataService();
-        service.getAllProjects(new ProjectListCallback());
+
         return projects;
     }
     public interface ProjectsListListener{
@@ -102,6 +105,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
 
         @Override
         public void success(Response response, Response response2) {
+            Log.wtf("SUCCESS", "PRJListCallbacks");
             ObjectMapper mapper=new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference=
                     new TypeReference<HashMap<String, Object>>() {
@@ -110,11 +114,13 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
                 HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map: list){
+                    Log.w("Found a project", map.toString());
                     HashMap<String, Object> source=(HashMap)map.get("_source");
 
-                    Project p=new Project(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Project p=new Project(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String)source.get("name"));
                    projects.add(p);
+                    adapter.notifyDataSetChanged();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

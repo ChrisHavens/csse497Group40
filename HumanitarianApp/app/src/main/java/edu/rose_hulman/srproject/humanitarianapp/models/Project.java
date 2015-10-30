@@ -245,12 +245,12 @@ public class Project implements Serialisable{
         StringBuilder sb=new StringBuilder();
         sb.append("\"groupIDs\": [");
         for (int i=0; i<groupIDs.size()-1; i++){
-            String formatted = String.format("grp%05d", groupIDs.get(i));
-            sb.append("{\"groupID\": \""+formatted+"\"},");
+//            String formatted = String.format("grp%05d", );
+            sb.append("{\"groupID\": \""+groupIDs.get(i)+"\"},");
         }
         if (groupIDs.size()>0){
-            String formatted = String.format("grp%05d",groupIDs.get(groupIDs.size()-1));
-            sb.append("{\"groupID\": \""+formatted+"\"}");
+//            String formatted = String.format("grp%05d",);
+            sb.append("{\"groupID\": \""+groupIDs.get(groupIDs.size()-1)+"\"}");
         }
         sb.append("]");
         return sb.toString();

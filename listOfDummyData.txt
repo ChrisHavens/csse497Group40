@@ -15,6 +15,12 @@ Location:
 	02001, (Capitol gov)
 	00002 (mars),
 	00010, 00011 (Ghana)
-	
+
+Proj:1
+Group:2
+User:3
+Location:4
+Note:5
+Shipment:6	
 
 	

@@ -354,7 +354,7 @@ private String getCurrentLocation(){
 
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putString("groupID", "grp"+g.getID());
+        b.putLong("groupID", g.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "ediGroup");
     }

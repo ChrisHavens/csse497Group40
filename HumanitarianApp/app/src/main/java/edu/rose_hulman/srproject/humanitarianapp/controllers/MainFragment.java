@@ -76,6 +76,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w("In MAINFRAGMENT", "");
 
     }
 
@@ -135,7 +136,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     @Override
     public void onProjectsButtonClicked() {
         Fragment fragment = new ProjectsListFragment();
-
+        Log.wtf("HERE", "HERE");
 
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();

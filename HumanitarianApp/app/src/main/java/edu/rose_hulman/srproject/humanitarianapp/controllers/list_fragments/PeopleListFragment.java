@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -100,7 +101,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
     @Override
     public String getTitle() {
-        return null;
+        return getResources().getString(R.string.people);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Person p=new Person(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Person p=new Person(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String) source.get("name"));
                     p.setEmail((String) source.get("email"));
                     p.setPhoneNumber((String) source.get("phone"));

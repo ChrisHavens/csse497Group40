@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HumanitarianApp.iml" filepath="$PROJECT_DIR$/HumanitarianApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/identitytoolkit-api11/identitytoolkit-api11.iml" filepath="$PROJECT_DIR$/identitytoolkit-api11/identitytoolkit-api11.iml" />
     </modules>
   </component>
 </project>

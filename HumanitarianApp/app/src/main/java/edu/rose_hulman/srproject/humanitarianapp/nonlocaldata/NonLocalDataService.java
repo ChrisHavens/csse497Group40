@@ -31,186 +31,187 @@ import retrofit.mime.TypedString;
  * Created by daveyle on 10/13/2015.
  */
 public class NonLocalDataService {
+
     RestAdapter adapter = new RestAdapter.Builder()
-            .setEndpoint("http://s40server.csse.rose-hulman.edu:9200")
+            .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
             .build();
-    Service service=adapter.create(Service.class);
+    WrapperService service=adapter.create(WrapperService.class);
+    /*
+    Add requests --Request to database server has body and is of type PUT!
+     */
+    private TypedInput getAddPayload(String type, String id, String json){
+        String uri=String.format("uri=s40/%s/%s",type, id);
+        String method="method=PUT";
+        String my_json="json="+json;
+        return new TypedJsonString(String.format("%s&%s&%s", uri, method,my_json));
+    }
     public void addNewPerson(Person person, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(person.toJSON());
-        service.add("person","psn"+person.getID(), typedInput, callback);
+        TypedInput typedInput=getAddPayload("person", "psn" + person.getID(), person.toJSON());
+        service.add(typedInput, callback);
     }
     public void addNewProject(Project project, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(project.toJSON());
-        service.add("project", "prj"+String.format("%05d", project.getID()), typedInput, callback);
+        TypedInput typedInput=getAddPayload("project", ""+project.getID(), project.toJSON());
+        service.add(typedInput, callback);
     }
     public void addNewGroup(Group group, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(group.toJSON());
-        service.add("group", "grp"+String.format("%05d", group.getID()), typedInput, callback);
+        TypedInput typedInput=getAddPayload("group", ""+group.getID(), group.toJSON());
+        service.add(typedInput, callback);
     }
     public void addNewLocation(Location location, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(location.toJSON());
-        service.add("location", "lcn"+String.format("%05d", location.getID()), typedInput, callback);
+        TypedInput typedInput=getAddPayload("location", "lcn"+String.format("%05d", location.getID()),location.toJSON());
+        service.add( typedInput, callback);
     }
     public void addNewNote(Note note, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(note.toJSON());
-        service.add("note", "not"+String.format("%05d", note.getID()), typedInput, callback);
+        TypedInput typedInput=getAddPayload("note", "not"+String.format("%05d", note.getID()),note.toJSON());
+        service.add( typedInput, callback);
     }
     public void addNewShipment(Shipment shipment, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(shipment.toJSON());
-        service.add("note", "shp"+String.format("%05d", shipment.getID()), typedInput, callback);
+        TypedInput typedInput=getAddPayload("note", "shp"+String.format("%05d", shipment.getID()),shipment.toJSON());
+        service.add( typedInput, callback);
     }
 
+    /*
+    Update requests --Request to database server has body and is of type POST!
+     */
+    private TypedInput getUpdatePayload(String type, String id, String json){
+        String uri=String.format("uri=s40/%s/%s/_update", type, id);
+        String method="method=POST";
+        String my_json="json="+json;
+        return new TypedJsonString(String.format("%s&%s&%s", uri, method,my_json));
+    }
     public void updateProject(double projectID, String json, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(json);
-        service.add("project", "prj"+String.format("%05d", projectID), typedInput, callback);
+        TypedInput typedInput=getAddPayload("project", "" + projectID, json);
+        service.add(typedInput, callback);
     }
     public void updatePerson(Person person, Callback<Response> callback){
-        TypedInput typedInput=new TypedString(person.toJSON());
-        service.update("person", "psn" + String.format("%03d", person.getID()), typedInput, callback);
+
+        TypedInput typedInput=getUpdatePayload("person", "psn" + String.format("%03d", person.getID()), person.toJSON());
+        service.update(typedInput, callback);
     }
     public void updateNote(double id, String title, String body, Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());
-        TypedInput typedInput=new TypedString(sb.toString());
-        service.update("note", "not"+String.format("%05d", id), typedInput, callback);
-    }
-    public void getAllProjects(Callback<Response> callback){
-        service.getAllProjects(callback);
+        TypedInput typedInput=getUpdatePayload("note", "not" + String.format("%05d", id), sb.toString());
+        service.update( typedInput, callback);
     }
 
+    /*
+    Search requests --Request to database server has body and is of type POST!
+     */
+    private TypedInput getSearchPayload(String type, String json){
+        String uri=String.format("uri=s40/%s/_search",type);
+        String method="method=POST";
+        if (json!=null && json!="") {
+            String my_json = "json=" + json;
+            String res=String.format("%s&%s&%s", uri, method, my_json);
+            Log.w("SearchPayload: ", res);
+            return new TypedJsonString(res);
+        }
+        else{
+            String res=String.format("%s&%s", uri, method);
+            Log.w("SearchPayload: ", res);
+            return new TypedJsonString(res);
+        }
+    }
+    public void getAllProjects(Callback<Response> callback){
+        TypedInput typedInput= getSearchPayload("project", null);
+
+
+        service.search(typedInput, callback);
+    }
     public void getAllGroups(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
-        sb.append(String.format("prj%05d", p.getID()));
+        sb.append(""+p.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllGroups(new TypedString(sb.toString()), callback);
-    }
 
+        service.search(getSearchPayload("group", sb.toString()), callback);
+    }
     public void getAllPeople(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(String.format("prj%05d", p.getID()));
+        sb.append(""+p.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllPeople(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("person", sb.toString()), callback);
 
     }
     public void getAllPeople(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(String.format("grp%05d", g.getID()));
+        sb.append(g.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllPeople(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("person", sb.toString()), callback);
 
     }
     public void getAllNotes(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(String.format("grp%05d", g.getID()));
+        sb.append(g.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllNotes(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("note", sb.toString()), callback);
 
     }
     public void getAllChecklists(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(String.format("grp%05d", g.getID()));
+        sb.append(g.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllChecklist(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("checklist", sb.toString()), callback);
 
     }
     public void getAllShipments(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(String.format("grp%05d", g.getID()));
+        sb.append(g.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllShipments(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("shipment", sb.toString()), callback);
 
     }
     public void getAllLocations(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
-        sb.append(String.format("prj%05d", p.getID()));
+        sb.append(""+p.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllLocations(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("location", sb.toString()), callback);
 
     }
     public void getAllLocations(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.groupID\": \"");
-        sb.append(String.format("grp%05d", g.getID()));
+        sb.append(g.getID());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
-        service.getAllLocations(new TypedString(sb.toString()), callback);
+        service.search(getSearchPayload("location", sb.toString()), callback);
 
+    }
+
+
+    /*
+    Get requests --Request to database server is bodyless and of type GET!
+     */
+    private TypedInput getGetPayload(String type, String id){
+        String uri=String.format("uri=s40/%s/%s",type, id);
+        String method="method=GET";
+        return new TypedJsonString(String.format("%s&%s", uri, method));
     }
     public void get(String type, String id, Callback<Response> callback){
-        service.get(type, id, callback);
+        service.get(getGetPayload(type, id), callback);
     }
+    public class TypedJsonString extends TypedString {
+        public TypedJsonString(String body) {
+            super(body);
+        }
 
-
-
-
-//    Retrofit retrofit=new Retrofit.Builder()
-//            .baseUrl("http://s40server.csse.rose-hulman.edu:9200/")
-//            .addConverterFactory(JacksonConverterFactory.create())
-//            .build();
-//    Service service=retrofit.create(Service.class);
-//    public void getAllProjects(){
-//        //String string="{\"fields\": [\"_id\"]}";
-//        Call<SearchResponse> proj=service.getProjects();
-//        proj.enqueue(new Callback<SearchResponse>() {
-//
-//            public void onResponse(Response<SearchResponse> response, Retrofit retrofit) {
-//                System.out.println(response.body().getHits().getHits()[0].getId());
-//            }
-//
-//
-//            public void onFailure(Throwable t) {
-//                System.out.println(t.getMessage());
-//            }
-//        });
-//
-//    }
-    public interface Service{
-        @PUT("/s40/{type}/{id}")
-        void add(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
-        @GET("/s40/{type}/{id}")
-        void get(@Path(value="type") String type, @Path(value = "id") String id, Callback<Response> callback);
-        @POST("/s40/{type}/{id}/_update")
-        void update(@Path(value="type") String type, @Path(value = "id") String id, @Body TypedInput body, Callback<Response> callback);
-
-
-
-        @GET("/s40/project/_search")
-        void getAllProjects(Callback<Response> callback);
-    @POST("/s40/group/_search")
-    void getAllGroups(@Body TypedInput body,  Callback<Response> callback);
-
-    @POST("/s40/person/_search")
-    void getAllPeople(@Body TypedInput body,  Callback<Response> callback);
-
-    @POST("/s40/note/_search")
-    void getAllNotes(@Body TypedInput body,  Callback<Response> callback);
-
-    @POST("/s40/checklist/_search")
-    void getAllChecklist(@Body TypedInput body,  Callback<Response> callback);
-
-    @POST("/s40/shipment/_search")
-    void getAllShipments(@Body TypedInput body,  Callback<Response> callback);
-
-    @POST("/s40/location/_search")
-    void getAllLocations(@Body TypedInput body,  Callback<Response> callback);
-
-
-
+        @Override public String mimeType() {
+            return "application/json";
+        }
     }
-
 }

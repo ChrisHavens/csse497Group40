@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
@@ -68,6 +70,42 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
                             item.setDone(isChecked);
                         }
                     });
+                    LinearLayout layout = (LinearLayout)v.findViewById(R.id.sublistView);
+                    for (final Checklist.SublistItem sublistItem: item.getSublistItems()) {
+                        View child = getActivity().getLayoutInflater().inflate(R.layout.list_subchecklist, null);
+                        CheckBox box2 = (CheckBox) child.findViewById(R.id.checkBox);
+                            box2.setText(sublistItem.getCheckBoxInfoString());
+                            box2.setChecked(sublistItem.isDone());
+                            box2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    sublistItem.setDone(isChecked);
+                                }
+                            });
+
+                        layout.addView(child);
+                    }
+//
+//                            AbsListView listView = (AbsListView) v.findViewById(R.id.sublistView);
+//                    ListArrayAdapter<Checklist.SublistItem> adapter=
+//                            new ListArrayAdapter<Checklist.SublistItem>(getActivity(),
+//                                    R.layout.list_subchecklist, item.getSublistItems()) {
+//                        @Override
+//                        public View customiseView(View v, final Checklist.SublistItem object) {
+//                            CheckBox box=(CheckBox)v.findViewById(R.id.checkBox);
+//                            box.setText(object.getCheckBoxInfoString());
+//                            box.setChecked(object.isDone());
+//                            box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                                @Override
+//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                                    object.setDone(isChecked);
+//                                }
+//                            });
+//                            return v;
+//                        }
+//                    };
+//                    Log.wtf("count", adapter.getCount()+"");
+//                    listView.setAdapter(adapter);
                     return v;
                 }
             };

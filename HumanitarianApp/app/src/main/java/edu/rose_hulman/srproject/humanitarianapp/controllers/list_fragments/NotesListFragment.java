@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -82,7 +83,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
 
     @Override
     public String getTitle() {
-        return null;
+        return getResources().getString(R.string.notes);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Note n=new Note(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Note n=new Note(Integer.parseInt(((String)map.get("_id"))));
                     n.setTitle((String) source.get("name"));
                     n.setBody((String) source.get("contents"));
                     n.setLastModified((String) source.get("lastModTime"));

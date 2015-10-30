@@ -30,6 +30,9 @@ public class Checklist {
     public Checklist(){
 
     }
+    public Checklist(long id){
+        this.id=id;
+    }
 
     public Checklist(String title) {
         this.title = title;
@@ -165,6 +168,7 @@ public class Checklist {
         private String item;
         private Person assigned;
         private boolean done;
+        private ArrayList<SublistItem> sublistItems=new ArrayList<>();
 
         public ChecklistItem(String item) {
             this(item, false, null);
@@ -179,6 +183,66 @@ public class Checklist {
         }
 
         public ChecklistItem(String item, boolean done, Person assigned) {
+            this.item = item;
+            this.done = done;
+            this.assigned = assigned;
+        }
+
+        public Person getAssigned() {
+            return assigned;
+        }
+
+        public void setAssigned(Person assigned) {
+            this.assigned = assigned;
+        }
+
+        public boolean isDone() {
+            return done;
+        }
+
+        public void setDone(boolean done) {
+            this.done = done;
+        }
+
+        public String getItem() {
+            return item;
+        }
+
+        public void setItem(String item) {
+            this.item = item;
+        }
+        public void addNewSublistItem(SublistItem sublistItem){
+            this.sublistItems.add(sublistItem);
+        }
+        public ArrayList<SublistItem> getSublistItems(){
+            return sublistItems;
+        }
+        public String getCheckBoxInfoString(){
+            if (getAssigned()==null){
+                return getItem();
+            }
+            return getItem()+" ("+getAssigned().getName()+")";
+
+        }
+    }
+    public static class SublistItem{
+        private String item;
+        private Person assigned;
+        private boolean done;
+
+        public SublistItem(String item) {
+            this(item, false, null);
+        }
+
+        public SublistItem(String item, boolean done) {
+            this(item, done, null);
+        }
+
+        public SublistItem(String item, Person assigned) {
+            this(item, false, assigned);
+        }
+
+        public SublistItem(String item, boolean done, Person assigned) {
             this.item = item;
             this.done = done;
             this.assigned = assigned;

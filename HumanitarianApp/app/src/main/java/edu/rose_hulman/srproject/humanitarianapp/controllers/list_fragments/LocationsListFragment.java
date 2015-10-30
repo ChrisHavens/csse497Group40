@@ -113,7 +113,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Location l=new Location(Integer.parseInt(((String)map.get("_id")).substring(3)));
+                    Location l=new Location(Integer.parseInt(((String)map.get("_id"))));
                     l.setName((String) source.get("name"));
                     l.setLat(Float.parseFloat((String) source.get("lat")));
                     l.setLng(Float.parseFloat((String) source.get("lng")));

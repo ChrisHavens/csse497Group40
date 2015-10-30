@@ -258,24 +258,24 @@ public class Person implements Serializable {
 
 
         for (int i=0; i<projectIDs.size()-1; i++){
-            String formatted = String.format("prj%05d", projectIDs.get(i));
-            sb.append("{\"parentID\": \""+formatted+"\"},");
+
+            sb.append("{\"parentID\": \""+projectIDs.get(i)+"\"},");
         }
         if (projectIDs.size()>0){
-            long proj=projectIDs.get(projectIDs.size()-1);
-            String formatted = String.format("prj%05d", proj);
-            sb.append("{\"parentID\": \""+formatted+"\"}");
+            long proj=projectIDs.get(projectIDs.size() - 1);
+            //String formatted = String.format("prj%05d", proj);
+            sb.append("{\"parentID\": \""+proj+"\"}");
             if (groupIDs.size()>0){
                 sb.append(",");
             }
         }
         for (int i=0; i<groupIDs.size()-1; i++){
-            String formatted = String.format("grp%05d", groupIDs.get(i));
-            sb.append("{\"parentID\": \""+formatted+"\"},");
+            //String formatted = String.format("grp%05d", );
+            sb.append("{\"parentID\": \""+groupIDs.get(i)+"\"},");
         }
         if (groupIDs.size()>0){
-            String formatted = String.format("grp%05d",groupIDs.get(groupIDs.size()-1));
-            sb.append("{\"parentID\": \""+formatted+"\"}");
+            //String formatted = String.format("grp%05d",);
+            sb.append("{\"parentID\": \""+groupIDs.get(groupIDs.size()-1)+"\"}");
         }
         sb.append("]");
         return sb.toString();

@@ -22,9 +22,23 @@
                 android:layout_height="wrap_content" android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress" android:maxLines="1"
                 android:singleLine="true" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/prompt_name"
+                android:ems="10"
+                android:id="@+id/nameField"
+                android:layout_gravity="center_horizontal" />
 
             <EditText android:id="@+id/password" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified" android:inputType="textPassword"
+                android:maxLines="1" android:singleLine="true" />
+            <EditText android:id="@+id/passwordConfirm" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/confirm_password"
                 android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified" android:inputType="textPassword"
@@ -34,6 +48,8 @@
 
         </LinearLayout>
     </ScrollView>
+
+
 
 </LinearLayout>
 

@@ -17,7 +17,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.Loca
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.NoteFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ProjectFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ShipmentFragment;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.WorkerFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.PersonFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ChecklistsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.GroupsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.LocationsListFragment;
@@ -48,7 +48,7 @@ import retrofit.client.Response;
 public class MainFragment extends Fragment implements TabSwitchListener,
         ProjectsListFragment.ProjectsListListener, ProjectFragment.ProjectFragmentListener,
         PeopleListFragment.PeopleListListener, GroupsListFragment.GroupsListListener,
-        WorkerFragment.WorkerFragmentListener, GroupFragment.OnFragmentInteractionListener,
+        PersonFragment.WorkerFragmentListener, GroupFragment.OnFragmentInteractionListener,
         ChecklistsListFragment.ChecklistsListListener,
         NotesListFragment.NotesListListener,  ShipmentsListFragment.ShipmentsListListener,
         ShipmentFragment.ShipmentFragmentListener,
@@ -304,7 +304,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     @Override
     public void onItemSelected(Person t) {
         selectedPerson =t;
-        Fragment fragment = new WorkerFragment();
+        Fragment fragment = new PersonFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
@@ -407,7 +407,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
             mListener.addGroup(selectedProject);
         }
         else if (f instanceof ChecklistsListFragment){
-            mListener.addChecklist();
+            mListener.addChecklist(selectedGroup);
         }
         else if (f instanceof LocationsListFragment){
             mListener.addLocation();
@@ -430,25 +430,25 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment f=getChildFragmentManager().findFragmentById(R.id.tabContentContainer);
 
         if (f instanceof ProjectFragment){
-            mListener.editProject(selectedProject);
+            mListener.showEditProject(selectedProject);
         }
         else if (f instanceof GroupFragment){
-            mListener.editGroup(selectedGroup);
+            mListener.showEditGroup(selectedGroup);
         }
         else if (f instanceof ChecklistFragment){
-            mListener.editChecklist(selectedChecklist);
+            mListener.showEditChecklist(selectedChecklist);
         }
         else if (f instanceof LocationFragment){
-            mListener.editLocation(selectedLocation);
+            mListener.showEditLocation(selectedLocation);
         }
         else if (f instanceof NoteFragment){
-            mListener.editNote(selectedNote);
+            mListener.showEditNote(selectedNote);
         }
-        else if (f instanceof PeopleListFragment){
-            mListener.editPerson(selectedPerson);
+        else if (f instanceof PersonFragment){
+            mListener.showEditPerson(selectedPerson);
         }
         else if (f instanceof ShipmentFragment){
-            mListener.editShipment(selectedShipment);
+            mListener.showEditShipment(selectedShipment);
         }
 
     }
@@ -462,19 +462,19 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         //will probably need additional parameters added
         void addProject();
         void addGroup(Project project);
-        void addChecklist();
+        void addChecklist(Group g);
         void addLocation();
         void addNote();
         void addPerson();
         void addShipment();
         
-        void editProject(Project p);
-        void editGroup(Group g);
-        void editChecklist(Checklist c);
-        void editLocation(Location l);
-        void editNote(Note n);
-        void editPerson(Person p);
-        void editShipment(Shipment s);
+        void showEditProject(Project p);
+        void showEditGroup(Group g);
+        void showEditChecklist(Checklist c);
+        void showEditLocation(Location l);
+        void showEditNote(Note n);
+        void showEditPerson(Person p);
+        void showEditShipment(Shipment s);
         
         
     }

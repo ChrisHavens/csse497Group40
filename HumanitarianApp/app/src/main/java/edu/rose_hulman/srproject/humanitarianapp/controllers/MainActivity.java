@@ -53,10 +53,19 @@ public class MainActivity extends Activity implements TabSwitchListener,
         AddPersonDialogFragment.AddPersonListener, MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
-        EditPersonDialogFragment.EditPersonListener,
-        AddLocationDialogFragment.AddLocationListener, EditGroupDialogFragment.AddGroupListener{
+        AddChecklistDialogFragment.AddChecklistListener,
+        //EditPersonDialogFragment.EditPersonListener,
+        AddLocationDialogFragment.AddLocationListener,
+        EditChecklistDialogFragment.EditChecklistListener
+
+        //,
+        //EditProjectDialogFragment.EditProjectListener,
+        //EditGroupDialogFragment.AddGroupListener
+        {
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
     NonLocalDataService service=new NonLocalDataService();
+            private Checklist checklist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,30 +207,31 @@ private String getCurrentLocation(){
     }
 
 
-    @Override
-    public void editPerson(final String name, String phone, String email, Roles.PersonRoles role, int personID){
-        Person person = Person.getWorkerByID(personID);
-        person.setName(name);
-        person.setPhoneNumber(phone);
-        person.setEmail(email);
-        person.setRole(role);
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful editing of new person: "+name, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.updatePerson(person, responseCallback);
-    }
+//    @Override
+//    public void editPerson(final String name, String phone, String email, Roles.PersonRoles role, long personID){
+//        Person person = Person.getWorkerByID(personID);
+//        person.setName(name);
+//        person.setPhoneNumber(phone);
+//        person.setEmail(email);
+//        person.setRole(role);
+//        Callback<Response> responseCallback=new Callback<Response>() {
+//            @Override
+//            public void success(Response response, Response response2) {
+//                Toast.makeText(getApplicationContext(), "Successful editing of new person: "+name, Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.e("RetrofitError", error.getMessage());
+//            }
+//        };
+//        service.updatePerson(person, responseCallback);
+//    }
     @Override
     public void addProject(final String name) {
         Random rand=new Random();
-        long i= rand.nextInt(900)+100;
+        long i= rand.nextInt(90000)+10000;
+        i+=100000;
         Project p= new Project(name, i);
 
         Callback<Response> responseCallback=new Callback<Response>() {
@@ -241,7 +251,8 @@ private String getCurrentLocation(){
     @Override
     public void addGroup(final String name) {
         Random rand=new Random();
-        int i= rand.nextInt(900)+100;
+        long i= rand.nextInt(90000)+10000;
+        i+=200000;
         MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
         Project project=f.getSelectedProject();
         Group g= new Group(i);
@@ -283,7 +294,8 @@ private String getCurrentLocation(){
     @Override
     public void addLocation(final String name, String lat, String lng) {
         Random rand=new Random();
-        int i= rand.nextInt(900)+100;
+        long i= rand.nextInt(90000)+10000;
+        i+=400000;
         MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
         Project project=f.getSelectedProject();
         Location l=new Location(name);
@@ -318,8 +330,12 @@ private String getCurrentLocation(){
     }
 
     @Override
-    public void addChecklist() {
-
+    public void addChecklist(Group g) {
+        DialogFragment newFragment = new AddChecklistDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("parentID", g.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "addChecklist");
     }
 
     @Override
@@ -345,45 +361,90 @@ private String getCurrentLocation(){
     }
 
     @Override
-    public void editProject(Project p) {
-
+    public void showEditProject(Project p) {
+        Log.wtf("ProjectID", p.getID()+"");
+        DialogFragment newFragment = new EditProjectDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("projectID", p.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "editProject");
     }
 
     @Override
-    public void editGroup(Group g) {
-
+    public void showEditGroup(Group g) {
+        Log.wtf("GroupID", g.getID()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
         b.putLong("groupID", g.getID());
         newFragment.setArguments(b);
-        newFragment.show(getFragmentManager(), "ediGroup");
+        newFragment.show(getFragmentManager(), "editGroup");
     }
 
     @Override
-    public void editChecklist(Checklist c) {
-
+    public void showEditChecklist(Checklist c) {
+        checklist=c;
+        Log.wtf("ChecklistID", c.getID()+"");
+        DialogFragment newFragment = new EditChecklistDialogFragment();
+//        Bundle b=new Bundle();
+//        b.putLong("checklistID", c.getID());
+//        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "editChecklist");
     }
 
     @Override
-    public void editLocation(edu.rose_hulman.srproject.humanitarianapp.models.Location l) {
-
-    }
-
-    @Override
-    public void editNote(Note n) {
-
-    }
-
-    @Override
-    public void editPerson(Person p) {
+    public void showEditLocation(edu.rose_hulman.srproject.humanitarianapp.models.Location l) {
 
     }
 
     @Override
-    public void editShipment(Shipment s) {
+    public void showEditNote(Note n) {
+
+    }
+
+    @Override
+    public void showEditPerson(Person p) {
+        Log.wtf("PersonID", p.getID()+"");
+        DialogFragment newFragment = new EditPersonDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("personID", p.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "editPerson");
+    }
+
+    @Override
+    public void showEditShipment(Shipment s) {
+
+    }
+    public void editProject(Project p){
 
     }
 
 
+            @Override
+            public void addChecklist(final Checklist checklist) {
+                Random rand=new Random();
+                long i= rand.nextInt(90000)+10000;
+                i+=700000;
+                checklist.setID(i);
+                checklist.setItemIDs();
 
-}
+                Callback<Response> responseCallback=new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Toast.makeText(getApplicationContext(), "Successful adding of new checklist: "+checklist.getTitle(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("RetrofitError", error.getMessage());
+                    }
+                };
+
+                service.addNewChecklist(checklist, responseCallback);
+            }
+
+            @Override
+            public Checklist getChecklist() {
+                return checklist;
+            }
+        }

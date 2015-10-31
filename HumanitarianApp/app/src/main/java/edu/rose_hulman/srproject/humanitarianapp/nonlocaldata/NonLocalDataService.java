@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
@@ -43,10 +44,12 @@ public class NonLocalDataService {
         String uri=String.format("uri=s40/%s/%s",type, id);
         String method="method=PUT";
         String my_json="json="+json;
-        return new TypedJsonString(String.format("%s&%s&%s", uri, method,my_json));
+        String res=String.format("%s&%s&%s", uri, method, my_json);
+        Log.w("SearchPayload: ", res);
+        return new TypedJsonString(res);
     }
     public void addNewPerson(Person person, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("person", "psn" + person.getID(), person.toJSON());
+        TypedInput typedInput=getAddPayload("person", "" + person.getID(), person.toJSON());
         service.add(typedInput, callback);
     }
     public void addNewProject(Project project, Callback<Response> callback){
@@ -58,15 +61,19 @@ public class NonLocalDataService {
         service.add(typedInput, callback);
     }
     public void addNewLocation(Location location, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("location", "lcn"+String.format("%05d", location.getID()),location.toJSON());
+        TypedInput typedInput=getAddPayload("location", ""+location.getID(),location.toJSON());
         service.add( typedInput, callback);
     }
     public void addNewNote(Note note, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("note", "not"+String.format("%05d", note.getID()),note.toJSON());
+        TypedInput typedInput=getAddPayload("note", ""+note.getID(),note.toJSON());
         service.add( typedInput, callback);
     }
     public void addNewShipment(Shipment shipment, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("note", "shp"+String.format("%05d", shipment.getID()),shipment.toJSON());
+        TypedInput typedInput=getAddPayload("shipment", ""+shipment.getID(),shipment.toJSON());
+        service.add( typedInput, callback);
+    }
+    public void addNewChecklist(Checklist checklist, Callback<Response> callback){
+        TypedInput typedInput=getAddPayload("checklist", "" + checklist.getID(), checklist.toJSON());
         service.add( typedInput, callback);
     }
 
@@ -79,20 +86,25 @@ public class NonLocalDataService {
         String my_json="json="+json;
         return new TypedJsonString(String.format("%s&%s&%s", uri, method,my_json));
     }
-    public void updateProject(double projectID, String json, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("project", "" + projectID, json);
+    public void updateProject(long projectID, String json, Callback<Response> callback){
+        TypedInput typedInput=getUpdatePayload("project", "" + projectID, json);
         service.add(typedInput, callback);
     }
-    public void updatePerson(Person person, Callback<Response> callback){
+    public void updateGroup(long groupID, String json, Callback<Response> callback){
+        TypedInput typedInput=getUpdatePayload("group", "" + groupID, json);
+        service.add(typedInput, callback);
+    }
 
-        TypedInput typedInput=getUpdatePayload("person", "psn" + String.format("%03d", person.getID()), person.toJSON());
+    public void updatePerson(long personId, String json, Callback<Response> callback){
+
+        TypedInput typedInput=getUpdatePayload("person", personId+"", json);
         service.update(typedInput, callback);
     }
     public void updateNote(double id, String title, String body, Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());
-        TypedInput typedInput=getUpdatePayload("note", "not" + String.format("%05d", id), sb.toString());
+        TypedInput typedInput=getUpdatePayload("note", id+"", sb.toString());
         service.update( typedInput, callback);
     }
 

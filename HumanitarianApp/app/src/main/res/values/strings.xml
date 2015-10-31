@@ -40,6 +40,11 @@
     <string name="addProject">Add a new Project:</string>
     <string name="addGroup">Add a new Group:</string>
     <string name="addLocation">Add a new Location:</string>
+    <string name="addChecklist">Add a new Checklist:</string>
+    <string name="addNewChecklistItem">Add Item</string>
+    <string name="addNewSublistItem">Add Subitem</string>
+    <string name="item">Item</string>
+    <string name="subitem">Subitem</string>
     <string name="profile_picture_desc">Profile picture</string>
     <string name="welcome">Welcome to Gitkit Demo</string>
     <string name="sign_in_label">Sign in</string>

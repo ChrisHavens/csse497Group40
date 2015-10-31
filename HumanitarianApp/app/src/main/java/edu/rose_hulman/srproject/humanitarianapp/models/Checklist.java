@@ -10,6 +10,7 @@ import java.util.List;
 public class Checklist {
     private long id;
     private String title;
+    private long parentID;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
 
     /**
@@ -143,7 +144,100 @@ public class Checklist {
     }
 
      */
+    public String toJSON(){
+        /*
+        {
+  "name": "Shepard's to do list",
+  "parentID":"200000",
+  "checklistItems": [
 
+    ]
+
+}
+         */
+        StringBuilder sb=new StringBuilder();
+        sb.append("{\"name\": \""+getTitle()+"\",");
+        sb.append("\"parentID\": \""+parentID+"\",");
+        sb.append("\"checklistItems\": [");
+        sb.append(getChecklistItemsJSON());
+        sb.append("]}");
+        return sb.toString();
+    }
+    private String getChecklistItemsJSON(){
+        /*
+        {"checklistItemID": "7010001",
+      "isDone": false,
+      "personID": "3000",
+      "task": "Show people how you really feel",
+      "sublistItems": [
+
+        ]
+      }
+         */
+        StringBuilder sb= new StringBuilder();
+        for (int i=0; i<getItemList().size()-1; i++){
+            ChecklistItem item=getItemList().get(i);
+            sb.append("{\"checklistItemID\": \""+item.itemID+"\",");
+            if (item.getAssigned()!=null) {
+
+                sb.append("\"personID\": \"" + item.getAssigned().getID()+"\",");
+            }
+            sb.append("\"isDone\": "+item.isDone()+",");
+            sb.append("\"task\": \""+item.getItem()+"\",");
+            sb.append("\"sublistItems\": [");
+            sb.append(getSublistItemsJSON(item));
+            sb.append("]},");
+        }
+        if (getItemList().size()>0){
+            ChecklistItem item=getItemList().get(getItemList().size()-1);
+            sb.append("{\"checklistItemID\": \""+item.itemID+"\",");
+            if (item.getAssigned()!=null) {
+
+                sb.append("\"personID\": \"" + item.getAssigned().getID()+"\",");
+            }
+            sb.append("\"isDone\": "+item.isDone()+",");
+            sb.append("\"task\": \""+item.getItem()+"\",");
+            sb.append("\"sublistItems\": [");
+            sb.append(getSublistItemsJSON(item));
+            sb.append("]}");
+        }
+        return sb.toString();
+
+    }
+    private String getSublistItemsJSON(ChecklistItem item){
+        /*
+        {
+          "sublistItemID": "70100011",
+          "task": "Tell the Council where to shove it.",
+          "isDone": false,
+          "personID": "3000"
+        }
+         */
+        StringBuilder sb= new StringBuilder();
+        for (int i=0; i<item.getSublistItems().size()-1; i++){
+            SublistItem sublistItem=item.getSublistItems().get(i);
+            sb.append("{\"sublistItemID\": \""+sublistItem.itemID+"\",");
+            if (sublistItem.getAssigned()!=null) {
+
+                sb.append("\"personID\": \"" + sublistItem.getAssigned().getID()+"\",");
+            }
+            sb.append("\"isDone\": "+sublistItem.isDone()+",");
+            sb.append("\"task\": \""+sublistItem.getItem()+"\"");
+            sb.append("},");
+        }
+        if (item.getSublistItems().size()>0){
+            SublistItem sublistItem=item.getSublistItems().get(item.getSublistItems().size()-1);
+            sb.append("{\"sublistItemID\": \""+sublistItem.itemID+"\",");
+            if (sublistItem.getAssigned()!=null) {
+
+                sb.append("\"personID\": \"" + sublistItem.getAssigned().getID()+"\",");
+            }
+            sb.append("\"isDone\": "+sublistItem.isDone()+",");
+            sb.append("\"task\": \""+sublistItem.getItem()+"\"");
+            sb.append("}");
+        }
+        return sb.toString();
+    }
     public List<ChecklistItem> getItemList() {
         return itemList;
     }
@@ -164,11 +258,48 @@ public class Checklist {
         this.itemList.add(item);
     }
 
+    public long getParentID() {
+        return parentID;
+    }
+
+    public void setParentID(long parentID) {
+        this.parentID = parentID;
+    }
+
+    public long getID() {
+        return id;
+    }
+
+    public void setID(long id) {
+        this.id = id;
+    }
+    public void setItemIDs(){
+        long base=this.id*100;
+        for (int i=0; i<itemList.size(); i++){
+            long base2=(base+i)*100;
+            ChecklistItem item=itemList.get(i);
+            item.setItemID(base+i);
+            for (int j=0; j<item.getSublistItems().size(); j++){
+                SublistItem sublistItem=item.getSublistItems().get(j);
+                sublistItem.setItemID(base2+j);
+            }
+
+        }
+    }
+
     public static class ChecklistItem{
+        private long itemID;
         private String item;
         private Person assigned;
         private boolean done;
         private ArrayList<SublistItem> sublistItems=new ArrayList<>();
+
+        public ChecklistItem(){
+
+        }
+        public ChecklistItem(long itemID){
+            this.itemID=itemID;
+        }
 
         public ChecklistItem(String item) {
             this(item, false, null);
@@ -224,12 +355,29 @@ public class Checklist {
             return getItem()+" ("+getAssigned().getName()+")";
 
         }
+
+        public long getItemID() {
+            return itemID;
+        }
+
+        public void setItemID(long itemID) {
+            this.itemID = itemID;
+        }
     }
     public static class SublistItem{
         private String item;
         private Person assigned;
+
+
+
+        private long itemID;
         private boolean done;
 
+        public SublistItem(){}
+
+        public SublistItem(long id){
+            this.itemID=id;
+        }
         public SublistItem(String item) {
             this(item, false, null);
         }
@@ -277,6 +425,13 @@ public class Checklist {
             }
             return getItem()+" ("+getAssigned().getName()+")";
 
+        }
+        public long getItemID() {
+            return itemID;
+        }
+
+        public void setItemID(long itemID) {
+            this.itemID = itemID;
         }
     }
 }

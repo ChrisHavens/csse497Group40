@@ -12,5 +12,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/sublistView"
         android:orientation="vertical"
-        android:layout_marginLeft="10dp"></LinearLayout>
+        android:layout_marginLeft="30dp"></LinearLayout>
 </LinearLayout>

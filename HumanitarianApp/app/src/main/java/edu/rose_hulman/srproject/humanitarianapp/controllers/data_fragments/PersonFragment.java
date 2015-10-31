@@ -17,17 +17,17 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WorkerFragment.WorkerFragmentListener} interface
+ * {@link PersonFragment.WorkerFragmentListener} interface
  * to handle interaction events.
  *
  */
-public class WorkerFragment extends Fragment {
+public class PersonFragment extends Fragment {
 
     private WorkerFragmentListener mListener;
 
 
 
-    public WorkerFragment() {
+    public PersonFragment() {
         // Required empty public constructor
     }
 

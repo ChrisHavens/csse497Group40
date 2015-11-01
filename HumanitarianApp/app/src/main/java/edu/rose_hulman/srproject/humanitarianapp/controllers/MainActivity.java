@@ -320,7 +320,8 @@ private String getCurrentLocation(){
 
     @Override
     public void addProject() {
-
+        DialogFragment newFragment = new AddProjectDialogFragment();
+        newFragment.show(getFragmentManager(), "addProject");
     }
 
     @Override
@@ -351,8 +352,8 @@ private String getCurrentLocation(){
 
     @Override
     public void addPerson() {
-        DialogFragment newFragment = new AddProjectDialogFragment();
-        newFragment.show(getFragmentManager(), "addProject");
+        DialogFragment newFragment = new AddPersonDialogFragment();
+        newFragment.show(getFragmentManager(), "addPerson");
     }
 
     @Override

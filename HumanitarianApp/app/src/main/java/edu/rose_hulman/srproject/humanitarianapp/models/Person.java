@@ -8,38 +8,36 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
  * Created by daveyle on 9/21/2015.
  */
 public class Person implements Serializable {
-    private String name;
-    private String phoneNumber;
-    private String email;
-    private Roles.PersonRoles role;
-    private PersonLocation lastCheckin;
-    private Date lastCheckinTime;
-    private List<Long> groupIDs =  new ArrayList<Long>();
-    private List<Long> projectIDs =  new ArrayList<Long>();
-    private List<Location> locations =  new ArrayList<Location>();
-    private long ID;
+//    private String name;
+//    private String phoneNumber;
+//    private String email;
+//    private Roles.PersonRoles role;
+//    private PersonLocation lastCheckin;
+//    private Date lastCheckinTime;
+//    private List<Long> groupIDs =  new ArrayList<Long>();
+//    private List<Long> projectIDs =  new ArrayList<Long>();
+//    private List<Location> locations =  new ArrayList<Location>();
+//    private long ID;
+//
+//    //Maybe pull these off into a list of global values?
+//    //Yes, established elsewhere, but not used yet.
+//    private static List<Person> knownPersons = new ArrayList<Person>();
+//    private static long newWorkerCount = (new Random()).nextInt(900)+100;
+//    private static List<Person> localIDPersons = new ArrayList<Person>();
 
-    //Maybe pull these off into a list of global values?
-    //Yes, established elsewhere, but not used yet.
-    private static List<Person> knownPersons = new ArrayList<Person>();
-    private static long newWorkerCount = (new Random()).nextInt(900)+100;
-    private static List<Person> localIDPersons = new ArrayList<Person>();
-
-    /*
-     * All of the variables post refactoring. Also, the order is important and based off type NOT
-     * what logically belongs where.
 
      // A flag for each field denoting if it needs to be updated on the server.
      // This will need to be initulized in the constructors.
      private boolean[] isDirty = new boolean[10];
      //A flag for if the object was synced from the server or created locally
-     private boolean[] onServer = false;
+     private boolean onServer = false;
 
      private long ID;
      private Date lastCheckinTime;
@@ -52,9 +50,6 @@ public class Person implements Serializable {
      private List<Long> groupIDs =  new ArrayList<Long>();
      private List<Long> projectIDs =  new ArrayList<Long>();
      private List<Location> locations =  new ArrayList<Location>();
-
-     */
-
 
      public Person() {
         this.setUpID();
@@ -81,7 +76,7 @@ public class Person implements Serializable {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.ID = ID;
-        knownPersons.add(this);
+        ApplicationWideData.addExistingPerson(this);
     }
 
     public Person(String name, String phoneNumber, String email, long ID) {
@@ -89,7 +84,7 @@ public class Person implements Serializable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.ID = ID;
-        knownPersons.add(this);
+        ApplicationWideData.addExistingPerson(this);
     }
 
     private void setUpID(){
@@ -97,8 +92,7 @@ public class Person implements Serializable {
         int localIDNum = rand.nextInt();
         //TODO: Add the user ID to the id as well
         this.ID = ((long) localIDNum) | SerilizationConstants.PERSON_NUM;
-        knownPersons.add(this);
-        localIDPersons.add(this);
+        ApplicationWideData.addNewPerson(this);
     }
 
     public static Person createFullWorker(String name, String phoneNumber, Location initialAssignment, Project initialProject, Group initialGroup) {
@@ -178,7 +172,6 @@ public class Person implements Serializable {
     public void updateID(long newID) {
         long oldID = this.ID;
         this.ID = newID;
-        localIDPersons.remove(this);
         for (Group group : Group.getKnownGroups()) {
             group.updateWorkerID(oldID, newID);
         }
@@ -187,13 +180,8 @@ public class Person implements Serializable {
         }
     }
 
-    public static Person getWorkerByID(long ID) {
-        for (Person person : knownPersons){
-            if (person.ID == ID){
-                return person;
-            }
-        }
-        return null;
+    public static Person getWorkerByID(long id) {
+        return ApplicationWideData.getPersonByID(id);
     }
 
     public void updateGroupIDs(long oldID, long newID){
@@ -225,7 +213,7 @@ public class Person implements Serializable {
     }
 
     public static List<Person> getKnownPersons() {
-        return knownPersons;
+        return ApplicationWideData.getAllPersons();
     }
 
     /*

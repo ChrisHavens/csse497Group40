@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
@@ -11,31 +12,28 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
  * Created by Chris Havens on 10/4/2015.
  */
 public class Group implements Serialisable {
-    private long ID;
-    private long projectID;
-    private String name;
-    private List<Long> workerIDs;
-    private Person leader;
-    private String description;
-    private List<Note> notes = new ArrayList<>();
-    private List<Checklist> checklists = new ArrayList<>();
-    private List<Shipment> shipments = new ArrayList<>();
+//    private long ID;
+//    private long projectID;
+//    private String name;
+//    private List<Long> workerIDs;
+//    private Person leader;
+//    private String description;
+//    private List<Note> notes = new ArrayList<>();
+//    private List<Checklist> checklists = new ArrayList<>();
+//    private List<Shipment> shipments = new ArrayList<>();
+//
+//    //Maybe pull these off into a list of global values?
+//    //Yes, established elsewhere, but not used yet.
+//    private static List<Group> knownGroups = new ArrayList<Group>();
+//    private static long newGroupCount = 1;
+//    private static List<Group> localIDGroups = new ArrayList<Group>();
 
-    //Maybe pull these off into a list of global values?
-    //Yes, established elsewhere, but not used yet.
-    private static List<Group> knownGroups = new ArrayList<Group>();
-    private static long newGroupCount = 1;
-    private static List<Group> localIDGroups = new ArrayList<Group>();
-
-    /*
-     * All of the variables post refactoring. Also, the order is important and based off type NOT
-     * what logically belongs where.
 
      // A flag for each field denoting if it needs to be updated on the server.
      // This will need to be initulized in the constructors.
      private boolean[] isDirty = new boolean[9];
      //A flag for if the object was synced from the server or created locally
-     private boolean[] onServer = false;
+     private boolean onServer = false;
 
      private long ID;
      private long projectID;
@@ -46,7 +44,7 @@ public class Group implements Serialisable {
      private List<Note> notes = new ArrayList<>();
      private List<Checklist> checklists = new ArrayList<>();
      private List<Shipment> shipments = new ArrayList<>();
-     */
+
 
 
     public Group() {
@@ -55,7 +53,7 @@ public class Group implements Serialisable {
 
     public Group(long ID) {
         this.ID = ID;
-        knownGroups.add(this);
+        ApplicationWideData.addExistingGroup(this);
     }
 
     public Group(String name) {
@@ -66,7 +64,7 @@ public class Group implements Serialisable {
     public Group(String name, long ID) {
         this.name = name;
         this.ID = ID;
-        knownGroups.add(this);
+        ApplicationWideData.addExistingGroup(this);
     }
 
     public static Group createFullGroup(String name, String description, Project project) {
@@ -86,21 +84,18 @@ public class Group implements Serialisable {
         this.setUpID();
     }
 
-    /*
     public Group(String name, Project project, List<Long> workerIDs) {
         this.name = name;
         this.workerIDs = workerIDs;
         this.projectID = project.getID();
         this.setUpID();
     }
-    */
     private void setUpID() {
         Random rand = new Random();
         int localIDNum = rand.nextInt();
         //TODO: Add the user ID to the id as well
-        this.ID = ((long) localIDNum) | SerilizationConstants.GROUP_NUM;
-        knownGroups.add(this);
-        localIDGroups.add(this);
+        this.ID = SerilizationConstants.generateID(SerilizationConstants.GROUP_NUM);
+        ApplicationWideData.addNewGroup(this);
     }
 
     @Override
@@ -220,7 +215,6 @@ public class Group implements Serialisable {
     public void updateID(long newID) {
         long oldID = this.ID;
         this.ID = newID;
-        localIDGroups.remove(this);
         for (Person person : Person.getKnownPersons()) {
             person.updateGroupIDs(oldID, newID);
         }
@@ -243,14 +237,14 @@ public class Group implements Serialisable {
         }
     }
 
+    /**
+     * This should be replaced with a call to the ApplicationWideData class, but leaving for now.
+     * @param id
+     * @return group with that id
+     */
 
-    public static Group getGroupByID(long ID) {
-        for (Group group : knownGroups) {
-            if (group.ID == ID) {
-                return group;
-            }
-        }
-        return null;
+    public static Group getGroupByID(long id) {
+        return ApplicationWideData.getGroupByID(id);
     }
 
     public String toJSON() {
@@ -277,10 +271,10 @@ public class Group implements Serialisable {
     }
 
     public static List<Group> getKnownGroups() {
-        return knownGroups;
+        return ApplicationWideData.getAllGroups();
     }
 
     public static void addKnownGroup(Group group) {
-        knownGroups.add(group);
+        ApplicationWideData.addExistingGroup(group);
     }
 }

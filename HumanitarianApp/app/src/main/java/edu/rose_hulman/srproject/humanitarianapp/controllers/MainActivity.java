@@ -19,6 +19,7 @@ import java.util.Random;
 
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -59,6 +60,7 @@ public class MainActivity extends Activity implements TabSwitchListener,
         //LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         //SQLiteDatabase db = dbHelper.getWritableDatabase();
         setContentView(R.layout.activity_main);
+        ApplicationWideData.initilizeKnownVariables();
     }
 
 

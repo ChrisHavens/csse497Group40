@@ -140,7 +140,7 @@ public class ApplicationWideData {
 
     public static Project getProjectByID(long id) {
         for(Project project: knownProjects) {
-            if (project.getID() == id) {
+            if (project.getId() == id) {
                 return project;
             }
         }

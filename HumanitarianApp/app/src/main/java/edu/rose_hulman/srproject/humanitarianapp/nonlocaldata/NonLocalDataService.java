@@ -43,7 +43,7 @@ public class NonLocalDataService {
         service.add(typedInput, callback);
     }
     public void addNewProject(Project project, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("project", ""+project.getID(), project.toJSON());
+        TypedInput typedInput=getAddPayload("project", ""+project.getId(), project.toJSON());
         service.add(typedInput, callback);
     }
     public void addNewGroup(Group group, Callback<Response> callback){
@@ -125,7 +125,7 @@ public class NonLocalDataService {
     public void getAllGroups(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
 
@@ -134,7 +134,7 @@ public class NonLocalDataService {
     public void getAllPeople(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("person", sb.toString()), callback);
@@ -179,7 +179,7 @@ public class NonLocalDataService {
     public void getAllLocations(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("location", sb.toString()), callback);

@@ -410,10 +410,10 @@ public class MainFragment extends Fragment implements TabSwitchListener,
             mListener.addChecklist(selectedGroup);
         }
         else if (f instanceof LocationsListFragment){
-            mListener.addLocation();
+            mListener.addLocation(selectedProject);
         }
         else if (f instanceof NotesListFragment){
-            mListener.addNote();
+            mListener.addNote(selectedGroup);
         }
         else if (f instanceof PeopleListFragment){
             mListener.addPerson();
@@ -463,8 +463,8 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         void addProject();
         void addGroup(Project project);
         void addChecklist(Group g);
-        void addLocation();
-        void addNote();
+        void addLocation(Project project);
+        void addNote(Group g);
         void addPerson();
         void addShipment();
         

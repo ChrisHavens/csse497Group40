@@ -50,7 +50,7 @@ public class AddGroupDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
 
-                        mListener.addGroup(name);
+                        mListener.addNewGroup(name);
                         AddGroupDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -100,7 +100,7 @@ public class AddGroupDialogFragment extends DialogFragment {
      */
     public interface AddGroupListener {
         // TODO: Update argument type and name
-        public void addGroup(String name);
+        public void addNewGroup(String name);
     }
 
 }

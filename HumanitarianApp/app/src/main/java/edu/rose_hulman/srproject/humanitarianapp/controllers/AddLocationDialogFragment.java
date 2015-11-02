@@ -85,7 +85,7 @@ public class AddLocationDialogFragment extends DialogFragment {
                         String name=nameField.getText().toString();
                         String lat=latField.getText().toString();
                         String lng=lngField.getText().toString();
-                        mListener.addLocation(name, lat, lng);
+                        mListener.addNewLocation(name, lat, lng);
                         AddLocationDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -140,7 +140,7 @@ public class AddLocationDialogFragment extends DialogFragment {
      */
     public interface AddLocationListener {
         // TODO: Update argument type and name
-        public void addLocation(String name, String lat, String lng);
+        public void addNewLocation(String name, String lat, String lng);
     }
     //
 //    private class RoleSpinnerAdapter extends ArrayAdapter<String> {

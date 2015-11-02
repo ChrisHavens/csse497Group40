@@ -73,7 +73,7 @@ public class AddChecklistDialogFragment extends DialogFragment {
                         }
                         checklist.setItemList(items);
 
-                        mListener.addChecklist(checklist);
+                        mListener.addNewChecklist(checklist);
                         AddChecklistDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -159,6 +159,6 @@ public class AddChecklistDialogFragment extends DialogFragment {
      */
     public interface AddChecklistListener {
         // TODO: Update argument type and name
-        public void addChecklist(Checklist checklist);
+        public void addNewChecklist(Checklist checklist);
     }
 }

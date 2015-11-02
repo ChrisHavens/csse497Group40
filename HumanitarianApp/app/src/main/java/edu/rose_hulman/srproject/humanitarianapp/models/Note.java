@@ -10,10 +10,13 @@ public class Note {
     private String body;
     private String date;
     private String time;
-    private String parentID;
-    private double id;
+    private long parentID;
+    private long id;
 
-    public Note(double id) {
+    public Note(long id) {
+        Calendar c = Calendar.getInstance();
+        date=c.get(Calendar.YEAR)+"-"+String.format("%02d", (c.get(Calendar.MONTH) + 1))+"-"+String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+        time=String.format("%02d", c.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", c.get(Calendar.MINUTE));
         this.id = id;
     }
 
@@ -23,8 +26,8 @@ public class Note {
 
     public void setBody(String body) {
         Calendar c = Calendar.getInstance();
-        date=c.get(Calendar.YEAR)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH);
-        time=c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+        date=c.get(Calendar.YEAR)+"-"+String.format("%02d", (c.get(Calendar.MONTH) + 1))+"-"+String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+        time=String.format("%02d", c.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", c.get(Calendar.MINUTE));
 
         this.body = body;
     }
@@ -34,9 +37,7 @@ public class Note {
     }
 
     public void setTitle(String title) {
-        Calendar c = Calendar.getInstance();
-        date=c.get(Calendar.YEAR)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.DAY_OF_MONTH);
-        time=c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+
         this.title = title;
     }
 
@@ -63,19 +64,19 @@ public class Note {
         return date+" "+time;
     }
 
-    public double getID() {
+    public long getID() {
         return id;
     }
 
-    public void setID(double id) {
+    public void setID(long id) {
         this.id = id;
     }
 
-    public String getParentID() {
+    public long getParentID() {
         return parentID;
     }
 
-    public void setParentID(String parentID) {
+    public void setParentID(long parentID) {
         this.parentID = parentID;
     }
 

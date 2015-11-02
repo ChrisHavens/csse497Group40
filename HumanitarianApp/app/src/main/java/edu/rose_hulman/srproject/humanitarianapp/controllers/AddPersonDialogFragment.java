@@ -62,7 +62,7 @@ public class AddPersonDialogFragment extends DialogFragment {
                         String phone=phoneField.getText().toString();
                         String email=emailField.getText().toString();
                         Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
-                        mListener.addPerson(name, phone, email, role);
+                        mListener.addNewPerson(name, phone, email, role);
                         AddPersonDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -118,7 +118,7 @@ public class AddPersonDialogFragment extends DialogFragment {
      */
     public interface AddPersonListener {
         // TODO: Update argument type and name
-        public void addPerson(String name, String phone, String email, Roles.PersonRoles role);
+        public void addNewPerson(String name, String phone, String email, Roles.PersonRoles role);
     }
     //
     private class RoleSpinnerAdapter extends ArrayAdapter<String>{

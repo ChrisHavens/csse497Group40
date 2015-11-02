@@ -12,35 +12,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link edu.rose_hulman.srproject.humanitarianapp.controllers.AddProjectDialogFragment.AddProjectListener} interface
+ * {@link AddNoteDialogFragment.AddNoteListener} interface
  * to handle interaction events.
 
  */
-public class AddProjectDialogFragment extends DialogFragment{
+public class AddNoteDialogFragment extends DialogFragment {
 
-    private AddProjectListener mListener;
+
+    private AddNoteListener mListener;
     private EditText nameField;
+    private EditText contentsField;
 
 
-    public AddProjectDialogFragment() {
+
+    public AddNoteDialogFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -56,14 +50,14 @@ public class AddProjectDialogFragment extends DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
-
-                        mListener.addNewProject(name);
-                        AddProjectDialogFragment.this.getDialog().dismiss();
+                        String contents=format(contentsField.getText().toString());
+                        mListener.addNewNote(name, contents);
+                        AddNoteDialogFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddProjectDialogFragment.this.getDialog().dismiss();
+                        AddNoteDialogFragment.this.getDialog().dismiss();
                     }
                 });
         return builder.create();
@@ -73,17 +67,17 @@ public class AddProjectDialogFragment extends DialogFragment{
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_project_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_note_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
+        contentsField=(EditText)view.findViewById(R.id.contentField);
         return view;
     }
-
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (AddProjectListener) activity;
+            mListener = (AddNoteListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -95,10 +89,24 @@ public class AddProjectDialogFragment extends DialogFragment{
         super.onDetach();
         mListener = null;
     }
+    private String format(String s){
+        s.replaceAll("\\\\n", "\\\\u000A");
+        return s;
+    }
 
-    public interface AddProjectListener {
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface AddNoteListener {
         // TODO: Update argument type and name
-        public void addNewProject(String name);
+        public void addNewNote(String name, String text);
     }
 
 }

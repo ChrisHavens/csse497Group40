@@ -74,7 +74,7 @@ public class ApplicationWideData {
 
     public static Group getGroupByID(long id) {
         for(Group group: knownGroups) {
-            if (group.getID() == id) {
+            if (group.getId() == id) {
                 return group;
             }
         }

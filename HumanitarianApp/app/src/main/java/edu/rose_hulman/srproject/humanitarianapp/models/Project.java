@@ -92,6 +92,14 @@ public class Project implements Serialisable {
         this.onServer = true;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
     public void setName(String name){
         this.name = name;
         this.isDirty[1] = true;
@@ -469,7 +477,7 @@ public class Project implements Serialisable {
 
 
 
-    public long getID() {
+    public long getId() {
         return ID;
     }
 
@@ -478,7 +486,7 @@ public class Project implements Serialisable {
     }
 
     public void setManager(Person manager) {
-        this.adminIDs.add(manager.getID()) = ;
+        this.adminIDs.add(manager.getId()) = ;
     }
 
     public String getName() {

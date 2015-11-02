@@ -5,22 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -74,7 +64,7 @@ public class EditGroupDialogFragment extends DialogFragment {
                         NonLocalDataService service=new NonLocalDataService();
                         StringBuilder sb=new StringBuilder();
                         sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateGroup(group.getID(), sb.toString(), new Callback<Response>() {
+                        service.updateGroup(group.getId(), sb.toString(), new Callback<Response>() {
                             @Override
                             public void success(Response response, Response response2) {
                                 Log.wtf("s40", "Successful edit of group " + group.getName());

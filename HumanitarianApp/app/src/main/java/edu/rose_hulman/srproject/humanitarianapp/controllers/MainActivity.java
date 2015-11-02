@@ -5,13 +5,9 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,20 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Random;
 
-import com.google.android.gms.location.LocationResult;
-
-
-
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataContract;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -174,10 +160,10 @@ private String getCurrentLocation(){
 @Override
     public void addPerson(final String name, String phone, String email, Roles.PersonRoles role) {
     MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
-    long projectID=f.getSelectedProject().getID();
+    long projectID=f.getSelectedProject().getId();
     long groupID=-1;
     if (f.getSelectedGroup()!=null) {
-        groupID = f.getSelectedGroup().getID();
+        groupID = f.getSelectedGroup().getId();
     }
     Person p=new Person(name, phone, email);
     edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
@@ -185,7 +171,7 @@ private String getCurrentLocation(){
     location.setTime("2185-04-05 14:45");
     location.setLat(34.56f);
     location.setLng(-5.45f);
-    //location.setID(10000);
+    //location.setId(10000);
     p.setLastCheckin(location);
     p.addProjectID(projectID);
     if (groupID!=-1) {
@@ -229,10 +215,7 @@ private String getCurrentLocation(){
 //    }
     @Override
     public void addProject(final String name) {
-        Random rand=new Random();
-        long i= rand.nextInt(90000)+10000;
-        i+=100000;
-        Project p= new Project(name, i);
+        Project p= new Project(name);
 
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
@@ -286,7 +269,7 @@ private String getCurrentLocation(){
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
-        //service.updateProject(project.getID(), sb.toString(), responseCallback2);
+        //service.updateProject(project.getId(), sb.toString(), responseCallback2);
 
 
 
@@ -301,7 +284,7 @@ private String getCurrentLocation(){
         Location l=new Location(name);
         l.setLat(Float.parseFloat(lat));
         l.setLng(Float.parseFloat(lng));
-        l.getProjectIDs().add(project.getID());
+        l.getProjectIDs().add(project.getId());
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -334,7 +317,7 @@ private String getCurrentLocation(){
     public void addChecklist(Group g) {
         DialogFragment newFragment = new AddChecklistDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("parentID", g.getID());
+        b.putLong("parentID", g.getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
     }
@@ -363,20 +346,20 @@ private String getCurrentLocation(){
 
     @Override
     public void showEditProject(Project p) {
-        Log.wtf("ProjectID", p.getID()+"");
+        Log.wtf("ProjectID", p.getId()+"");
         DialogFragment newFragment = new EditProjectDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", p.getID());
+        b.putLong("projectID", p.getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editProject");
     }
 
     @Override
     public void showEditGroup(Group g) {
-        Log.wtf("GroupID", g.getID()+"");
+        Log.wtf("GroupID", g.getId()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", g.getID());
+        b.putLong("groupID", g.getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editGroup");
     }
@@ -387,7 +370,7 @@ private String getCurrentLocation(){
         Log.wtf("ChecklistID", c.getID()+"");
         DialogFragment newFragment = new EditChecklistDialogFragment();
 //        Bundle b=new Bundle();
-//        b.putLong("checklistID", c.getID());
+//        b.putLong("checklistID", c.getId());
 //        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editChecklist");
     }

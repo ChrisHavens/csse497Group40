@@ -2,7 +2,6 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
@@ -12,7 +11,7 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
  * Created by Chris Havens on 10/4/2015.
  */
 public class Group implements Serialisable {
-//    private long ID;
+//    private long id;
 //    private long projectID;
 //    private String name;
 //    private List<Long> workerIDs;
@@ -35,7 +34,7 @@ public class Group implements Serialisable {
      //A flag for if the object was synced from the server or created locally
      private boolean onServer = false;
 
-     private long ID;
+     private long id;
      private long projectID;
      private String name;
      private Person leader;
@@ -47,12 +46,11 @@ public class Group implements Serialisable {
 
 
 
-    public Group() {
-        this.setUpID();
+    private Group() {
     }
 
-    public Group(long ID) {
-        this.ID = ID;
+    public Group(long id) {
+        this.id = id;
         ApplicationWideData.addExistingGroup(this);
     }
 
@@ -61,40 +59,50 @@ public class Group implements Serialisable {
         this.setUpID();
     }
 
-    public Group(String name, long ID) {
+    public Group(String name, long id) {
         this.name = name;
-        this.ID = ID;
+        this.id = id;
         ApplicationWideData.addExistingGroup(this);
     }
 
-    public static Group createFullGroup(String name, String description, Project project) {
+    /**
+     * If you are using this for anything besides deserilization or loading stored groups from
+     * the local database, you do not want to use this.
+     * @param id
+     * @param projectId
+     * @param name
+     * @param description
+     * @param dirtyBits
+     * @return
+     */
+    public static Group createFullGroup(long id, long projectId, String name,
+                                        String description, boolean[] dirtyBits) {
         if (name == null || name.length() == 0) {
             return null;
         }
         Group group = new Group();
         group.name = name;
+        group.id = id;
         group.description = description;
-        group.projectID = project.getID();
+        group.projectID = projectId;
+        group.isDirty = dirtyBits;
         return group;
     }
 
     public Group(String name, Project project) {
         this.name = name;
-        this.projectID = project.getID();
+        this.projectID = project.getId();
         this.setUpID();
     }
 
     public Group(String name, Project project, List<Long> workerIDs) {
         this.name = name;
         this.workerIDs = workerIDs;
-        this.projectID = project.getID();
+        this.projectID = project.getId();
         this.setUpID();
     }
     private void setUpID() {
-        Random rand = new Random();
-        int localIDNum = rand.nextInt();
-        //TODO: Add the user ID to the id as well
-        this.ID = SerilizationConstants.generateID(SerilizationConstants.GROUP_NUM);
+        this.id = SerilizationConstants.generateID(SerilizationConstants.GROUP_NUM);
         ApplicationWideData.addNewGroup(this);
     }
 
@@ -108,12 +116,16 @@ public class Group implements Serialisable {
         return null;
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getProjectId() {
+        return this.projectID;
     }
 
     public Project getProject() {
@@ -121,7 +133,7 @@ public class Group implements Serialisable {
     }
 
     public void setProject(Project project) {
-        this.projectID = project.getID();
+        this.projectID = project.getId();
     }
 
     public void setProjectID(long ID) {
@@ -213,8 +225,8 @@ public class Group implements Serialisable {
     }
 
     public void updateID(long newID) {
-        long oldID = this.ID;
-        this.ID = newID;
+        long oldID = this.id;
+        this.id = newID;
         for (Person person : Person.getKnownPersons()) {
             person.updateGroupIDs(oldID, newID);
         }
@@ -277,4 +289,6 @@ public class Group implements Serialisable {
     public static void addKnownGroup(Group group) {
         ApplicationWideData.addExistingGroup(group);
     }
+
+
 }

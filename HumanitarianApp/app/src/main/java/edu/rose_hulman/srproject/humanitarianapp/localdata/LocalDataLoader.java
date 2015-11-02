@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
 /**
  * Created by Chris on 11/2/2015.
@@ -100,6 +101,10 @@ public class LocalDataLoader {
     }
 
     private static void loadInitialProjects() {
+        List<Project> projects = LocalDataRetriver.getStoredProjects();
+        for(Project project: projects) {
+            ApplicationWideData.addExistingProject(project);
+        }
 
     }
 

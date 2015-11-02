@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -57,8 +59,9 @@ public class MainActivity extends Activity implements TabSwitchListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Startup Code Here
-        //LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
-        //SQLiteDatabase db = dbHelper.getWritableDatabase();
+        LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ApplicationWideData.db = db;
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables();
     }

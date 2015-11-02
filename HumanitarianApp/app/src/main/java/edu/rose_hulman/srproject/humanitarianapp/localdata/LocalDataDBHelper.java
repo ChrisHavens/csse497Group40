@@ -11,19 +11,19 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Humanitarian.db";
     private static final String SQL_LOCATION = "CREATE TABLE [Location](" +
-            "[ID] [int] NOT NULL,"+
-    "[Name] [nchar](50) NOT NULL,"+"[Lat] [int] NOT NULL,"+
+            "[ID] [int] NOT NULL," +
+            "[Name] [nchar](50) NOT NULL," + "[Lat] [int] NOT NULL," +
 
-    "[Lon] [int] NOT NULL,"+
-    "[NameDirty] [boolean] NOT NULL,"+
-    "[LatDirty] [boolean] NOT NULL,"+
-    "[LonDirty] [boolean] NOT NULL,"+
-    "CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED ( [ID] ASC))";
-    private static final String SQL_PEOPLE = "CREATE TABLE [People]("+
-            "[ID] [int] NOT NULL,"+
-    "[Name] [nchar](50) NOT NULL,"+
-    "[NameDirty] [boolean] NOT NULL,"+
-    "CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED"+
+            "[Lon] [int] NOT NULL," +
+            "[NameDirty] [boolean] NOT NULL," +
+            "[LatDirty] [boolean] NOT NULL," +
+            "[LonDirty] [boolean] NOT NULL," +
+            "CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED ( [ID] ASC))";
+    private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
+            "[ID] [int] NOT NULL," +
+            "[Name] [nchar](50) NOT NULL," +
+            "[NameDirty] [boolean] NOT NULL," +
+            "CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED" +
             "[ID] ASC))";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +
             "\t[ID] [int] NOT NULL,\n" +
@@ -32,11 +32,12 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[SuperID] [int] NOT NULL,\n" +
             "\t[SuperIDDirty] [boolean] NOT NULL,\n" +
             " CONSTRAINT [PK_Checklist] PRIMARY KEY CLUSTERED ([ID] ASC ))";
-    private static final String SQL_PROJECT = "CREATE TABLE [Project]("+
-    "[ID] [int] NOT NULL,"+
-    "[Name] [nchar](50) NOT NULL,"+
-    "[NameDirty] [boolean] NOT NULL,"+
-    "CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED ( [ID] ASC ))";
+    private static final String SQL_PROJECT = "CREATE TABLE [Project](" +
+            "[ID] [int] NOT NULL," +
+            "[Name] [nchar](50) NOT NULL," +
+            "[Description] [nchar] (250) NOT NULL," +
+            "[DirtyBits] [int] NOT NULL," +
+            "CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED ( [ID] ASC ))";
     private static final String SQL_GROUP = "CREATE TABLE [Group](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
@@ -120,9 +121,11 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[ShipmentID] [int] NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL\n" +
             ")";
+
     public LocalDataDBHelper(Context context) {
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_LOCATION);

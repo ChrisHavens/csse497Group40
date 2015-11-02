@@ -1,5 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,6 +26,7 @@ public class ApplicationWideData {
 
     public static int userID;
     public static int createdObjectCounter;
+    public static SQLiteDatabase db;
 
     public static void initilizeKnownVariables() {
         knownChecklists = new ArrayList();

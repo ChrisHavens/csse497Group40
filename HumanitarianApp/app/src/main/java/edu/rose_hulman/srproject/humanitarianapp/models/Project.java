@@ -28,13 +28,21 @@ public class Project implements Serialisable {
      private List<Long> groupIDs;           //#3
      private List<Long> workerIDs;          //#4
      private List<Long> adminIDs;           //#5
-     private List<Long> locationIDs;      //#6
-     private List<Long> checklistIDs;    //#7
-     private List<Long> shipmentIDs;      //#8
+     private List<Long> locationIDs;        //#6
+     private List<Long> checklistIDs;       //#7
+     private List<Long> shipmentIDs;        //#8
 
 
      public Project(){
      }
+
+    public Project(long id, String name, String description, boolean[] dirtyBits, boolean onServer) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isDirty = dirtyBits;
+        this.onServer = onServer;
+    }
 
      public Project(long id){
         this.removeImplicitVariableDeclarations();
@@ -96,6 +104,20 @@ public class Project implements Serialisable {
         return this.id;
     }
 
+    public boolean[] getIsDirty() {
+        return this.isDirty;
+    }
+
+    public int getDirtyBits() {
+        int bits = 0;
+        for(int i = 0; i < 9; i++) {
+            if (isDirty[i]) {
+                bits = bits | 1 << i;
+            }
+        }
+        return bits;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -119,7 +141,7 @@ public class Project implements Serialisable {
         this.isDirty[2] = true;
     }
 
-    public void seDescriptiontClean (String description) {
+    public void setDescriptionClean (String description) {
         this.description = description;
         this.isDirty[2] = false;
     }
@@ -430,8 +452,9 @@ public class Project implements Serialisable {
     }
 
 
-
-
+    public String getDescription() {
+        return description;
+    }
 }
 
 //    public Project() {

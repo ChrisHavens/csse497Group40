@@ -1,28 +1,4 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
-
-/**
- * Created by daveyle on 10/26/2015.
- */
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
-
+package edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,7 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,8 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
@@ -53,17 +26,17 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
  * to handle interaction events.
 
  */
-public class AddLocationDialogFragment extends DialogFragment {
-
-    private AddLocationListener mListener;
+public class AddPersonDialogFragment extends DialogFragment {
+    
+    private AddPersonListener mListener;
     private EditText nameField;
-    private EditText latField;
-    private EditText lngField;
+    private EditText phoneField;
+    private EditText emailField;
     private Spinner roleSpinner;
 
 
-
-    public AddLocationDialogFragment() {
+    
+    public AddPersonDialogFragment() {
         // Required empty public constructor
     }
 
@@ -83,39 +56,41 @@ public class AddLocationDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
-                        String lat=latField.getText().toString();
-                        String lng=lngField.getText().toString();
-                        mListener.addNewLocation(name, lat, lng);
-                        AddLocationDialogFragment.this.getDialog().dismiss();
+                        String phone=phoneField.getText().toString();
+                        String email=emailField.getText().toString();
+                        Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
+                        mListener.addNewPerson(name, phone, email, role);
+                        AddPersonDialogFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddLocationDialogFragment.this.getDialog().dismiss();
+                        AddPersonDialogFragment.this.getDialog().dismiss();
                     }
                 });
         return builder.create();
-
+        
     }
 
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_location_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_person_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
-        latField=(EditText) view.findViewById(R.id.latField);
-        lngField=(EditText)view.findViewById(R.id.lngField);
-
+        phoneField=(EditText) view.findViewById(R.id.phoneField);
+        emailField=(EditText)view.findViewById(R.id.emailField);
+        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
+        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
     }
 
-
+    
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (AddLocationListener) activity;
+            mListener = (AddPersonListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement AddPersonListener");
@@ -138,32 +113,31 @@ public class AddLocationDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface AddLocationListener {
+    public interface AddPersonListener {
         // TODO: Update argument type and name
-        public void addNewLocation(String name, String lat, String lng);
+        public void addNewPerson(String name, String phone, String email, Roles.PersonRoles role);
     }
     //
-//    private class RoleSpinnerAdapter extends ArrayAdapter<String> {
-//        private final String[] objects;
-//        private final int layout;
-//
-//
-//        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
-//            super(context, resource, objects);
-//            this.objects=objects;
-//            this.layout=resource;
-//
-//        }
-//        public View getView(int position, View convertView, ViewGroup parent){
-//            LayoutInflater inflater = (LayoutInflater) getContext()
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View view = inflater.inflate(layout, parent, false);
-//            TextView line1=(TextView) view.findViewById(android.R.id.text1);
-//            line1.setText(objects[position]);
-//            return view;
-//
-//        }
-//    }
+    private class RoleSpinnerAdapter extends ArrayAdapter<String>{
+        private final String[] objects;
+        private final int layout;
+
+
+        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
+            super(context, resource, objects);
+            this.objects=objects;
+            this.layout=resource;
+
+        }
+        public View getView(int position, View convertView, ViewGroup parent){
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(layout, parent, false);
+            TextView line1=(TextView) view.findViewById(android.R.id.text1);
+            line1.setText(objects[position]);
+            return view;
+
+        }
+    }
 
 }
-

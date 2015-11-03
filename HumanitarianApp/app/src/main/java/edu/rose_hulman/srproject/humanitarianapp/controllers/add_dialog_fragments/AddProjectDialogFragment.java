@@ -1,26 +1,22 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link edu.rose_hulman.srproject.humanitarianapp.controllers.AddProjectDialogFragment.AddProjectListener} interface
+ * {@link AddProjectDialogFragment.AddProjectListener} interface
  * to handle interaction events.
 
  */

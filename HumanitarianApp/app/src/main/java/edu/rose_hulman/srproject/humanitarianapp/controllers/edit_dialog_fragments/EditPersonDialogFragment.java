@@ -1,4 +1,4 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,41 +1,52 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddGroupDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddNoteDialogFragment.AddNoteListener} interface
+ * {@link AddGroupDialogFragment.AddGroupListener} interface
  * to handle interaction events.
 
  */
-public class AddNoteDialogFragment extends DialogFragment {
+public class EditGroupDialogFragment extends DialogFragment {
 
 
-    private AddNoteListener mListener;
+    //private AddGroupListener mListener;
     private EditText nameField;
-    private EditText contentsField;
+    private long groupID;
+    private Group group;
 
 
 
-    public AddNoteDialogFragment() {
+    public EditGroupDialogFragment() {
         // Required empty public constructor
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (getArguments()!=null){
+            groupID=getArguments().getLong("groupID");
+            Log.w("Got groupID", ""+groupID);
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -50,14 +61,28 @@ public class AddNoteDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
-                        String contents=format(contentsField.getText().toString());
-                        mListener.addNewNote(name, contents);
-                        AddNoteDialogFragment.this.getDialog().dismiss();
+
+                        NonLocalDataService service=new NonLocalDataService();
+                        StringBuilder sb=new StringBuilder();
+                        sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
+                        service.updateGroup(group.getID(), sb.toString(), new Callback<Response>() {
+                            @Override
+                            public void success(Response response, Response response2) {
+                                Log.wtf("s40", "Successful edit of group " + group.getName());
+                                //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("s40 RetroFitError", error.getMessage());
+                            }
+                        });
+                        EditGroupDialogFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddNoteDialogFragment.this.getDialog().dismiss();
+                        EditGroupDialogFragment.this.getDialog().dismiss();
                     }
                 });
         return builder.create();
@@ -67,9 +92,11 @@ public class AddNoteDialogFragment extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_note_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_group_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
-        contentsField=(EditText)view.findViewById(R.id.contentField);
+        group= Group.getGroupByID(groupID);
+        nameField.setText(group.getName());
+
         return view;
     }
 
@@ -77,7 +104,7 @@ public class AddNoteDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (AddNoteListener) activity;
+            //mListener = (AddGroupListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -87,11 +114,7 @@ public class AddNoteDialogFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-    private String format(String s){
-        s.replaceAll("\\\\n", "\\\\u000A");
-        return s;
+        //mListener = null;
     }
 
     /**
@@ -104,9 +127,10 @@ public class AddNoteDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface AddNoteListener {
-        // TODO: Update argument type and name
-        public void addNewNote(String name, String text);
-    }
+//    public interface AddGroupListener {
+//        // TODO: Update argument type and name
+//        public void addGroup(String name);
+//
+//    }
 
 }

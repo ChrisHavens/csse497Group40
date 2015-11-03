@@ -1,4 +1,4 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 //import edu.rose_hulman.srproject.humanitarianapp.models.Group;

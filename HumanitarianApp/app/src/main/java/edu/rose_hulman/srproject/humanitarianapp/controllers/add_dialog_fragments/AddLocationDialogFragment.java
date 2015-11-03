@@ -1,39 +1,45 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments;
+
+/**
+ * Created by daveyle on 10/26/2015.
+ */
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddGroupDialogFragment.AddGroupListener} interface
+ * {@link AddPersonDialogFragment.AddPersonListener} interface
  * to handle interaction events.
 
  */
-public class AddGroupDialogFragment extends DialogFragment {
+public class AddLocationDialogFragment extends DialogFragment {
 
-
-    private AddGroupListener mListener;
+    private AddLocationListener mListener;
     private EditText nameField;
+    private EditText latField;
+    private EditText lngField;
+    private Spinner roleSpinner;
 
 
 
-    public AddGroupDialogFragment() {
+    public AddLocationDialogFragment() {
         // Required empty public constructor
     }
 
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -49,14 +55,15 @@ public class AddGroupDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
-
-                        mListener.addNewGroup(name);
-                        AddGroupDialogFragment.this.getDialog().dismiss();
+                        String lat=latField.getText().toString();
+                        String lng=lngField.getText().toString();
+                        mListener.addNewLocation(name, lat, lng);
+                        AddLocationDialogFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddGroupDialogFragment.this.getDialog().dismiss();
+                        AddLocationDialogFragment.this.getDialog().dismiss();
                     }
                 });
         return builder.create();
@@ -66,19 +73,24 @@ public class AddGroupDialogFragment extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_group_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_location_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
+        latField=(EditText) view.findViewById(R.id.latField);
+        lngField=(EditText)view.findViewById(R.id.lngField);
+
         return view;
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (AddGroupListener) activity;
+            mListener = (AddLocationListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement AddPersonListener");
         }
     }
 
@@ -98,9 +110,32 @@ public class AddGroupDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface AddGroupListener {
+    public interface AddLocationListener {
         // TODO: Update argument type and name
-        public void addNewGroup(String name);
+        public void addNewLocation(String name, String lat, String lng);
     }
+    //
+//    private class RoleSpinnerAdapter extends ArrayAdapter<String> {
+//        private final String[] objects;
+//        private final int layout;
+//
+//
+//        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
+//            super(context, resource, objects);
+//            this.objects=objects;
+//            this.layout=resource;
+//
+//        }
+//        public View getView(int position, View convertView, ViewGroup parent){
+//            LayoutInflater inflater = (LayoutInflater) getContext()
+//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View view = inflater.inflate(layout, parent, false);
+//            TextView line1=(TextView) view.findViewById(android.R.id.text1);
+//            line1.setText(objects[position]);
+//            return view;
+//
+//        }
+//    }
 
 }
+

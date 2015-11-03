@@ -1,49 +1,37 @@
-package edu.rose_hulman.srproject.humanitarianapp.controllers;
+package edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddPersonDialogFragment.AddPersonListener} interface
+ * {@link AddGroupDialogFragment.AddGroupListener} interface
  * to handle interaction events.
 
  */
-public class AddPersonDialogFragment extends DialogFragment {
-    
-    private AddPersonListener mListener;
+public class AddGroupDialogFragment extends DialogFragment {
+
+
+    private AddGroupListener mListener;
     private EditText nameField;
-    private EditText phoneField;
-    private EditText emailField;
-    private Spinner roleSpinner;
 
 
-    
-    public AddPersonDialogFragment() {
+
+    public AddGroupDialogFragment() {
         // Required empty public constructor
     }
 
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -59,44 +47,36 @@ public class AddPersonDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
-                        String phone=phoneField.getText().toString();
-                        String email=emailField.getText().toString();
-                        Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
-                        mListener.addNewPerson(name, phone, email, role);
-                        AddPersonDialogFragment.this.getDialog().dismiss();
+
+                        mListener.addNewGroup(name);
+                        AddGroupDialogFragment.this.getDialog().dismiss();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddPersonDialogFragment.this.getDialog().dismiss();
+                        AddGroupDialogFragment.this.getDialog().dismiss();
                     }
                 });
         return builder.create();
-        
+
     }
 
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_person_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_group_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
-        phoneField=(EditText) view.findViewById(R.id.phoneField);
-        emailField=(EditText)view.findViewById(R.id.emailField);
-        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
-        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
     }
-
-    
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (AddPersonListener) activity;
+            mListener = (AddGroupListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement AddPersonListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -116,31 +96,9 @@ public class AddPersonDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface AddPersonListener {
+    public interface AddGroupListener {
         // TODO: Update argument type and name
-        public void addNewPerson(String name, String phone, String email, Roles.PersonRoles role);
-    }
-    //
-    private class RoleSpinnerAdapter extends ArrayAdapter<String>{
-        private final String[] objects;
-        private final int layout;
-
-
-        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
-            super(context, resource, objects);
-            this.objects=objects;
-            this.layout=resource;
-
-        }
-        public View getView(int position, View convertView, ViewGroup parent){
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(layout, parent, false);
-            TextView line1=(TextView) view.findViewById(android.R.id.text1);
-            line1.setText(objects[position]);
-            return view;
-
-        }
+        public void addNewGroup(String name);
     }
 
 }

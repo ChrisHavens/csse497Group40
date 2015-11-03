@@ -25,11 +25,13 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddShipmentDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditLocationDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditProjectDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditShipmentDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -54,7 +56,9 @@ public class MainActivity extends Activity implements TabSwitchListener,
         //EditPersonDialogFragment.EditPersonListener,
         AddLocationDialogFragment.AddLocationListener,
         EditChecklistDialogFragment.EditChecklistListener,
-        AddNoteDialogFragment.AddNoteListener
+        AddNoteDialogFragment.AddNoteListener,
+        AddShipmentDialogFragment.AddShipmentListener,
+        EditShipmentDialogFragment.EditShipmentListener
 
         //,
         //EditProjectDialogFragment.EditProjectListener,
@@ -62,8 +66,15 @@ public class MainActivity extends Activity implements TabSwitchListener,
 {
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
     NonLocalDataService service=new NonLocalDataService();
-    private Checklist checklist;
-    private long parentID;
+    private Group selectedGroup;
+    private Person selectedPerson;
+    private Checklist selectedChecklist;
+    private Note selectedNote;
+    private Location selectedLocation;
+    private Shipment selectedShipment;
+    private Project selectedProject;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,11 +183,10 @@ public class MainActivity extends Activity implements TabSwitchListener,
     }
     @Override
     public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
-        MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
-        long projectID=f.getSelectedProject().getID();
+        long projectID=selectedProject.getID();
         long groupID=-1;
-        if (f.getSelectedGroup()!=null) {
-            groupID = f.getSelectedGroup().getID();
+        if (getSelectedGroup()!=null) {
+            groupID = getSelectedGroup().getID();
         }
         Person p=new Person(name, phone, email);
         edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
@@ -252,11 +262,10 @@ public class MainActivity extends Activity implements TabSwitchListener,
         Random rand=new Random();
         long i= rand.nextInt(90000)+10000;
         i+=200000;
-        MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
-        Project project=f.getSelectedProject();
+
         Group g= new Group(i);
         g.setName(name);
-        g.setProject(project);
+        g.setProject(selectedProject);
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -281,7 +290,7 @@ public class MainActivity extends Activity implements TabSwitchListener,
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addNewProject(project, responseCallback);
+        service.addNewProject(selectedProject, responseCallback);
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
@@ -291,20 +300,12 @@ public class MainActivity extends Activity implements TabSwitchListener,
 
     }
     @Override
-    public void addNewLocation(final String name, String lat, String lng) {
-        Random rand=new Random();
-        long i= rand.nextInt(90000)+10000;
-        i+=400000;
-        MainFragment f=(MainFragment)getFragmentManager().findFragmentById(R.id.fragment);
-        Project project=f.getSelectedProject();
-        Location l=new Location(name);
-        l.setLat(Float.parseFloat(lat));
-        l.setLng(Float.parseFloat(lng));
-        l.getProjectIDs().add(project.getID());
+    public void addNewLocation(final Location l) {
+
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new location: "+name, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Successful adding of new location: "+l.getName(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -345,7 +346,7 @@ public class MainActivity extends Activity implements TabSwitchListener,
         long i= rand.nextInt(90000)+10000;
         i+=500000;
         final Note note=new Note(i);
-        note.setParentID(parentID);
+        note.setParentID(selectedGroup.getID());
         note.setTitle(name);
         note.setBody(contents);
 //        Date date=new Date();
@@ -367,6 +368,21 @@ public class MainActivity extends Activity implements TabSwitchListener,
         };
         service.addNewNote(note, responseCallback);
     }
+    @Override
+    public void addNewShipment(final Shipment l) {
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful adding of new shipment: "+l.getName(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewShipment(l, responseCallback);
+    }
 
     @Override
     public void addProject() {
@@ -375,33 +391,33 @@ public class MainActivity extends Activity implements TabSwitchListener,
     }
 
     @Override
-    public void addGroup(Project project) {
+    public void addGroup() {
         DialogFragment newFragment = new AddGroupDialogFragment();
         newFragment.show(getFragmentManager(), "addGroup");
     }
 
     @Override
-    public void addChecklist(Group g) {
+    public void addChecklist() {
         DialogFragment newFragment = new AddChecklistDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("parentID", g.getID());
+        b.putLong("parentID", selectedGroup.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
     }
 
     @Override
-    public void addLocation(Project p) {
+    public void addLocation() {
         DialogFragment newFragment = new AddLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", p.getID());
+        b.putLong("projectID", selectedProject.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addLocation");
     }
 
     @Override
-    public void addNote(Group g) {
+    public void addNote() {
         DialogFragment newFragment = new AddNoteDialogFragment();
-        parentID=g.getID();
+
 //        Bundle b=new Bundle();
 //        b.putLong("parentID", g.getID());
 //        newFragment.setArguments(b);
@@ -416,33 +432,38 @@ public class MainActivity extends Activity implements TabSwitchListener,
 
     @Override
     public void addShipment() {
-
+        DialogFragment newFragment = new AddShipmentDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("groupID", selectedGroup.getID());
+        b.putLong("projectID", selectedProject.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "addShipment");
     }
 
     @Override
-    public void showEditProject(Project p) {
-        Log.wtf("ProjectID", p.getID()+"");
+    public void showEditProject() {
+        Log.wtf("ProjectID", selectedProject.getID()+"");
         DialogFragment newFragment = new EditProjectDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", p.getID());
+        b.putLong("projectID", selectedProject.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editProject");
     }
 
     @Override
-    public void showEditGroup(Group g) {
-        Log.wtf("GroupID", g.getID()+"");
+    public void showEditGroup() {
+        Log.wtf("GroupID", selectedGroup.getID()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", g.getID());
+        b.putLong("groupID", selectedGroup.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editGroup");
     }
 
     @Override
-    public void showEditChecklist(Checklist c) {
-        checklist=c;
-        Log.wtf("ChecklistID", c.getID()+"");
+    public void showEditChecklist() {
+
+        Log.wtf("ChecklistID", selectedChecklist.getID()+"");
         DialogFragment newFragment = new EditChecklistDialogFragment();
 //        Bundle b=new Bundle();
 //        b.putLong("checklistID", c.getID());
@@ -451,45 +472,127 @@ public class MainActivity extends Activity implements TabSwitchListener,
     }
 
     @Override
-    public void showEditLocation(edu.rose_hulman.srproject.humanitarianapp.models.Location l) {
+    public void showEditLocation() {
         DialogFragment newFragment = new EditLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("ID", l.getID());
+        b.putLong("ID", selectedLocation.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editLocation");
     }
 
     @Override
-    public void showEditNote(Note n) {
+    public void showEditNote() {
 
     }
 
     @Override
-    public void showEditPerson(Person p) {
-        Log.wtf("PersonID", p.getID()+"");
+    public void showEditPerson() {
+        Log.wtf("PersonID", selectedPerson.getID()+"");
         DialogFragment newFragment = new EditPersonDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("personID", p.getID());
+        b.putLong("personID", selectedPerson.getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editPerson");
     }
 
     @Override
-    public void showEditShipment(Shipment s) {
-
+    public void showEditShipment() {
+        DialogFragment newFragment = new EditShipmentDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("groupID", selectedGroup.getID());
+        b.putLong("projectID", selectedProject.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "editShipment");
     }
     public void editProject(Project p){
 
     }
-    public void editChecklist(Checklist c){
-        addNewChecklist(c);
+    public void editChecklist(final Checklist c){
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successful editing of checklist: "+c.getTitle(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+
+        service.addNewChecklist(c, responseCallback);
     }
-
-
-
 
     @Override
-    public Checklist getChecklist() {
-        return checklist;
+    public Group getSelectedGroup() {
+        return selectedGroup;
     }
+
+    @Override
+    public void setSelectedGroup(Group selectedGroup) {
+        this.selectedGroup = selectedGroup;
+    }
+
+    @Override
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    @Override
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
+
+    @Override
+    public Checklist getSelectedChecklist() {
+        return selectedChecklist;
+    }
+
+    @Override
+    public void setSelectedChecklist(Checklist selectedChecklist) {
+        this.selectedChecklist = selectedChecklist;
+    }
+
+    @Override
+    public Note getSelectedNote() {
+        return selectedNote;
+    }
+
+    @Override
+    public void setSelectedNote(Note selectedNote) {
+        this.selectedNote = selectedNote;
+    }
+
+    @Override
+    public Location getSelectedLocation() {
+        return selectedLocation;
+    }
+
+    @Override
+    public void setSelectedLocation(Location selectedLocation) {
+        this.selectedLocation = selectedLocation;
+    }
+
+    @Override
+    public Shipment getSelectedShipment() {
+        return selectedShipment;
+    }
+
+    @Override
+    public void setSelectedShipment(Shipment selectedShipment) {
+        this.selectedShipment = selectedShipment;
+    }
+
+    @Override
+    public Project getSelectedProject() {
+        return selectedProject;
+    }
+
+    @Override
+    public void setSelectedProject(Project selectedProject) {
+        this.selectedProject = selectedProject;
+    }
+
+
+
 }

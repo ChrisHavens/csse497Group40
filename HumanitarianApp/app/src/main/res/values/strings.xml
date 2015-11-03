@@ -43,6 +43,7 @@
     <string name="addChecklist">Add a new Checklist:</string>
     <string name="addNewChecklistItem">Add Item</string>
     <string name="addNewSublistItem">Add Subitem</string>
+    <string name="addShipment">Add a new Shipment:</string>
     <string name="item">Item</string>
     <string name="subitem">Subitem</string>
     <string name="profile_picture_desc">Profile picture</string>
@@ -52,4 +53,8 @@
     <string name="manage_account_label">Manage account</string>
     <string name="sign_out_label">Sign out</string>
     <string name="addNote">Add a new Note</string>
+    <string name="saveChanges">Save Changes</string>
+    <string name="chooseDate">Choose Date</string>
+    <string name="chooseTime">Choose Time</string>
+    <string name="chooseLocations">Choose Locations</string>
 </resources>

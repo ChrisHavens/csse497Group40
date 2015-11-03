@@ -87,7 +87,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
 //                }
 //            });
 //        }
-        checklist=mListener.getChecklist();
+        checklist=mListener.getSelectedChecklist();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -250,6 +250,6 @@ public class EditChecklistDialogFragment extends DialogFragment {
     public interface EditChecklistListener {
         // TODO: Update argument type and name
         public void editChecklist(Checklist checklist);
-        public Checklist getChecklist();
+        public Checklist getSelectedChecklist();
     }
 }

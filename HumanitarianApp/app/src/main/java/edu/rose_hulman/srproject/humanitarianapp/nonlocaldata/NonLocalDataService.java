@@ -209,6 +209,21 @@ public class NonLocalDataService {
         service.search(getSearchPayload("location", sb.toString()), callback);
 
     }
+    public void getAllLocations(long parentId, boolean parentIsGroup, Callback<Response> callback){
+        StringBuilder sb= new StringBuilder();
+        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.");
+        if (parentIsGroup){
+            sb.append("groupID");
+        }
+        else{
+            sb.append("projectID");
+        }
+        sb.append("\": \"");
+        sb.append(parentId);
+        sb.append("\"}}]}}}}}");
+        Log.w("JSON", sb.toString());
+        service.search(getSearchPayload("location", sb.toString()), callback);
+    }
 
 
     /*

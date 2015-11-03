@@ -17,7 +17,7 @@ public class LocalDataRetriver {
 
     public static List<Project> getStoredProjects() {
         List<Project> projects = new ArrayList<Project>();
-        Cursor cursor =  ApplicationWideData.db.rawQuery(allProjectsQuery, new String[1]);
+        Cursor cursor =  ApplicationWideData.db.rawQuery(allProjectsQuery, null);
         cursor.moveToFirst();
         for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
             Long id = cursor.getLong(0);

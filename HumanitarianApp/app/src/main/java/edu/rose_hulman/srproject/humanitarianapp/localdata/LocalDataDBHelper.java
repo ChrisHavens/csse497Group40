@@ -17,37 +17,28 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "[Lon] [int] NOT NULL," +
             "[NameDirty] [boolean] NOT NULL," +
             "[LatDirty] [boolean] NOT NULL," +
-            "[LonDirty] [boolean] NOT NULL," +
-            "CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED ( [ID] ASC))";
+            "[LonDirty] [boolean] NOT NULL)";
     private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
             "[ID] [int] NOT NULL," +
             "[Name] [nchar](50) NOT NULL," +
-            "[NameDirty] [boolean] NOT NULL," +
-            "CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED" +
-            "[ID] ASC))";
+            "[NameDirty] [boolean] NOT NULL)";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
             "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
-            "\t[SuperIDDirty] [boolean] NOT NULL,\n" +
-            " CONSTRAINT [PK_Checklist] PRIMARY KEY CLUSTERED ([ID] ASC ))";
+            "\t[SuperIDDirty] [boolean] NOT NULL)\n";
     private static final String SQL_PROJECT = "CREATE TABLE [Project](" +
             "[ID] [int] NOT NULL," +
             "[Name] [nchar](50) NOT NULL," +
             "[Description] [nchar] (250) NOT NULL," +
-            "[DirtyBits] [int] NOT NULL," +
-            "CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED ( [ID] ASC ))";
+            "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_GROUP = "CREATE TABLE [Group](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
             "\t[NameDirty] [boolean] NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
-            "\t[SuperIDDirty] [boolean] NOT NULL,\n" +
-            " CONSTRAINT [PK_Group] PRIMARY KEY CLUSTERED \n" +
-            "(\n" +
-            "\t[ID] ASC\n" +
-            "))";
+            "\t[SuperIDDirty] [boolean] NOT NULL)\n";
     private static final String SQL_EMAIL = "CREATE TABLE [Email](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Email] [nchar](30) NOT NULL,\n" +
@@ -71,11 +62,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[FromLoc] [int] NOT NULL,\n" +
             "\t[FromLocDirty] [boolean] NOT NULL,\n" +
             "\t[Description] [nchar](140) NOT NULL,\n" +
-            "\t[DescriptionDirty] [boolean] NOT NULL,\n" +
-            " CONSTRAINT [PK_Shipment] PRIMARY KEY CLUSTERED \n" +
-            "(\n" +
-            "\t[ID] ASC\n" +
-            "))";
+            "\t[DescriptionDirty] [boolean] NOT NULL)\n";
     private static final String SQL_NOTE = "CREATE TABLE [Note](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
@@ -83,11 +70,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[Contents] [nchar](140) NOT NULL,\n" +
             "\t[ContentsDirty] [boolean] NOT NULL,\n" +
             "\t[OwnerID] [int] NOT NULL,\n" +
-            "\t[OwnerIDDirty] [boolean] NOT NULL,\n" +
-            " CONSTRAINT [PK_Notes] PRIMARY KEY CLUSTERED \n" +
-            "(\n" +
-            "\t[ID] ASC\n" +
-            "))";
+            "\t[OwnerIDDirty] [boolean] NOT NULL)\n";
     private static final String SQL_CHECKLIST_ITEM = "CREATE TABLE [ChecklistItem](\n" +
             "\t[ID] [nchar](10) NOT NULL,\n" +
             "\t[List] [int] NOT NULL,\n" +
@@ -96,11 +79,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[Done] [boolean] NOT NULL,\n" +
             "\t[DoneDirty] [boolean] NOT NULL,\n" +
             "\t[Info] [nchar](140) NOT NULL,\n" +
-            "\t[InfoDirty] [boolean] NOT NULL,\n" +
-            " CONSTRAINT [PK_ChecklistItem] PRIMARY KEY CLUSTERED \n" +
-            "(\n" +
-            "\t[ID] ASC\n" +
-            "))";
+            "\t[InfoDirty] [boolean] NOT NULL)\n";
     private static final String SQL_GROUP_LOC_REL = "CREATE TABLE [GroupLocRel](\n" +
             "\t[GroupID] [int] NOT NULL,\n" +
             "\t[LocID] [int] NOT NULL\n" +

@@ -27,6 +27,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditGroupDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditLocationDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
@@ -391,6 +392,9 @@ public class MainActivity extends Activity implements TabSwitchListener,
     @Override
     public void addLocation(Project p) {
         DialogFragment newFragment = new AddLocationDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("projectID", p.getID());
+        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addLocation");
     }
 
@@ -448,7 +452,11 @@ public class MainActivity extends Activity implements TabSwitchListener,
 
     @Override
     public void showEditLocation(edu.rose_hulman.srproject.humanitarianapp.models.Location l) {
-
+        DialogFragment newFragment = new EditLocationDialogFragment();
+        Bundle b=new Bundle();
+        b.putLong("ID", l.getID());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "editLocation");
     }
 
     @Override

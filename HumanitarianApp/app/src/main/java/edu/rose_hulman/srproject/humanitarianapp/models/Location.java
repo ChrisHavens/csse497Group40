@@ -103,6 +103,14 @@ public class Location {
         this.groupIDs = groupIDs;
     }
 
+    public void addNewProjectID(long projectID){
+        this.projectIDs.add(projectID);
+    }
+    public void addNewGroupID(long groupID){
+        this.groupIDs.add(groupID);
+    }
+
+
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");

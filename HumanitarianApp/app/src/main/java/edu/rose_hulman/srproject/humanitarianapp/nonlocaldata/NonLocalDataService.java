@@ -100,6 +100,11 @@ public class NonLocalDataService {
         TypedInput typedInput=getUpdatePayload("person", personId+"", json);
         service.update(typedInput, callback);
     }
+    public void updateLocation(long locationId, String json, Callback<Response> callback){
+
+        TypedInput typedInput=getUpdatePayload("location", locationId+"", json);
+        service.update(typedInput, callback);
+    }
     public void updateNote(double id, String title, String body, Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");

@@ -5,13 +5,9 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,23 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
-import com.google.android.gms.location.LocationResult;
-
-
-
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataContract;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddChecklistDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddGroupDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddLocationDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditChecklistDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditGroupDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditPersonDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;

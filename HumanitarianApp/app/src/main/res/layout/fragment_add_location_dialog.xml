@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.rose_hulman.srproject.humanitarianapp.controllers.AddLocationDialogFragment"
+    tools:context="edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddLocationDialogFragment"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->

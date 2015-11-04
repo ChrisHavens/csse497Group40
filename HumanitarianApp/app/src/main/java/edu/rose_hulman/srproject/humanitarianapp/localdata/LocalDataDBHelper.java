@@ -20,8 +20,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "[LonDirty] [boolean] NOT NULL)";
     private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
             "[ID] [int] NOT NULL," +
-            "[Name] [nchar](50) NOT NULL," +
-            "[NameDirty] [boolean] NOT NULL)";
+            "[Name] [nchar](50) NOT NULL)";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +

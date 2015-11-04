@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
 /**
@@ -45,6 +46,38 @@ public class LocalDataSaver {
         values.put("Description", description);
         values.put("DirtyBits", dirtyBits);
         String tableName = "Project";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+        return true;
+
+        //Save all of the lists to the relations table
+    }
+    public static void updatePerson(Person person) {
+        String name = person.getName();
+        long id = person.getID();
+
+        //Save the above to the person table
+
+        ContentValues values = new ContentValues();
+        values.put("Name", name);
+        String tableName = "Person";
+        String selection = "ID=?";
+        String[] selectionArgs = {Long.toString(id)};
+        ApplicationWideData.db.update(tableName, values, selection, selectionArgs);
+
+        //Save all of the lists to the relations table
+    }
+
+    public static boolean addPerson(Person person) {
+        String name = person.getName();
+        long id = person.getID();
+
+        //Save the above to the project table
+
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Name", name);
+        String tableName = "Person";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
         return true;

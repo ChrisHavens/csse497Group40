@@ -28,22 +28,21 @@ public class Group implements Serialisable {
 //    private static List<Group> localIDGroups = new ArrayList<Group>();
 
 
-     // A flag for each field denoting if it needs to be updated on the server.
-     // This will need to be initulized in the constructors.
-     private boolean[] isDirty = new boolean[9];
-     //A flag for if the object was synced from the server or created locally
-     private boolean onServer = false;
+    // A flag for each field denoting if it needs to be updated on the server.
+    // This will need to be initulized in the constructors.
+    private boolean[] isDirty = new boolean[9];
+    //A flag for if the object was synced from the server or created locally
+    private boolean onServer = false;
 
-     private long id;
-     private long projectID;
-     private String name;
-     private Person leader;
-     private String description;
-     private List<Long> workerIDs;
-     private List<Note> notes = new ArrayList<>();
-     private List<Checklist> checklists = new ArrayList<>();
-     private List<Shipment> shipments = new ArrayList<>();
-
+    private long id;
+    private long projectID;
+    private Person leader;
+    private String name;
+    private String description;
+    private List<Long> workerIDs;
+    private List<Note> notes = new ArrayList<>();
+    private List<Checklist> checklists = new ArrayList<>();
+    private List<Shipment> shipments = new ArrayList<>();
 
 
     private Group() {
@@ -68,15 +67,16 @@ public class Group implements Serialisable {
     /**
      * If you are using this for anything besides deserilization or loading stored groups from
      * the local database, you do not want to use this.
+     *
      * @param id
      * @param projectId
      * @param name
      * @param description
-     * @param dirtyBits
+     * @param isDirty
      * @return
      */
     public static Group createFullGroup(long id, long projectId, String name,
-                                        String description, boolean[] dirtyBits) {
+                                        String description, boolean[] isDirty, boolean onServer) {
         if (name == null || name.length() == 0) {
             return null;
         }
@@ -85,7 +85,8 @@ public class Group implements Serialisable {
         group.id = id;
         group.description = description;
         group.projectID = projectId;
-        group.isDirty = dirtyBits;
+        group.isDirty = isDirty;
+        group.onServer = onServer;
         return group;
     }
 
@@ -101,6 +102,7 @@ public class Group implements Serialisable {
         this.projectID = project.getId();
         this.setUpID();
     }
+
     private void setUpID() {
         this.id = SerilizationConstants.generateID(SerilizationConstants.GROUP_NUM);
         ApplicationWideData.addNewGroup(this);
@@ -251,6 +253,7 @@ public class Group implements Serialisable {
 
     /**
      * This should be replaced with a call to the ApplicationWideData class, but leaving for now.
+     *
      * @param id
      * @return group with that id
      */
@@ -275,7 +278,7 @@ public class Group implements Serialisable {
         sb.append("\"projectIDs\": [");
 
 
-        String formatted = ""+projectID;
+        String formatted = "" + projectID;
         sb.append("{\"projectID\": \"" + formatted + "\"}");
 
         sb.append("]");

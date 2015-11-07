@@ -2,7 +2,9 @@ package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -16,31 +18,62 @@ public class LocalDataLoader {
     means everything except for the lists.
      */
 
-    private static void loadChecklists() {
+    public static void loadChecklists() {
+        loadInitialChecklists();
 
     }
 
-    private static void loadGroups() {
+    public static void loadGroups() {
+        loadInitialGroups();
 
     }
 
-    private static void loadLocations() {
+    public static void loadLocations() {
+        loadInitialLocations();
 
     }
 
-    private static void loadNotes() {
+    public static void loadNotes() {
+        loadInitialNotes();
 
     }
 
-    private static void loadPersons() {
+    public static void loadPersons() {
+        loadInitialPersons();
 
     }
 
-    private static void loadProjects() {
-
+    public static void loadProjects() {
+        loadInitialProjects();
+        loadProjectListFields();
     }
 
-    private static void loadShipments() {
+    private static void loadInitialProjects() {
+        List<Project> projects = LocalDataRetriver.getStoredProjects();
+        for (Project project : projects) {
+            ApplicationWideData.addExistingProject(project);
+        }
+    }
+
+    private static void loadProjectListFields() {
+        List<Project> projects = ApplicationWideData.getAllProjects();
+        List<Group> groups = ApplicationWideData.getAllGroups();
+        Map<Long, Project> projectMap = new HashMap<>();
+        for (Project project : projects) {
+            projectMap.put(project.getId(), project);
+        }
+        for(Group group: groups) {
+            long id = group.getId();
+            long projectId = group.getProjectId();
+            if (projectMap.containsKey(projectId)){
+                Project project = projectMap.get(projectId);
+                project.addGroupIDsMaintain(id);
+            }
+        }
+    }
+
+    public static void loadShipments() {
+        loadInitialShipments();
 
     }
 
@@ -55,7 +88,7 @@ public class LocalDataLoader {
         loadNotes();
     }
 
-    private static void loadInitialEverything() {
+    public static void loadInitialEverything() {
         loadInitialProjects();
         loadInitialGroups();
         loadInitialPersons();
@@ -70,21 +103,9 @@ public class LocalDataLoader {
     }
 
     private static void loadInitialGroups() {
-        List<Group> groupTable = new ArrayList<Group>();
-        //This will actually be looping over the lines from the SQL tabel
-        for (Group groupLine: groupTable) {
-            long newId = groupLine.getId();
-            long newProjectId = groupLine.getProjectId();
-            String newName = groupLine.getName();
-            String newDescription = groupLine.getDescription();
-            boolean[] dirtyBits = new boolean[9];
-            //Actually pull out each boolean from the line and put in the right spot, but holding
-            // off until using actual lines from the db
-            Arrays.fill(dirtyBits, false);
-
-            Group newGroup = Group.createFullGroup(newId, newProjectId, newName,
-                    newDescription, dirtyBits);
-            ApplicationWideData.addExistingGroup(newGroup);
+        List<Group> groups = LocalDataRetriver.getStoredGroups();
+        for (Group group : groups) {
+            ApplicationWideData.addExistingGroup(group);
         }
     }
 
@@ -97,14 +118,6 @@ public class LocalDataLoader {
     }
 
     private static void loadInitialPersons() {
-
-    }
-
-    private static void loadInitialProjects() {
-        List<Project> projects = LocalDataRetriver.getStoredProjects();
-        for(Project project: projects) {
-            ApplicationWideData.addExistingProject(project);
-        }
 
     }
 

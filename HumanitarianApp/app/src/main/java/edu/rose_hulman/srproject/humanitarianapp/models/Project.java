@@ -34,9 +34,11 @@ public class Project implements Serialisable {
 
 
      public Project(){
+         removeImplicitVariableDeclarations();
      }
 
     public Project(long id, String name, String description, boolean[] dirtyBits, boolean onServer) {
+        removeImplicitVariableDeclarations();
         this.id = id;
         this.name = name;
         this.description = description;

@@ -134,10 +134,22 @@ public class ApplicationWideData {
     }
 
     public static void addNewProject(Project project) {
+        for(Project existingProject: knownProjects){
+            if (project.getId() == existingProject.getId()){
+                return;
+            }
+        }
         knownProjects.add(project);
     }
 
     public static void addExistingProject(Project project) {
+        for(Project existingProject: knownProjects){
+            if (project.getId() == existingProject.getId()){
+                knownProjects.remove(existingProject);
+                knownProjects.add(project);
+                return;
+            }
+        }
         knownProjects.add(project);
     }
 

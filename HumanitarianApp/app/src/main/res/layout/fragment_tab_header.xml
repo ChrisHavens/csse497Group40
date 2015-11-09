@@ -21,6 +21,12 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/hideButton"
+        android:background="@drawable/ic_visibility_off_white_48dp" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/editButton"
         android:background="@drawable/ic_edit" />
 

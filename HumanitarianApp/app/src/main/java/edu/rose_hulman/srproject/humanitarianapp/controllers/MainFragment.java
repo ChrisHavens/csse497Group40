@@ -162,6 +162,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new ProjectFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -182,6 +183,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new GroupFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -208,6 +210,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new GroupsListFragment();
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -222,6 +225,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         fragment.setArguments(args);
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -232,6 +236,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new LocationsListFragment();
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -243,6 +248,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new NotesListFragment();
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -253,6 +259,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new ChecklistsListFragment();
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -263,6 +270,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new ShipmentsListFragment();
         tabHeader.setAddButtonVisible(View.VISIBLE);
         tabHeader.setEditButtonVisible(View.GONE);
+        tabHeader.setHideButtonVisible(View.GONE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -276,6 +284,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new ChecklistFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -289,6 +298,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new NoteFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -302,6 +312,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new PersonFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -320,6 +331,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new ShipmentFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -390,6 +402,7 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         Fragment fragment = new LocationFragment();
         tabHeader.setAddButtonVisible(View.GONE);
         tabHeader.setEditButtonVisible(View.VISIBLE);
+        tabHeader.setHideButtonVisible(View.VISIBLE);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
@@ -454,6 +467,33 @@ public class MainFragment extends Fragment implements TabSwitchListener,
     }
 
     @Override
+    public void hide() {
+        Fragment f=getChildFragmentManager().findFragmentById(R.id.tabContentContainer);
+
+        if (f instanceof ProjectFragment){
+            mListener.hideProject();
+        }
+        else if (f instanceof GroupFragment){
+            mListener.hideGroup();
+        }
+        else if (f instanceof ChecklistFragment){
+            mListener.hideChecklist();
+        }
+        else if (f instanceof LocationFragment){
+            mListener.hideLocation();
+        }
+        else if (f instanceof NoteFragment){
+            mListener.hideNote();
+        }
+        else if (f instanceof PersonFragment){
+            mListener.hidePerson();
+        }
+        else if (f instanceof ShipmentFragment){
+            mListener.hideShipment();
+        }
+    }
+
+    @Override
     public void delete() {
 
     }
@@ -475,6 +515,16 @@ public class MainFragment extends Fragment implements TabSwitchListener,
         void showEditNote();
         void showEditPerson();
         void showEditShipment();
+
+        void hideProject();
+        void hideGroup();
+        void hideChecklist();
+        void hideLocation();
+        void hideNote();
+        void hidePerson();
+        void hideShipment();
+        
+        
 
         void editChecklist(Checklist c);
 

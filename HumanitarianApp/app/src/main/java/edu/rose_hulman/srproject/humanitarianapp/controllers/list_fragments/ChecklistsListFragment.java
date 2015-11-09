@@ -37,6 +37,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     protected ChecklistsListListener mListener;
     ListArrayAdapter<Checklist> adapter;
     ArrayList<Checklist> checklists=new ArrayList<>();
+    private boolean showHidden=false;
     public ChecklistsListFragment(){
 //        Person aPerson =new Person("Alice Jones", "555-555-5555");
 //        Person bPerson =new Person("Bob Smith", "555-555-5556");
@@ -79,7 +80,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllChecklists(mListener.getSelectedGroup(), new ChecklistListCallback());
+        service.getAllChecklists(mListener.getSelectedGroup(), showHidden, new ChecklistListCallback());
     }
 
     @Override

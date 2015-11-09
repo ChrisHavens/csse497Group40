@@ -31,6 +31,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
     protected LocationsListListener mListener;
     ArrayList<Location> locations=new ArrayList<>();
     ListArrayAdapter<Location> adapter;
+    private boolean showHidden=false;
     public LocationsListFragment(){
 //        Location a=new Location("Little Village");
 //        Location b=new Location("HQ");
@@ -82,7 +83,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllLocations(mListener.getSelectedProject(), new LocationListCallback());
+        service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 
     @Override

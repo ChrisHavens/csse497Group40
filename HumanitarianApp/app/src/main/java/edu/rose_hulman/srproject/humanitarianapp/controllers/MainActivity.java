@@ -504,6 +504,127 @@ public class MainActivity extends Activity implements TabSwitchListener,
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editShipment");
     }
+
+    @Override
+    public void hideProject() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid project", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("project", selectedProject.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hideGroup() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid group", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("group", selectedGroup.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hideChecklist() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid checklist", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("checklist", selectedChecklist.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hideLocation() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid location", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("location", selectedLocation.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hideNote() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid note", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("note", selectedNote.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hidePerson() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid person", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("person", selectedPerson.getID()+"", hideResponse);
+    }
+
+    @Override
+    public void hideShipment() {
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getApplicationContext(), "Successfully hid shipment", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        service.hide("shipment", selectedShipment.getID()+"", hideResponse);
+
+    }
+
     public void editProject(Project p){
 
     }

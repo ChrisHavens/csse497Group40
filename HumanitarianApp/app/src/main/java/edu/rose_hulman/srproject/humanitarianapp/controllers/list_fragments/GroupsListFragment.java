@@ -36,6 +36,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     protected GroupsListListener mListener;
     ArrayList<Group> groups=new ArrayList<>();
     ListArrayAdapter<Group> adapter;
+    private boolean showHidden=false;
     public GroupsListFragment(){
 
     }
@@ -69,7 +70,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllGroups(mListener.getSelectedProject(), new GroupListCallback());
+        service.getAllGroups(mListener.getSelectedProject(), showHidden, new GroupListCallback());
 //        Group a=new Group("Group 40", mListener.getSelectedProject());
 //        Group b=new Group("Group 41", mListener.getSelectedProject());
 //        groups.add(a);

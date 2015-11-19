@@ -103,6 +103,14 @@ public class Location {
         this.groupIDs = groupIDs;
     }
 
+    public void addNewProjectID(long projectID){
+        this.projectIDs.add(projectID);
+    }
+    public void addNewGroupID(long groupID){
+        this.groupIDs.add(groupID);
+    }
+
+
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
@@ -120,12 +128,12 @@ public class Location {
 
         for (int i=0; i<projectIDs.size()-1; i++){
 //            String formatted = ""+;
-            sb.append("{\"projectID\": \""+projectIDs.get(i)+"\"},");
+            sb.append("{\"parendID\": \""+projectIDs.get(i)+"\"},");
         }
         if (projectIDs.size()>0){
             long proj=projectIDs.get(projectIDs.size()-1);
 //            String formatted = ""+proj;
-            sb.append("{\"projectID\": \""+proj+"\"}");
+            sb.append("{\"parentID\": \""+proj+"\"}");
             if (groupIDs.size()>0){
                 sb.append(",");
             }

@@ -3,6 +3,14 @@ package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
 import android.util.Log;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Calendar;
+
+
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -27,6 +35,8 @@ public class NonLocalDataService {
             .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
             .build();
     WrapperService service=adapter.create(WrapperService.class);
+    final String notHiddenFilter="{\"missing\": {\"field\": \"dateArchived\"}},";
+
     /*
     Add requests --Request to database server has body and is of type PUT!
      */
@@ -55,11 +65,11 @@ public class NonLocalDataService {
         service.add( typedInput, callback);
     }
     public void addNewNote(Note note, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("note", ""+note.getID(),note.toJSON());
+        TypedInput typedInput=getAddPayload("note", "" + note.getID(), note.toJSON());
         service.add( typedInput, callback);
     }
     public void addNewShipment(Shipment shipment, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("shipment", ""+shipment.getID(),shipment.toJSON());
+        TypedInput typedInput=getAddPayload("shipment", "" + shipment.getID(), shipment.toJSON());
         service.add( typedInput, callback);
     }
     public void addNewChecklist(Checklist checklist, Callback<Response> callback){
@@ -90,6 +100,11 @@ public class NonLocalDataService {
         TypedInput typedInput=getUpdatePayload("person", personId+"", json);
         service.update(typedInput, callback);
     }
+    public void updateLocation(long locationId, String json, Callback<Response> callback){
+
+        TypedInput typedInput=getUpdatePayload("location", locationId+"", json);
+        service.update(typedInput, callback);
+    }
     public void updateNote(double id, String title, String body, Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
@@ -116,83 +131,200 @@ public class NonLocalDataService {
             return new TypedJsonString(res);
         }
     }
-    public void getAllProjects(Callback<Response> callback){
-        TypedInput typedInput= getSearchPayload("project", null);
-
-
+    public void getAllProjects(boolean showHidden, Callback<Response> callback){
+        TypedInput typedInput;
+        if (showHidden) {
+            typedInput = getSearchPayload("project", null);
+        }
+        else{
+            String notHiddenPayload="{" +
+                    "  \"query\": {" +
+                    "    \"filtered\": {" +
+                    "      \"filter\": {" +
+                    "        \"missing\": {" +
+                    "          \"field\": \"dateArchived\"" +
+                    "        }" +
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
+            typedInput=getSearchPayload("project", notHiddenPayload);
+        }
         service.search(typedInput, callback);
     }
-    public void getAllGroups(Project p, Callback<Response> callback){
+    public void getAllGroups(Project p, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
-        sb.append(""+p.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden){
+            sb.append("{\"query\": " +
+                    "{\"filtered\": {" +
+                    "\"filter\": {\"bool\": { \"must\": ["+
+            "{\"term\": { \"projectIDs.projectID\": \"");
+            sb.append(""+p.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+
+            sb.append("{\"query\": " +
+                    "{\"filtered\": {" +
+                    "\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+
+                    "{\"term\": { \"projectIDs.projectID\": \"");
+            sb.append("" + p.getId());
+            sb.append("\"}}]}}}}}");
+        }
+
         Log.w("JSON", sb.toString());
 
         service.search(getSearchPayload("group", sb.toString()), callback);
     }
-    public void getAllPeople(Project p, Callback<Response> callback){
+    public void getAllPeople(Project p, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(""+p.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append("" + p.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+
+                    "{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append("" + p.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("person", sb.toString()), callback);
 
     }
-    public void getAllPeople(Group g, Callback<Response> callback){
+    public void getAllPeople(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(g.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+
+                    "{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("person", sb.toString()), callback);
 
     }
-    public void getAllNotes(Group g, Callback<Response> callback){
+    public void getAllNotes(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("note", sb.toString()), callback);
 
     }
-    public void getAllChecklists(Group g, Callback<Response> callback){
+    public void getAllChecklists(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("checklist", sb.toString()), callback);
 
     }
-    public void getAllShipments(Group g, Callback<Response> callback){
+    public void getAllShipments(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("shipment", sb.toString()), callback);
 
     }
-    public void getAllLocations(Project p, Callback<Response> callback){
+    public void getAllLocations(Project p, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
-        sb.append(""+p.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append("" + p.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append("" + p.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("location", sb.toString()), callback);
 
     }
-    public void getAllLocations(Group g, Callback<Response> callback){
+    public void getAllLocations(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
-        sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.groupID\": \"");
-        sb.append(g.getId());
-        sb.append("\"}}]}}}}}");
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentIDs.parentID\": \"");
+            sb.append(g.getId());
+            sb.append("\"}}]}}}}}");
+        }
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("location", sb.toString()), callback);
 
+    }
+    public void getAllLocations(long parentId, boolean parentIsGroup, boolean showHidden, Callback<Response> callback){
+        StringBuilder sb= new StringBuilder();
+        if (showHidden) {
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.");
+            if (parentIsGroup) {
+                sb.append("parentID");
+            } else {
+                sb.append("parentID");
+            }
+            sb.append("\": \"");
+            sb.append(parentId);
+            sb.append("\"}}]}}}}}");
+        }
+        else{
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
+                    notHiddenFilter+"{\"term\": { \"parentIDs.");
+            if (parentIsGroup) {
+                sb.append("parentID");
+            } else {
+                sb.append("parentID");
+            }
+            sb.append("\": \"");
+            sb.append(parentId);
+            sb.append("\"}}]}}}}}");
+        }
+        Log.w("JSON", sb.toString());
+        service.search(getSearchPayload("location", sb.toString()), callback);
     }
 
 
@@ -203,6 +335,20 @@ public class NonLocalDataService {
         String uri=String.format("uri=s40/%s/%s",type, id);
         String method="method=GET";
         return new TypedJsonString(String.format("%s&%s", uri, method));
+    }
+    private TypedInput getHidePayload(String type, String id){
+        String uri=String.format("uri=s40/%s/%s/_update", type, id);
+        String method="method=POST";
+        Calendar calendar=Calendar.getInstance();
+        String date=String.format("%04d-%02d-%02d", calendar.get
+                (Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        StringBuilder sb=new StringBuilder();
+        sb.append("{\"doc\":{\"dateArchived\": \""+date+"\"}}");
+        String my_json="json="+sb.toString();
+        return new TypedJsonString(String.format("%s&%s&%s", uri, method,my_json));
+    }
+    public void hide(String type, String id, Callback<Response> callback){
+        service.update(getHidePayload(type, id), callback);
     }
     public void get(String type, String id, Callback<Response> callback){
         service.get(getGetPayload(type, id), callback);

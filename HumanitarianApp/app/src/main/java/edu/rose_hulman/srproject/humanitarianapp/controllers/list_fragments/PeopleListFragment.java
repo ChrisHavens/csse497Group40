@@ -40,6 +40,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     private boolean isFromProject;
     ListArrayAdapter<Person> adapter;
     ArrayList<Person> persons =new ArrayList<>();
+    private boolean showHidden=false;
     public PeopleListFragment(){
 //        Person a=new Person("Alice Jones", "555-555-5555");
 //        a.setLastCheckin(new Location("Little Village"));
@@ -86,10 +87,10 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
         }
         NonLocalDataService service=new NonLocalDataService();
         if (mListener.isFromProject()) {
-            service.getAllPeople(mListener.getSelectedProject(), new PeopleListCallback());
+            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
         }
         else{
-            service.getAllPeople(mListener.getSelectedGroup(), new PeopleListCallback());
+            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
         }
     }
 

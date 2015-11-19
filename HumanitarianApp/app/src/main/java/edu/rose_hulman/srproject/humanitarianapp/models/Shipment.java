@@ -16,7 +16,7 @@ public class Shipment implements Serialisable<Shipment> {
     Location lastLocation;
     String name;
     String status;
-    String parentID;
+    long parentID;
     private long ID;
 
     /*
@@ -353,11 +353,11 @@ public class Shipment implements Serialisable<Shipment> {
         this.status = status;
     }
 
-    public String getParentID() {
+    public long getParentID() {
         return parentID;
     }
 
-    public void setParentID(String parentID) {
+    public void setParentID(long parentID) {
         this.parentID = parentID;
     }
 
@@ -393,5 +393,20 @@ public class Shipment implements Serialisable<Shipment> {
 
         sb.append("}");
         return sb.toString();
+    }
+    public Shipment clone(){
+        Shipment newShipment=new Shipment(this.getID());
+        newShipment.setDate(this.getDate());
+        newShipment.setFromName(this.fromName);
+        newShipment.setFrom(this.from);
+        newShipment.setName(this.name);
+        newShipment.setParentID(this.parentID);
+        newShipment.setTime(this.time);
+        newShipment.setContents(this.contents);
+        newShipment.setLastLocation(this.lastLocation);
+        newShipment.setStatus(this.status);
+        newShipment.setTo(this.to);
+        newShipment.setToName(this.toName);
+        return newShipment;
     }
 }

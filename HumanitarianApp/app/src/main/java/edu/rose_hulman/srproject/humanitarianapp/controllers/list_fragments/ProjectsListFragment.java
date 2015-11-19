@@ -39,8 +39,9 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     protected ProjectsListListener mListener;
     private List<Project> projects = new ArrayList<>();
     ListArrayAdapter<Project> adapter;
+    private boolean showHidden=false;
+    public ProjectsListFragment(){
 
-    public ProjectsListFragment() {
 //        Project project=new Project(1);
 //        project.setName("Project 1");
 //        Project project2=new Project(2);
@@ -78,6 +79,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             throw new NullPointerException("Parent fragment is null");
         }
 
+
         LocalDataLoader.loadProjects();
         projects = ApplicationWideData.getAllProjects();
         for(Project project: projects) {
@@ -85,7 +87,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         }
         //adapter.notifyDataSetChanged();
         NonLocalDataService service = new NonLocalDataService();
-        service.getAllProjects(new ProjectListCallback());
+        service.getAllProjects(showHidden, new ProjectListCallback());
     }
 
     @Override

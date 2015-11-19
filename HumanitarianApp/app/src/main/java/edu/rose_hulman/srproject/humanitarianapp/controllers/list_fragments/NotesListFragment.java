@@ -34,6 +34,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
     protected NotesListListener mListener;
     ArrayList<Note> notes=new ArrayList<>();
     ListArrayAdapter<Note> adapter;
+    private boolean showHidden=false;
     public NotesListFragment(){
 //        Note a=new Note("Note for Bob");
 //        a.setBody("Bob-- Please remember to go to Little Village today.");
@@ -72,7 +73,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllNotes(mListener.getSelectedGroup(), new NoteListCallback());
+        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 
     @Override

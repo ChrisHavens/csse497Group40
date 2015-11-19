@@ -22,6 +22,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 public class TabHeader extends Fragment {
     private Button addButton;
     private Button editButton;
+    private Button hideButton;
     private Backable mListener;
     private CRUDInterface CRUDInterface;
     public TabHeader() {
@@ -76,6 +77,14 @@ public class TabHeader extends Fragment {
             @Override
             public void onClick(View view) {
                 CRUDInterface.edit();
+            }
+        });
+
+        hideButton=(Button)v.findViewById(R.id.hideButton);
+        hideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CRUDInterface.hide();
             }
         });
 //        Tab projects=new Tab(this.getActivity(),null, getResources().getString(R.string.projects));
@@ -136,6 +145,8 @@ public class TabHeader extends Fragment {
     }
     public void setEditButtonVisible(int visible){
         editButton.setVisibility(visible);
+    }
+    public void setHideButtonVisible(int visible){  hideButton.setVisibility(visible);
     }
 
 

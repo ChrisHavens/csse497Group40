@@ -3,11 +3,6 @@ package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.InputStream;
-
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -20,11 +15,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 
 import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
 import retrofit.mime.TypedInput;
 import retrofit.mime.TypedString;
 
@@ -53,11 +43,11 @@ public class NonLocalDataService {
         service.add(typedInput, callback);
     }
     public void addNewProject(Project project, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("project", ""+project.getID(), project.toJSON());
+        TypedInput typedInput=getAddPayload("project", ""+project.getId(), project.toJSON());
         service.add(typedInput, callback);
     }
     public void addNewGroup(Group group, Callback<Response> callback){
-        TypedInput typedInput=getAddPayload("group", ""+group.getID(), group.toJSON());
+        TypedInput typedInput=getAddPayload("group", ""+group.getId(), group.toJSON());
         service.add(typedInput, callback);
     }
     public void addNewLocation(Location location, Callback<Response> callback){
@@ -135,7 +125,7 @@ public class NonLocalDataService {
     public void getAllGroups(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"projectIDs.projectID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
 
@@ -144,7 +134,7 @@ public class NonLocalDataService {
     public void getAllPeople(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("person", sb.toString()), callback);
@@ -153,7 +143,7 @@ public class NonLocalDataService {
     public void getAllPeople(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
-        sb.append(g.getID());
+        sb.append(g.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("person", sb.toString()), callback);
@@ -162,7 +152,7 @@ public class NonLocalDataService {
     public void getAllNotes(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getID());
+        sb.append(g.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("note", sb.toString()), callback);
@@ -171,7 +161,7 @@ public class NonLocalDataService {
     public void getAllChecklists(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getID());
+        sb.append(g.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("checklist", sb.toString()), callback);
@@ -180,7 +170,7 @@ public class NonLocalDataService {
     public void getAllShipments(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentID\": \"");
-        sb.append(g.getID());
+        sb.append(g.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("shipment", sb.toString()), callback);
@@ -189,7 +179,7 @@ public class NonLocalDataService {
     public void getAllLocations(Project p, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
-        sb.append(""+p.getID());
+        sb.append(""+p.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("location", sb.toString()), callback);
@@ -198,7 +188,7 @@ public class NonLocalDataService {
     public void getAllLocations(Group g, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.groupID\": \"");
-        sb.append(g.getID());
+        sb.append(g.getId());
         sb.append("\"}}]}}}}}");
         Log.w("JSON", sb.toString());
         service.search(getSearchPayload("location", sb.toString()), callback);

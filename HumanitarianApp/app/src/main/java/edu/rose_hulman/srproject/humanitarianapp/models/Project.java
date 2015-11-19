@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
@@ -12,48 +13,38 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
  * Created by Chris Havens on 10/4/2015.
  */
 public class Project implements Serialisable {
-    private boolean[] isDirty = new boolean[8];
 
-    private long ID;
-    private long managerID;
-    private String name;
-    private String description;
-
-    private List<Long> groupIDs = new ArrayList<Long>();
-    private List<Long> workerIDs = new ArrayList<Long>();
-    private List<Location> locations = new ArrayList<Location>();
-    private List<Checklist> checklists = new ArrayList<Checklist>();
-
-    //Maybe pull these off into a list of global values?
-    //Yes, established elsewhere, but not used yet.
-    private static List<Project> knownProjects = new ArrayList<Project>();
-    private static long newProjectCount = 1;
-    private static List<Project> localIDProjects = new ArrayList<Project>();
-
-    /*
-     * All of the variables post refactoring. Also, the order is important and based off type NOT
-     * what logically belongs where.
 
      // A flag for each field denoting if it needs to be updated on the server.
      // This will need to be initulized in the constructors.
      private boolean[] isDirty = new boolean[9];
      //A flag for if the object was synced from the server or created locally
-     private boolean[] onServer = false;
+     private boolean onServer = false;
 
      // Any project with the same ID is said to be the same project, across all instances
-     private long ID;                       //#0
+     private long id;                       //#0
      private String name;                   //#1
      private String description;            //#2
      private List<Long> groupIDs;           //#3
      private List<Long> workerIDs;          //#4
      private List<Long> adminIDs;           //#5
-     private List<Long> locationIDs;      //#6
-     private List<Long> checklistIDs;    //#7
-     private List<Long> shipmentIDs;      //#8
+     private List<Long> locationIDs;        //#6
+     private List<Long> checklistIDs;       //#7
+     private List<Long> shipmentIDs;        //#8
 
 
      public Project(){
+         removeImplicitVariableDeclarations();
      }
+
+    public Project(long id, String name, String description, boolean[] dirtyBits, boolean onServer) {
+        removeImplicitVariableDeclarations();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isDirty = dirtyBits;
+        this.onServer = onServer;
+    }
 
      public Project(long id){
         this.removeImplicitVariableDeclarations();
@@ -81,7 +72,7 @@ public class Project implements Serialisable {
         this.name = name;
      }
 
-     public Project(long id, String name, String description){
+     public Project(String name, String description){
         this.setupAsNew();
         this.name = name;
         this.description = description;
@@ -111,7 +102,29 @@ public class Project implements Serialisable {
         this.onServer = true;
     }
 
-    public void setName(String ){
+    public long getId() {
+        return this.id;
+    }
+
+    public boolean[] getIsDirty() {
+        return this.isDirty;
+    }
+
+    public int getDirtyBits() {
+        int bits = 0;
+        for(int i = 0; i < 9; i++) {
+            if (isDirty[i]) {
+                bits = bits | 1 << i;
+            }
+        }
+        return bits;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name){
         this.name = name;
         this.isDirty[1] = true;
     }
@@ -126,11 +139,11 @@ public class Project implements Serialisable {
     }
 
     public void setDescription(String description){
-        this. = ;
+        this.description = description;
         this.isDirty[2] = true;
     }
 
-    public void seDescriptiontClean (String description) {
+    public void setDescriptionClean (String description) {
         this.description = description;
         this.isDirty[2] = false;
     }
@@ -225,7 +238,7 @@ public class Project implements Serialisable {
 
     public void addGroupIDs (Long id) {
         this.groupIDs.add(id);
-        this.isDirty[3]
+        this.isDirty[3] = true;
     }
 
     public void addGroupIDsClean (Long id) {
@@ -239,7 +252,7 @@ public class Project implements Serialisable {
 
     public void addWorkerID (Long id) {
         this.workerIDs.add(id);
-        this.isDirty[4]
+        this.isDirty[4] = true;
     }
 
     public void addWorkerIDClean (Long id) {
@@ -252,12 +265,12 @@ public class Project implements Serialisable {
 
     public void addAdminID (Long id) {
         this.adminIDs.add(id);
-        this.isDirty[5]
+        this.isDirty[5] = false;
     }
 
     public void addAdminIDClean (Long id) {
         this.adminIDs.add(id);
-        this.isDirty[5];
+        this.isDirty[5] = false;
     }
 
     public void addAdminIDMaintain (Long id) {
@@ -266,12 +279,12 @@ public class Project implements Serialisable {
 
     public void addLocationID (Long id) {
         this.locationIDs.add(id);
-        this.isDirty[6]
+        this.isDirty[6] = true;
     }
 
     public void addLocationIDClean (Long id) {
         this.locationIDs.add(id);
-        this.isDirty[6];
+        this.isDirty[6] = false;
     }
 
     public void addLocationIDMaintain (Long id) {
@@ -280,12 +293,12 @@ public class Project implements Serialisable {
 
     public void addChecklistID (Long id) {
         this.checklistIDs.add(id);
-        this.isDirty[7]
+        this.isDirty[7] = true;
     }
 
     public void addChecklistIDClean (Long id) {
         this.checklistIDs.add(id);
-        this.isDirty[7];
+        this.isDirty[7] = false;
     }
 
     public void addChecklistIDMaintain (Long id) {
@@ -294,122 +307,19 @@ public class Project implements Serialisable {
 
     public void addShipmentID (Long id) {
         this.shipmentIDs.add(id);
-        this.isDirty[8]
+        this.isDirty[8] = true;
     }
 
     public void addShipmentIDClean (Long id) {
         this.shipmentIDs.add(id);
-        this.isDirty[8];
+        this.isDirty[8] = false;
     }
 
     public void addShipmentIDMaintain (Long id) {
         this.shipmentIDs.add(id);
     }
 
-     */
 
-    public Project() {
-        this.setUpDefaultID();
-    }
-
-    public Project(long ID) {
-        this.ID = ID;
-        knownProjects.add(this);
-    }
-
-    public Project(String name) {
-        this.name = name;
-        this.setUpDefaultID();
-    }
-
-    public Project(String name, long ID) {
-        this.name = name;
-        this.ID = ID;
-        knownProjects.add(this);
-
-    }
-
-    private void setUpDefaultID() {
-        Random rand = new Random();
-        int localIDNum = rand.nextInt();
-        //TODO: Add the user ID to the id as well
-        this.ID = ((long) localIDNum) | SerilizationConstants.PROJECT_NUM;
-        localIDProjects.add(this);
-        knownProjects.add(this);
-    }
-
-    public static Project createFullProject(String name, String description, long managerID) {
-        Project project = new Project();
-        if (name == null || name.length() == 0) {
-            return null;
-        }
-        project.name = name;
-        project.description = description;
-        project.managerID = managerID;
-        return project;
-    }
-
-    @Override
-    public String serialise() {
-        return null;
-    }
-
-    @Override
-    public Serialisable deserialise(String s) {
-        return null;
-    }
-
-    public long getID() {
-        return ID;
-    }
-
-    public Person getManager() {
-        return Person.getWorkerByID(this.managerID);
-    }
-
-    public void setManager(Person manager) {
-        this.managerID = manager.getID();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void addLocations(Location location) {
-        this.locations.add(location);
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<Checklist> getChecklist() {
-        return checklists;
-    }
-
-    public void addChecklist(Checklist checklist) {
-        this.checklists.add(checklist);
-    }
-
-    public void setChecklist(List<Checklist> checklist) {
-        this.checklists = checklist;
-    }
 
     public List<Person> getWorkers() {
         List<Person> persons = new ArrayList<Person>();
@@ -464,15 +374,22 @@ public class Project implements Serialisable {
     }
 
     public void updateID(long newID) {
-        long oldID = this.ID;
-        this.ID = newID;
-        localIDProjects.remove(this);
+        long oldID = this.id;
+        this.id = newID;
         for (Person person : Person.getKnownPersons()) {
             person.updateGroupIDs(oldID, newID);
         }
         for (Group group : Group.getKnownGroups()) {
             group.updateWorkerID(oldID, newID);
         }
+    }
+
+    public static Project getProjectByID(long id) {
+        return ApplicationWideData.getProjectByID(id);
+    }
+
+    public static List<Project> getKnownProjects() {
+        return ApplicationWideData.getAllProjects();
     }
 
     /*
@@ -489,10 +406,21 @@ public class Project implements Serialisable {
 
 }
      */
+
+    @Override
+    public String serialise() {
+        return null;
+    }
+
+    @Override
+    public Serialisable deserialise(String s) {
+        return null;
+    }
+
     public String toJSON() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        sb.append("\"name\": \"" + getName() + "\",");
+        sb.append("\"name\": \"" + this.name + "\",");
         //sb.append("\"role\": \""+Roles.roles[role.ordinal()]+"\",");
 
         sb.append(getGroupString());
@@ -525,16 +453,103 @@ public class Project implements Serialisable {
         return sb.toString();
     }
 
-    public static Project getProjectByID(long ID) {
-        for (Project project : knownProjects) {
-            if (project.ID == ID) {
-                return project;
-            }
-        }
-        return null;
-    }
 
-    public static List<Project> getKnownProjects() {
-        return knownProjects;
+    public String getDescription() {
+        return description;
     }
 }
+
+//    public Project() {
+//        this.setUpDefaultID();
+//    }
+//
+//    public Project(long ID) {
+//        this.ID = ID;
+//        knownProjects.add(this);
+//    }
+//
+//    public Project(String name) {
+//        this.name = name;
+//        this.setUpDefaultID();
+//    }
+//
+//    public Project(String name, long ID) {
+//        this.name = name;
+//        this.ID = ID;
+//        knownProjects.add(this);
+//
+//    }
+//
+//    private void setUpDefaultID() {
+//        Random rand = new Random();
+//        int localIDNum = rand.nextInt();
+//        this.ID = ((long) localIDNum) | SerilizationConstants.PROJECT_NUM;
+//        localIDProjects.add(this);
+//        knownProjects.add(this);
+//    }
+
+    /*
+    public static Project createFullProject(String name, String description, long managerID) {
+        Project project = new Project();
+        if (name == null || name.length() == 0) {
+            return null;
+        }
+        project.name = name;
+        project.description = description;
+        project.managerID = managerID;
+        return project;
+    }
+
+
+
+    public long getId() {
+        return ID;
+    }
+
+    public Person getManager() {
+        return Person.getWorkerByID(this.managerID);
+    }
+
+    public void setManager(Person manager) {
+        this.adminIDs.add(manager.getId()) = ;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void addLocations(Location location) {
+        this.locations.add(location);
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<Checklist> getChecklist() {
+        return checklists;
+    }
+
+    public void addChecklist(Checklist checklist) {
+        this.checklists.add(checklist);
+    }
+
+    public void setChecklist(List<Checklist> checklist) {
+        this.checklists = checklist;
+    } */

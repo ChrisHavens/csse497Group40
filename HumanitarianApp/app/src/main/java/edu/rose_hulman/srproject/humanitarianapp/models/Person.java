@@ -93,10 +93,7 @@ public class Person implements Serializable {
     }
 
     private void setUpID(){
-        Random rand=new Random();
-        int localIDNum = rand.nextInt();
-        //TODO: Add the user ID to the id as well
-        this.ID = ((long) localIDNum) | SerilizationConstants.PERSON_NUM;
+        this.ID = SerilizationConstants.generateID(SerilizationConstants.PERSON_NUM);
         knownPersons.add(this);
         localIDPersons.add(this);
     }
@@ -110,10 +107,10 @@ public class Person implements Serializable {
             person.addLocation(initialAssignment);
         }
         if (initialProject != null) {
-            person.projectIDs.add(initialProject.getID());
+            person.projectIDs.add(initialProject.getId());
         }
         if (initialGroup != null) {
-            person.groupIDs.add(initialGroup.getID());
+            person.groupIDs.add(initialGroup.getId());
         }
         return person;
 

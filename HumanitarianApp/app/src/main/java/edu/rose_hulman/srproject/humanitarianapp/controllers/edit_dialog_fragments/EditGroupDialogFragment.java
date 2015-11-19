@@ -65,7 +65,7 @@ public class EditGroupDialogFragment extends DialogFragment {
                         NonLocalDataService service=new NonLocalDataService();
                         StringBuilder sb=new StringBuilder();
                         sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateGroup(group.getID(), sb.toString(), new Callback<Response>() {
+                        service.updateGroup(group.getId(), sb.toString(), new Callback<Response>() {
                             @Override
                             public void success(Response response, Response response2) {
                                 Log.wtf("s40", "Successful edit of group " + group.getName());

@@ -51,13 +51,28 @@ public class PersonREST {
 			
 			response = target.path("/_search").request().get(Response.class);
 		}
+		else if (projectID.equals("null") && groupID.equals("null") && showHidden){
+			String notHiddenPayload="{" +
+                    "  \"query\": {" +
+                    "    \"filtered\": {" +
+                    "      \"filter\": {" +
+                    "        \"missing\": {" +
+                    "          \"field\": \"dateArchived\"" +
+                    "        }" +
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
+			response = target.path("/_search").request().post(Entity.entity(notHiddenPayload, MediaType.APPLICATION_JSON_TYPE));
+		}
+		else{
 		StringBuilder sb= new StringBuilder();
 		
         
             sb.append("{\"query\": " +
                     "{\"filtered\": {" +
                     "\"filter\": {\"bool\": { \"must\": [");
-            if (showHidden){
+            if (!showHidden){
             	sb.append(notHiddenFilter);
             }
             sb.append("{\"term\": { \"parentIDs.parentID\": \"");
@@ -72,7 +87,7 @@ public class PersonREST {
 		
 			
 			response = target.path("/_search").request().post(Entity.entity(sb.toString(), MediaType.APPLICATION_JSON_TYPE));
-		
+		}
 		
 		 try{
 			    return response.readEntity(String.class);
@@ -114,22 +129,24 @@ public class PersonREST {
 		Response response = target.path("/"+id).request().put(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
 		return response.readEntity(String.class);
 	}
-	@POST @Path("{id}/hide")
+	@POST @Path("{id}/visibility")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String hidePerson(@PathParam("id") String id){
+	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
+		 StringBuilder sb=new StringBuilder();
+		sb.append("{\"doc\":{\"dateArchived\": \"");
+		if (status.equalsIgnoreCase("hide")){
         Calendar calendar=Calendar.getInstance();
         String date=String.format("%04d-%02d-%02d", calendar.get
                 (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
-        StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": \""+date+"\"}}");
-        
-        return updatePerson(id, sb.toString());
-	}
-	@POST @Path("{id}/show")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String showPerson(@PathParam("id") String id){
-		StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": null}}");
+        sb.append(date);
+		}
+		else if (status.equalsIgnoreCase("show")){
+			sb.append("null");
+		}
+		else{
+			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		}
+        sb.append("\"}}");
         
         return updatePerson(id, sb.toString());
 	}

@@ -48,14 +48,32 @@ public class ShipmentREST {
 		if (groupID.equals("null") && showHidden){
 			
 			response = target.path("/_search").request().get(Response.class);
+			//return response.readEntity(String.class);
 		}
+		else if (groupID.equals("null")){
+			String notHiddenPayload="{" +
+                    "  \"query\": {" +
+                    "    \"filtered\": {" +
+                    "      \"filter\": {" +
+                    "        \"missing\": {" +
+                    "          \"field\": \"dateArchived\"" +
+                    "        }" +
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
+			response = target.path("/_search").request().post(Entity.entity(notHiddenPayload, MediaType.APPLICATION_JSON_TYPE));
+		
+		}
+		else{
+			
 		StringBuilder sb= new StringBuilder();
 		
         
             sb.append("{\"query\": " +
                     "{\"filtered\": {" +
                     "\"filter\": {\"bool\": { \"must\": [");
-            if (showHidden){
+            if (!showHidden){
             	sb.append(notHiddenFilter);
             }
             sb.append("{\"term\": { \"parentID\": \"");
@@ -69,7 +87,7 @@ public class ShipmentREST {
 			
 			response = target.path("/_search").request().post(Entity.entity(sb.toString(), MediaType.APPLICATION_JSON_TYPE));
 		
-		
+		}
 		 try{
 			    return response.readEntity(String.class);
 			    }catch (NullPointerException e){
@@ -110,22 +128,24 @@ public class ShipmentREST {
 		Response response = target.path("/"+id).request().put(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
 		return response.readEntity(String.class);
 	}
-	@POST @Path("{id}/hide")
+	@POST @Path("{id}/visibility")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String hideShipment(@PathParam("id") String id){
+	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
+		 StringBuilder sb=new StringBuilder();
+		sb.append("{\"doc\":{\"dateArchived\": \"");
+		if (status.equalsIgnoreCase("hide")){
         Calendar calendar=Calendar.getInstance();
         String date=String.format("%04d-%02d-%02d", calendar.get
                 (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
-        StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": \""+date+"\"}}");
-        
-        return updateShipment(id, sb.toString());
-	}
-	@POST @Path("{id}/show")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String showShipment(@PathParam("id") String id){
-		StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": null}}");
+        sb.append(date);
+		}
+		else if (status.equalsIgnoreCase("show")){
+			sb.append("null");
+		}
+		else{
+			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		}
+        sb.append("\"}}");
         
         return updateShipment(id, sb.toString());
 	}

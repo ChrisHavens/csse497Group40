@@ -45,6 +45,7 @@ public class ProjectREST {
 		if (userID.equals("null") && showHidden){
 			
 			response = target.path("/_search").request().get(Response.class);
+			return response.readEntity(String.class);
 		}
 		else if (userID.equals("null") && !showHidden){
 			String notHiddenPayload="{" +
@@ -92,7 +93,8 @@ public class ProjectREST {
 	@GET @Path("{id}")
 	public String get(@PathParam("id") String id){
 		Response response=null;
-		response = target.path("/"+id).request().get(Response.class);
+		String path="/"+id;
+		response = target.path(path).request().get(Response.class);
 		try{
 		    return response.readEntity(String.class);
 		    }catch (NullPointerException e){
@@ -100,6 +102,7 @@ public class ProjectREST {
 		    }
 		    return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
 	}
+	
 	@POST @Path("{id}/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -122,25 +125,35 @@ public class ProjectREST {
 		Response response = target.path("/"+id).request().put(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
 		return response.readEntity(String.class);
 	}
-	@POST @Path("{id}/hide")
+	@POST @Path("{id}/visibility")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String hideProject(@PathParam("id") String id){
+	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
+		 StringBuilder sb=new StringBuilder();
+		sb.append("{\"doc\":{\"dateArchived\": \"");
+		if (status.equalsIgnoreCase("hide")){
         Calendar calendar=Calendar.getInstance();
         String date=String.format("%04d-%02d-%02d", calendar.get
                 (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
-        StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": \""+date+"\"}}");
+        sb.append(date);
+		}
+		else if (status.equalsIgnoreCase("show")){
+			sb.append("null");
+		}
+		else{
+			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		}
+        sb.append("\"}}");
         
         return updateProject(id, sb.toString());
 	}
-	@POST @Path("{id}/show")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String showProject(@PathParam("id") String id){
-		StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"dateArchived\": null}}");
-        
-        return updateProject(id, sb.toString());
-	}
+//	@POST @Path("{id}/show")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public String showProject(@PathParam("id") String id){
+//		StringBuilder sb=new StringBuilder();
+//        sb.append("{\"doc\":{\"dateArchived\": null}}");
+//        
+//        return updateProject(id, sb.toString());
+//	}
 	
 	
 

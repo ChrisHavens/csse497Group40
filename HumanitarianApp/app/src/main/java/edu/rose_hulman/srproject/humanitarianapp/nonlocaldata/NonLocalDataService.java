@@ -270,13 +270,13 @@ public class NonLocalDataService {
     public void getAllLocations(Project p, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         if (showHidden) {
-            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.projectID\": \"");
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
             sb.append("" + p.getID());
             sb.append("\"}}]}}}}}");
         }
         else{
             sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
-                    notHiddenFilter+"{\"term\": { \"parentIDs.projectID\": \"");
+                    notHiddenFilter+"{\"term\": { \"parentIDs.parentID\": \"");
             sb.append("" + p.getID());
             sb.append("\"}}]}}}}}");
         }
@@ -287,13 +287,13 @@ public class NonLocalDataService {
     public void getAllLocations(Group g, boolean showHidden, Callback<Response> callback){
         StringBuilder sb= new StringBuilder();
         if (showHidden) {
-            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.groupID\": \"");
+            sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.parentID\": \"");
             sb.append(g.getID());
             sb.append("\"}}]}}}}}");
         }
         else{
             sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
-                    notHiddenFilter+"{\"term\": { \"parentIDs.groupID\": \"");
+                    notHiddenFilter+"{\"term\": { \"parentIDs.parentID\": \"");
             sb.append(g.getID());
             sb.append("\"}}]}}}}}");
         }
@@ -306,9 +306,9 @@ public class NonLocalDataService {
         if (showHidden) {
             sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": [{\"term\": { \"parentIDs.");
             if (parentIsGroup) {
-                sb.append("groupID");
+                sb.append("parentID");
             } else {
-                sb.append("projectID");
+                sb.append("parentID");
             }
             sb.append("\": \"");
             sb.append(parentId);
@@ -318,9 +318,9 @@ public class NonLocalDataService {
             sb.append("{\"query\": {\"filtered\": {\"filter\": {\"bool\": { \"must\": ["+
                     notHiddenFilter+"{\"term\": { \"parentIDs.");
             if (parentIsGroup) {
-                sb.append("groupID");
+                sb.append("parentID");
             } else {
-                sb.append("projectID");
+                sb.append("parentID");
             }
             sb.append("\": \"");
             sb.append(parentId);

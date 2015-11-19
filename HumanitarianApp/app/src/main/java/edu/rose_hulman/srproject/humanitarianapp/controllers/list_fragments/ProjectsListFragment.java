@@ -35,6 +35,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
     protected ProjectsListListener mListener;
     private ArrayList<Project> projects=new ArrayList<>();
     ListArrayAdapter<Project> adapter;
+    private boolean showHidden=false;
     public ProjectsListFragment(){
 //        Project project=new Project(1);
 //        project.setName("Project 1");
@@ -72,7 +73,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllProjects(new ProjectListCallback());
+        service.getAllProjects(showHidden, new ProjectListCallback());
     }
 
     @Override

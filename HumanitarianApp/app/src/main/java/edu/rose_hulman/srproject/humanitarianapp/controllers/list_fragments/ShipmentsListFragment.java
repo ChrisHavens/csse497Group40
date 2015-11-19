@@ -37,6 +37,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     ArrayList<Shipment> shipments=new ArrayList<>();
     NonLocalDataService service;
     ListArrayAdapter<Shipment> adapter;
+    private boolean showHidden=false;
     //public Shipment(String contents, String from, String to, String time, String date) {
 
 
@@ -76,7 +77,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             throw new NullPointerException("Parent fragment is null");
         }
         service=new NonLocalDataService();
-        service.getAllShipments(mListener.getSelectedGroup(), new ShipmentListCallback());
+        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 
     @Override

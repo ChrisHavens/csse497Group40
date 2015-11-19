@@ -11,6 +11,85 @@ PUT s40/project/101000
     ]
     
 }
+PUT s40/project/101002
+{
+  "name": "Harvest the organics",
+  "groupIDs": [
+    {
+      "groupID": "200001"
+    },
+    {
+      "groupID": "201001"
+    }
+    ],
+    "dateArchived": "2183-10-04"
+    
+}
+PUT s40/group/201001
+{
+  "name": "Reapers",
+  "projectIDs": [
+  {"projectID": "101002"}
+  ],
+  "dateArchived": "2183-10-04"
+}
+PUT s40/group/200001
+{
+  "name": "Collectors",
+  "projectIDs": [
+  {"projectID": "101002"}
+  ],
+  "dateArchived": "2183-10-04"
+}
+PUT s40/person/3020
+{
+  "lastLocation": 
+    
+        {
+         "lat": "5.01",
+         "lng": "57.4",
+         "name": "Omega-4 Relay",
+         "time": "2185-03-02 15:10"
+        }
+    ,
+  "name": "Harbinger",
+  "email": "assumingDirectControl@collectors.extranet.org",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "101002"},
+  {"parentID": "200001"}
+  ],
+  "dateArchived": "2183-10-04"
+}
+PUT s40/person/3021
+{
+  "lastLocation": 
+    {
+        "lat": "38.9",
+        "lng": "43.61",
+        "name": "The Citadel",
+         "time": "2183-05-11 23:09"
+        }
+    ,
+  "name": "Sovereign",
+  "email": "vanguardOfYourDestruction@reapers.extranet.org",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "101002"},
+  {"parentID": "201001"}
+  ],
+  "dateArchived": "2183-10-04"
+}
+
+PUT s40/note/501001
+{
+  "contents": "We impose order on the chaos of organic evolution. You exist because we allow it, and you will end because we demand it.",
+  "lastModTime": "2183-04-17 06:23",
+  "name": "Things to say to intimidate Shepard",
+  "parentID": "201001",
+  "dateArchived": "2183-10-04"
+}
+
 PUT s40/project/101001
 {
   "name": "Run the country",
@@ -56,8 +135,28 @@ PUT s40/person/3000
          "time": "2185-07-28 09:01"
         }
     ,
-  "name": "Fem!Shep",
+  "name": "FemShep",
   "email": "notDeadYet@normandy.extranet.org",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "101000"},
+  {"parentID": "200000"},
+  {"parentID": "201000"}
+  ]
+}
+PUT s40/person/3005
+{
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "Normandy SR-2",
+         "time": "2185-07-28 17:28"
+        }
+    ,
+  "name": "Garrus Vakarian",
+  "email": "calibrator@normandy.extranet.org",
   "phone": "555-555-5555",
   "parentIDs": [
   {"parentID": "101000"},
@@ -291,9 +390,19 @@ PUT s40/location/402000
   "lng": "43.61",
   "name": "The Citadel",
   "parentIDs": [
-  {"projectID": "101000"}
+  {"projectID": "101000"},
+  {"projectID": "101002"}
   ]
 }
+PUT s40/location/402001
+{
+         "lat": "5.01",
+         "lng": "57.4",
+         "name": "Omega-4 Relay",
+        "parentIDs":[
+          {"projectID": "101002"}
+          ]
+        }
 
 PUT s40/location/401001
 {
@@ -308,7 +417,7 @@ PUT s40/location/402001
 {
   "lat": "38.889803", 
   "lng": "-77.009114",
-  "name": "The U.S. Capitol",,
+  "name": "The U.S. Capitol",
   "parentIDs": [
   {"projectID": "101001"}
   ]
@@ -384,6 +493,17 @@ PUT s40/shipment/601000
   "pickupTime": "2185-10-12 04:08",
   "status": "En-route"
 }
+PUT s40/shipment/601001
+{
+  "contents": "One half-done Human Reaper",
+  "toLocationID": "402000",
+  "fromLocationID": "402001",
+  "name": "Yet another fetch quest",
+  "parentID": "201001",
+  "pickupTime": "2185-03-12 10:08",
+  "status": "En-route",
+  "dateArchived": "2183-10-04"
+}
 PUT s40/checklist/701000
 {
   "name": "Shepard's to do list",
@@ -423,3 +543,75 @@ PUT s40/checklist/701000
     ]
   
 }
+
+PUT s40/checklist/701001
+{
+  "name": "Races to destroy",
+  "parentID":"201001",
+  "checklistItems": [
+      {"checklistItemID": "70100101",
+      "isDone": false,
+      "personID": "3021",
+      "task": "Harvest:",
+      "sublistItems": [
+        {
+          "sublistItemID": "7010010101",
+          "task": "Humans",
+          "isDone": false,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010102",
+          "task": "Protheans",
+          "isDone": true,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010103",
+          "task": "Turians",
+          "isDone": false,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010104",
+          "task": "Asari",
+          "isDone": false,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010105",
+          "task": "Salarians",
+          "isDone": false,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010106",
+          "task": "Krogan",
+          "isDone": false,
+          "personID": "3021"
+        },
+        {
+          "sublistItemID": "7010010107",
+          "task": "Quarians",
+          "isDone": false,
+          "personID": "3021"
+        }
+        ]
+      }
+    ],
+    "dateArchived": "2183-10-04"
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

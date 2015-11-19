@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -56,6 +57,7 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         checklist=mListener.getSelectedChecklist();
+
         mAdapter=new ListArrayAdapter<Checklist.ChecklistItem>(getActivity(),
             R.layout.list_checklist, checklist.getItemList()){
 
@@ -114,6 +116,13 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_checklist, container, false);
         TextView title=(TextView) view.findViewById(R.id.title);
+        Button b= (Button) view.findViewById(R.id.okButton);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.editChecklist(checklist);
+            }
+        });
         title.setText(checklist.getTitle());
         // Set the adapter
         mListView = (AbsListView) view.findViewById(R.id.listView);
@@ -162,6 +171,7 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
     public interface ChecklistFragmentListener {
 
        public Checklist getSelectedChecklist();
+        public void editChecklist(Checklist c);
     }
 
 }

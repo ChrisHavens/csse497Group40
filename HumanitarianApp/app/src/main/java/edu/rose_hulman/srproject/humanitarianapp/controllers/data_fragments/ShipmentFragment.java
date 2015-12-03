@@ -3,7 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +77,7 @@ public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ShipmentFragmentListener) getParentFragment();
+            mListener = (ShipmentFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ShipmentFragmentListener");
@@ -94,11 +94,11 @@ public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
     private void attachMapFragment(){
-        MapFragment myMapFragment = MapFragment.newInstance();
-        FragmentTransaction fragmentTransaction =
-                getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.map_container, myMapFragment);
-        fragmentTransaction.commit();
+//        MapFragment myMapFragment = MapFragment.newInstance();
+//        FragmentTransaction fragmentTransaction =
+//                getChildFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.map_container, myMapFragment);
+//        fragmentTransaction.commit();
     }
 
     @Override

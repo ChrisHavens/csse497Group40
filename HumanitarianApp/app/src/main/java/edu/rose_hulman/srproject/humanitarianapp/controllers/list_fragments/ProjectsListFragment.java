@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
+
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
@@ -32,7 +32,7 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Backable}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class ProjectsListFragment extends AbstractListFragment<Project> {
@@ -70,7 +70,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ProjectsListListener) getParentFragment();
+            mListener = (ProjectsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(getParentFragment().toString()
                     + " must implement ListSelectable<T>");
@@ -80,13 +80,14 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         }
 
 
-        LocalDataLoader.loadProjects();
-        projects = ApplicationWideData.getAllProjects();
-        for(Project project: projects) {
-            Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
-        }
+//        LocalDataLoader.loadProjects();
+//        projects = ApplicationWideData.getAllProjects();
+//        for(Project project: projects) {
+//            Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
+//        }
         //adapter.notifyDataSetChanged();
         NonLocalDataService service = new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         service.getAllProjects(showHidden, new ProjectListCallback());
     }
 
@@ -118,6 +119,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
     public interface ProjectsListListener {
         void onItemSelected(Project t);
+        boolean getShowHidden();
     }
 
     public class ProjectListCallback implements Callback<Response> {
@@ -138,14 +140,16 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
                     Project p = new Project(Integer.parseInt(((String) map.get("_id"))));
                     p.setName((String) source.get("name"));
-                    ApplicationWideData.addExistingProject(p);
-                    LocalDataSaver.addProject(p);
+//                    ApplicationWideData.addExistingProject(p);
+//                    LocalDataSaver.addProject(p);
+                    projects.add(p);
 
                 }
-                if (list.size() > 0) {
-                    projects = ApplicationWideData.getAllProjects();
-                    adapter.notifyDataSetChanged();
-                }
+//                if (list.size() > 0) {
+//                    projects = ApplicationWideData.getAllProjects();
+//                    adapter.notifyDataSetChanged();
+//                }
+                adapter.notifyDataSetChanged();
             } catch (IOException e) {
                 e.printStackTrace();
             }

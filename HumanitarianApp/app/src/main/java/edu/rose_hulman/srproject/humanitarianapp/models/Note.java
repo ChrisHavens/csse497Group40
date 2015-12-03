@@ -5,11 +5,12 @@ import java.util.Calendar;
 /**
  * Created by daveyle on 10/4/2015.
  */
-public class Note {
+public class Note implements Selectable{
     private String title;
     private String body;
     private String date;
     private String time;
+    private boolean isHidden=false;
     private long parentID;
     private long id;
 
@@ -89,5 +90,10 @@ public class Note {
         sb.append("\"parentID\": \""+getParentID()+"\"");
         sb.append("}");
         return sb.toString();
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 }

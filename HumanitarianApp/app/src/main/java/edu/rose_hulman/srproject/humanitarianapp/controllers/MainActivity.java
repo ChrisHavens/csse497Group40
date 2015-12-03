@@ -2,9 +2,9 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -13,9 +13,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -32,6 +35,13 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddShipmentDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ChecklistFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.GroupFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.LocationFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.NoteFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.PersonFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ProjectFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ShipmentFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditLocationDialogFragment;
@@ -40,6 +50,13 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragmen
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditShipmentDialogFragment;
 
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ChecklistsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.GroupsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.LocationsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.NotesListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.PeopleListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ShipmentsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
@@ -53,6 +70,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
+import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -62,8 +80,8 @@ import retrofit.client.Response;
 //import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
-public class MainActivity extends Activity implements TabSwitchListener,
-        AddPersonDialogFragment.AddPersonListener, MainFragment.CRUDListener,
+public class MainActivity extends ActionBarActivity implements //TabSwitchListener,
+        AddPersonDialogFragment.AddPersonListener, //MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
         AddChecklistDialogFragment.AddChecklistListener,
@@ -72,24 +90,27 @@ public class MainActivity extends Activity implements TabSwitchListener,
         EditChecklistDialogFragment.EditChecklistListener,
         AddNoteDialogFragment.AddNoteListener,
         AddShipmentDialogFragment.AddShipmentListener,
-        EditShipmentDialogFragment.EditShipmentListener
-
+        EditShipmentDialogFragment.EditShipmentListener,
+        ProjectsListFragment.ProjectsListListener, ProjectFragment.ProjectFragmentListener,
+        PeopleListFragment.PeopleListListener, GroupsListFragment.GroupsListListener,
+        PersonFragment.WorkerFragmentListener, GroupFragment.OnFragmentInteractionListener,
+        ChecklistsListFragment.ChecklistsListListener,
+        NotesListFragment.NotesListListener,  ShipmentsListFragment.ShipmentsListListener,
+        ShipmentFragment.ShipmentFragmentListener,
+        ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener,
+        LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener, CRUDInterface,
+        android.support.v4.app.FragmentManager.OnBackStackChangedListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
 {
 
     public static String GoogleMapsAPIKey="AIzaSyCJLQb_7gSUe-Vg5S0jMvigSCJkbcJ_8aE";
-    NonLocalDataService service=new NonLocalDataService();
-    private Group selectedGroup;
-    private Person selectedPerson;
-    private Checklist selectedChecklist;
-    private Note selectedNote;
-    private Location selectedLocation;
-    private Shipment selectedShipment;
-    private Project selectedProject;
-	private long parentID;
-    private List<Project> storedProjects;
+    //NonLocalDataService service=new NonLocalDataService();
+    MainServiceActions actions;
+
+    private Toolbar toolbar;
+    private boolean showHidden=false;
 
 
 
@@ -103,7 +124,26 @@ public class MainActivity extends Activity implements TabSwitchListener,
         ApplicationWideData.db = db;
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables();
-        storedProjects = LocalDataRetriver.getStoredProjects();
+        actions=new MainServiceActions(getApplicationContext());
+        actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
+        toolbar=(Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                }
+            }
+        });
+
+
+        onProjectsButtonClicked();
     }
 
 
@@ -121,38 +161,182 @@ public class MainActivity extends Activity implements TabSwitchListener,
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        if (id== R.id.hideButton){
+            hide();
             return true;
         }
 
+        else if (id== R.id.editButton){
+            edit();
+            return true;
+        }
+        else if (id== R.id.addButton){
+            add();
+            return true;
+        }
+        else if (id== R.id.button2){
+            //;
+            return true;
+        }
+        else if (id==R.id.showHiddenButton){
+            if (showHidden){
+                showHidden=false;
+                MenuItem showHiddenItem=toolbar.getMenu().findItem(R.id.showHiddenButton);
+                if (showHiddenItem!=null)
+                showHiddenItem.setTitle(R.string.showHiddenItems);
+            }
+            else{
+                showHidden=true;
+                MenuItem showHiddenItem=toolbar.getMenu().findItem(R.id.showHiddenButton);
+                if (showHiddenItem!=null)
+                showHiddenItem.setTitle(R.string.hideHiddenItems);
+            }
+            return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
+    private void changeFragmentToSelected(Fragment fragment, Selectable selected){
+        setVisibilityAdd(false);
+        setVisibilityEdit(true);
+        setVisibilityShowHidden(false);
+        if (selected.isHidden()){
+            setVisibilityShow(true);
+            setVisibilityHide(false);
+        }
+        else{
+            setVisibilityHide(true);
+            setVisibilityShow(false);
+        }
 
-
-    @Override
-    public void onProjectsButtonClicked() {
-        Fragment fragment = new MainFragment();
-
-        FragmentManager fm = getFragmentManager();
+//        setVisibilityShow(false);
+//        setVisibilityHide(true);
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment, fragment);
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
+        transaction.commit();
+    }
+    private void changeFragmentToList(Fragment fragment){
+        setVisibilityAdd(true);
+        setVisibilityEdit(false);
+        setVisibilityShow(false);
+        setVisibilityHide(false);
+        setVisibilityShowHidden(true);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
         transaction.commit();
     }
 
-    @Override
-    public void onPeopleButtonClicked() {
 
+
+    public void onProjectsButtonClicked() {
+        changeFragmentToList(new ProjectsListFragment());
+
+
+    }
+    @Override
+    public void onItemSelected(Project project) {
+        actions.setSelectedProject(project);
+        changeFragmentToSelected(new ProjectFragment(), project);
+    }
+    @Override
+    public void onItemSelected(Group group) {
+        actions.setSelectedGroup(group);
+        changeFragmentToSelected(new GroupFragment(), group);
+    }
+    @Override
+    public void onItemSelected(Checklist t) {
+        actions.setSelectedChecklist(t);
+        changeFragmentToSelected(new ChecklistFragment(), t);
     }
 
     @Override
-    public void onNotesButtonClicked() {
-
+    public void onItemSelected(Note t) {
+        actions.setSelectedNote(t);
+        changeFragmentToSelected(new NoteFragment(), t);
     }
 
     @Override
-    public void onChecklistsButtonClicked() {
+    public void onItemSelected(Person t) {
+        actions.setSelectedPerson(t);
+        changeFragmentToSelected(new PersonFragment(),t);
+    }
+    @Override
+    public void onItemSelected(Shipment t) {
+        actions.setSelectedShipment(t);
+        changeFragmentToSelected(new ShipmentFragment(),t);
+    }
+    @Override
+    public void onItemSelected(Location t) {
+        actions.setSelectedLocation(t);
+        changeFragmentToSelected(new LocationFragment(), t);
+    }
 
+
+
+
+
+    private void setVisibilityAdd(boolean vis){
+        MenuItem item=toolbar.getMenu().findItem(R.id.addButton);
+        if (item!=null)
+        item.setVisible(vis);
+    }
+    private void setVisibilityEdit(boolean vis){
+        MenuItem item=toolbar.getMenu().findItem(R.id.editButton);
+        if (item!=null)
+        item.setVisible(vis);
+
+    }
+    private void setVisibilityShow(boolean vis){
+
+
+    }
+    private void setVisibilityHide(boolean vis){
+        MenuItem item=toolbar.getMenu().findItem(R.id.hideButton);
+        if (item!=null)
+        item.setVisible(vis);
+
+    }
+    private void setVisibilityShowHidden(boolean vis){
+        MenuItem item=toolbar.getMenu().findItem(R.id.showHiddenButton);
+        if (item!=null)
+        item.setVisible(vis);
+
+    }
+
+
+    public void showGroups(){
+        changeFragmentToList(new GroupsListFragment());
+    }
+    public void showPeople(boolean fromProject){
+        actions.setIsFromProject(fromProject);
+        Fragment fragment = new PeopleListFragment();
+
+        Bundle args=new Bundle();
+        args.putBoolean("isFromProject", fromProject);
+        fragment.setArguments(args);
+        changeFragmentToList(fragment);
+    }
+    public void showLocations(){
+        changeFragmentToList(new LocationsListFragment());
+    }
+
+    public void showNotes(){
+        changeFragmentToList(new NotesListFragment());
+    }
+    public void showChecklists(){
+        changeFragmentToList(new ChecklistsListFragment());
+    }
+    public void showShipments(){
+        changeFragmentToList(new ShipmentsListFragment());
     }
 
     public void makePhoneCall(String s) {
@@ -176,6 +360,14 @@ public class MainActivity extends Activity implements TabSwitchListener,
         }
     }
 
+    @Override
+    public void saveNote(String title, String body){
+
+        actions.saveNote(title, body);
+
+
+
+    }
     public void checkIn() {
 //        Client client = new TransportClient()
 //   .addTransportAddress(new InetSocketTransportAddress("s40server.csse.rose-hulman.edu", 9300));
@@ -200,52 +392,14 @@ public class MainActivity extends Activity implements TabSwitchListener,
 //        }
 
     }
+
+
     private String getCurrentLocation(){
         String[] locations={"lcn01000", "lcn00002", "lcn02001", "lcn01001"};
         Random rand=new Random();
         return locations[rand.nextInt(4)];
     }
-    @Override
-    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
-        long projectID=selectedProject.getId();
-        long groupID=-1;
-        if (getSelectedGroup()!=null) {
-            groupID = getSelectedGroup().getId();
-        }
-        Person p=new Person(name, phone, email);
-        edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
-        location.setName("Omega 4 Relay");
-        location.setTime("2185-04-05 14:45");
-        location.setLat(34.56f);
-        location.setLng(-5.45f);
 
-        //location.setID(10000);
-        p.setLastCheckin(location);
-        p.addProjectID(projectID);
-        if (groupID!=-1) {
-            p.addGroupID(groupID);
-        }
-        
-        //location.setId(10000);
-        p.setLastCheckin(location);
-        p.addProjectID(projectID);
-        if (groupID != -1) {
-            p.addGroupID(groupID);
-        }
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        //NonLocalDataService service=new NonLocalDataService();
-        service.addNewPerson(p, responseCallback);
-    }
 
 
     //    @Override
@@ -269,174 +423,69 @@ public class MainActivity extends Activity implements TabSwitchListener,
 //        service.updatePerson(person, responseCallback);
 //    }
     @Override
+    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+        actions.addNewPerson(name,phone,email,role);
+    }
+    @Override
 
     public void addNewProject(final String name) {
-//        Random rand=new Random();
-//        long i= rand.nextInt(90000)+10000;
-//        i+=100000;
-//        Project p= new Project(name, i);
-        Project p = new Project(name);
-
-
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new project: " + name, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        boolean success = LocalDataSaver.addProject(p);
-        if (success) {
-            Toast.makeText(getApplicationContext(), "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
-        }
-        service.addNewProject(p, responseCallback);
+        actions.addNewProject(name);
     }
 
     @Override
     public void addNewGroup(final String name) {
-        Random rand=new Random();
-        long i= rand.nextInt(90000)+10000;
-        i+=200000;
-
-        Group g= new Group(i);
-        g.setName(name);
-        g.setProject(selectedProject);
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new group: " + name, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        service.addNewGroup(g, responseCallback);
-        Callback<Response> responseCallback2 = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful editing of project", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewProject(selectedProject, responseCallback);
-//        sb.append("{\"doc\": {");
-//        sb.append(project.getGroupString());
-//        sb.append("}}");
-        //service.updateProject(project.getId(), sb.toString(), responseCallback2);
-
-
+        actions.addNewGroup(name);
     }
 
     @Override
 
     public void addNewLocation(final Location l) {
-
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new location: "+l.getName(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        service.addNewLocation(l, responseCallback);
-
+        actions.addNewLocation(l);
     }
 
 
     @Override
     public void addNewNote(String name, String contents){
-        Random rand=new Random();
-        long i= rand.nextInt(90000)+10000;
-        i+=500000;
-        final Note note=new Note(i);
-        note.setParentID(selectedGroup.getId());
-        note.setTitle(name);
-        note.setBody(contents);
-//        Date date=new Date();
-//
-//        SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd HH:mm");
-//        String s=sdf.format(date);
-//        //LocalDateTime time;
-//        note.setLastModified(s);
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new note: "+note.getTitle(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewNote(note, responseCallback);
+        actions.addNewNote(name, contents);
     }
     @Override
     public void addNewShipment(final Shipment l) {
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new shipment: "+l.getName(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewShipment(l, responseCallback);
+        actions.addNewShipment(l);
     }
 
-    @Override
+
     public void addProject() {
-        Toast.makeText(getApplicationContext(), "Number of projects in DB: " + this.storedProjects.size(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Number of projects in DB: " + this.storedProjects.size(), Toast.LENGTH_LONG).show();
         DialogFragment newFragment = new AddProjectDialogFragment();
         newFragment.show(getFragmentManager(), "addProject");
     }
 
-    @Override
+
     public void addGroup() {
         DialogFragment newFragment = new AddGroupDialogFragment();
         newFragment.show(getFragmentManager(), "addGroup");
     }
 
-    @Override
+
     public void addChecklist() {
         DialogFragment newFragment = new AddChecklistDialogFragment();
 
         Bundle b=new Bundle();
-        b.putLong("parentID", selectedGroup.getId());
+        b.putLong("parentID", actions.getSelectedGroup().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
     }
 
-    @Override
+
     public void addLocation() {
         DialogFragment newFragment = new AddLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", selectedProject.getId());
+        b.putLong("projectID", actions.getSelectedProject().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addLocation");
     }
 
-    @Override
+
     public void addNote() {
         DialogFragment newFragment = new AddNoteDialogFragment();
 
@@ -446,47 +495,49 @@ public class MainActivity extends Activity implements TabSwitchListener,
         newFragment.show(getFragmentManager(), "addNote");
     }
 
-    @Override
+
     public void addPerson() {
         DialogFragment newFragment = new AddPersonDialogFragment();
         newFragment.show(getFragmentManager(), "addPerson");
     }
 
-    @Override
+
     public void addShipment() {
         DialogFragment newFragment = new AddShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", selectedGroup.getId());
-        b.putLong("projectID", selectedProject.getId());
+        b.putLong("groupID", actions.getSelectedGroup().getId());
+        b.putLong("projectID", actions.getSelectedProject().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addShipment");
     }
 
-    @Override
+
+
+
 
     public void showEditProject() {
-        Log.wtf("ProjectID", selectedProject.getId()+"");
+        //Log.wtf("ProjectID", selectedProject.getId()+"");
         DialogFragment newFragment = new EditProjectDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", selectedProject.getId());
+        b.putLong("projectID", actions.getSelectedProject().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editProject");
     }
 
-    @Override
+
     public void showEditGroup() {
-        Log.wtf("GroupID", selectedGroup.getId()+"");
+        //Log.wtf("GroupID", selectedGroup.getId()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", selectedGroup.getId());
+        b.putLong("groupID", actions.getSelectedGroup().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editGroup");
     }
 
-    @Override
+
     public void showEditChecklist() {
 
-        Log.wtf("ChecklistID", selectedChecklist.getID()+"");
+        //Log.wtf("ChecklistID", selectedChecklist.getID()+"");
 
         DialogFragment newFragment = new EditChecklistDialogFragment();
 //        Bundle b=new Bundle();
@@ -495,273 +546,236 @@ public class MainActivity extends Activity implements TabSwitchListener,
         newFragment.show(getFragmentManager(), "editChecklist");
     }
 
-    @Override
+
     public void showEditLocation() {
         DialogFragment newFragment = new EditLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("ID", selectedLocation.getID());
+        b.putLong("ID", actions.getSelectedLocation().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editLocation");
     }
 
-    @Override
+
     public void showEditNote() {
 
     }
 
-    @Override
+
     public void showEditPerson() {
-        Log.wtf("PersonID", selectedPerson.getID()+"");
+       // Log.wtf("PersonID", selectedPerson.getID()+"");
         DialogFragment newFragment = new EditPersonDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("personID", selectedPerson.getID());
+        b.putLong("personID", actions.getSelectedPerson().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editPerson");
     }
 
-    @Override
+
     public void showEditShipment() {
         DialogFragment newFragment = new EditShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", selectedGroup.getId());
-        b.putLong("projectID", selectedProject.getId());
+        b.putLong("groupID", actions.getSelectedGroup().getId());
+        b.putLong("projectID", actions.getSelectedProject().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editShipment");
     }
 
-    @Override
-    public void hideProject() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid project", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("project", selectedProject.getId()+"", hideResponse);
-    }
 
 
-    @Override
-    public void hideGroup() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid group", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("group", selectedGroup.getId()+"", hideResponse);
-    }
-
-    @Override
-    public void hideChecklist() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid checklist", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("checklist", selectedChecklist.getID()+"", hideResponse);
-    }
-
-    @Override
-    public void hideLocation() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid location", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("location", selectedLocation.getID()+"", hideResponse);
-    }
-
-    @Override
-    public void hideNote() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid note", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("note", selectedNote.getID()+"", hideResponse);
-    }
-
-    @Override
-    public void hidePerson() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid person", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("person", selectedPerson.getID()+"", hideResponse);
-    }
-
-    @Override
-    public void hideShipment() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successfully hid shipment", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
-        service.hide("shipment", selectedShipment.getID()+"", hideResponse);
-
-    }
 
     public void editProject(Project p){
 
 
     }
     public void editChecklist(final Checklist c){
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful editing of checklist: "+c.getTitle(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        service.addNewChecklist(c, responseCallback);
+        actions.editChecklist(c);
     }
 
     @Override
     public Group getSelectedGroup() {
-        return selectedGroup;
+        return actions.getSelectedGroup();
     }
 
-    @Override
+
     public void setSelectedGroup(Group selectedGroup) {
-        this.selectedGroup = selectedGroup;
+        actions.setSelectedGroup(selectedGroup);
     }
 
     @Override
     public Person getSelectedPerson() {
-        return selectedPerson;
+        return actions.getSelectedPerson();
     }
 
     @Override
     public void addNewChecklist(final Checklist checklist) {
-        Random rand = new Random();
-        long i = rand.nextInt(90000) + 10000;
-        i += 700000;
-        checklist.setID(i);
-        checklist.setItemIDs();
-
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(getApplicationContext(), "Successful adding of new checklist: " + checklist.getTitle(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        service.addNewChecklist(checklist, responseCallback);
+        actions.addNewChecklist(checklist);
 	}
 
     public void setSelectedPerson(Person selectedPerson) {
-        this.selectedPerson = selectedPerson;
+        actions.setSelectedPerson(selectedPerson);
     }
 
     @Override
     public Checklist getSelectedChecklist() {
-        return selectedChecklist;
+        return actions.getSelectedChecklist();
     }
 
-    @Override
+
     public void setSelectedChecklist(Checklist selectedChecklist) {
-        this.selectedChecklist = selectedChecklist;
+        actions.setSelectedChecklist(selectedChecklist);
     }
 
     @Override
     public Note getSelectedNote() {
-        return selectedNote;
+        return actions.getSelectedNote();
     }
 
-    @Override
+
     public void setSelectedNote(Note selectedNote) {
-        this.selectedNote = selectedNote;
+        actions.setSelectedNote(selectedNote);
     }
 
     @Override
     public Location getSelectedLocation() {
-        return selectedLocation;
+        return actions.getSelectedLocation();
     }
 
-    @Override
+
     public void setSelectedLocation(Location selectedLocation) {
-        this.selectedLocation = selectedLocation;
+        actions.setSelectedLocation(selectedLocation);
     }
 
     @Override
     public Shipment getSelectedShipment() {
-        return selectedShipment;
+        return actions.getSelectedShipment();
     }
 
-    @Override
+
     public void setSelectedShipment(Shipment selectedShipment) {
-        this.selectedShipment = selectedShipment;
+        actions.setSelectedShipment(selectedShipment);
     }
 
     @Override
     public Project getSelectedProject() {
-        return selectedProject;
+        return actions.getSelectedProject();
+    }
+    @Override
+    public boolean getShowHidden() {
+        return showHidden;
+    }
+
+
+    public void setSelectedProject(Project selectedProject) {
+        actions.setSelectedProject(selectedProject);
+    }
+    @Override
+    public void add() {
+        Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+
+        if (f instanceof ProjectsListFragment){
+            addProject();
+        }
+        else if (f instanceof GroupsListFragment) {
+            addGroup();
+        }
+        else if (f instanceof ChecklistsListFragment){
+            addChecklist();
+        }
+        else if (f instanceof LocationsListFragment){
+            addLocation();
+        }
+        else if (f instanceof NotesListFragment){
+            addNote();
+        }
+        else if (f instanceof PeopleListFragment){
+            addPerson();
+        }
+        else if (f instanceof ShipmentsListFragment){
+            addShipment();
+        }
+
+
     }
 
     @Override
-    public void setSelectedProject(Project selectedProject) {
-        this.selectedProject = selectedProject;
+    public void edit() {
+        Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+
+        if (f instanceof ProjectFragment){
+            showEditProject();
+        }
+        else if (f instanceof GroupFragment){
+            showEditGroup();
+        }
+        else if (f instanceof ChecklistFragment){
+            showEditChecklist();
+        }
+        else if (f instanceof LocationFragment){
+            showEditLocation();
+        }
+        else if (f instanceof NoteFragment){
+            showEditNote();
+        }
+        else if (f instanceof PersonFragment){
+            showEditPerson();
+        }
+        else if (f instanceof ShipmentFragment){
+            showEditShipment();
+        }
+
+    }
+
+    @Override
+    public void hide() {
+        Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+
+        if (f instanceof ProjectFragment){
+            actions.hideProject();
+        }
+        else if (f instanceof GroupFragment){
+            actions.hideGroup();
+        }
+        else if (f instanceof ChecklistFragment){
+            actions.hideChecklist();
+        }
+        else if (f instanceof LocationFragment){
+            actions.hideLocation();
+        }
+        else if (f instanceof NoteFragment){
+            actions.hideNote();
+        }
+        else if (f instanceof PersonFragment){
+            actions.hidePerson();
+        }
+        else if (f instanceof ShipmentFragment){
+            actions.hideShipment();
+        }
+    }
+    @Override
+    public void delete() {
+
+    }
+    @Override
+    public boolean isFromProject() {
+        return actions.isFromProject();
     }
 
 
+    @Override
+    public void onBackStackChanged() {
+        shouldDisplayHomeUp();
+    }
 
+    public void shouldDisplayHomeUp(){
+        //Enable Up button only  if there are entries in the back stack
+        boolean canback = getSupportFragmentManager().getBackStackEntryCount()>0;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(canback);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        //This method is called when the up button is pressed. Just the pop back stack.
+        getSupportFragmentManager().popBackStack();
+        return true;
+    }
 }

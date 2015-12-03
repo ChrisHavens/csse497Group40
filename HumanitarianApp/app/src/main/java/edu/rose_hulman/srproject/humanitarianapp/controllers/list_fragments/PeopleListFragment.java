@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
+
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -77,7 +77,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (PeopleListListener) getParentFragment();
+            mListener = (PeopleListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ListSelectable<T>");
@@ -86,6 +86,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         if (mListener.isFromProject()) {
             service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
         }
@@ -166,6 +167,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     }
     public interface PeopleListListener{
         void onItemSelected(Person t);
+        boolean getShowHidden();
         boolean isFromProject();
         Project getSelectedProject();
         Group getSelectedGroup();

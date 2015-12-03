@@ -1,6 +1,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/hideButton"
+        android:orderInCategory="200"
+        android:title="Hide"
+        android:icon="@drawable/ic_visibility_off_white_48dp"
+        app:showAsAction="always"
+        ></item>
+    <item
+        android:id="@+id/showHiddenButton"
+        android:orderInCategory="200"
+        android:title="@string/showHiddenItems"
+        app:showAsAction="ifRoom"
+        ></item>
+
+    <item
+        android:id="@+id/editButton"
+        android:orderInCategory="300"
+        android:title="Edit"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/addButton"
+        android:orderInCategory="400"
+        android:title="Add"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/button2"
+        android:orderInCategory="500"
+        android:title="Check in"
+        android:icon="@drawable/ic_menu_mylocation"
+        app:showAsAction="always"></item>
 </menu>

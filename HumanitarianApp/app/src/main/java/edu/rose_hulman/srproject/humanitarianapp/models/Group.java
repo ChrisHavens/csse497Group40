@@ -10,7 +10,7 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
 /**
  * Created by Chris Havens on 10/4/2015.
  */
-public class Group implements Serialisable {
+public class Group implements Serialisable, Selectable {
 //    private long id;
 //    private long projectID;
 //    private String name;
@@ -40,6 +40,7 @@ public class Group implements Serialisable {
     private String name;
     private String description;
     private List<Long> workerIDs;
+    private boolean isHidden=false;
     private List<Note> notes = new ArrayList<>();
     private List<Checklist> checklists = new ArrayList<>();
     private List<Shipment> shipments = new ArrayList<>();
@@ -294,4 +295,8 @@ public class Group implements Serialisable {
     }
 
 
+    @Override
+    public boolean isHidden() {
+        return isHidden;
+    }
 }

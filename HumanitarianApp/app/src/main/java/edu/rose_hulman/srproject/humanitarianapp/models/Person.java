@@ -13,7 +13,7 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
 /**
  * Created by daveyle on 9/21/2015.
  */
-public class Person implements Serializable {
+public class Person implements Serializable, Selectable {
     private String name;
     private String phoneNumber;
     private String email;
@@ -24,6 +24,7 @@ public class Person implements Serializable {
     private List<Long> projectIDs =  new ArrayList<Long>();
     private List<Location> locations =  new ArrayList<Location>();
     private long ID;
+    private boolean isHidden=false;
 
     //Maybe pull these off into a list of global values?
     //Yes, established elsewhere, but not used yet.
@@ -285,6 +286,11 @@ public class Person implements Serializable {
 
     public void setRole(Roles.PersonRoles role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 
     public static class PersonLocation{

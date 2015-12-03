@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
+
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
@@ -83,6 +83,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 
@@ -136,6 +137,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
 
     public interface LocationsListListener{
         void onItemSelected(Location t);
+        boolean getShowHidden();
         Project getSelectedProject();
     }
 }

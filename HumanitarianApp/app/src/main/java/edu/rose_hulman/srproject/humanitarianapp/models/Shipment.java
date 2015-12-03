@@ -5,7 +5,7 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 /**
  * Created by daveyle on 9/21/2015.
  */
-public class Shipment implements Serialisable<Shipment> {
+public class Shipment implements Serialisable<Shipment>, Selectable {
     String contents;
     String from;
     String to;
@@ -18,6 +18,7 @@ public class Shipment implements Serialisable<Shipment> {
     String status;
     long parentID;
     private long ID;
+    private boolean isHidden=false;
 
     /*
      All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -408,5 +409,10 @@ public class Shipment implements Serialisable<Shipment> {
         newShipment.setTo(this.to);
         newShipment.setToName(this.toName);
         return newShipment;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 }

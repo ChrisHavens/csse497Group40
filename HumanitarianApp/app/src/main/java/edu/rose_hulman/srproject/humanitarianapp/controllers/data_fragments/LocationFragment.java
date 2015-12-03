@@ -1,7 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +56,7 @@ public class LocationFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (LocationFragmentListener) getParentFragment();
+            mListener = (LocationFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement NoteFragmentListener");

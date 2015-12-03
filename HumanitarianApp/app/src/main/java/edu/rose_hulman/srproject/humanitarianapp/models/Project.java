@@ -12,7 +12,7 @@ import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConst
 /**
  * Created by Chris Havens on 10/4/2015.
  */
-public class Project implements Serialisable {
+public class Project implements Serialisable, Selectable {
 
 
      // A flag for each field denoting if it needs to be updated on the server.
@@ -31,7 +31,7 @@ public class Project implements Serialisable {
      private List<Long> locationIDs;        //#6
      private List<Long> checklistIDs;       //#7
      private List<Long> shipmentIDs;        //#8
-
+    private boolean isHidden=false;
 
      public Project(){
          removeImplicitVariableDeclarations();
@@ -456,6 +456,11 @@ public class Project implements Serialisable {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 }
 

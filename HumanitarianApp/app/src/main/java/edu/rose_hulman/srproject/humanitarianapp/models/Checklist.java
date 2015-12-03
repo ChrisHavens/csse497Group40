@@ -7,10 +7,11 @@ import java.util.List;
 /**
  * Created by daveyle on 10/4/2015.
  */
-public class Checklist {
+public class Checklist implements Selectable{
     private long id;
     private String title;
     private long parentID;
+    private boolean isHidden=false;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
 
     /**
@@ -196,6 +197,11 @@ public class Checklist {
             }
 
         }
+    }
+
+    @Override
+     public boolean isHidden() {
+        return isHidden;
     }
 
     public static class ChecklistItem{

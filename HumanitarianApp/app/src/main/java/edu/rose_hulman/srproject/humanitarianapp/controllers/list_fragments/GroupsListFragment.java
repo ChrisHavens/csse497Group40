@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
+
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -29,7 +29,7 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Backable}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class GroupsListFragment extends AbstractListFragment<Group>{
@@ -61,7 +61,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (GroupsListListener) getParentFragment();
+            mListener = (GroupsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ListSelectable<T>");
@@ -70,6 +70,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         service.getAllGroups(mListener.getSelectedProject(), showHidden, new GroupListCallback());
 //        Group a=new Group("Group 40", mListener.getSelectedProject());
 //        Group b=new Group("Group 41", mListener.getSelectedProject());
@@ -139,6 +140,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     }
     public interface GroupsListListener{
         void onItemSelected(Group t);
+        boolean getShowHidden();
         Project getSelectedProject();
     }
 

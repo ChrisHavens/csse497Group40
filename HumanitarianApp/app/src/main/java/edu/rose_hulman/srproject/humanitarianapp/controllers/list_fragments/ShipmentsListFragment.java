@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -68,7 +67,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ShipmentsListListener) getParentFragment();
+            mListener = (ShipmentsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ShipmentsListListener");
@@ -77,6 +76,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             throw new NullPointerException("Parent fragment is null");
         }
         service=new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 
@@ -225,6 +225,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     }
     public interface ShipmentsListListener{
         void onItemSelected(Shipment t);
+        boolean getShowHidden();
         Group getSelectedGroup();
     }
 }

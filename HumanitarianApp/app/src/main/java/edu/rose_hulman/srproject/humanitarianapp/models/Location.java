@@ -3,13 +3,14 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Location {
+public class Location implements Selectable{
     private long ID;                //0
     private float lng;              //1
     private float lat;              //2
     private String name;            //3
     private List<Long> projectIDs;  //4
     private List<Long> groupIDs;    //5
+    private boolean isHidden=false;
 
     /*
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -148,5 +149,10 @@ public class Location {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 }

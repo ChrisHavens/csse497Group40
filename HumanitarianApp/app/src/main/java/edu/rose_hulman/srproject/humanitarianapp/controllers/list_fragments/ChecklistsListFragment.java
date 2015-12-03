@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Backable;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -71,7 +70,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ChecklistsListListener) getParentFragment();
+            mListener = (ChecklistsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ListSelectable<T>");
@@ -80,6 +79,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
+        showHidden=mListener.getShowHidden();
         service.getAllChecklists(mListener.getSelectedGroup(), showHidden, new ChecklistListCallback());
     }
 
@@ -171,6 +171,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     }
     public interface ChecklistsListListener{
         void onItemSelected(Checklist t);
+        boolean getShowHidden();
         Group getSelectedGroup();
     }
 

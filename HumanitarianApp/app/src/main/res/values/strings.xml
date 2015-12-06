@@ -59,4 +59,8 @@
     <string name="chooseLocations">Choose Locations</string>
     <string name="showHiddenItems">Show Hidden Items</string>
     <string name="hideHiddenItems">Hide Hidden Items</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>

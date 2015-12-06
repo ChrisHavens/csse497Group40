@@ -111,6 +111,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     private Toolbar toolbar;
     private boolean showHidden=false;
+    private String userID;
 
 
 
@@ -118,6 +119,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent=getIntent();
+        userID=intent.getStringExtra("userID");
+        Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
         // Startup Code Here
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();

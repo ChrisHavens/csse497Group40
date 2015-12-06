@@ -74,7 +74,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (LocationsListListener) getParentFragment();
+            mListener = (LocationsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ListSelectable<T>");

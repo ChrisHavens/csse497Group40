@@ -148,8 +148,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
                         boolean found = (boolean) map.get("found");
                         if (found) {
-                            HashMap<String, Object> source=(HashMap)map.get("_source");
-                            String personID=(String) source.get("personId");
+                            String personID=(String) map.get("personId");
                             switchToMain(personID);
                         }
                         else{

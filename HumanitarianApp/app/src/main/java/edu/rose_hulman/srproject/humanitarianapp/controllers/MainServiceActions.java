@@ -348,7 +348,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("project", selectedProject.getId() + "", hideResponse);
+        service.service.changeVisibilityProject(selectedProject.getId() + "", "hide",hideResponse);
+        //hide("project", selectedProject.getId() + "", hideResponse);
     }
 
 
@@ -366,7 +367,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("group", selectedGroup.getId() + "", hideResponse);
+        service.service.changeVisibilityGroup(selectedGroup.getId()+"", "hide", hideResponse);
+//        service.hide("group", selectedGroup.getId() + "", hideResponse);
     }
 
 
@@ -383,7 +385,7 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("checklist", selectedChecklist.getID() + "", hideResponse);
+        service.service.changeVisibilityChecklist(selectedChecklist.getID() + "", "hide", hideResponse);
     }
 
 
@@ -400,7 +402,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("location", selectedLocation.getID()+"", hideResponse);
+        service.service.changeVisibilityLocation(selectedLocation.getID()+"", "hide", hideResponse);
+//        service.hide("location", selectedLocation.getID()+"", hideResponse);
     }
 
 
@@ -417,7 +420,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("note", selectedNote.getID() + "", hideResponse);
+        service.service.changeVisibilityNote(selectedNote.getID()+"", "hide", hideResponse);
+//        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
 
@@ -434,7 +438,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("person", selectedPerson.getID()+"", hideResponse);
+        service.service.changeVisibilityPerson(selectedPerson.getID()+"", "hide", hideResponse);
+//        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
 
 
@@ -451,7 +456,8 @@ public class MainServiceActions {
 
             }
         };
-        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
+        service.service.changeVisibilityShipment(selectedShipment.getID()+"", "hide", hideResponse);
+//        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
 
     }
     public void editChecklist(final Checklist c){

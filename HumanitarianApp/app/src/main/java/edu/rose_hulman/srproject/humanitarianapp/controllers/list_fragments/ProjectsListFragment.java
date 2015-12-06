@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,7 +89,13 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         //adapter.notifyDataSetChanged();
         NonLocalDataService service = new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllProjects(showHidden, new ProjectListCallback());
+        Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
+        //if (mListener.getUserID().equals("-1")){
+            service.service.getProjectList(showHidden, new ProjectListCallback());
+        //}
+        //else {
+        //    service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
+        //}
     }
 
     @Override
@@ -120,6 +127,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     public interface ProjectsListListener {
         void onItemSelected(Project t);
         boolean getShowHidden();
+        String getUserID();
     }
 
     public class ProjectListCallback implements Callback<Response> {

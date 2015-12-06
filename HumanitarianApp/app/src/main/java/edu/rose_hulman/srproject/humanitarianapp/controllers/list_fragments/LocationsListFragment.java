@@ -84,7 +84,8 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
+        service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getId()+"", new LocationListCallback());
+     //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 
     @Override

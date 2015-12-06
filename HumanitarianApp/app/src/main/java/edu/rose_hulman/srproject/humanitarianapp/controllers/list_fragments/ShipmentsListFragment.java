@@ -28,7 +28,7 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Backable}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
@@ -77,7 +77,8 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         }
         service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
+        service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getId()+"", new ShipmentListCallback());
+//        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 
     @Override
@@ -126,8 +127,8 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                     s.setContents((String) source.get("contents"));
                     s.setFrom((String) source.get("fromLocationID"));
                     s.setTo((String) source.get("toLocationID"));
-                    service.get("location", s.getTo(), new ShipmentToLocationCallbacks(s));
-                    service.get("location", s.getFrom(), new ShipmentFromLocationCallbacks(s));
+                    service.service.getLocation(s.getTo(), new ShipmentToLocationCallbacks(s));
+                    service.service.getLocation(s.getFrom(), new ShipmentFromLocationCallbacks(s));
                     //s.setLast((String) source.get("fromLocationID"));
                     s.setName((String) source.get("name"));
                     String[] split=((String) source.get("pickupTime")).split(" ");

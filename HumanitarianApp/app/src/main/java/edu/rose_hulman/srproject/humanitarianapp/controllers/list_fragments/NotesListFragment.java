@@ -73,7 +73,8 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
+        service.service.getNoteList(showHidden, mListener.getSelectedGroup().getId()+"", new NoteListCallback());
+//        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 
     @Override

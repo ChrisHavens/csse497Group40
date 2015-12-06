@@ -29,7 +29,7 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Backable}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
@@ -80,7 +80,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllChecklists(mListener.getSelectedGroup(), showHidden, new ChecklistListCallback());
+        service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getId()+"", new ChecklistListCallback());
     }
 
     @Override

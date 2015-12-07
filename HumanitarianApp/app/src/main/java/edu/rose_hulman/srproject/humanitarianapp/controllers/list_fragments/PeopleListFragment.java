@@ -18,6 +18,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
@@ -42,12 +43,6 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     ArrayList<Person> persons =new ArrayList<>();
     private boolean showHidden=false;
     public PeopleListFragment(){
-//        Person a=new Person("Alice Jones", "555-555-5555");
-//        a.setLastCheckin(new Location("Little Village"));
-//        persons.add(a);
-//        Person b=new Person("Bob Smith", "555-555-5556");
-//        b.setLastCheckin(new Location("HQ"));
-//        persons.add(b);
     }
 
 
@@ -86,11 +81,14 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
             throw new NullPointerException("Parent fragment is null");
         }
         NonLocalDataService service=new NonLocalDataService();
+
         showHidden=mListener.getShowHidden();
         if (mListener.isFromProject()) {
+            //Load selected people from DB
             service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
         }
         else{
+            //Load selected people from DB
             service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
         }
     }
@@ -151,6 +149,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     personLoc.setTime((String) lastLoc.get("time"));
                     p.setLastCheckin(personLoc);
                     persons.add(p);
+                    LocalDataSaver.addPerson(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

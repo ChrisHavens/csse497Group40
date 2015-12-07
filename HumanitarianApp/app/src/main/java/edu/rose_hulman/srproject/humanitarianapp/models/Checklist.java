@@ -13,6 +13,7 @@ public class Checklist implements Selectable{
     private long parentID;
     private boolean isHidden=false;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
+    private int dirtyBits = 0;
 
     /**
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -202,6 +203,14 @@ public class Checklist implements Selectable{
     @Override
      public boolean isHidden() {
         return isHidden;
+    }
+
+    public int getDirtyBits() {
+        return dirtyBits;
+    }
+
+    public void setDirtyBits(int dirtyBits) {
+        this.dirtyBits = dirtyBits;
     }
 
     public static class ChecklistItem{

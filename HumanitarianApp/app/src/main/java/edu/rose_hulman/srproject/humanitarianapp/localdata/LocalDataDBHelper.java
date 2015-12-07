@@ -40,6 +40,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     private static final String SQL_PHONE = "CREATE TABLE [Phone](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Phone#] [nchar](20) NOT NULL)";
+    //TODO: Update table to store the data acutally needed by the shipments.
     private static final String SQL_SHIPMENT = "CREATE TABLE [Shipment](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +

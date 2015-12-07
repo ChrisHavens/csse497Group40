@@ -11,6 +11,7 @@ public class Location implements Selectable{
     private List<Long> projectIDs;  //4
     private List<Long> groupIDs;    //5
     private boolean isHidden=false;
+    private int dirtyBits = 0;
 
     /*
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -154,5 +155,13 @@ public class Location implements Selectable{
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public void setDirtyBits(int dirtyBits) {
+        this.dirtyBits = dirtyBits;
+    }
+
+    public int getDirtyBits() {
+        return this.dirtyBits;
     }
 }

@@ -132,12 +132,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);
+        toolbar.setTitleTextColor(0xFFFFFFFF);
+        toolbar.setSubtitleTextColor(0xFFFFFFFF);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
                 } else {
@@ -150,6 +152,13 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         onProjectsButtonClicked();
     }
 
+    //this is used to fix the issue of the back button going too far back
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1)
+            super.onBackPressed();
+        //else do nothing, it is already at the home page
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -862,7 +871,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     public void shouldDisplayHomeUp(){
         //Enable Up button only  if there are entries in the back stack
-        boolean canback = getSupportFragmentManager().getBackStackEntryCount()>0;
+        boolean canback = getSupportFragmentManager().getBackStackEntryCount()>1;
         getSupportActionBar().setDisplayHomeAsUpEnabled(canback);
     }
 

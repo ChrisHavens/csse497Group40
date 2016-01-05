@@ -33,7 +33,7 @@ import retrofit.client.Response;
  * A fragment representing a list of Items.
  * <p/>
  * <p/>
- * Activities containing this fragment MUST implement the {@link Backable}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class PeopleListFragment extends AbstractListFragment<Person>{
@@ -84,12 +84,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
         showHidden=mListener.getShowHidden();
         if (mListener.isFromProject()) {
-            //Load selected people from DB
-            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
+            service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getId() + "", new PeopleListCallback());
+//            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
         }
         else{
-            //Load selected people from DB
-            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
+            service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getId()+"", new PeopleListCallback());
+//            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
         }
     }
 

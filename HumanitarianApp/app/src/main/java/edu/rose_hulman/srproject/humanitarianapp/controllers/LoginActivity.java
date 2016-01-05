@@ -3,13 +3,11 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
+
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,7 +18,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -30,58 +27,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.http.GET;
+import retrofit.http.Path;
+
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v= onCreateView(inflater);
-        builder.setView(v)
-                // Add action buttons
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        attemptLogin();
-                        LoginActivity.this.getDialog().dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        LoginActivity.this.getDialog().dismiss();
-                    }
-                });
-        return builder.create();
-
-    }
-    public View onCreateView(LayoutInflater inflater){
-        View view=inflater.inflate(R.layout.activity_login, null);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) view.findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) view.findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -93,17 +74,16 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
             }
         });
 
-//        Button mEmailSignInButton = (Button) view.findViewById(R.id.email_sign_in_button);
-//        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                attemptLogin();
-//            }
-//        });
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
 
-        mLoginFormView = view.findViewById(R.id.login_form);
-        mProgressView = view.findViewById(R.id.login_progress);
-        return view;
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
@@ -116,10 +96,8 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+    private void attemptLogin() {
+
 
         // Reset errors.
         mEmailView.setError(null);
@@ -132,12 +110,12 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+//        // Check for a valid password, if the user entered one.
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -158,14 +136,54 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            Callback<Response> callback=new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    showProgress(false);
+                    ObjectMapper mapper=new ObjectMapper();
+                    TypeReference<HashMap<String, Object>> typeReference=
+                            new TypeReference<HashMap<String, Object>>() {
+                            };
+                    try {
+                        HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
+                        boolean found = (boolean) map.get("found");
+                        if (found) {
+                            String personID=(String) map.get("personId");
+                            switchToMain(personID);
+                        }
+                        else{
+                            mEmailView.setError("This user does not exist.");
+                            mEmailView.requestFocus();
+                        }
+                    }catch(Exception e){
+                        mEmailView.setError(e.getMessage());
+                        mEmailView.requestFocus();
+                    }
+
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    mEmailView.setError(error.getMessage());
+                    mEmailView.requestFocus();
+                }
+            };
+            LoginService loginService=new LoginService();
+            loginService.doLogin(mEmailView.getText().toString(), callback);
         }
+    }
+    private void switchToMain(String id){
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.putExtra("userID", id);
+        startActivity(intent);
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
+//        //TODO: Replace this with your own logic
+//        return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -177,7 +195,7 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
+    private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -211,7 +229,7 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(),
+        return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
                         ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
@@ -228,7 +246,7 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -257,67 +275,30 @@ public class LoginActivity extends DialogFragment implements LoaderCallbacks<Cur
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getActivity(),
+                new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+    private class LoginService {
+        RestAdapter adapter;
+        LoginServices service;
+        public LoginService() {
+            adapter = new RestAdapter.Builder()
+                    .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
+                    .build();
+            service=adapter.create(LoginServices.class);
         }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-            // TODO: register the new account here.
-            return true;
+        public void doLogin(String username, Callback<Response> callback) {
+            service.login(username, callback);
         }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                //finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    }
+    public interface LoginServices{
+        @GET("/api/login/{username}")
+        void login(@Path(value = "username") String username, Callback<Response> callback);
     }
 }
 

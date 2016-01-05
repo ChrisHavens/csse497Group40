@@ -72,8 +72,12 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        //Load selected groups from DB
-        service.getAllGroups(mListener.getSelectedProject(), showHidden, new GroupListCallback());
+        //if (mListener.getUserID().equals("-1")){
+            service.service.getGroupList(showHidden, mListener.getSelectedProject().getId()+"", new GroupListCallback());
+        //}
+        //else {
+        //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getId() + "", new GroupListCallback());
+        //}
 //        Group a=new Group("Group 40", mListener.getSelectedProject());
 //        Group b=new Group("Group 41", mListener.getSelectedProject());
 //        groups.add(a);
@@ -144,6 +148,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         void onItemSelected(Group t);
         boolean getShowHidden();
         Project getSelectedProject();
+        String getUserID();
     }
 
 

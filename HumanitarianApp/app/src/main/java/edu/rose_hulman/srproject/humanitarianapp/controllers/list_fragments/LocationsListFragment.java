@@ -75,7 +75,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (LocationsListListener) getParentFragment();
+            mListener = (LocationsListListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement ListSelectable<T>");
@@ -85,7 +85,8 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
+        service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getId()+"", new LocationListCallback());
+     //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 
     @Override

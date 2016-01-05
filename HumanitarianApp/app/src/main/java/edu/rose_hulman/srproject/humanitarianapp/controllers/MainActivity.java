@@ -111,6 +111,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     private Toolbar toolbar;
     private boolean showHidden=false;
+    private String userID;
 
 
 
@@ -118,6 +119,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent=getIntent();
+        userID=intent.getStringExtra("userID");
+        Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
         // Startup Code Here
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -128,12 +132,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);
+        toolbar.setTitleTextColor(0xFFFFFFFF);
+        toolbar.setSubtitleTextColor(0xFFFFFFFF);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
                 } else {
@@ -146,6 +152,13 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         onProjectsButtonClicked();
     }
 
+    //this is used to fix the issue of the back button going too far back
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1)
+            super.onBackPressed();
+        //else do nothing, it is already at the home page
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,6 +201,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
                 MenuItem showHiddenItem=toolbar.getMenu().findItem(R.id.showHiddenButton);
                 if (showHiddenItem!=null)
                 showHiddenItem.setTitle(R.string.showHiddenItems);
+
             }
             else{
                 showHidden=true;
@@ -195,11 +209,62 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
                 if (showHiddenItem!=null)
                 showHiddenItem.setTitle(R.string.hideHiddenItems);
             }
+            refreshContent();
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+    private void refreshContent(){
+        Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+        if (fragment instanceof ProjectsListFragment){
+            changeFragmentToListNoBackStack(new ProjectsListFragment());
+        }
+        else if(fragment instanceof ProjectFragment){
+
+        }
+        else if (fragment instanceof GroupsListFragment){
+            changeFragmentToListNoBackStack(new GroupsListFragment());
+        }
+        else if(fragment instanceof GroupFragment){
+
+        }
+        else if (fragment instanceof PeopleListFragment){
+            Fragment plfragment = new PeopleListFragment();
+
+            Bundle args=new Bundle();
+            args.putBoolean("isFromProject", actions.isFromProject());
+            plfragment.setArguments(args);
+            changeFragmentToListNoBackStack(plfragment);
+        }
+        else if(fragment instanceof PersonFragment){
+
+        }
+        else if (fragment instanceof LocationsListFragment){
+            changeFragmentToListNoBackStack(new LocationsListFragment());
+        }
+        else if(fragment instanceof LocationFragment){
+
+        }
+        else if (fragment instanceof ChecklistsListFragment){
+            changeFragmentToListNoBackStack(new ChecklistsListFragment());
+        }
+        else if(fragment instanceof ChecklistFragment){
+
+        }
+        else if (fragment instanceof NotesListFragment){
+            changeFragmentToListNoBackStack(new NotesListFragment());
+        }
+        else if(fragment instanceof NoteFragment){
+
+        }
+        else if (fragment instanceof ShipmentsListFragment){
+            changeFragmentToListNoBackStack(new ShipmentsListFragment());
+        }
+        else if(fragment instanceof ShipmentFragment){
+
+        }
     }
     private void changeFragmentToSelected(Fragment fragment, Selectable selected){
         setVisibilityAdd(false);
@@ -229,6 +294,41 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         setVisibilityHide(false);
         setVisibilityShowHidden(true);
         FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
+        transaction.commit();
+    }
+    private void changeFragmentToSelectedNoBackStack(Fragment fragment, Selectable selected){
+        setVisibilityAdd(false);
+        setVisibilityEdit(true);
+        setVisibilityShowHidden(false);
+        if (selected.isHidden()){
+            setVisibilityShow(true);
+            setVisibilityHide(false);
+        }
+        else{
+            setVisibilityHide(true);
+            setVisibilityShow(false);
+        }
+
+//        setVisibilityShow(false);
+//        setVisibilityHide(true);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        fm.popBackStack();
+        transaction.replace(R.id.tabContentContainer, fragment);
+        transaction.addToBackStack("backstack");
+        transaction.commit();
+    }
+    private void changeFragmentToListNoBackStack(Fragment fragment){
+        setVisibilityAdd(true);
+        setVisibilityEdit(false);
+        setVisibilityShow(false);
+        setVisibilityHide(false);
+        setVisibilityShowHidden(true);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.popBackStack();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.tabContentContainer, fragment);
         transaction.addToBackStack("backstack");
@@ -668,6 +768,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void setSelectedProject(Project selectedProject) {
         actions.setSelectedProject(selectedProject);
     }
+    public String getUserID(){
+        return this.userID;
+    }
     @Override
     public void add() {
         Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
@@ -768,7 +871,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     public void shouldDisplayHomeUp(){
         //Enable Up button only  if there are entries in the back stack
-        boolean canback = getSupportFragmentManager().getBackStackEntryCount()>0;
+        boolean canback = getSupportFragmentManager().getBackStackEntryCount()>1;
         getSupportActionBar().setDisplayHomeAsUpEnabled(canback);
     }
 

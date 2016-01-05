@@ -157,7 +157,7 @@ public class EditLocationDialogFragment extends DialogFragment {
             }
         });
         NonLocalDataService service=new NonLocalDataService();
-        service.get("location", "" + ID, new Callback<Response>() {
+        service.service.getLocation("" + ID, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
                 ObjectMapper mapper = new ObjectMapper();

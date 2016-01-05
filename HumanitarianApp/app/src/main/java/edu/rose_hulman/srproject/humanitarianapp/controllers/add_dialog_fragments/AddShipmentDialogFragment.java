@@ -99,7 +99,8 @@ public class AddShipmentDialogFragment extends DialogFragment
         fromSpinnerAdapter=new LocationSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,locations);
 
         NonLocalDataService service=new NonLocalDataService();
-        service.getAllLocations(projectID,false,false, new LocationListCallback());
+        service.service.getLocationListByProjectID(false, projectID+"", new LocationListCallback());
+//        service.getAllLocations(projectID,false,false, new LocationListCallback());
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout

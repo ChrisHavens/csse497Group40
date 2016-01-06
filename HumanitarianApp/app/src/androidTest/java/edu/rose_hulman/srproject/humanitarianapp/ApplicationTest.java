@@ -12,7 +12,9 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
+import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -120,6 +122,72 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             }
         };
         service.addNewLocation(l, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+        //service.deleteLocation(l,responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+    }
+    @MediumTest
+    public void testShipmentCreation() {
+        success = false;
+
+        ApplicationWideData.knownShipments = new ArrayList();
+        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "Now","Today");
+        s.setLastLocation(new Location("TestLocation3"));
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewShipment(s, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+        //service.deleteLocation(l,responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+    }
+    @MediumTest
+    public void testPersonCreation() {
+        success = false;
+
+        ApplicationWideData.knownPersons = new ArrayList();
+        Person p = new Person("Billyjoebob","309-555-1061");
+        p.setLastCheckin(new Person.PersonLocation());
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewPerson(p, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){

@@ -2,6 +2,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 
+import edu.rose_hulman.srproject.humanitarianapp.CoordinatesGetter;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddChecklistDialogFragment;
@@ -112,6 +114,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     private Toolbar toolbar;
     private boolean showHidden=false;
     private String userID;
+    private CoordinatesGetter coordGetter;
+
 
 
 
@@ -135,6 +139,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         toolbar.setTitleTextColor(0xFFFFFFFF);
         toolbar.setSubtitleTextColor(0xFFFFFFFF);
         setSupportActionBar(toolbar);
+        Log.d("TAG", "Does it get here?");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -144,6 +149,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
                 } else {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    //refreshContent() TODO, causes infinite loop?
                 }
             }
         });
@@ -157,6 +163,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1)
             super.onBackPressed();
+        Log.d("TAG", "About to refresh content after back button");
+        refreshContent();
+
+
         //else do nothing, it is already at the home page
     }
 
@@ -192,7 +202,15 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             return true;
         }
         else if (id== R.id.button2){
-            //;
+            coordGetter = new CoordinatesGetter(this.getApplicationContext());
+            android.location.Location loc = coordGetter.getLocation();
+            Context context = getApplicationContext();
+            CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude();
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+
             return true;
         }
         else if (id==R.id.showHiddenButton){
@@ -216,13 +234,23 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         return super.onOptionsItemSelected(item);
     }
+    private void resetToolbar(){
+        setVisibilityAdd(false);
+        setVisibilityEdit(true);
+        setVisibilityShow(false);
+        setVisibilityHide(true);
+        setVisibilityShowHidden(false);
+    }
+
     private void refreshContent(){
+        Log.d("TAG", "GOT Refreshed");
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
         if (fragment instanceof ProjectsListFragment){
             changeFragmentToListNoBackStack(new ProjectsListFragment());
         }
         else if(fragment instanceof ProjectFragment){
-
+            Log.d("TAG", "ProjectFragment");
+            resetToolbar();
         }
         else if (fragment instanceof GroupsListFragment){
             changeFragmentToListNoBackStack(new GroupsListFragment());
@@ -322,6 +350,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         transaction.commit();
     }
     private void changeFragmentToListNoBackStack(Fragment fragment){
+        Log.d("TAG", "This is a certain type of fragment");
         setVisibilityAdd(true);
         setVisibilityEdit(false);
         setVisibilityShow(false);
@@ -831,29 +860,22 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     public void hide() {
         Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
-
-        if (f instanceof ProjectFragment){
-            actions.hideProject();
+            if (f instanceof ProjectFragment) {
+                actions.hideProject();
+            } else if (f instanceof GroupFragment) {
+                actions.hideGroup();
+            } else if (f instanceof ChecklistFragment) {
+                actions.hideChecklist();
+            } else if (f instanceof LocationFragment) {
+                actions.hideLocation();
+            } else if (f instanceof NoteFragment) {
+                actions.hideNote();
+            } else if (f instanceof PersonFragment) {
+                actions.hidePerson();
+            } else if (f instanceof ShipmentFragment) {
+                actions.hideShipment();
+            }
         }
-        else if (f instanceof GroupFragment){
-            actions.hideGroup();
-        }
-        else if (f instanceof ChecklistFragment){
-            actions.hideChecklist();
-        }
-        else if (f instanceof LocationFragment){
-            actions.hideLocation();
-        }
-        else if (f instanceof NoteFragment){
-            actions.hideNote();
-        }
-        else if (f instanceof PersonFragment){
-            actions.hidePerson();
-        }
-        else if (f instanceof ShipmentFragment){
-            actions.hideShipment();
-        }
-    }
     @Override
     public void delete() {
 
@@ -878,7 +900,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     public boolean onSupportNavigateUp() {
         //This method is called when the up button is pressed. Just the pop back stack.
+        Fragment backFragment;
         getSupportFragmentManager().popBackStack();
+        //Log.d("tag", getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName());
         return true;
     }
 }

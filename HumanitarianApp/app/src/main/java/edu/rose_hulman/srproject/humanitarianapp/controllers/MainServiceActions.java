@@ -424,7 +424,6 @@ public class MainServiceActions {
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
-
     public void hidePerson() {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -438,7 +437,8 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityPerson(selectedPerson.getID()+"", "hide", hideResponse);
+        service.service.changeVisibilityPerson(selectedPerson.getID()+"", "show", hideResponse);
+
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
 

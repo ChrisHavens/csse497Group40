@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
@@ -188,6 +189,39 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             }
         };
         service.addNewPerson(p, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+        //service.deleteLocation(l,responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+    }
+    @MediumTest
+    public void testChecklistCreation() {
+        success = false;
+        assertFalse(success);
+        ApplicationWideData.knownChecklists = new ArrayList();
+        Checklist c = new Checklist("Peetah's hiking supplies");
+        c.addItem(new Checklist.ChecklistItem("Camera"));
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewChecklist(c,responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){

@@ -19,6 +19,7 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
     long parentID;
     private long ID;
     private boolean isHidden=false;
+    private int dirtyBits = 0;
 
     /*
      All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -414,5 +415,13 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public int getDirtyBits() {
+        return dirtyBits;
+    }
+
+    public void setDirtyBits(int dirtyBits) {
+        this.dirtyBits = dirtyBits;
     }
 }

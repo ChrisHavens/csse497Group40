@@ -3,12 +3,20 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
@@ -47,6 +55,12 @@ public class PersonFragment extends Fragment {
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
         TextView email=(TextView)v.findViewById(R.id.emailField);
         TextView lastLoc=(TextView) v.findViewById(R.id.lastLocField);
+        FragmentManager f = getChildFragmentManager();
+        SupportMapFragment GPSFragment = (SupportMapFragment) f.findFragmentById(R.id.map);
+        GoogleMap map = GPSFragment.getMap();
+        LatLng currentLoc = new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
+        map.addMarker(new MarkerOptions().position(currentLoc).title(name.getText().toString()));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 10));
         name.setText(p.getName());
         phone.setText(p.getPhoneNumber());
         email.setText(p.getEmail());

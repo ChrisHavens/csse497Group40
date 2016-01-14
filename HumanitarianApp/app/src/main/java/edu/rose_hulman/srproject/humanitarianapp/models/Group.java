@@ -36,6 +36,7 @@ public class Group implements Serialisable, Selectable {
 
     private long id;
     private long projectID;
+    private int dirtyBits = 0;
     private Person leader;
     private String name;
     private String description;
@@ -298,5 +299,13 @@ public class Group implements Serialisable, Selectable {
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public int getDirtyBits() {
+        return dirtyBits;
+    }
+
+    public void setDirtyBits(int dirtyBits) {
+        this.dirtyBits = dirtyBits;
     }
 }

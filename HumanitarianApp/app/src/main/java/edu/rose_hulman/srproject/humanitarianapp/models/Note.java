@@ -13,6 +13,7 @@ public class Note implements Selectable{
     private boolean isHidden=false;
     private long parentID;
     private long id;
+    private int dirtyBits = 0;
 
     public Note(long id) {
         Calendar c = Calendar.getInstance();
@@ -95,5 +96,13 @@ public class Note implements Selectable{
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public int getDirtyBits() {
+        return dirtyBits;
+    }
+
+    public void setDirtyBits(int dirtyBits) {
+        this.dirtyBits = dirtyBits;
     }
 }

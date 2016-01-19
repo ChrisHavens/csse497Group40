@@ -122,7 +122,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                     l.setLat(Float.parseFloat((String) source.get("lat")));
                     l.setLng(Float.parseFloat((String) source.get("lng")));
                     locations.add(l);
-                    LocalDataSaver.addLocation(l);
+                    //LocalDataSaver.addLocation(l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

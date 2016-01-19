@@ -130,7 +130,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                     Group p=new Group(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String) source.get("name"));
                     groups.add(p);
-                    LocalDataSaver.addGroup(p);
+                    //LocalDataSaver.addGroup(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
                 }

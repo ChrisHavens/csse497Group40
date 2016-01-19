@@ -149,7 +149,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     personLoc.setTime((String) lastLoc.get("time"));
                     p.setLastCheckin(personLoc);
                     persons.add(p);
-                    LocalDataSaver.addPerson(p);
+                    //LocalDataSaver.addPerson(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

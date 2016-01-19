@@ -52,4 +52,5 @@
     <string name="action_sign_in_short">로그인</string>
     <string name="action_text">텍스트</string>
     <string name="projects">프로젝트</string>
+    <string name="mapShowText">Show on map</string>
 </resources>

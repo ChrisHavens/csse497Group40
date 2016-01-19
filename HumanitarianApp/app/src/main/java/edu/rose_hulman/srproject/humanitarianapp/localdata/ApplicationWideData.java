@@ -26,6 +26,7 @@ public class ApplicationWideData {
 
     public static int userID;
     public static int createdObjectCounter;
+    public static boolean manualSnyc = false;
     public static SQLiteDatabase db;
 
     public static void initilizeKnownVariables() {

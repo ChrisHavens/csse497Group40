@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 //import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -57,6 +58,7 @@ public class EditProjectDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
                         p.setName(name);
+                        LocalDataSaver.updateProject(p);
                         NonLocalDataService service=new NonLocalDataService();
                         StringBuilder sb=new StringBuilder();
                         sb.append("{\"doc\":{\"name\": \""+name+"\"}}");

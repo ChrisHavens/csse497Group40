@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -205,7 +206,9 @@ public class MainServiceActions {
         if (success) {
             Toast.makeText(context, "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
         }
-        service.addNewProject(p, responseCallback);
+        if (!ApplicationWideData.manualSnyc) {
+            service.addNewProject(p, responseCallback);
+        }
     }
 
 

@@ -29,7 +29,7 @@ public class LocalDataSaver {
         values.put("Name", name);
         values.put("Description", description);
         values.put("DirtyBits", dirtyBits);
-        String tableName = "Project";
+        String tableName = "[Project]";
         String selection = "ID=?";
         String[] selectionArgs = {Long.toString(id)};
         ApplicationWideData.db.update(tableName, values, selection, selectionArgs);
@@ -50,7 +50,7 @@ public class LocalDataSaver {
         values.put("Name", name);
         values.put("Description", description);
         values.put("DirtyBits", dirtyBits);
-        String tableName = "Project";
+        String tableName = "[Project]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
         return true;
@@ -65,7 +65,7 @@ public class LocalDataSaver {
 
         ContentValues values = new ContentValues();
         values.put("Name", name);
-        String tableName = "Person";
+        String tableName = "[People]";
         String selection = "ID=?";
         String[] selectionArgs = {Long.toString(id)};
         ApplicationWideData.db.update(tableName, values, selection, selectionArgs);
@@ -82,7 +82,7 @@ public class LocalDataSaver {
         ContentValues values = new ContentValues();
         values.put("ID", id);
         values.put("Name", name);
-        String tableName = "Person";
+        String tableName = "[People]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
         return true;

@@ -123,4 +123,27 @@ public class NonLocalDataService {
             return "application/json";
         }
     }
+
+    // Delete requests- for testing use only
+    public void deleteProject(Project p, Callback<Response> callback){
+        service.deleteProject(p.getId() + "", callback);
+    }
+    public void deleteGroup(Group g, Callback<Response> callback){
+        service.deleteGroup(g.getId() + "", callback);
+    }
+    public void deletePerson(Person p, Callback<Response> callback){
+        service.deletePerson(p.getID() + "", callback);
+    }
+    public void deleteLocation(Location l, Callback<Response> callback){
+        service.deleteLocation(l.getID() + "", callback);
+    }
+    public void deleteNote(Note n, Callback<Response> callback){
+        service.deleteNote(n.getID() + "", callback);
+    }
+    public void deleteChecklist(Checklist checklist, Callback<Response> callback){
+        service.deleteChecklist(checklist.getID() + "", callback);
+    }
+    public void deleteShipment(Shipment s, Callback<Response> callback){
+        service.deleteChecklist(s.getID() + "", callback);
+    }
 }

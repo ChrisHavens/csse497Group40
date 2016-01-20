@@ -65,7 +65,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             e.printStackTrace();
         }
         assertTrue(success);
-        //service.deleteProject(p, responseCallback);
+        success = false;
+        service.deleteProject(p, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){
@@ -97,72 +98,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             e.printStackTrace();
         }
         assertTrue(success);
-        //service.deleteGroup(g,responseCallback);
-        try {
-            Thread.sleep(1000);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        assertTrue(success);
-    }
-    @MediumTest
-    public void testLocationCreation() {
         success = false;
-
-        ApplicationWideData.knownLocations = new ArrayList();
-        Location l = new Location("TestLocation");
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                ApplicationTest.success = true;
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewLocation(l, responseCallback);
-        try {
-            Thread.sleep(1000);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        assertTrue(success);
-        //service.deleteLocation(l,responseCallback);
-        try {
-            Thread.sleep(1000);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        assertTrue(success);
-    }
-    @MediumTest
-    public void testShipmentCreation() {
-        success = false;
-
-        ApplicationWideData.knownShipments = new ArrayList();
-        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "Now","Today");
-        s.setLastLocation(new Location("TestLocation3"));
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                ApplicationTest.success = true;
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewShipment(s, responseCallback);
-        try {
-            Thread.sleep(1000);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        assertTrue(success);
-        //service.deleteLocation(l,responseCallback);
+        service.deleteGroup(g, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){
@@ -195,7 +132,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             e.printStackTrace();
         }
         assertTrue(success);
-        //service.deleteLocation(l,responseCallback);
+        success = false;
+        service.deletePerson(p, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){
@@ -203,6 +141,73 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }
         assertTrue(success);
     }
+    @MediumTest
+    public void testLocationCreation() {
+        success = false;
+
+        ApplicationWideData.knownLocations = new ArrayList();
+        Location l = new Location("TestLocation");
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewLocation(l, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+        success = false;
+        service.deleteLocation(l, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+    }
+    /*
+    @MediumTest
+     public void testNoteCreation() {
+        success = false;
+
+        ApplicationWideData.knownNotes = new ArrayList();
+        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "Now","Today");
+        s.setLastLocation(new Location("TestLocation3"));
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addNewShipment(s, responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+        //service.deleteLocation(l,responseCallback);
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(success);
+    }*/
     @MediumTest
     public void testChecklistCreation() {
         success = false;
@@ -221,14 +226,15 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addNewChecklist(c,responseCallback);
+        service.addNewChecklist(c, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){
             e.printStackTrace();
         }
         assertTrue(success);
-        //service.deleteLocation(l,responseCallback);
+        success = false;
+        service.deleteChecklist(c, responseCallback);
         try {
             Thread.sleep(1000);
         }catch(Exception e){
@@ -236,4 +242,40 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }
         assertTrue(success);
     }
-}
+    @MediumTest
+    public void testShipmentCreation() {
+        success = false;
+
+        ApplicationWideData.knownShipments = new ArrayList();
+        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "Now","Today");
+        s.setLastLocation(new Location("TestLocation3"));
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ApplicationTest.success = true;
+            }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e("RetrofitError", error.getMessage());
+    }
+};
+service.addNewShipment(s, responseCallback);
+        try {
+        Thread.sleep(1000);
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        assertTrue(success);
+        success = false;
+        service.deleteShipment(s,responseCallback);
+        try {
+        Thread.sleep(1000);
+        }catch(Exception e){
+        e.printStackTrace();
+        }
+        assertTrue(success);
+        }
+
+
+        }

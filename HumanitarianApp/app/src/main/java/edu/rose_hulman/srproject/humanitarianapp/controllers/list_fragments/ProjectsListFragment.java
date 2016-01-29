@@ -80,7 +80,6 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             throw new NullPointerException("Parent fragment is null");
         }
 
-            LocalDataLoader.loadProjects();
             projects = ApplicationWideData.getAllProjects();
             for (Project project : projects) {
                 Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
@@ -156,9 +155,9 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     projects.add(p);
 
                 }
-                if (list.size() > 0) {
+//                if (list.size() > 0) {
                     projects = ApplicationWideData.getAllProjects();
-                }
+//                }
                 adapter.notifyDataSetChanged();
             } catch (IOException e) {
                 e.printStackTrace();

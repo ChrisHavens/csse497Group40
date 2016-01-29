@@ -193,7 +193,6 @@ public class MainServiceActions {
         Callback<Response> responseCallback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new project: " + name, Toast.LENGTH_LONG).show();
             }
 
             @Override

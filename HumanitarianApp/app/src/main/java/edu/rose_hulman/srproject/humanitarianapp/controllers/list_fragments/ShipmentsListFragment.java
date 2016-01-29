@@ -139,7 +139,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                     }
                     s.setStatus((String) source.get("status"));
                     shipments.add(s);
-                    LocalDataSaver.addShipment(s);
+                    //LocalDataSaver.addShipment(s);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

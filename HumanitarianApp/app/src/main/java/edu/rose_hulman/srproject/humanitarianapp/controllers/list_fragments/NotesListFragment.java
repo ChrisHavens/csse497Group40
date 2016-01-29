@@ -126,7 +126,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
                     n.setBody((String) source.get("contents"));
                     n.setLastModified((String) source.get("lastModTime"));
                     notes.add(n);
-                    LocalDataSaver.addNote(n);
+                    //LocalDataSaver.addNote(n);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -65,6 +66,7 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -132,6 +134,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         ApplicationWideData.db = db;
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables();
+        PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
         actions=new MainServiceActions(getApplicationContext());
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);

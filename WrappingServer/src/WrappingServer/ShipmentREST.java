@@ -1,9 +1,11 @@
 package WrappingServer;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,14 +26,18 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import server_models.Request;
 
 @Path("/api/shipment")
 public class ShipmentREST {
 	//TODOs: Replace String returns with Response returns.
 	//Adjust PUT to take id from server not user
-	
+	IDGettingService ids=new IDGettingService();
 	final String notHiddenFilter="{\"missing\": {\"field\": \"dateArchived\"}},";
+	final String dateFilter="{\"range\": {\"timeModified\": {\"gte\": \"%s\"}}}";
 	ClientConfig config = new ClientConfig();
 
     Client client = ClientBuilder.newClient(config);
@@ -41,82 +47,121 @@ public class ShipmentREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getList(
 			@DefaultValue("false") @QueryParam("show_hidden") boolean showHidden, 
-			@DefaultValue("null") @QueryParam("groupID") String groupID){
+			@DefaultValue("null") @QueryParam("groupID") String groupID,
+			@DefaultValue("null") @QueryParam("time") String time){
 		
-	    Response response=null;
-		
-		if (groupID.equals("null") && showHidden){
-			
-			response = target.path("/_search").request().get(Response.class);
-			//return response.readEntity(String.class);
-		}
-		else if (groupID.equals("null")){
-			String notHiddenPayload="{" +
-                    "  \"query\": {" +
-                    "    \"filtered\": {" +
-                    "      \"filter\": {" +
-                    "        \"missing\": {" +
-                    "          \"field\": \"dateArchived\"" +
-                    "        }" +
-                    "      }" +
-                    "    }" +
-                    "  }" +
-                    "}";
-			response = target.path("/_search").request().post(Entity.entity(notHiddenPayload, MediaType.APPLICATION_JSON_TYPE));
-		
-		}
-		else{
-			
-		StringBuilder sb= new StringBuilder();
-		
-        
-            sb.append("{\"query\": " +
-                    "{\"filtered\": {" +
-                    "\"filter\": {\"bool\": { \"must\": [");
-            if (!showHidden){
-            	sb.append(notHiddenFilter);
-            }
-            sb.append("{\"term\": { \"parentID\": \"");
-            if (!groupID.equals("null")){
-            	sb.append(""+groupID);
-            }
-            
-            sb.append("\"}}]}}}}}");
-        
-		
-			
-			response = target.path("/_search").request().post(Entity.entity(sb.toString(), MediaType.APPLICATION_JSON_TYPE));
-		
-		}
-		 try{
-			    return response.readEntity(String.class);
-			    }catch (NullPointerException e){
-			    	e.printStackTrace();
-			    }
-		 return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		Response response=null;
+		 if (groupID.equals("null") && showHidden && (time==null || time.equals("null"))){
+				
+				response = target.path("/_search").request().get(Response.class);
+				//return response.readEntity(String.class);
+			}
+		    else{
+		    	StringBuilder payload= new StringBuilder();
+	    		payload.append("{" +
+	    				"  \"query\": {" +
+	    				"    \"filtered\": {" +
+	    				"      \"filter\": {"+
+	    				"\"bool\": {"
+	    				+ "\"must\":[");
+	    		if (showHidden==false){
+	    			payload.append(notHiddenFilter);
+	    		}
+	    		if (time!=null && !time.equals("null")){
+	    			payload.append(String.format(dateFilter,  time)+",");
+	    		}
+	    		if (!groupID.equals("null")){
+	    			payload.append("{\"term\": { \"parentID\": \"");
+		    		payload.append(""+groupID+"\"}}");
+	    		}
+	    		
+	    		if (payload.toString().charAt(payload.length()-1)==','){
+	    			payload.deleteCharAt(payload.length()-1);
+	    		}
+	    		payload.append("]}}}}}");
+	    		response = target.path("/_search").request().post(Entity.entity(payload.toString(), MediaType.APPLICATION_JSON_TYPE));
+				
+		    }
+			 try{
+				    return response.readEntity(String.class);
+				    }catch (NullPointerException e){
+				    	e.printStackTrace();
+				    }
+			 return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
 	}
 	@GET @Path("{id}")
-	public String get(@PathParam("id") String id){
+	public String get(@PathParam("id") String id,@DefaultValue("null") @QueryParam("time") String time){
 		Response response=null;
 		response = target.path("/"+id).request().get(Response.class);
 		try{
-		    return response.readEntity(String.class);
+			String result=response.readEntity(String.class);
+			if (time==null ||time.equals("null")){
+				return result;
+			}
+			
+			
+			
+			ObjectMapper mapper=new ObjectMapper();
+	        TypeReference<HashMap<String, Object>> typeReference=
+	                new TypeReference<HashMap<String, Object>>() {
+	                };
+	        
+	            try {
+					HashMap<String, Object> map = mapper.readValue(result, typeReference);
+					HashMap<String, Object> mapSource=(HashMap<String, Object>)map.get("_source");
+					if (!mapSource.containsKey("timeModified")){
+						return result;
+					}
+					
+					
+					//YYYY-MM-dd HH:mm
+					//0123456789012345
+					
+					
+					if (((String)mapSource.get("timeModified")).compareTo(time)>0){
+						return result;
+					}
+					else{
+						return "304 Not Modified";
+					}
+	            }catch(Exception e){
+	            	e.printStackTrace();
+	            }
+	            
 		    }catch (NullPointerException e){
 		    	e.printStackTrace();
 		    }
+		
 		    return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
 	}
 	@POST @Path("{id}/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String updateShipment(@PathParam("id") String id, String json){
-		Response response = target.path("/"+id+"/_update").request().post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-		return response.readEntity(String.class);
+		if (!isSame(id, json)){
+			String endJson=json.substring(1);
+			Calendar rightNow = Calendar.getInstance();
+			StringBuilder sb=new StringBuilder();
+			sb.append(rightNow.get(Calendar.YEAR));
+			sb.append("-");
+			sb.append(rightNow.get(Calendar.MONTH)+1);
+			sb.append("-");
+			sb.append(rightNow.get(Calendar.DAY_OF_MONTH));
+			sb.append(" ");
+			sb.append(rightNow.get(Calendar.HOUR_OF_DAY));
+			sb.append(":");
+			sb.append(rightNow.get(Calendar.MINUTE));
+			String currTime=sb.toString();
+			String modJson=String.format("{\"timeModified\": \"%s\",", currTime)+endJson;
+			Response response = target.path("/"+id+"/_update").request().post(Entity.entity(modJson, MediaType.APPLICATION_JSON_TYPE));
+			return response.readEntity(String.class);
+		}
+		return "418 I'm a teapot";
 	}
 	@POST @Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String updateShipment(String json){
+	public String searchShipment(String json){
 		Response response = target.path("/_search").request().post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
 		return response.readEntity(String.class);
 	}
@@ -132,12 +177,12 @@ public class ShipmentREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
 		 StringBuilder sb=new StringBuilder();
-		sb.append("{\"doc\":{\"dateArchived\": \"");
+		sb.append("{\"doc\":{\"dateArchived\": ");
 		if (status.equalsIgnoreCase("hide")){
         Calendar calendar=Calendar.getInstance();
         String date=String.format("%04d-%02d-%02d", calendar.get
                 (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
-        sb.append(date);
+        sb.append("\""+date+"\"");
 		}
 		else if (status.equalsIgnoreCase("show")){
 			sb.append("null");
@@ -145,10 +190,65 @@ public class ShipmentREST {
 		else{
 			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
 		}
-        sb.append("\"}}");
+        sb.append("}}");
         
         return updateShipment(id, sb.toString());
 	}
+	@DELETE @Path("{id}")
+	public String deleteShipment(@PathParam("id") String id){
+		Response response = target.path("/"+id).request().delete(Response.class);
+		return response.readEntity(String.class);
+	}
+	private boolean isSame(String id, String json){
+		//TODO: not implemented
+		String object=get(id, null);
+		ObjectMapper mapper=new ObjectMapper();
+		TypeReference<HashMap<String, Object>> typeReference=
+				new TypeReference<HashMap<String, Object>>() {
+		};
+
+		try {
+			HashMap<String, Object> mapOldO = mapper.readValue(object, typeReference);
+			HashMap<String, Object> mapOld;
+			if (mapOldO.containsKey("_source")){
+				mapOld=(HashMap<String, Object>)mapOldO.get("_source");
+
+				HashMap<String, Object> mapNew = mapper.readValue(json, typeReference);
+				if (mapNew.containsKey("doc")){
+					HashMap<String, Object> mapDoc=(HashMap<String, Object>) mapNew.get("doc");
+					for (String key: mapDoc.keySet()){
+						if (mapOld.containsKey(key)){
+							if (mapOld.get(key)==null || !mapOld.get(key).equals(mapDoc.get(key))){
+								return false;
+							}
+						}
+						else{
+							return false;
+						}
+					}
+					return true;
+				}
+				else{
+					for (String key: mapNew.keySet()){
+						if (mapOld.containsKey(key)){
+							if (mapOld.get(key)==null || !mapOld.get(key).equals(mapNew.get(key))){
+								return false;
+							}
+						}
+						else{
+							return false;
+						}
+					}
+					return true;
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+		}
 	
 	
 

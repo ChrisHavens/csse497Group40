@@ -2,6 +2,8 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 //import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -291,6 +293,10 @@ public class Person implements Serializable, Selectable {
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
     }
 
     public static class PersonLocation{

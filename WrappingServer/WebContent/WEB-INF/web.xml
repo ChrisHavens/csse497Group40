@@ -14,4 +14,8 @@
     <servlet-name>Jersey REST Service</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
+  <listener>
+    <description>ServletContextListener</description>
+    <listener-class>cleaner.Cleaner</listener-class>
+</listener>
 </web-app>

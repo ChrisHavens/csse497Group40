@@ -58,4 +58,5 @@
     <string name="action_text">文本</string>
     <string name="action_sign_in">登录或注册</string>
     <string name="action_settings">设置</string>
+    <string name="mapShowText">Show on map</string>
 </resources>

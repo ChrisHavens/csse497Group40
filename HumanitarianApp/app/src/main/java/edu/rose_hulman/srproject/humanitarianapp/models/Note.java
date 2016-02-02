@@ -85,7 +85,7 @@ public class Note implements Selectable{
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        sb.append("\"contents\": \""+getBody()+"\",");
+        sb.append("\"contents\": \""+getBody().replaceAll("\\\\n", "\\\\n")+"\",");
         sb.append("\"lastModTime\": \""+getLastModified()+"\",");
         sb.append("\"name\": \""+getTitle()+"\",");
         sb.append("\"parentID\": \""+getParentID()+"\"");
@@ -96,6 +96,10 @@ public class Note implements Selectable{
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
     }
 
     public int getDirtyBits() {

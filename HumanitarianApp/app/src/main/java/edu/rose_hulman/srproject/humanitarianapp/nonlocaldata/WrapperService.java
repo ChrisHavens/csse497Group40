@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
@@ -378,6 +379,53 @@ public interface WrapperService {
                               @Query("status") String status,
                               Callback<Response> callback);
 
+
+    /*
+   Threads
+    */
+    @GET("/api/thread")
+    void getThreadList(@Query("show_hidden") boolean showHidden,
+                          @Query("groupID") String groupID,
+                          Callback<Response> callback);
+
+
+    @GET("/api/thread")
+    void getThreadList(@Query("show_hidden") boolean showHidden,
+                          Callback<Response> callback);
+    @GET("/api/thread")
+    void getThreadList(@Query("groupID") String groupID,
+                          Callback<Response> callback);
+
+    @GET("/api/thread")
+    void getThreadList(Callback<Response> callback);
+
+    @GET("/api/thread/{id}")
+    void getThread(@Path("id") String id,
+                      Callback<Response> callback);
+
+    @PUT("/api/thread/{id}")
+    @Headers("Accept: application/json")
+    void addNewThread(@Path("id") String id,
+                         @Body TypedInput body,
+                         Callback<Response> callback);
+
+    @POST("/api/thread/{id}/update")
+    @Headers("Accept: application/json")
+    void updateThread(@Path("id") String id,
+                         @Body TypedInput body,
+                         Callback<Response> callback);
+
+    @POST("/api/thread/search")
+    @Headers("Accept: application/json")
+    void searchThreads(@Body TypedInput body,
+                          Callback<Response> callback);
+
+    @POST("/api/thread/{id}/visibility")
+    @Headers("Accept: application/json")
+    void changeVisibilityThread(@Path("id") String id,
+                                   @Query("status") String status,
+                                   Callback<Response> callback);
+
     /*
    Shipments
     */
@@ -424,7 +472,40 @@ public interface WrapperService {
                               @Query("status") String status,
                               Callback<Response> callback);
 
+    // Deletion - testing use only
+    @DELETE("/api/project/{id}")
+    @Headers("Accept: application/json")
+    void deleteProject(@Path("id") String id,
+                       Callback<Response> callback);
+    @DELETE("/api/group/{id}")
+    @Headers("Accept: application/json")
+    void deleteGroup(@Path("id") String id,
+                       Callback<Response> callback);
+    @DELETE("/api/person/{id}")
+    @Headers("Accept: application/json")
+    void deletePerson(@Path("id") String id,
+                        Callback<Response> callback);
+    @DELETE("/api/location/{id}")
+    @Headers("Accept: application/json")
+    void deleteLocation(@Path("id") String id,
+                     Callback<Response> callback);
+    @DELETE("/api/note/{id}")
+    @Headers("Accept: application/json")
+    void deleteNote(@Path("id") String id,
+                    Callback<Response> callback);
+    @DELETE("/api/checklist/{id}")
+    @Headers("Accept: application/json")
+    void deleteChecklist(@Path("id") String id,
+                                  Callback<Response> callback);
+    @DELETE("/api/thread/{id}")
+    @Headers("Accept: application/json")
+    void deleteThread(@Path("id") String id,
+                         Callback<Response> callback);
 
+    @DELETE("/api/shipment/{id}")
+    @Headers("Accept: application/json")
+    void deleteShipment(@Path("id") String id,
+                         Callback<Response> callback);
 
 
 }

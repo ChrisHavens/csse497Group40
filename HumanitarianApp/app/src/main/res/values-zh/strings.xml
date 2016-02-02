@@ -58,4 +58,5 @@
     <string name="title_activity_login">登录</string>
     <string name="to">到</string>
     <string name="welcome">欢迎来到演示环节</string>
+    <string name="mapShowText">Show on map</string>
 </resources>

@@ -123,6 +123,10 @@ public class NotesListFragment extends AbstractListFragment<Note>{
                     }
                     Note n=new Note(Integer.parseInt(((String)map.get("_id"))));
                     n.setTitle((String) source.get("name"));
+                    if(source.get("dateArchived") == null)
+                        n.setHidden(false);
+                    else
+                        n.setHidden(true);
                     n.setBody((String) source.get("contents"));
                     n.setLastModified((String) source.get("lastModTime"));
                     notes.add(n);

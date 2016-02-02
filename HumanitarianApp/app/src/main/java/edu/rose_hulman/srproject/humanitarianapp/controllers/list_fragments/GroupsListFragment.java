@@ -17,6 +17,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -129,9 +130,9 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                     Group p=new Group(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String) source.get("name"));
                     groups.add(p);
+                    //LocalDataSaver.addGroup(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();

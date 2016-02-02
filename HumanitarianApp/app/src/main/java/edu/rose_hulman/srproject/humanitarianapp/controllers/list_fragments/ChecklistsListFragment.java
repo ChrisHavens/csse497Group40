@@ -38,17 +38,6 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     ArrayList<Checklist> checklists=new ArrayList<>();
     private boolean showHidden=false;
     public ChecklistsListFragment(){
-//        Person aPerson =new Person("Alice Jones", "555-555-5555");
-//        Person bPerson =new Person("Bob Smith", "555-555-5556");
-//        Checklist a=new Checklist("To-do for 11/15");
-//
-//        a.addItem(new Checklist.ChecklistItem("Pick up Potatoes", aPerson));
-//        a.addItem(new Checklist.ChecklistItem("Build a house",true, bPerson));
-//        Checklist b=new Checklist("To-do for 11/16");
-//        b.addItem(new Checklist.ChecklistItem("Cook dinner"));
-//        checklists.add(a);
-//        checklists.add(b);
-
     }
 
 

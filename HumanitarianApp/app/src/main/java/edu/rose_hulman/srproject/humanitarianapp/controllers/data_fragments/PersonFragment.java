@@ -3,12 +3,25 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
@@ -24,6 +37,8 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 public class PersonFragment extends Fragment {
 
     private WorkerFragmentListener mListener;
+    private GoogleMap map;
+    private  AppCompatButton showMap;
 
 
 
@@ -37,6 +52,7 @@ public class PersonFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,11 +63,20 @@ public class PersonFragment extends Fragment {
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);
         TextView email=(TextView)v.findViewById(R.id.emailField);
         TextView lastLoc=(TextView) v.findViewById(R.id.lastLocField);
+        showMap = (AppCompatButton) v.findViewById(R.id.showMapButton);
+        showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initializeMap();
+
+            }
+        });
+        //this.initializeMap();
         name.setText(p.getName());
         phone.setText(p.getPhoneNumber());
         email.setText(p.getEmail());
         if (p.getLastCheckin()!=null){
-            lastLoc.setText(p.getLastCheckin().getName()+" "+p.getLastCheckin().getTime());
+            lastLoc.setText("Last Loc: " + p.getLastCheckin().getName()+" "+p.getLastCheckin().getTime());
         }
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +111,27 @@ public class PersonFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement WorkerFragmentListener");
         }
+    }
+
+    public void initializeMap()
+    {
+        final Person p=mListener.getSelectedPerson();
+        final LatLng currentLoc = new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
+        FragmentManager f = getFragmentManager();
+        FragmentTransaction fragmentTransaction = f.beginTransaction();
+        SupportMapFragment mapFragment = new SupportMapFragment();
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                Marker marker =  map.addMarker(new MarkerOptions().position(currentLoc).title(p.getName()));
+                marker.showInfoWindow();
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 7));
+            }
+        });
+        fragmentTransaction.add(R.id.fragment_container, mapFragment, "map");
+        fragmentTransaction.commit();
+        showMap.setVisibility(View.GONE);
     }
 
     @Override

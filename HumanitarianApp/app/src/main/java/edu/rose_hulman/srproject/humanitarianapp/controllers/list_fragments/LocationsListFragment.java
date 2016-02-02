@@ -19,6 +19,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -121,6 +122,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                     l.setLat(Float.parseFloat((String) source.get("lat")));
                     l.setLng(Float.parseFloat((String) source.get("lng")));
                     locations.add(l);
+                    //LocalDataSaver.addLocation(l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

@@ -86,7 +86,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 //        for(Project project: projects) {
 //            Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
 //        }
-        //adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
         NonLocalDataService service = new NonLocalDataService();
         showHidden=mListener.getShowHidden();
         Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();

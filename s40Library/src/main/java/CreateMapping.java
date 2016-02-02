@@ -14,10 +14,14 @@ import java.io.IOException;
 public class CreateMapping {
     public static final String HOST="s40server.csse.rose-hulman.edu";
     public static final String INDEXNAME="s40";
+    public static final String INDEXNAME2="login";
+    public static final String INDEXNAME3="database_info";
     public static void main(String[] args){
         Client client = new TransportClient()
                 .addTransportAddress(new InetSocketTransportAddress(HOST, 9300));
         client.admin().indices().create(new CreateIndexRequest(INDEXNAME)).actionGet();
+        //client.admin().indices().create(new CreateIndexRequest(INDEXNAME2)).actionGet();
+        //client.admin().indices().create(new CreateIndexRequest(INDEXNAME3)).actionGet();
 
 
 
@@ -30,6 +34,8 @@ public class CreateMapping {
         XContentBuilder shipment=getMappingShipment();
         XContentBuilder note=getMappingNote();
         XContentBuilder checklist=getMappingChecklist();
+        XContentBuilder login=getMappingLogin();
+        XContentBuilder database=getMappingDatabase();
         PutMappingResponse putMappingResponse = client.admin().indices()
                 .preparePutMapping(INDEXNAME)
                 .setType("location")
@@ -65,6 +71,17 @@ public class CreateMapping {
                 .setType("checklist")
                 .setSource(checklist)
                 .execute().actionGet();
+        PutMappingResponse putMappingResponse8 = client.admin().indices()
+                .preparePutMapping(INDEXNAME2)
+                .setType("user")
+                .setSource(login)
+                .execute().actionGet();
+
+        PutMappingResponse putMappingResponse9 = client.admin().indices()
+                .preparePutMapping(INDEXNAME3)
+                .setType("info")
+                .setSource(database)
+                .execute().actionGet();
 
 
 
@@ -79,6 +96,10 @@ public class CreateMapping {
                     .startObject()
                         .startObject("location")
                             .startObject("properties")
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
+                    .endObject()
                                 .startObject("dateArchived")
                                     .field("type", "date")
                                     .field("format", "YYYY-MM-dd")
@@ -112,11 +133,15 @@ public class CreateMapping {
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
                     .startObject()
-                        .startObject("project")
-                            .startObject("properties")
+                    .startObject("project")
+                    .startObject("properties")
                     .startObject("dateArchived")
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd")
+                    .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
                                 .startObject("name")
                     .field("type", "string")
@@ -147,6 +172,10 @@ public class CreateMapping {
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd")
                     .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
+                    .endObject()
                     .startObject("name")
                     .field("type", "string")
                     .endObject()
@@ -175,6 +204,10 @@ public class CreateMapping {
                     .startObject("dateArchived")
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd")
+                    .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
                     .startObject("name")
                     .field("type", "string")
@@ -222,11 +255,15 @@ public class CreateMapping {
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
                     .startObject()
-                        .startObject("shipment")
-                            .startObject("properties")
+                    .startObject("shipment")
+                    .startObject("properties")
                     .startObject("dateArchived")
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd")
+                    .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
                                 .startObject("name")
                     .field("type", "string")
@@ -262,6 +299,7 @@ public class CreateMapping {
         }
         return null;
     }
+
     public static XContentBuilder getMappingNote(){
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
@@ -305,6 +343,10 @@ public class CreateMapping {
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd")
                     .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
+                    .endObject()
                     .startObject("name")
                     .field("type", "string")
                     .endObject()
@@ -343,6 +385,67 @@ public class CreateMapping {
                     .endObject()
                     .endObject()
                     .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject();
+            return mapping;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static XContentBuilder getMappingLogin(){
+        try {
+            XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
+                    .startObject()
+                        .startObject("user")
+                            .startObject("properties")
+                                .startObject("name")
+                                    .field("type", "string")
+                                .endObject()
+                            .startObject("personId")
+                                .field("type", "string")
+                            .endObject()
+                        .endObject()
+                    .endObject();
+            return mapping;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static XContentBuilder getMappingDatabase(){
+        try {
+            XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
+                    .startObject()
+                    .startObject("info")
+                    .startObject("properties")
+                    .startObject("lastUsedProjectID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedGroupID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedPersonID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedNoteID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedChecklistID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedChecklistItemID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedChecklistSubItemID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedShipmentID")
+                    .field("type", "integer")
+                    .endObject()
+                    .startObject("lastUsedLocationID")
+                    .field("type", "integer")
                     .endObject()
                     .endObject()
                     .endObject();

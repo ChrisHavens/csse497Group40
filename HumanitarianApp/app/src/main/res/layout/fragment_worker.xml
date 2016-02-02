@@ -38,4 +38,18 @@
         android:id="@+id/lastLocField"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/showMapButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/mapShowText"
+        android:layout_gravity="center_horizontal"/>
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    </LinearLayout>
+
 </LinearLayout>

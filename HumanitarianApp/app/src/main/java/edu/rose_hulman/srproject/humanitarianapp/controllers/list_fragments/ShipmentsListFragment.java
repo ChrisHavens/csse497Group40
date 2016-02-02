@@ -15,6 +15,7 @@ import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -138,6 +139,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                     }
                     s.setStatus((String) source.get("status"));
                     shipments.add(s);
+                    //LocalDataSaver.addShipment(s);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

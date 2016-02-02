@@ -70,7 +70,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         success = false;
 
         ApplicationWideData.knownProjects = new ArrayList();
-        Project p = new Project("TestProject");
+        Project p = new Project("Test\\nProject");
 
         service.addNewProject(p, responseCallback);
 
@@ -79,7 +79,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }catch(Exception e){
             e.printStackTrace();
         }
-        assertTrue(success);
+        assertTrue(success);/*
         success = false;
         service.service.getProject(p.getId() + "", responseCallback);
         try {
@@ -103,7 +103,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }catch(Exception e){
             e.printStackTrace();
         }
-        assertTrue(success);
+        assertTrue(success);*/
     }
     @MediumTest
      public void testGroupCreation() {
@@ -152,8 +152,10 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         ApplicationWideData.knownPersons = new ArrayList();
         Person p = new Person("Billyjoebob","309-555-1061");
-        p.setLastCheckin(new Person.PersonLocation());
-
+        Person.PersonLocation loc = new Person.PersonLocation();
+        loc.setTime("1994-07-29 00:00");
+        p.setLastCheckin(loc);
+        System.out.println(p.toJSON());
         service.addNewPerson(p, responseCallback);
         try {
             Thread.sleep(1000);
@@ -309,8 +311,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         success = false;
 
         ApplicationWideData.knownShipments = new ArrayList();
-        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "Now","Today");
-        s.setLastLocation(new Location("TestLocation3"));
+        Shipment s = new Shipment("Test data","TestLocation1", "TestLocation2", "1994-07-29 00:00","1994-07-29 00:00");
+        s.setParentID(201000);
+        s.setName("TEST SHIPMENT");
+        Location l = new Location("TestLocation3");
+        s.setStatus("En Route");
+        s.setLastLocation(l);
+        //assertFalse(s.toJSON(),true);
         service.addNewShipment(s, responseCallback);
         try {
         Thread.sleep(1000);
@@ -345,6 +352,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         e.printStackTrace();
         }
         assertTrue(success);
+
         }
 
 

@@ -14,6 +14,7 @@ import java.util.Calendar;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -44,9 +45,12 @@ public class NonLocalDataService {
     public void addNewPerson(Person person, Callback<Response> callback){
         service.addNewPerson(person.getID() + "", new TypedJsonString(person.toJSON()), callback);
     }
+    public void addNewThread(MessageThread thread, Callback<Response> callback){
+        service.addNewPerson(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
+    }
     public void addNewProject(Project project, Callback<Response> callback){
-             service.addNewProject(project.getId() + "", new TypedJsonString(project.toJSON()), callback);
-           }
+        service.addNewProject(project.getId() + "", new TypedJsonString(project.toJSON()), callback);
+    }
     public void addNewGroup(Group group, Callback<Response> callback){
         service.addNewGroup(group.getId() + "", new TypedJsonString(group.toJSON()), callback);
     }
@@ -69,7 +73,7 @@ public class NonLocalDataService {
      */
 
     public void updateProject(long projectID, String json, Callback<Response> callback){
-        service.updateProject(projectID+"", new TypedJsonString(json), callback);
+        service.updateProject(projectID + "", new TypedJsonString(json), callback);
 
     }
     public void updateGroup(long groupID, String json, Callback<Response> callback){
@@ -91,7 +95,7 @@ public class NonLocalDataService {
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());
 
-        service.updateNote(id+"", new TypedJsonString(sb.toString()), callback);
+        service.updateNote(id + "", new TypedJsonString(sb.toString()), callback);
     }
 
     /*
@@ -142,6 +146,9 @@ public class NonLocalDataService {
     }
     public void deleteChecklist(Checklist checklist, Callback<Response> callback){
         service.deleteChecklist(checklist.getID() + "", callback);
+    }
+    public void deleteThread(MessageThread thread, Callback<Response> callback){
+        service.deleteThread(thread.getID() + "", callback);
     }
     public void deleteShipment(Shipment s, Callback<Response> callback){
         service.deleteChecklist(s.getID() + "", callback);

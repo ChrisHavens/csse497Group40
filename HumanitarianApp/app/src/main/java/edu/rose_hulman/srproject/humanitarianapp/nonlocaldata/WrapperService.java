@@ -379,6 +379,53 @@ public interface WrapperService {
                               @Query("status") String status,
                               Callback<Response> callback);
 
+
+    /*
+   Threads
+    */
+    @GET("/api/thread")
+    void getThreadList(@Query("show_hidden") boolean showHidden,
+                          @Query("groupID") String groupID,
+                          Callback<Response> callback);
+
+
+    @GET("/api/thread")
+    void getThreadList(@Query("show_hidden") boolean showHidden,
+                          Callback<Response> callback);
+    @GET("/api/thread")
+    void getThreadList(@Query("groupID") String groupID,
+                          Callback<Response> callback);
+
+    @GET("/api/thread")
+    void getThreadList(Callback<Response> callback);
+
+    @GET("/api/thread/{id}")
+    void getThread(@Path("id") String id,
+                      Callback<Response> callback);
+
+    @PUT("/api/thread/{id}")
+    @Headers("Accept: application/json")
+    void addNewThread(@Path("id") String id,
+                         @Body TypedInput body,
+                         Callback<Response> callback);
+
+    @POST("/api/thread/{id}/update")
+    @Headers("Accept: application/json")
+    void updateThread(@Path("id") String id,
+                         @Body TypedInput body,
+                         Callback<Response> callback);
+
+    @POST("/api/thread/search")
+    @Headers("Accept: application/json")
+    void searchThreads(@Body TypedInput body,
+                          Callback<Response> callback);
+
+    @POST("/api/thread/{id}/visibility")
+    @Headers("Accept: application/json")
+    void changeVisibilityThread(@Path("id") String id,
+                                   @Query("status") String status,
+                                   Callback<Response> callback);
+
     /*
    Shipments
     */
@@ -450,6 +497,11 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void deleteChecklist(@Path("id") String id,
                                   Callback<Response> callback);
+    @DELETE("/api/thread/{id}")
+    @Headers("Accept: application/json")
+    void deleteThread(@Path("id") String id,
+                         Callback<Response> callback);
+
     @DELETE("/api/shipment/{id}")
     @Headers("Accept: application/json")
     void deleteShipment(@Path("id") String id,

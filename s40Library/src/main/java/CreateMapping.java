@@ -34,6 +34,7 @@ public class CreateMapping {
         XContentBuilder shipment=getMappingShipment();
         XContentBuilder note=getMappingNote();
         XContentBuilder checklist=getMappingChecklist();
+        XContentBuilder message=getMappingMessage();
         XContentBuilder login=getMappingLogin();
         XContentBuilder database=getMappingDatabase();
         PutMappingResponse putMappingResponse = client.admin().indices()
@@ -70,6 +71,11 @@ public class CreateMapping {
                 .preparePutMapping(INDEXNAME)
                 .setType("checklist")
                 .setSource(checklist)
+                .execute().actionGet();
+        PutMappingResponse putMappingResponse10= client.admin().indices()
+                .preparePutMapping(INDEXNAME)
+                .setType("thread")
+                .setSource(message)
                 .execute().actionGet();
         PutMappingResponse putMappingResponse8 = client.admin().indices()
                 .preparePutMapping(INDEXNAME2)
@@ -382,6 +388,48 @@ public class CreateMapping {
                     .field("type", "string")
                     .endObject()
                     .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject();
+            return mapping;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static XContentBuilder getMappingMessage(){
+        try {
+            XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
+                    .startObject()
+                    .startObject("thread")
+                    .startObject("properties")
+                    .startObject("dateArchived")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd")
+                    .endObject()
+                    .startObject("timeModified")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
+                    .endObject()
+                    .startObject("name")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("parentID")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("messageItems")
+                    .startObject("properties")
+                    .startObject("messageID")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("text")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("personID")
+                    .field("type", "string")
                     .endObject()
                     .endObject()
                     .endObject()

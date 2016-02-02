@@ -148,6 +148,10 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
                     Project p = new Project(Integer.parseInt(((String) map.get("_id"))));
                     p.setName((String) source.get("name"));
+                    if(source.get("dateArchived") == null)
+                        p.setHidden(false);
+                    else
+                        p.setHidden(true);
 //                    ApplicationWideData.addExistingProject(p);
 //                    LocalDataSaver.addProject(p);
                     projects.add(p);

@@ -115,6 +115,10 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
 
                     Checklist l=new Checklist(Integer.parseInt(((String)map.get("_id"))));
                     l.setTitle((String)source.get("name"));
+                    if(source.get("dateArchived") == null)
+                        l.setHidden(false);
+                    else
+                        l.setHidden(true);
                     l.setParentID(Long.parseLong((String)source.get("parentID")));
 
                     ArrayList<HashMap<String, Object>> items=(ArrayList)source.get("checklistItems");

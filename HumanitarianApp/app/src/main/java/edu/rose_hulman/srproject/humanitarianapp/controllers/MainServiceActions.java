@@ -339,7 +339,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid project", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid project", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -348,7 +348,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityProject(selectedProject.getId() + "", "hide",hideResponse);
+        String hideOrShow = "hide";
+        if(selectedProject.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityProject(selectedProject.getId() + "", hideOrShow, hideResponse);
         //hide("project", selectedProject.getId() + "", hideResponse);
     }
 
@@ -358,7 +362,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid group", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid group", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -367,7 +371,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityGroup(selectedGroup.getId()+"", "hide", hideResponse);
+        String hideOrShow = "hide";
+        if(selectedGroup.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityGroup(selectedGroup.getId() + "", hideOrShow, hideResponse);
 //        service.hide("group", selectedGroup.getId() + "", hideResponse);
     }
 
@@ -376,7 +384,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid checklist", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid checklist", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -385,7 +393,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityChecklist(selectedChecklist.getID() + "", "hide", hideResponse);
+        String hideOrShow = "hide";
+        if(selectedChecklist.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow, hideResponse);
     }
 
 
@@ -393,7 +405,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid location", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid location", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -402,7 +414,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityLocation(selectedLocation.getID()+"", "hide", hideResponse);
+        String hideOrShow = "hide";
+        if(selectedLocation.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow, hideResponse);
 //        service.hide("location", selectedLocation.getID()+"", hideResponse);
     }
 
@@ -411,7 +427,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid note", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid note", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -420,7 +436,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityNote(selectedNote.getID()+"", "hide", hideResponse);
+        String hideOrShow = "hide";
+        if(selectedNote.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow, hideResponse);
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
@@ -428,7 +448,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid person", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid person", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -437,7 +457,11 @@ public class MainServiceActions {
 
             }
         };
-        service.service.changeVisibilityPerson(selectedPerson.getID()+"", "show", hideResponse);
+        String hideOrShow = "hide";
+        if(selectedPerson.isHidden())
+            hideOrShow = "show";
+
+        service.service.changeVisibilityPerson(selectedPerson.getID()+"", hideOrShow, hideResponse);
 
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
@@ -447,7 +471,7 @@ public class MainServiceActions {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successfully hid shipment", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Successfully hid shipment", Toast.LENGTH_LONG).show();
             }
 
             @Override

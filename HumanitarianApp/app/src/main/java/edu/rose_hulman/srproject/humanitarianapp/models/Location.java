@@ -157,6 +157,10 @@ public class Location implements Selectable{
         return isHidden;
     }
 
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
+    }
+
     public void setDirtyBits(int dirtyBits) {
         this.dirtyBits = dirtyBits;
     }

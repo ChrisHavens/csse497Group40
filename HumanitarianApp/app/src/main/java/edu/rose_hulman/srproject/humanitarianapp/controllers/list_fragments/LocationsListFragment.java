@@ -119,6 +119,10 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                     }
                     Location l=new Location(Integer.parseInt(((String)map.get("_id"))));
                     l.setName((String) source.get("name"));
+                    if(source.get("dateArchived") == null)
+                        l.setHidden(false);
+                    else
+                        l.setHidden(true);
                     l.setLat(Float.parseFloat((String) source.get("lat")));
                     l.setLng(Float.parseFloat((String) source.get("lng")));
                     locations.add(l);

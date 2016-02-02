@@ -205,6 +205,10 @@ public class Checklist implements Selectable{
         return isHidden;
     }
 
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
+    }
+
     public int getDirtyBits() {
         return dirtyBits;
     }

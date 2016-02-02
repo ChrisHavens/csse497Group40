@@ -3,6 +3,8 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,7 +25,11 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import java.io.IOException;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -193,6 +199,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             return true;
         }
 
+        else if(id== android.R.id.home)
+        {
+            Log.d("ED", "they pressed the android back button");
+            //refreshContent();
+            this.onBackPressed();
+            return true;
+        }
+
         else if (id== R.id.editButton){
             edit();
             return true;
@@ -202,15 +216,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             return true;
         }
         else if (id== R.id.button2){
-            coordGetter = new CoordinatesGetter(this.getApplicationContext());
-            android.location.Location loc = coordGetter.getLocation();
-            Context context = getApplicationContext();
-            CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude();
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-
-
+            try {
+                checkInUser();
+            }
+            catch (IOException e) {
+                Log.d("ED","failed to check in user");
+            }
             return true;
         }
         else if (id==R.id.showHiddenButton){
@@ -233,6 +244,54 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkInUser() throws IOException
+    {
+        coordGetter = new CoordinatesGetter(this.getApplicationContext());
+        android.location.Location loc = coordGetter.getLocation();
+        Context context = getApplicationContext();
+        Geocoder gcd = new Geocoder(context, Locale.getDefault());
+        Random rand = new Random();
+
+        double lat = loc.getLatitude();
+        double lng = loc.getLongitude() + rand.nextInt(20);
+        String latS = loc.getLatitude() + "";
+        String lngS = loc.getLongitude() + "";
+        String city = "";
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
+        Log.d("ED", date);
+        List<Address> addresses = gcd.getFromLocation(lat, lng , 1);
+        if (addresses.size() > 0)
+            city = addresses.get(0).getLocality();
+        CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+
+        //TODO, replace hard coded ID with actual one
+
+        long ID = 3105;
+        String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city, date);
+        Log.d("ED", JSONed);
+        Callback<Response> responseCallback=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Log.d("ED", "successfully changed person location");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+
+        //{"doc":{"lastLocation":{"lat":"80.01","lng":"57.34","name":"test","time":"2015-12-06 17:33"}}}
+        actions.service.updatePerson(ID, JSONed, responseCallback);
+
+
+
     }
     private void resetToolbar(){
         setVisibilityAdd(false);
@@ -295,17 +354,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
     }
     private void changeFragmentToSelected(Fragment fragment, Selectable selected){
+        Log.d("ED", "changing fragments");
         setVisibilityAdd(false);
         setVisibilityEdit(true);
-        setVisibilityShowHidden(false);
-        if (selected.isHidden()){
-            setVisibilityShow(true);
-            setVisibilityHide(false);
-        }
-        else{
-            setVisibilityHide(true);
-            setVisibilityShow(false);
-        }
+        setVisibilityHide(true);
+        setVisibilityShow(false);
 
 //        setVisibilityShow(false);
 //        setVisibilityHide(true);
@@ -875,6 +928,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             } else if (f instanceof ShipmentFragment) {
                 actions.hideShipment();
             }
+        Toast.makeText(this, "Visibility was changed", Toast.LENGTH_LONG).show();
+
         }
     @Override
     public void delete() {

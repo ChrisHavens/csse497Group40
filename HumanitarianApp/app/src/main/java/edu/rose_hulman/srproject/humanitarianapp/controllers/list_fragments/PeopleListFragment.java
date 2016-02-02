@@ -140,6 +140,10 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     p.setName((String) source.get("name"));
                     p.setEmail((String) source.get("email"));
                     p.setPhoneNumber((String) source.get("phone"));
+                    if(source.get("dateArchived") == null)
+                        p.setHidden(false);
+                    else
+                        p.setHidden(true);
                     //Log.w("Type of lastLocation", .get("lastLocation"))
                     HashMap<String, Object> lastLoc=(HashMap)source.get("lastLocation");
                     Person.PersonLocation personLoc=new Person.PersonLocation();
@@ -148,6 +152,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     personLoc.setName((String) lastLoc.get("name"));
                     personLoc.setTime((String) lastLoc.get("time"));
                     p.setLastCheckin(personLoc);
+                    Log.d("ED", p.toJSON());
                     persons.add(p);
                     //LocalDataSaver.addPerson(p);
                     adapter.notifyDataSetChanged();

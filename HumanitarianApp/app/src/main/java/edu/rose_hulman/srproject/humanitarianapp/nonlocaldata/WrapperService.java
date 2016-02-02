@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
@@ -424,7 +425,35 @@ public interface WrapperService {
                               @Query("status") String status,
                               Callback<Response> callback);
 
-
+    // Deletion - testing use only
+    @DELETE("/api/project/{id}")
+    @Headers("Accept: application/json")
+    void deleteProject(@Path("id") String id,
+                       Callback<Response> callback);
+    @DELETE("/api/group/{id}")
+    @Headers("Accept: application/json")
+    void deleteGroup(@Path("id") String id,
+                       Callback<Response> callback);
+    @DELETE("/api/person/{id}")
+    @Headers("Accept: application/json")
+    void deletePerson(@Path("id") String id,
+                        Callback<Response> callback);
+    @DELETE("/api/location/{id}")
+    @Headers("Accept: application/json")
+    void deleteLocation(@Path("id") String id,
+                     Callback<Response> callback);
+    @DELETE("/api/note/{id}")
+    @Headers("Accept: application/json")
+    void deleteNote(@Path("id") String id,
+                    Callback<Response> callback);
+    @DELETE("/api/checklist/{id}")
+    @Headers("Accept: application/json")
+    void deleteChecklist(@Path("id") String id,
+                                  Callback<Response> callback);
+    @DELETE("/api/shipment/{id}")
+    @Headers("Accept: application/json")
+    void deleteShipment(@Path("id") String id,
+                         Callback<Response> callback);
 
 
 }

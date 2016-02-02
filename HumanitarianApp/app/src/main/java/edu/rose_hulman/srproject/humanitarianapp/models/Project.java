@@ -462,6 +462,10 @@ public class Project implements Serialisable, Selectable {
     public boolean isHidden() {
         return isHidden;
     }
+
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
+    }
 }
 
 //    public Project() {

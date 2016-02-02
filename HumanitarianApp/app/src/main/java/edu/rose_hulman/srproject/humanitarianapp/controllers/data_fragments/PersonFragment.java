@@ -58,6 +58,8 @@ public class PersonFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Person p=mListener.getSelectedPerson();
+        Log.d("ED",p.getID() + "");
+        Log.d("ED", p.toJSON());
         View v=inflater.inflate(R.layout.fragment_worker, container, false);
         TextView name=(TextView) v.findViewById(R.id.nameField);
         final TextView phone=(TextView) v.findViewById(R.id.phoneNumberField);

@@ -1,2 +1,17 @@
-.idea
 local.properties
+.idea
+# Java class files
+*.class
+
+# Generated files
+HumanitarianApp/identitytoolkit-api11/
+HumanitarianApp/.idea/
+HumanitarianApp/local.properties
+HumanitarianApp/gradle.properties
+HumanitarianApp/.gradle/
+HumanitarianApp/build/
+HumanitarianApp/gradle/
+
+
+*.iml
+HumanitarianApp/.idea/vcs.xml

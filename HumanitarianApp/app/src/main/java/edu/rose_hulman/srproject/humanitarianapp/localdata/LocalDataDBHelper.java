@@ -48,7 +48,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[ToLoc] [int] NOT NULL,\n" +
             "\t[LastLoc] [int] NOT NULL,\n" +
             "\t[FromLoc] [int] NOT NULL,\n" +
-            "\t[Description] [nchar](140) NOT NULL,\n" +
+            "\t[Contents] [nchar](140) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_NOTE = "CREATE TABLE [Note](\n" +
             "\t[ID] [int] NOT NULL,\n" +

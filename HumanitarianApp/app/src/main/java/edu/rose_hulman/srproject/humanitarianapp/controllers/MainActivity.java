@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -71,6 +72,7 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -133,6 +135,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         userID=intent.getStringExtra("userID");
         Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
         // Startup Code Here
+        PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
@@ -241,6 +244,17 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             refreshContent();
             return true;
         }
+        if (id== R.id.changeSync){
+            ApplicationWideData.switchSyncMode();
+            return true;
+        }
+
+        if (id== R.id.forceSync){
+            ApplicationWideData.sync();
+            return true;
+        }
+
+
 
 
         return super.onOptionsItemSelected(item);

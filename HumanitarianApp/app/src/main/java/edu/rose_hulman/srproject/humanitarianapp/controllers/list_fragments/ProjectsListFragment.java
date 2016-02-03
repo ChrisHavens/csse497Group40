@@ -80,22 +80,23 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             throw new NullPointerException("Parent fragment is null");
         }
 
-
-//        LocalDataLoader.loadProjects();
-//        projects = ApplicationWideData.getAllProjects();
-//        for(Project project: projects) {
-//            Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
-//        }
-//        adapter.notifyDataSetChanged();
-        NonLocalDataService service = new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
-        //if (mListener.getUserID().equals("-1")){
+            for (Project project : projects) {
+                Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
+            }
+            if (this.adapter != null) {
+                this.adapter.notifyDataSetChanged();
+            }
+         if (!ApplicationWideData.getManualSync()){
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
+            //if (mListener.getUserID().equals("-1")){
             service.service.getProjectList(showHidden, new ProjectListCallback());
-        //}
-        //else {
-        //    service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
-        //}
+            //}
+            //else {
+            //    service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
+            //}
+        }
     }
 
     @Override
@@ -152,14 +153,13 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                         p.setHidden(false);
                     else
                         p.setHidden(true);
-//                    ApplicationWideData.addExistingProject(p);
-//                    LocalDataSaver.addProject(p);
+                    ApplicationWideData.addExistingProject(p);
+                    LocalDataSaver.addProject(p);
                     projects.add(p);
 
                 }
 //                if (list.size() > 0) {
-//                    projects = ApplicationWideData.getAllProjects();
-//                    adapter.notifyDataSetChanged();
+                    projects = ApplicationWideData.getAllProjects();
 //                }
                 adapter.notifyDataSetChanged();
             } catch (IOException e) {

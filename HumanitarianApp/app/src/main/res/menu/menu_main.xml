@@ -33,4 +33,16 @@
         android:title="Check in"
         android:icon="@drawable/ic_menu_mylocation"
         app:showAsAction="always"></item>
+    <item
+        android:id="@+id/changeSync"
+        android:orderInCategory="600"
+        android:title="@string/changeSync"
+        app:showAsAction="never"
+        ></item>
+    <item
+        android:id="@+id/forceSync"
+        android:orderInCategory="700"
+        android:title="@string/forceSync"
+        app:showAsAction="never"
+        ></item>
 </menu>

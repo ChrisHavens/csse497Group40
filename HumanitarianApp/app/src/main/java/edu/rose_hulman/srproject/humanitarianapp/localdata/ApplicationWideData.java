@@ -1,17 +1,23 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by havenscs on 10/25/2015.
@@ -24,9 +30,10 @@ public class ApplicationWideData {
     public static List<Project> knownProjects;
     public static List<Shipment> knownShipments;
 
-    public static int userID;
+    public static int userID = 0;
     public static int createdObjectCounter;
-    public static SQLiteDatabase db;
+    public static boolean manualSnyc;
+    public static SQLiteDatabase db = null;
 
     public static void initilizeKnownVariables() {
         knownChecklists = new ArrayList();
@@ -36,10 +43,26 @@ public class ApplicationWideData {
         knownProjects = new ArrayList();
         knownShipments = new ArrayList();
 
-        //Pull these numbers from local storage
-        Random rand = new Random();
-        int userID = rand.nextInt();
-        createdObjectCounter = 0;
+        //Pull these numbers from local storage only when a user is known
+        if (userID == 0) {
+            Random rand = new Random();
+            int userID = rand.nextInt();
+            createdObjectCounter = 0;
+        } else {
+            //Will eventually only check the counter, but using random for now to avoid collisions.
+            Random rand = new Random();
+            int userID = rand.nextInt();
+            createdObjectCounter = rand.nextInt();
+        }
+        manualSnyc = PreferencesManager.getSyncType();
+        LocalDataLoader.loadEverything();
+        if (!manualSnyc) {
+            sync();
+        }
+    }
+
+    public static void setDB(SQLiteDatabase newdb){
+            newdb = db;
     }
 
     //Later when adding tracking of new additions for manual sync, the add new versions will do the
@@ -187,6 +210,52 @@ public class ApplicationWideData {
     public static List<Shipment> getAllShipments() {
         return knownShipments;
 
+    }
+
+    public static void switchSyncMode() {
+        manualSnyc = !manualSnyc;
+        PreferencesManager.setSyncType(manualSnyc);
+        if(!manualSnyc) {
+            sync();
+        }
+    }
+
+    public static void forceSync() {
+        //Save all of the projects
+        Boolean original = manualSnyc;
+        manualSnyc = false;
+        saveNewProjects();
+        manualSnyc = original;
+    }
+
+    public static void sync() {
+        //Save all of the projects
+        saveNewProjects();
+    }
+
+    public static boolean getManualSync(){
+        return manualSnyc;
+    }
+
+    private static void saveNewProjects() {
+        NonLocalDataService service = new NonLocalDataService();
+        for(Project project : knownProjects){
+            if (project.getIsDirty()[0]) {
+                Callback<Response> responseCallback = new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("RetrofitError", error.getMessage());
+                    }
+                };
+                service.addNewProject(project, responseCallback);
+                project.fullClean();
+                LocalDataSaver.addProject(project);
+            }
+        }
     }
 
 }

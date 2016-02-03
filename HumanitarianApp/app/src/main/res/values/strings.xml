@@ -64,4 +64,6 @@
         completions."
     </string>
     <string name="mapShowText">Show on map</string>
+    <string name="changeSync">Switch sync modes</string>
+    <string name="forceSync">Sync</string>
 </resources>

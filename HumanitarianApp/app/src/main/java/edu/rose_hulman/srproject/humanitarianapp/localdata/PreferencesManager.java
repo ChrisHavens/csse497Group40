@@ -13,7 +13,8 @@ public class PreferencesManager {
     }
 
     public static void setSyncType(boolean manualSync){
-
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putBoolean("ManualSync",manualSync);
     }
 
     public static void setSyncDate(String date){

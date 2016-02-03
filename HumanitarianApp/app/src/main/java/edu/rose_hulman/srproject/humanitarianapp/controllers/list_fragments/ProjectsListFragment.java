@@ -80,7 +80,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             throw new NullPointerException("Parent fragment is null");
         }
 
-            projects = ApplicationWideData.getAllProjects();
+            //projects = ApplicationWideData.getAllProjects();
             for (Project project : projects) {
                 Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
             }
@@ -156,6 +156,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                         p.setHidden(true);
                     ApplicationWideData.addExistingProject(p);
                     LocalDataSaver.addProject(p);
+                    p.setName(p.getName()+"Fuck");
                     projects.add(p);
 
                 }

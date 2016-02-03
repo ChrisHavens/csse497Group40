@@ -19,10 +19,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:name="android.support.multidex.MultiDexApplication"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        >
         <activity
             android:name=".controllers.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,21 +44,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".controllers.login.GitkitDemo"
-            android:label="@string/app_name"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Un-comment the following data tag and replace placeholder. -->
-                <data
-                    android:host="gitkit"
-                    android:scheme="com.googleusercontent.apps.380073753318-jo66uj3ghqmqmjg32p1s1662mnukbohj" />
-            </intent-filter>
-        </activity>
         <!--
         <activity
             android:name=".controllers.LoginActivity"

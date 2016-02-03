@@ -12,6 +12,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -41,6 +42,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':identitytoolkit-api11')
+    compile 'com.android.support:multidex:1.0.0'
 
 
 

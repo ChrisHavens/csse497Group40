@@ -16,6 +16,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -33,6 +34,7 @@ public class MainServiceActions {
     private Location selectedLocation;
     private Shipment selectedShipment;
     private Project selectedProject;
+    private MessageThread selectedMessageThread;
     private long parentID;
     private List<Project> storedProjects;
     private boolean isFromProject=false;
@@ -64,6 +66,13 @@ public class MainServiceActions {
 
     public void setSelectedChecklist(Checklist selectedChecklist) {
         this.selectedChecklist = selectedChecklist;
+    }
+    public MessageThread getSelectedMessageThread() {
+        return selectedMessageThread;
+    }
+
+    public void setSelectedMessageThread(MessageThread selectedThread) {
+        this.selectedMessageThread = selectedThread;
     }
 
     public Note getSelectedNote() {

@@ -113,6 +113,14 @@ public class MessageThread implements Selectable{
         return sb.toString();
 
     }
+    @Override
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.isHidden = hidden;
+    }
 
     public List<Message> getItemList() {
         return itemList;
@@ -159,10 +167,6 @@ public class MessageThread implements Selectable{
         }
     }
 
-    @Override
-    public boolean isHidden() {
-        return isHidden;
-    }
 
     public int getDirtyBits() {
         return dirtyBits;

@@ -3,4 +3,6 @@
     <color name="ColorPrimary">#FF555555</color>
     <color name="ColorPrimaryDark">#FF343434</color>
     <color name="White">#FFFFFFFF</color>
+    <color name="SenderBlue">#FFADD8E6</color>
+    <color name="RecipientGreen">#FF4CBB17</color>
 </resources>

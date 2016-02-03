@@ -1,6 +1,5 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.location.Address;
@@ -21,12 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 
 import java.io.IOException;
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +47,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.Note
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.PersonFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ProjectFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ShipmentFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.MessageThreadFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditLocationDialogFragment;
@@ -65,22 +63,13 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.Note
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.PeopleListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ShipmentsListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.MessageThreadsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
-import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
-import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Location;
-import edu.rose_hulman.srproject.humanitarianapp.models.Note;
-import edu.rose_hulman.srproject.humanitarianapp.models.Person;
-import edu.rose_hulman.srproject.humanitarianapp.models.Project;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
-import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
-import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import edu.rose_hulman.srproject.humanitarianapp.models.*;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -107,7 +96,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         ShipmentFragment.ShipmentFragmentListener,
         ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener,
         LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener, CRUDInterface,
-        android.support.v4.app.FragmentManager.OnBackStackChangedListener
+        android.support.v4.app.FragmentManager.OnBackStackChangedListener,
+        MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -424,6 +414,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
 
     }
+
     @Override
     public void onItemSelected(Project project) {
         actions.setSelectedProject(project);
@@ -460,6 +451,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void onItemSelected(Location t) {
         actions.setSelectedLocation(t);
         changeFragmentToSelected(new LocationFragment(), t);
+    }
+    @Override
+    public void onItemSelected(MessageThread t) {
+        actions.setSelectedMessageThread(t);
+        changeFragmentToSelected(new MessageThreadFragment(), t);
     }
 
 
@@ -516,6 +512,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     }
     public void showChecklists(){
         changeFragmentToList(new ChecklistsListFragment());
+    }
+    public void showMessageThreads(){
+        changeFragmentToList(new MessageThreadsListFragment());
     }
     public void showShipments(){
         changeFragmentToList(new ShipmentsListFragment());
@@ -841,6 +840,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public Project getSelectedProject() {
         return actions.getSelectedProject();
     }
+
+
+
     @Override
     public boolean getShowHidden() {
         return showHidden;
@@ -850,6 +852,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void setSelectedProject(Project selectedProject) {
         actions.setSelectedProject(selectedProject);
     }
+
+    @Override
+    public MessageThread getSelectedThread() {
+        return actions.getSelectedMessageThread();
+    }
+
     public String getUserID(){
         return this.userID;
     }

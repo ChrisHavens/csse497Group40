@@ -23,4 +23,13 @@
         android:layout_alignParentTop="false"
         android:layout_below="@+id/nameField"
         android:layout_alignLeft="@+id/nameField" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:id="@+id/timeField"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/nameField" />
 </RelativeLayout>

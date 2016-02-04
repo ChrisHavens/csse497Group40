@@ -1,7 +1,11 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 
 /**
  * Created by daveyle on 2/1/2016.
@@ -10,6 +14,7 @@ public class MessageThread implements Selectable{
     private long id;
     private String title;
     private long parentID;
+    private String newestTime;
     private boolean isHidden=false;
     private List<Message> itemList=new ArrayList<Message>();
     private int dirtyBits = 0;
@@ -94,6 +99,7 @@ public class MessageThread implements Selectable{
 
                 sb.append("\"personID\": \"" + item.getSender().getID()+"\",");
             }
+            sb.append("\"sentDate\": \""+item.getTime()+"\",");
 
             sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
             sb.append("},");
@@ -105,7 +111,7 @@ public class MessageThread implements Selectable{
 
                 sb.append("\"personID\": \"" + item.getSender().getID()+"\",");
             }
-
+            sb.append("\"sentDate\": \""+item.getTime()+"\",");
             sb.append("\"text\": \""+item.getItem()+"\"");
 
             sb.append("}");
@@ -167,6 +173,13 @@ public class MessageThread implements Selectable{
         }
     }
 
+    public String getNewestTime() {
+        return newestTime;
+    }
+
+    public void setNewestTime(String newestTime) {
+        this.newestTime = newestTime;
+    }
 
     public int getDirtyBits() {
         return dirtyBits;
@@ -180,6 +193,7 @@ public class MessageThread implements Selectable{
         private long itemID;
         private String item;
         private Person sender;
+        private String time;
 
 
         public Message(){
@@ -190,13 +204,21 @@ public class MessageThread implements Selectable{
         }
 
         public Message(String item) {
-            this(item, null);
+            this(item, new Person("Shadow Broker", null));
+//            this(item, null);
         }
 
         public Message(String item, Person sender) {
             this.item = item;
             this.sender = sender;
+            this.time=MessageThread.getCurrTime();
+
         }
+        public Message(String item, String senderID){
+            this(item, MessageThread.getPersonNameFromID(senderID));
+
+        }
+
         public Person getSender() {
             return sender;
         }
@@ -228,7 +250,31 @@ public class MessageThread implements Selectable{
         public void setItemID(long itemID) {
             this.itemID = itemID;
         }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
     }
+    public static String getCurrTime(){
+        Calendar cal=Calendar.getInstance();
+        return cal.get(Calendar.YEAR)+"-"+String.format("%2d", cal.get(Calendar.MONTH)+1)+"-"
+                +String.format("%2d", cal.get(Calendar.DAY_OF_MONTH))+
+                " "+String.format("%2d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%2d", cal.get(Calendar.MINUTE));
+    }
+
+    public static Person getPersonNameFromID(String personID){
+        Person p;
+        p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
+        if(p==null){
+            p=new Person("Shadow Broker", null);
+        }
+        return p;
+    }
+
 
 
 

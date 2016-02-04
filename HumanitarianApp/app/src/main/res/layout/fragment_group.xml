@@ -41,6 +41,13 @@
         android:layout_height="wrap_content"
         android:text="@string/shipments"
         android:id="@+id/shipmentsButton" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/threads"
+            android:id="@+id/threadsButton"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
     
 </FrameLayout>

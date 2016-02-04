@@ -1,3 +1,27 @@
+PUT login/user/TheOne
+{
+  "name":"The One",
+  "personId":"3104"
+   
+  
+}
+
+GET login/user/FemShep
+GET _cat/indices
+GET s40/_mapping
+GET s40/person/_search
+GET s40/project/_search
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "missing": {
+          "field": "dateArchived"
+        }
+      }
+    }
+  }
+}
 PUT s40/project/101000
 {
   "name": "Stop the Reapers",
@@ -103,6 +127,16 @@ PUT s40/project/101001
     ]
     
 }
+PUT s40/project/101111
+{
+  "name": "s40",
+  "groupIDs": [
+    {
+      "groupID": "202222"
+    }
+    ]
+    
+}
 PUT s40/project/100002
 {
   "name": "Bring Mark Watney Home",
@@ -142,6 +176,25 @@ PUT s40/person/3000
   {"parentID": "101000"},
   {"parentID": "200000"},
   {"parentID": "201000"}
+  ]
+}
+PUT s40/person/3101
+{
+  "lastLocation": 
+    
+        {
+         "lat": "45.01",
+         "lng": "57.34",
+         "name": "Rose-Hulman",
+         "time": "2015-12-06 17:33"
+        }
+    ,
+  "name": "FemShep",
+  "email": "daveyle@rose-hulman.edu",
+  "phone": "555-555-5555",
+  "parentIDs": [
+  {"parentID": "101111"},
+  {"parentID": "202222"}
   ]
 }
 PUT s40/person/3005
@@ -381,7 +434,7 @@ PUT s40/location/401000
   "lng": "57.34",
   "name": "Normandy SR-2",
   "parentIDs": [
-  {"projectID": "101000"}
+  {"parentID": "101000"}
   ]
 }
 PUT s40/location/402000
@@ -390,8 +443,8 @@ PUT s40/location/402000
   "lng": "43.61",
   "name": "The Citadel",
   "parentIDs": [
-  {"projectID": "101000"},
-  {"projectID": "101002"}
+  {"parentID": "101000"},
+  {"parentID": "101002"}
   ]
 }
 PUT s40/location/402001
@@ -400,7 +453,7 @@ PUT s40/location/402001
          "lng": "57.4",
          "name": "Omega-4 Relay",
         "parentIDs":[
-          {"projectID": "101002"}
+          {"parentID": "101002"}
           ]
         }
 
@@ -410,7 +463,7 @@ PUT s40/location/401001
   "lng": "-77.0365",
   "name": "The White House",
   "parentIDs": [
-  {"projectID": "101001"}
+  {"parentID": "101001"}
   ]
 }
 PUT s40/location/402001
@@ -419,7 +472,7 @@ PUT s40/location/402001
   "lng": "-77.009114",
   "name": "The U.S. Capitol",
   "parentIDs": [
-  {"projectID": "101001"}
+  {"parentID": "101001"}
   ]
 }
 PUT s40/location/400002
@@ -428,7 +481,7 @@ PUT s40/location/400002
   "lng": "-27.9",
   "name": "Mars",
   "parentIDs": [
-  {"projectID": "100002"}
+  {"parentID": "100002"}
   ]
 }
 PUT s40/location/401002
@@ -437,7 +490,7 @@ PUT s40/location/401002
   "lng": "-9.1",
   "name": "Mars-Earth route",
   "parentIDs": [
-  {"projectID": "100002"}
+  {"parentID": "100002"}
   ]
 }
 PUT s40/location/400011
@@ -446,7 +499,7 @@ PUT s40/location/400011
   "lng": "-.2",
   "name": "HQ",
   "parentIDs": [
-  {"projectID": "101010"}
+  {"parentID": "101010"}
   ]
 }
 PUT s40/location/400010
@@ -455,7 +508,7 @@ PUT s40/location/400010
   "lng": "-1.3",
   "name": "Little Village",
   "parentIDs": [
-  {"projectID": "101010"}
+  {"parentID": "101010"}
   ]
 }
 PUT s40/note/501000
@@ -543,6 +596,29 @@ PUT s40/checklist/701000
     ]
   
 }
+PUT s40/thread/801000
+{
+  "name": "Normandy Crew",
+  "parentID":"200000",
+  "messageItems": [
+      {"messageID": "8010001",
+      "personID": "3009",
+      "text": "Hey guys how was that landing?",
+      
+      },
+	  {"messageID": "8010002",
+      "personID": "3000",
+      "text": "That was a volcano, Joker.",
+      
+      },
+	  {"messageID": "8010003",
+      "personID": "3000",
+      "text": "You asked, Commander.",
+      
+      }
+    ]
+  
+}
 
 PUT s40/checklist/701001
 {
@@ -602,16 +678,3 @@ PUT s40/checklist/701001
     "dateArchived": "2183-10-04"
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

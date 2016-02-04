@@ -4,13 +4,6 @@ package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 import android.util.Log;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Calendar;
-
-
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;

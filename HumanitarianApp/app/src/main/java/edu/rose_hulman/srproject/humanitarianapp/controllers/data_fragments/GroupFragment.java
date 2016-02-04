@@ -49,6 +49,7 @@ public class GroupFragment extends Fragment {
         Button notesButton=(Button) v.findViewById(R.id.notesButton);
         Button checklistsButton=(Button)v.findViewById(R.id.checklistsButton);
         Button shipmentsButton=(Button) v.findViewById(R.id.shipmentsButton);
+        Button threadsButton=(Button) v.findViewById(R.id.threadsButton);
         peopleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +72,12 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mListener.showShipments();
+            }
+        });
+        threadsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.showMessageThreads();
             }
         });
         return v;
@@ -113,6 +120,7 @@ public class GroupFragment extends Fragment {
         void showNotes();
         void showChecklists();
         void showShipments();
+        void showMessageThreads();
     }
 
 }

@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +30,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
     private ThreadFragmentListener mListener;
     private MessageThread messageThread;
+    private EditText mEditText;
+    private Button mSendButton;
 
     /**
      * The fragment's ListView/GridView.
@@ -62,9 +68,11 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
                 TextView nameField=(TextView)v.findViewById(R.id.nameField);
                 TextView textField=(TextView)v.findViewById(R.id.textField);
+                TextView timeField=(TextView)v.findViewById(R.id.timeField);
 
                 nameField.setText(item.getSender().getName());
                 textField.setText(item.getItem());
+                timeField.setText(item.getTime());
                 if(Long.parseLong(mListener.getUserID())==item.getSender().getID()){
                     layout.setBackgroundColor(getResources().getColor(R.color.SenderBlue));
 
@@ -108,7 +116,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
         TextView title=(TextView) view.findViewById(R.id.title);
         title.setText(messageThread.getTitle());
         // Set the adapter
@@ -117,6 +125,19 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+
+        mEditText=(EditText)view.findViewById(R.id.editText);
+
+        mSendButton=(Button)view.findViewById(R.id.sendButton);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.sendMessage(mEditText.getText().toString());
+            }
+        });
+
+
 
         return view;
     }
@@ -144,6 +165,11 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+    private void sendMessage(String message){
+        NonLocalDataService service=new NonLocalDataService();
+        MessageThread.Message message1=new MessageThread.Message(message, MessageThread.getPersonNameFromID(mListener.getUserID()));
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -159,6 +185,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
         public MessageThread getSelectedThread();
         public String getUserID();
+        public void sendMessage(String message);
 
     }
 

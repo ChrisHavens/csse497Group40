@@ -63,6 +63,7 @@
 <string name="title_activity_login">Sign in</string>
 <string name="signed_in_fmt">User:</string>
 <string name="loading">Loading...</string>
+    <string name="send">Send</string>
 <string name="permission_rationale">
 "Contacts permissions are needed for providing email completions."
 </string>

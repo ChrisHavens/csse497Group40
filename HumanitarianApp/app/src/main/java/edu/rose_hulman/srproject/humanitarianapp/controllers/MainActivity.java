@@ -861,6 +861,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public String getUserID(){
         return this.userID;
     }
+
+    @Override
+    public void sendMessage(String message) {
+
+    }
+
     @Override
     public void add() {
         Fragment f=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);

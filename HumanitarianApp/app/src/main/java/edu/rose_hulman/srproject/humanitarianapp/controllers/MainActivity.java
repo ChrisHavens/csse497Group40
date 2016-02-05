@@ -68,7 +68,6 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.Mess
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
-<<<<<<< HEAD
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;

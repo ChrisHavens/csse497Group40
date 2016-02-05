@@ -71,12 +71,8 @@
     <string name="signed_in_fmt">Signed in</string>
     <string name="loading">Loading...</string>
     <string name="mapShowText">Show on map</string>
-    <string name="signed_out">Signed out</string>
-    <string name="threads">Threads</string>
-    <string name="send">Send</string>
     <string name="changeSync">Switch sync modes</string>
     <string name="forceSync">Sync</string>
-    <string name="loading">Loading</string>
-    <string name="signed_in_fmt">Signed in</string>
+
 </resources>
 

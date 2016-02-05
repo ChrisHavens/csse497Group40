@@ -4,10 +4,7 @@ local.properties
 *.class
 
 # Generated files
-HumanitarianApp/identitytoolkit-api11/
 HumanitarianApp/.idea/
 HumanitarianApp/local.properties
 HumanitarianApp/build/
 
-
-HumanitarianApp/.idea/vcs.xml

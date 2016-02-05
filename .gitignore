@@ -7,10 +7,7 @@ local.properties
 HumanitarianApp/identitytoolkit-api11/
 HumanitarianApp/.idea/
 HumanitarianApp/local.properties
-HumanitarianApp/gradle.properties
-HumanitarianApp/.gradle/
 HumanitarianApp/build/
-HumanitarianApp/gradle/
 
 
 HumanitarianApp/.idea/vcs.xml

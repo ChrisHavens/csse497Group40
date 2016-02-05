@@ -45,4 +45,10 @@
         android:title="@string/forceSync"
         app:showAsAction="never"
         ></item>
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="700"
+        android:title="Log out"
+        app:showAsAction="never"
+        ></item>
 </menu>

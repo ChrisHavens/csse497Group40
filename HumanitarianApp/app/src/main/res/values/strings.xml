@@ -63,6 +63,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="send">Send</string>
+    <string name="threads">Message Threads</string>
+    <string name="signed_out">Signed out</string>
+    <string name="sign_out">Sign out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="signed_in_fmt">Signed in</string>
+    <string name="loading">Loading...</string>
     <string name="mapShowText">Show on map</string>
     <string name="signed_out">Signed out</string>
     <string name="threads">Threads</string>

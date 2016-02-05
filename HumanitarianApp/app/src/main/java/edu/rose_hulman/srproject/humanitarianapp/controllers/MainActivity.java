@@ -88,6 +88,17 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+
 //import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
@@ -111,7 +122,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         ChecklistFragment.ChecklistFragmentListener, NoteFragment.NoteFragmentListener,
         LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener, CRUDInterface,
         android.support.v4.app.FragmentManager.OnBackStackChangedListener,
-        MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener
+        MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener,
+                GoogleApiClient.OnConnectionFailedListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -254,6 +266,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         if (id== R.id.forceSync){
             ApplicationWideData.sync();
             return true;
+        }
+        if (id==R.id.logout){
+            switchToLogin();
         }
 
 
@@ -979,7 +994,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public boolean isFromProject() {
         return actions.isFromProject();
     }
-
+    private void switchToLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("logMeOut", true);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackStackChanged() {
@@ -1000,4 +1019,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         //Log.d("tag", getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName());
         return true;
     }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        Log.d("s40", "onConnectionFailed:" + connectionResult);
+    }
+
 }

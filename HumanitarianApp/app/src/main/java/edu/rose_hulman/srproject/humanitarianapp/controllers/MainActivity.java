@@ -290,12 +290,15 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         String latS = loc.getLatitude() + "";
         String lngS = loc.getLongitude() + "";
         String city = "";
+        String country = "";
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
         Log.d("ED", date);
         List<Address> addresses = gcd.getFromLocation(lat, lng , 1);
-        if (addresses.size() > 0)
+        if (addresses.size() > 0) {
             city = addresses.get(0).getLocality();
-        CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city;
+            country = addresses.get(0).getCountryName();
+        }
+        CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city + ", " + country;
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -304,7 +307,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         //TODO, replace hard coded ID with actual one
 
         long ID = 3105;
-        String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city, date);
+        String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city + ", " + country, date);
         Log.d("ED", JSONed);
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override

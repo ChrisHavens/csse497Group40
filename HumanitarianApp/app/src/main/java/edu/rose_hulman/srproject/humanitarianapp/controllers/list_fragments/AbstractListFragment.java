@@ -54,6 +54,12 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
         // Set the adapter
         mListView = (AbsListView) view.findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
+        View emptyView = inflater.inflate(R.layout.list_empty, container, false);
+        TextView emptyText=(TextView) emptyView.findViewById(R.id.emptyViewText);
+        String format1=getResources().getString(R.string.noneFound);
+
+        emptyText.setText(String.format(format1, getItemName()));
+        mListView.setEmptyView(emptyView);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -77,6 +83,10 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
     public abstract void onItemSelected(T t);
 
     public abstract void checkForArgs();
+
+    private String getItemName(){
+        return getTitle().toLowerCase();
+    }
 
 
     /**

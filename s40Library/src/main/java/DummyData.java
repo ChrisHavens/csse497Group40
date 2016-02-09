@@ -1,1 +1,2 @@
-"{\"doc\": {\"parentID\": \"200000\"}}"
+"\"query\": {"+"\"filtered\": {"+"\"filter\": {"+"\"has_parent\": {"+"\"parent_type\": \"thread\","+"\"filter\": {"+"\"ids\": {"+"\"values\": ["+"\"%s\""+"]"+"}"+"}"+""+""+"}"+"}"+"}}";
+"\"query\": {"+"\"filtered\": {"+"\"filter\": {"+"\"bool\": {"+"\"must\": ["+"{\"has_parent\": {"+"\"parent_type\": \"thread\","+"\"filter\": {"+"\"ids\": {"+"\"values\": ["+"\"%s\""+"]"+"}"+"}"+"}},"+"{\"range\": {"+"\"sentDate\": {"+"\"gte\": \"%s\""+"}"+"}}"+"]"+""+"}"+"}"+"}}";

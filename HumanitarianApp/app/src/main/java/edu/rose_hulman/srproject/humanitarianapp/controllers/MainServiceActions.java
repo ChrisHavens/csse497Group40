@@ -346,6 +346,29 @@ public class MainServiceActions {
 
         service.addNewChecklist(checklist, responseCallback);
     }
+    public void addNewMessageThread(){
+
+    }
+    public void addNewMessage(String message, String userID){
+        Callback<Response> addResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(context, "Message sent", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("Retrofit Error", error.getUrl());
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        };
+        MessageThread.Message message1=new MessageThread.Message(message, userID);
+        Log.wtf("s40",message1.getTime());
+        message1=getSelectedMessageThread().addBuildNewMessage(message1);
+        Log.wtf("s40-4", getSelectedMessageThread().getID()+"");
+        Log.wtf("s40-3", message1.getItemID()+"");
+        service.addNewMessage(getSelectedMessageThread(), message1, addResponse);
+    }
     public void hideProject() {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override

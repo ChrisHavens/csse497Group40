@@ -41,6 +41,9 @@ public class NonLocalDataService {
     public void addNewThread(MessageThread thread, Callback<Response> callback){
         service.addNewPerson(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
     }
+    public void addNewMessage(MessageThread thread, MessageThread.Message message,  Callback<Response> callback){
+        service.addNewMessage(thread.getID()+"", message.getItemID()+"",new TypedJsonString(message.toMessageSendString()), callback);
+    }
     public void addNewProject(Project project, Callback<Response> callback){
         service.addNewProject(project.getId() + "", new TypedJsonString(project.toJSON()), callback);
     }
@@ -89,6 +92,31 @@ public class NonLocalDataService {
         Log.w("Note:", id+" "+sb.toString());
 
         service.updateNote(id + "", new TypedJsonString(sb.toString()), callback);
+    }
+
+    public void getMessagesList(String id, int start, int size, String time, Callback<Response>callback){
+        service.getMessagesList(id, start+"", size+"", time, callback);
+    }
+    public void getMessagesList(String id, int start, int size, Callback<Response>callback){
+        service.getMessagesList(id, start+"", size+"", null, callback);
+    }
+    public void getMessagesList(String id, String time, Callback<Response>callback){
+        service.getMessagesList(id, null, null, time, callback);
+    }
+    public void getMessagesList(String id, Callback<Response>callback){
+        service.getMessagesList(id, null, null, null, callback);
+    }
+    public void getMessagesListStart(String id, int start, String time, Callback<Response>callback){
+        service.getMessagesList(id, start+"", null, time, callback);
+    }
+    public void getMessagesListStart(String id, int start, Callback<Response>callback){
+        service.getMessagesList(id, start+"", null, null, callback);
+    }
+    public void getMessagesListSize(String id, int size, String time, Callback<Response>callback){
+        service.getMessagesList(id, null, size+"", time, callback);
+    }
+    public void getMessagesListSize(String id, int size, Callback<Response>callback){
+        service.getMessagesList(id, null, size+"", null, callback);
     }
 
     /*

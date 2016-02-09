@@ -13,11 +13,20 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +39,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
     private ThreadFragmentListener mListener;
     private MessageThread messageThread;
+    private ArrayList<MessageThread.Message> messages=new ArrayList<>();
     private EditText mEditText;
     private Button mSendButton;
 
@@ -60,7 +70,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         messageThread =mListener.getSelectedThread();
 
         mAdapter=new ListArrayAdapter<MessageThread.Message>(getActivity(),
-                R.layout.list_message, messageThread.getItemList()){
+                R.layout.list_message, messages){
 
             @Override
             public View customiseView(View v, final MessageThread.Message item) {
@@ -89,27 +99,6 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                     //textField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
                     textField.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                 }
-//
-//                            AbsListView listView = (AbsListView) v.findViewById(R.id.sublistView);
-//                    ListArrayAdapter<MessageThread.SublistItem> adapter=
-//                            new ListArrayAdapter<MessageThread.SublistItem>(getActivity(),
-//                                    R.layout.list_subthread, item.getSublistItems()) {
-//                        @Override
-//                        public View customiseView(View v, final MessageThread.SublistItem object) {
-//                            CheckBox box=(CheckBox)v.findViewById(R.id.checkBox);
-//                            box.setText(object.getCheckBoxInfoString());
-//                            box.setChecked(object.isDone());
-//                            box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                                @Override
-//                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                                    object.setDone(isChecked);
-//                                }
-//                            });
-//                            return v;
-//                        }
-//                    };
-//                    Log.wtf("count", adapter.getCount()+"");
-//                    listView.setAdapter(adapter);
                 return v;
             }
         };
@@ -133,9 +122,13 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.sendMessage(mEditText.getText().toString());
+                String message=mEditText.getText().toString();
+                mEditText.setText("");
+                mListener.sendMessage(message);
+
             }
         });
+
 
 
 
@@ -153,6 +146,47 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
             throw new ClassCastException(activity.toString()
                     + " must implement ThreadFragmentListener");
         }
+        if (this.mAdapter != null) {
+            this.mAdapter.notifyDataSetChanged();
+        }
+        NonLocalDataService service = new NonLocalDataService();
+        service.getMessagesList(mListener.getSelectedThread().getID() + "", new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference =
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+
+                    ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
+                    for (int i = list.size() - 1; i > -1; i--) {
+                        HashMap<String, Object> map = list.get(i);
+                        HashMap<String, Object> source = (HashMap) map.get("_source");
+                        if (source != null) {
+                            MessageThread.Message m = new MessageThread.Message((String) source.get("text"),
+                                    (String) source.get("personID"), (String) source.get("sentDate"));
+                            m.setItemID(Long.parseLong((String) map.get("_id")));
+                            messageThread.addItem(m);
+                            messages.add(m);
+
+                            if (mAdapter != null) {
+                                mAdapter.notifyDataSetChanged();
+
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     @Override
@@ -165,11 +199,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-    private void sendMessage(String message){
-        NonLocalDataService service=new NonLocalDataService();
-        MessageThread.Message message1=new MessageThread.Message(message, MessageThread.getPersonNameFromID(mListener.getUserID()));
 
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -186,7 +216,9 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         public MessageThread getSelectedThread();
         public String getUserID();
         public void sendMessage(String message);
+        //public void addNewMessage(MessageThread.Message message);
 
     }
+
 
 }

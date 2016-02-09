@@ -1,9 +1,13 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 
@@ -16,7 +20,7 @@ public class MessageThread implements Selectable{
     private long parentID;
     private String newestTime;
     private boolean isHidden=false;
-    private List<Message> itemList=new ArrayList<Message>();
+    private HashMap<String, Message> itemList=new HashMap<String, Message>();
     private int dirtyBits = 0;
 
     /**
@@ -47,7 +51,10 @@ public class MessageThread implements Selectable{
 
     public MessageThread(String title, List<Message> itemList) {
         this.title = title;
-        this.itemList = itemList;
+        for (Message item: itemList){
+            this.itemList.put(item.getItemID()+"", item);
+        }
+            //this.itemList = itemList;
     }
 
     public MessageThread(String title, long id) {
@@ -57,7 +64,9 @@ public class MessageThread implements Selectable{
 
     public MessageThread(String title, List<Message> itemList, long id) {
         this.title = title;
-        this.itemList = itemList;
+        for (Message item: itemList){
+            this.itemList.put(item.getItemID()+"", item);
+        }
         this.id = id;
     }
 
@@ -92,29 +101,13 @@ public class MessageThread implements Selectable{
       }
          */
         StringBuilder sb= new StringBuilder();
-        for (int i=0; i<getItemList().size()-1; i++){
+        for (int i=0; i<getItemList().size(); i++){
             Message item=getItemList().get(i);
-            sb.append("{\"messageID\": \""+item.itemID+"\",");
-            if (item.getSender()!=null) {
-
-                sb.append("\"personID\": \"" + item.getSender().getID()+"\",");
-            }
-            sb.append("\"sentDate\": \""+item.getTime()+"\",");
-
-            sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
-            sb.append("},");
+            sb.append(item.toJSON());
+            sb.append(",");
         }
-        if (getItemList().size()>0){
-            Message item=getItemList().get(getItemList().size()-1);
-            sb.append("{\"messageID\": \""+item.itemID+"\",");
-            if (item.getSender()!=null) {
-
-                sb.append("\"personID\": \"" + item.getSender().getID()+"\",");
-            }
-            sb.append("\"sentDate\": \""+item.getTime()+"\",");
-            sb.append("\"text\": \""+item.getItem()+"\"");
-
-            sb.append("}");
+        if (sb.toString().endsWith(",")){
+            sb.deleteCharAt(sb.length()-1);
         }
         return sb.toString();
 
@@ -129,11 +122,15 @@ public class MessageThread implements Selectable{
     }
 
     public List<Message> getItemList() {
-        return itemList;
+        List<Message> messages=new ArrayList<>();
+        messages.addAll(itemList.values());
+        return messages;
     }
 
     public void setItemList(List<Message> itemList) {
-        this.itemList = itemList;
+        for (Message item: itemList){
+            this.itemList.put(item.getItemID()+"", item);
+        }
     }
 
     public String getTitle() {
@@ -145,7 +142,7 @@ public class MessageThread implements Selectable{
     }
 
     public void addItem(Message item){
-        this.itemList.add(item);
+        this.itemList.put(item.getItemID() + "", item);
     }
 
     public long getParentID() {
@@ -165,12 +162,29 @@ public class MessageThread implements Selectable{
     }
     public void setItemIDs(){
         long base=this.id*1000;
-        for (int i=0; i<itemList.size(); i++){
+        int i=0;
+        for (String index: itemList.keySet()){
             long base2=(base+i)*1000;
-            Message item=itemList.get(i);
-            item.setItemID(base+i);
+            Message item=itemList.get(index);
+            item.setItemID(base2+i);
+            i++;
 
         }
+    }
+    public Message addBuildNewMessage(Message message){
+        Log.wtf("s40-5", itemList.size()+"");
+
+        long base=this.id*1000;
+        long base2=(base+itemList.size()+1);
+        message.setItemID(base2);
+        Log.wtf("s40-2", message.getTime());
+        itemList.put(message.getItemID()+"", message);
+        //2016-01-10 > 2016-01-09
+
+        if (this.newestTime==null || message.getTime().compareTo(this.newestTime)>0){
+            this.newestTime=message.getTime();
+        }
+        return message;
     }
 
     public String getNewestTime() {
@@ -218,6 +232,38 @@ public class MessageThread implements Selectable{
             this(item, MessageThread.getPersonNameFromID(senderID));
 
         }
+        public Message(String item, String senderID, String time){
+            this.item=item;
+            this.sender=MessageThread.getPersonNameFromID(senderID);
+            this.time=time;
+        }
+        public String toJSON(){
+            StringBuilder sb=new StringBuilder();
+            sb.append("{\"messageID\": \""+itemID+"\",");
+            if (getSender()!=null) {
+
+                sb.append("\"personID\": \"" + getSender().getID()+"\",");
+            }
+            sb.append("\"sentDate\": \""+getTime()+"\",");
+            sb.append("\"text\": \""+getItem()+"\"");
+
+            sb.append("}");
+            return sb.toString();
+        }
+        public String toMessageSendString(){
+            StringBuilder sb=new StringBuilder();
+            sb.append("{");
+            if (getSender()!=null) {
+
+                sb.append("\"personID\": \"" + getSender().getID()+"\",");
+            }
+            sb.append("\"sentDate\": \""+getTime()+"\",");
+            // sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
+            sb.append("\"text\": \""+getItem()+"\"");
+
+            sb.append("}");
+            return sb.toString();
+        }
 
         public Person getSender() {
             return sender;
@@ -261,18 +307,22 @@ public class MessageThread implements Selectable{
     }
     public static String getCurrTime(){
         Calendar cal=Calendar.getInstance();
-        return cal.get(Calendar.YEAR)+"-"+String.format("%2d", cal.get(Calendar.MONTH)+1)+"-"
-                +String.format("%2d", cal.get(Calendar.DAY_OF_MONTH))+
-                " "+String.format("%2d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%2d", cal.get(Calendar.MINUTE));
+        return cal.get(Calendar.YEAR)+"-"+String.format("%02d", cal.get(Calendar.MONTH)+1)+"-"
+                +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
+                " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
     }
 
     public static Person getPersonNameFromID(String personID){
-        Person p;
-        p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
-        if(p==null){
-            p=new Person("Shadow Broker", null);
+        try {
+            Person p;
+            p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
+            if (p == null) {
+                p = new Person("Shadow Broker", null);
+            }
+            return p;
+        }catch (Exception e){
+            return new Person("Shadow Broker", null);
         }
-        return p;
     }
 
 

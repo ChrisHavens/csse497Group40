@@ -425,6 +425,14 @@ public interface WrapperService {
     void changeVisibilityThread(@Path("id") String id,
                                    @Query("status") String status,
                                    Callback<Response> callback);
+    @PUT("/api/thread/{id}/messages/add/{subid}")
+    @Headers("Accept: application/json")
+    void addNewMessage(@Path("id") String id, @Path("subid") String subid, @Body TypedInput body, Callback<Response> callback);
+
+    @GET("/api/thread/{id}/messages")
+    void getMessagesList(@Path("id") String id, @Query("start") String start, @Query("size") String size,
+                         @Query("time") String time, Callback<Response> callback);
+
 
     /*
    Shipments

@@ -69,6 +69,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
+        Log.wtf("s40", "Here");
         service.service.getThreadList(showHidden, mListener.getSelectedGroup().getId() + "", new ThreadListCallback());
     }
 
@@ -85,6 +86,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 
     @Override
     public void onItemSelected(MessageThread thread) {
+
         mListener.onItemSelected(thread);
     }
     public void checkForArgs(){
@@ -102,19 +104,26 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 
         @Override
         public void success(Response response, Response response2) {
-
+            //Log.wtf("s40", "marge");
             ObjectMapper mapper=new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference=
                     new TypeReference<HashMap<String, Object>>() {
                     };
+            TypeReference<String> typeReference1=new TypeReference<String>() {
+            };
             try {
+                //Log.wtf("s40", "homer");
                 HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
+                //Log.wtf("s40", "bart");
+                HashMap<String, Object> o2=(HashMap)o.get("hits");
+                //Log.wtf("s40", "lisa");
 
-                ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
+                ArrayList<HashMap<String, Object>> list=(ArrayList)o2.get("hits");
+                //Log.wtf("s40", "maggie"+o2.keySet().toString());
                 NonLocalDataService service=new NonLocalDataService();
 
                 for (HashMap<String, Object> map: list){
-
+                    //Log.wtf("s40", "object");
                     HashMap<String, Object> source=(HashMap)map.get("_source");
 
                     MessageThread l=new MessageThread(Integer.parseInt(((String)map.get("_id"))));
@@ -125,19 +134,19 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
                         l.setHidden(true);
                     l.setParentID(Long.parseLong((String)source.get("parentID")));
 
-                    ArrayList<HashMap<String, Object>> items=(ArrayList)source.get("messageItems");
-                    for (HashMap item: items) {
-                        MessageThread.Message threadItem = new MessageThread.Message((String) item.get("text"));
-                        Person p;
-                        p = ApplicationWideData.getPersonByID(Long.parseLong((String) item.get("personID")));
-                        if(p==null){
-                            p=new Person("Shadow Broker", null);
-                        }
-
-                        threadItem.setSender(p);
-
-                        l.addItem(threadItem);
-                    }
+//                    ArrayList<HashMap<String, Object>> items=(ArrayList)source.get("messageItems");
+//                    for (HashMap item: items) {
+//                        MessageThread.Message threadItem = new MessageThread.Message((String) item.get("text"));
+//                        Person p;
+//                        p = ApplicationWideData.getPersonByID(Long.parseLong((String) item.get("personID")));
+//                        if(p==null){
+//                            p=new Person("Shadow Broker", null);
+//                        }
+//
+//                        threadItem.setSender(p);
+//
+//                        l.addItem(threadItem);
+//                    }
                     threads.add(l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

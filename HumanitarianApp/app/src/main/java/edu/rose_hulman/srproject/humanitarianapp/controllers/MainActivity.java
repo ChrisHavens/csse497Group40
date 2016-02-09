@@ -904,7 +904,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(String message){
+        actions.addNewMessage(message, getPersonNameFromID(getUserID()));
 
     }
 
@@ -1024,6 +1025,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d("s40", "onConnectionFailed:" + connectionResult);
+    }
+    public static String getPersonNameFromID(String personID){
+        Person p;
+        p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
+        if(p==null){
+            p=new Person("Shadow Broker", null);
+        }
+        return p.getName();
     }
 
 }

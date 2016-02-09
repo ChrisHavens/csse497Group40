@@ -11,9 +11,9 @@ import java.io.IOException;
 /**
  * Created by daveyle on 10/13/2015.
  */
-public class CreateMapping {
+public class CreateMapping3 {
     public static final String HOST="s40server.csse.rose-hulman.edu";
-    public static final String INDEXNAME="s40";
+    public static final String INDEXNAME="s40-2";
     public static final String INDEXNAME2="login";
     public static final String INDEXNAME3="database_info";
     public static void main(String[] args){
@@ -34,7 +34,8 @@ public class CreateMapping {
         XContentBuilder shipment=getMappingShipment();
         XContentBuilder note=getMappingNote();
         XContentBuilder checklist=getMappingChecklist();
-        XContentBuilder message=getMappingThread();
+        XContentBuilder thread=getMappingThread();
+        XContentBuilder message=getMappingMessage();
         XContentBuilder login=getMappingLogin();
         XContentBuilder database=getMappingDatabase();
         PutMappingResponse putMappingResponse = client.admin().indices()
@@ -72,9 +73,14 @@ public class CreateMapping {
                 .setType("checklist")
                 .setSource(checklist)
                 .execute().actionGet();
-        PutMappingResponse putMappingResponse10= client.admin().indices()
+        PutMappingResponse putMappingResponse11= client.admin().indices()
                 .preparePutMapping(INDEXNAME)
                 .setType("thread")
+                .setSource(thread)
+                .execute().actionGet();
+        PutMappingResponse putMappingResponse10= client.admin().indices()
+                .preparePutMapping(INDEXNAME)
+                .setType("message")
                 .setSource(message)
                 .execute().actionGet();
         PutMappingResponse putMappingResponse8 = client.admin().indices()
@@ -100,34 +106,34 @@ public class CreateMapping {
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
                     .startObject()
-                        .startObject("location")
-                            .startObject("properties")
+                    .startObject("location")
+                    .startObject("properties")
                     .startObject("timeModified")
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
-                                .startObject("dateArchived")
-                                    .field("type", "date")
-                                    .field("format", "YYYY-MM-dd")
-                                .endObject()
-                                .startObject("lat")
-                                    .field("type", "string")
-                                .endObject()
-                                .startObject("lng")
-                                    .field("type", "string")
-                                .endObject()
-                                .startObject("name")
-                                    .field("type", "string")
-                                .endObject()
-                                .startObject("parentIDs")
-                                    .startObject("properties")
-                                        .startObject("parentID")
-                                            .field("type", "string")
-                                        .endObject()
-                                    .endObject()
-                                .endObject()
-                            .endObject()
-                        .endObject()
+                    .startObject("dateArchived")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd")
+                    .endObject()
+                    .startObject("lat")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("lng")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("name")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("parentIDs")
+                    .startObject("properties")
+                    .startObject("parentID")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
                     .endObject();
             return mapping;
         } catch (IOException e) {
@@ -149,18 +155,18 @@ public class CreateMapping {
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
-                                .startObject("name")
+                    .startObject("name")
                     .field("type", "string")
                     .endObject()
                     .startObject("groupIDs")
                     .startObject("properties")
-                                        .startObject("groupID")
-                                            .field("type", "string")
-                                        .endObject()
-                                    .endObject()
-                                .endObject()
-                            .endObject()
-                        .endObject()
+                    .startObject("groupID")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject()
                     .endObject();
             return mapping;
         } catch (IOException e) {
@@ -186,11 +192,11 @@ public class CreateMapping {
                     .field("type", "string")
                     .endObject()
                     .startObject("projectIDs")
-                        .startObject("properties")
-                            .startObject("projectID")
-                                .field("type", "string")
-                            .endObject()
-                        .endObject()
+                    .startObject("properties")
+                    .startObject("projectID")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
                     .endObject()
                     .endObject()
                     .endObject()
@@ -225,21 +231,21 @@ public class CreateMapping {
                     .field("type", "string")
                     .endObject()
                     .startObject("lastLocation")
-                        .startObject("properties")
-                            .startObject("lat")
-                                .field("type", "string")
-                            .endObject()
-                            .startObject("lng")
-                                .field("type", "string")
-                            .endObject()
-                            .startObject("time")
-                                .field("type", "date")
-                                .field("format", "YYYY-MM-dd HH:mm")
-                            .endObject()
-                            .startObject("name")
-                                .field("type", "string")
-                            .endObject()
-                        .endObject()
+                    .startObject("properties")
+                    .startObject("lat")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("lng")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("time")
+                    .field("type", "date")
+                    .field("format", "YYYY-MM-dd HH:mm")
+                    .endObject()
+                    .startObject("name")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
                     .endObject()
                     .startObject("parentIDs")
                     .startObject("properties")
@@ -271,7 +277,7 @@ public class CreateMapping {
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
-                                .startObject("name")
+                    .startObject("name")
                     .field("type", "string")
                     .endObject()
                     .startObject("contents")
@@ -293,11 +299,11 @@ public class CreateMapping {
                     .field("type", "date")
                     .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
-                                .startObject("parentID")
-                                    .field("type", "string")
-                                .endObject()
-                            .endObject()
-                        .endObject()
+                    .startObject("parentID")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
+                    .endObject()
                     .endObject();
             return mapping;
         } catch (IOException e) {
@@ -324,7 +330,7 @@ public class CreateMapping {
                     .endObject()
                     .startObject("lastModTime")
                     .field("type", "date")
-                    //TODO add TimeZone Offset
+                            //TODO add TimeZone Offset
                     .field("format", "YYYY-MM-dd HH:mm")
                     .endObject()
                     .startObject("parentID")
@@ -400,48 +406,35 @@ public class CreateMapping {
         }
         return null;
     }
-//    public static XContentBuilder getMappingMessage(){
-//        XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
-//                .startObject()
-//                    .startObject("message")
-//                        .startObject("properties")
-//
-//
-//    }
+    public static XContentBuilder getMappingMessage(){
+        try{
+            XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
+                    .startObject()
+                    .startObject("message")
+                    .startObject("_parent").field("type", "thread").endObject()
+                    .startObject("properties")
+                    .startObject("text").field("type", "string").endObject()
+                    .startObject("personID").field("type", "string").endObject()
+                    .startObject("sentDate").field("type", "date").field("format", "YYYY-MM-dd HH:mm").endObject()
+                    .endObject()
+                    .endObject()
+                    .endObject();
+            return mapping;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static XContentBuilder getMappingThread(){
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
                     .startObject()
                     .startObject("thread")
                     .startObject("properties")
-                    .startObject("dateArchived")
-                    .field("type", "date")
-                    .field("format", "YYYY-MM-dd")
-                    .endObject()
-                    .startObject("messageItems")
-                    .startObject("properties")
-                    .startObject("text")
-                    .field("type", "string")
-                    .endObject()
-                    .startObject("personID")
-                    .field("type", "string")
-                    .endObject()
-                    .startObject("sentDate")
-                    .field("type", "date")
-                    .field("format", "YYYY-MM-dd HH:mm")
-                    .endObject()
-                    .endObject()
-                    .endObject()
-                    .startObject("timeModified")
-                    .field("type", "date")
-                    .field("format", "YYYY-MM-dd HH:mm")
-                    .endObject()
-                    .startObject("name")
-                    .field("type", "string")
-                    .endObject()
-                    .startObject("parentID")
-                    .field("type", "string")
-                    .endObject()
+                    .startObject("dateArchived").field("type", "date").field("format", "YYYY-MM-dd").endObject()
+                    .startObject("timeModified").field("type", "date").field("format", "YYYY-MM-dd HH:mm").endObject()
+                    .startObject("name").field("type", "string").endObject()
+                    .startObject("parentID").field("type", "string").endObject()
                     .endObject()
                     .endObject()
                     .endObject();
@@ -455,15 +448,15 @@ public class CreateMapping {
         try {
             XContentBuilder mapping = org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder()
                     .startObject()
-                        .startObject("user")
-                            .startObject("properties")
-                                .startObject("name")
-                                    .field("type", "string")
-                                .endObject()
-                            .startObject("personId")
-                                .field("type", "string")
-                            .endObject()
-                        .endObject()
+                    .startObject("user")
+                    .startObject("properties")
+                    .startObject("name")
+                    .field("type", "string")
+                    .endObject()
+                    .startObject("personId")
+                    .field("type", "string")
+                    .endObject()
+                    .endObject()
                     .endObject();
             return mapping;
         } catch (IOException e) {

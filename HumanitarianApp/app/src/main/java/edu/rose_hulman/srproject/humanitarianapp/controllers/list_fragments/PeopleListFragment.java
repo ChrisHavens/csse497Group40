@@ -154,9 +154,8 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     p.setLastCheckin(personLoc);
                     Log.d("ED", p.toJSON());
                     persons.add(p);
-                    //LocalDataSaver.addPerson(p);
+                    LocalDataSaver.addPerson(p);
                     adapter.notifyDataSetChanged();
-                    //adapter.add(p);
 
                 }
             } catch (IOException e) {

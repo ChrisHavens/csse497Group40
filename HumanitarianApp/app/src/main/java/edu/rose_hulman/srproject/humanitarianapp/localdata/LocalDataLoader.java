@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
 /**
@@ -56,20 +57,6 @@ public class LocalDataLoader {
     }
 
     private static void loadProjectListFields() {
-        List<Project> projects = ApplicationWideData.getAllProjects();
-        List<Group> groups = ApplicationWideData.getAllGroups();
-        Map<Long, Project> projectMap = new HashMap<>();
-        for (Project project : projects) {
-            projectMap.put(project.getId(), project);
-        }
-        for(Group group: groups) {
-            long id = group.getId();
-            long projectId = group.getProjectId();
-            if (projectMap.containsKey(projectId)){
-                Project project = projectMap.get(projectId);
-                project.addGroupIDsMaintain(id);
-            }
-        }
     }
 
     public static void loadShipments() {
@@ -103,10 +90,6 @@ public class LocalDataLoader {
     }
 
     private static void loadInitialGroups() {
-        List<Group> groups = LocalDataRetriver.getStoredGroups();
-        for (Group group : groups) {
-            ApplicationWideData.addExistingGroup(group);
-        }
     }
 
     private static void loadInitialLocations() {
@@ -118,7 +101,10 @@ public class LocalDataLoader {
     }
 
     private static void loadInitialPersons() {
-
+        List<Person> people = LocalDataRetriver.getStoredPeople();
+        for (Person person : people) {
+            ApplicationWideData.addExistingPerson(person);
+        }
     }
 
     private static void loadInitialShipments() {

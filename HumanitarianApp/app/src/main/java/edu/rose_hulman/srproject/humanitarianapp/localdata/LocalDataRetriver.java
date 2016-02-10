@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
 /**
@@ -16,6 +17,7 @@ public class LocalDataRetriver {
 
     private static String allProjectsQuery = "Select * From Project";
     private static String allGroupsQuery = "Select * From [Group]";
+    private static String allPeopleQuery = "Select * From [People]";
 
     public static List<Project> getStoredProjects() {
         List<Project> projects = new ArrayList<Project>();
@@ -65,6 +67,23 @@ public class LocalDataRetriver {
 
 
         return groups;
+    }
+
+    public static List<Person> getStoredPeople() {
+        List<Person> people = new ArrayList<Person>();
+        Cursor cursor = ApplicationWideData.db.rawQuery(allGroupsQuery, null);
+        cursor.moveToFirst();
+        for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
+            Long id = cursor.getLong(0);
+            String name = cursor.getString(1);
+            Person person = new Person(id);
+            person.setName(name);
+            people.add(person);
+        }
+
+
+
+        return people;
     }
 
     public static List<Long> getGroupIDForProject(long projectId) {

@@ -350,6 +350,7 @@ public class MainServiceActions {
 
     }
     public void addNewMessage(String message, String userID){
+        Log.wtf("s40", userID);
         Callback<Response> addResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -365,9 +366,10 @@ public class MainServiceActions {
         MessageThread.Message message1=new MessageThread.Message(message, userID);
         Log.wtf("s40",message1.getTime());
         message1=getSelectedMessageThread().addBuildNewMessage(message1);
+        //Log.wtf("s40-6", message1.)
         Log.wtf("s40-4", getSelectedMessageThread().getID()+"");
         Log.wtf("s40-3", message1.getItemID()+"");
-        service.addNewMessage(getSelectedMessageThread(), message1, addResponse);
+        service.addNewMessage(getSelectedMessageThread().getID()+"", message1, addResponse);
     }
     public void hideProject() {
         Callback<Response> hideResponse=new Callback<Response>() {

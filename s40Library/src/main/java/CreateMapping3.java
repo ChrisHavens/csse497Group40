@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class CreateMapping3 {
     public static final String HOST="s40server.csse.rose-hulman.edu";
-    public static final String INDEXNAME="s40-2";
+    public static final String INDEXNAME="s40";
     public static final String INDEXNAME2="login";
     public static final String INDEXNAME3="database_info";
     public static void main(String[] args){
@@ -84,16 +84,16 @@ public class CreateMapping3 {
                 .setSource(message)
                 .execute().actionGet();
         PutMappingResponse putMappingResponse8 = client.admin().indices()
-                .preparePutMapping(INDEXNAME2)
+                .preparePutMapping(INDEXNAME)
                 .setType("user")
                 .setSource(login)
                 .execute().actionGet();
 
-        PutMappingResponse putMappingResponse9 = client.admin().indices()
-                .preparePutMapping(INDEXNAME3)
-                .setType("info")
-                .setSource(database)
-                .execute().actionGet();
+//        PutMappingResponse putMappingResponse9 = client.admin().indices()
+//                .preparePutMapping(INDEXNAME3)
+//                .setType("info")
+//                .setSource(database)
+//                .execute().actionGet();
 
 
 
@@ -450,9 +450,9 @@ public class CreateMapping3 {
                     .startObject()
                     .startObject("user")
                     .startObject("properties")
-                    .startObject("name")
-                    .field("type", "string")
-                    .endObject()
+//                    .startObject("email")
+//                    .field("type", "string")
+//                    .endObject()
                     .startObject("personId")
                     .field("type", "string")
                     .endObject()

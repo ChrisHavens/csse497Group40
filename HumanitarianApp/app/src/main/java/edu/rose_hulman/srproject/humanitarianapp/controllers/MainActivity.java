@@ -905,7 +905,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     @Override
     public void sendMessage(String message){
-        actions.addNewMessage(message, getPersonNameFromID(getUserID()));
+        actions.addNewMessage(message, getUserID());
 
     }
 
@@ -1030,7 +1030,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Person p;
         p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
         if(p==null){
-            p=new Person("Shadow Broker", null);
+            p=new Person("Shadow Broker", personID);
         }
         return p.getName();
     }

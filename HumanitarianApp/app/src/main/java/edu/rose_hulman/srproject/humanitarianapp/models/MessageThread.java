@@ -206,7 +206,7 @@ public class MessageThread implements Selectable{
     public static class Message{
         private long itemID;
         private String item;
-        private Person sender;
+        private String sender;
         private String time;
 
 
@@ -218,23 +218,25 @@ public class MessageThread implements Selectable{
         }
 
         public Message(String item) {
-            this(item, new Person("Shadow Broker", null));
+            this(item, "");
 //            this(item, null);
         }
 
-        public Message(String item, Person sender) {
-            this.item = item;
-            this.sender = sender;
-            this.time=MessageThread.getCurrTime();
-
-        }
+//        public Message(String item, Person sender) {
+//            this.item = item;
+//            this.sender = sender;
+//            this.time=MessageThread.getCurrTime();
+//
+//        }
         public Message(String item, String senderID){
-            this(item, MessageThread.getPersonNameFromID(senderID));
+            this.item = item;
+            this.sender = senderID;
+            this.time=getCurrTime();
 
         }
         public Message(String item, String senderID, String time){
             this.item=item;
-            this.sender=MessageThread.getPersonNameFromID(senderID);
+            this.sender=senderID;
             this.time=time;
         }
         public String toJSON(){
@@ -242,7 +244,7 @@ public class MessageThread implements Selectable{
             sb.append("{\"messageID\": \""+itemID+"\",");
             if (getSender()!=null) {
 
-                sb.append("\"personID\": \"" + getSender().getID()+"\",");
+                sb.append("\"personID\": \"" + sender+"\",");
             }
             sb.append("\"sentDate\": \""+getTime()+"\",");
             sb.append("\"text\": \""+getItem()+"\"");
@@ -253,23 +255,23 @@ public class MessageThread implements Selectable{
         public String toMessageSendString(){
             StringBuilder sb=new StringBuilder();
             sb.append("{");
-            if (getSender()!=null) {
 
-                sb.append("\"personID\": \"" + getSender().getID()+"\",");
-            }
+                sb.append("\"personID\": \"" + sender+"\",");
+
             sb.append("\"sentDate\": \""+getTime()+"\",");
             // sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
             sb.append("\"text\": \""+getItem()+"\"");
 
             sb.append("}");
+            Log.wtf("S40", sb.toString());
             return sb.toString();
         }
 
-        public Person getSender() {
+        public String getSender() {
             return sender;
         }
 
-        public void setSender(Person sender) {
+        public void setSender(String sender) {
             this.sender = sender;
         }
 
@@ -285,7 +287,7 @@ public class MessageThread implements Selectable{
             if (getSender()==null){
                 return getItem();
             }
-            return getItem()+" ("+getSender().getName()+")";
+            return getItem()+" ("+sender+")";
 
         }
 

@@ -198,6 +198,18 @@ public interface WrapperService {
                      @Body TypedInput body,
                      Callback<Response> callback);
 
+    @POST("/api/person/{id}/projects/add")
+    @Headers("Accept: application/json")
+    void addPersonToProject(@Path("id") String id,
+                      @Body TypedInput body,
+                      Callback<Response> callback);
+
+    @POST("/api/person/{id}/groups/add")
+    @Headers("Accept: application/json")
+    void addPersonToGroup(@Path("id") String id,
+                      @Body TypedInput body,
+                      Callback<Response> callback);
+
     @POST("/api/person/{id}/update")
     @Headers("Accept: application/json")
     void updatePerson(@Path("id") String id,

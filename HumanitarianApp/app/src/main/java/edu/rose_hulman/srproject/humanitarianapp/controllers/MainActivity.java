@@ -644,9 +644,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 //        };
 //        service.updatePerson(person, responseCallback);
 //    }
+//    @Override
+//    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+//        actions.addNewPerson(name,phone,email,role);
+//    }
     @Override
-    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
-        actions.addNewPerson(name,phone,email,role);
+    public void addNewPerson(Person p) {
+        actions.addPersonToProjectOrGroup(p);
+        //actions.addNewPerson(name,phone,email,role);
     }
     @Override
 

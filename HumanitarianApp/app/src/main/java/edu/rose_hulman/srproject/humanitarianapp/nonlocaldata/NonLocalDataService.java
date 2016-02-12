@@ -38,6 +38,14 @@ public class NonLocalDataService {
     public void addNewPerson(Person person, Callback<Response> callback){
         service.addNewPerson(person.getID() + "", new TypedJsonString(person.toJSON()), callback);
     }
+    public void addPersonToProject(String personID, String projectID, Callback<Response> callback){
+        String json="{\"projectId\": \""+projectID+"\"}";
+        service.addPersonToProject(personID, new TypedJsonString(json), callback);
+    }
+    public void addPersonToGroup(String personID, String groupID, Callback<Response> callback){
+        String json="{\"groupId\": \""+groupID+"\"}";
+        service.addPersonToGroup(personID, new TypedJsonString(json), callback);
+    }
     public void addNewThread(MessageThread thread, Callback<Response> callback){
         service.addNewPerson(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
     }

@@ -164,6 +164,12 @@ public class Person implements Serializable, Selectable {
         this.locations = locations;
     }
 
+    public boolean isInProject(long projectID){
+        return this.projectIDs.contains(projectID);
+    }
+    public boolean isInGroup(long groupID){
+        return this.groupIDs.contains(groupID);
+    }
 
     public long getID(){
         return this.ID;

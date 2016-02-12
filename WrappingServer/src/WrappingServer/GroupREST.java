@@ -45,10 +45,10 @@ public class GroupREST {
 
     Client client = ClientBuilder.newClient(config);
 
-    WebTarget target = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/s40/group").build());
+    WebTarget target = client.target(UriBuilder.fromUri(Utils.mainURL+"/group").build());
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getList(@DefaultValue("null") @QueryParam("userID") String userID, 
+	public Response getList(@DefaultValue("null") @QueryParam("userID") String userID, 
 			@DefaultValue("false") @QueryParam("show_hidden") boolean showHidden, 
 			@DefaultValue("null") @QueryParam("projectID") String projectID,
 			@DefaultValue("null") @QueryParam("time") String time){
@@ -84,7 +84,7 @@ public class GroupREST {
 				
 	    	}
 	    if (userID==null || userID.equals("null")){
-	    	return response.readEntity(String.class);
+	    	return response;
 	    }
 	    else{ //userID!=null
 	    	String result=PersonREST.getParentsInfo(userID);
@@ -113,10 +113,12 @@ public class GroupREST {
 						output.deleteCharAt(output.length()-1);
 					}
 					output.append("]}}");
-					return output.toString();
+					
+					return Response.status(Status.OK).entity(output.toString()).build();
+//					return output.toString();
 	            }
 		    catch(Exception e){
-            	return e.toString();
+            	return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.toString()).build();
             	
             }
 	    }
@@ -125,13 +127,13 @@ public class GroupREST {
 		 
 	}
 	@GET @Path("{id}")
-	public String get(@PathParam("id") String id,@DefaultValue("null") @QueryParam("time") String time){
+	public Response get(@PathParam("id") String id,@DefaultValue("null") @QueryParam("time") String time){
 		Response response=null;
 		response = target.path("/"+id).request().get(Response.class);
 		try{
 			String result=response.readEntity(String.class);
 			if (time==null ||time.equals("null")){
-				return result;
+				return response;
 			}
 			
 			
@@ -145,7 +147,7 @@ public class GroupREST {
 					HashMap<String, Object> map = mapper.readValue(result, typeReference);
 					HashMap<String, Object> mapSource=(HashMap<String, Object>)map.get("_source");
 					if (!mapSource.containsKey("timeModified")){
-						return result;
+						return response;
 					}
 					
 					
@@ -154,10 +156,10 @@ public class GroupREST {
 					
 					
 					if (((String)mapSource.get("timeModified")).compareTo(time)>0){
-						return result;
+						return response;
 					}
 					else{
-						return "304 Not Modified";
+						return Response.status(Status.NOT_MODIFIED).build();
 					}
 	            }catch(Exception e){
 	            	e.printStackTrace();
@@ -167,78 +169,65 @@ public class GroupREST {
 		    	e.printStackTrace();
 		    }
 		
-		    return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		    return Response.status(Status.BAD_REQUEST).build();
 	}
 	@POST @Path("{id}/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String updateGroup(@PathParam("id") String id, String json){
+	public Response updateGroup(@PathParam("id") String id, String json){
 		if (!isSame(id, json)){
 			String endJson=json.substring(1);
-			Calendar rightNow = Calendar.getInstance();
-			StringBuilder sb=new StringBuilder();
-			sb.append(rightNow.get(Calendar.YEAR));
-			sb.append("-");
-			sb.append(rightNow.get(Calendar.MONTH)+1);
-			sb.append("-");
-			sb.append(rightNow.get(Calendar.DAY_OF_MONTH));
-			sb.append(" ");
-			sb.append(rightNow.get(Calendar.HOUR_OF_DAY));
-			sb.append(":");
-			sb.append(rightNow.get(Calendar.MINUTE));
-			String currTime=sb.toString();
+			String currTime=Utils.getCurrentDateTimeAsString();
 			String modJson=String.format("{\"timeModified\": \"%s\",", currTime)+endJson;
 			Response response = target.path("/"+id+"/_update").request().post(Entity.entity(modJson, MediaType.APPLICATION_JSON_TYPE));
-			return response.readEntity(String.class);
+			return response;
 		}
-		return "418 I'm a teapot";
+		return Response.status(CustomStatus.NO_CHANGES).build();
 		
 	}
 	@POST @Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String searchGroup(String json){
+	public Response searchGroup(String json){
 		Response response = target.path("/_search").request().post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-		return response.readEntity(String.class);
+		return response;
 	}
 	
 	
 	@PUT @Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addGroup(@PathParam("id") String id, String json){
+	public Response addGroup(@PathParam("id") String id, String json){
 		Response response = target.path("/"+id).request().put(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-		return response.readEntity(String.class);
+		return response;
 	}
 	@POST @Path("{id}/visibility")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
+	public Response changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
 		 StringBuilder sb=new StringBuilder();
 		sb.append("{\"doc\":{\"dateArchived\": ");
 		if (status.equalsIgnoreCase("hide")){
-        Calendar calendar=Calendar.getInstance();
-        String date=String.format("%04d-%02d-%02d", calendar.get
-                (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
+			 String date=Utils.getCurrentDateAsString();
         sb.append("\""+date+"\"");
 		}
 		else if (status.equalsIgnoreCase("show")){
 			sb.append("null");
 		}
 		else{
-			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+			return Response.status(Status.BAD_REQUEST).build();
 		}
         sb.append("}}");
         
         return updateGroup(id, sb.toString());
 	}
 	@DELETE @Path("{id}")
-	public String deleteGroup(@PathParam("id") String id){
+	public Response deleteGroup(@PathParam("id") String id){
 		Response response = target.path("/"+id).request().delete(Response.class);
-		return response.readEntity(String.class);
+		return response;
 	}
 	
 	private boolean isSame(String id, String json){
 		//TODO: not implemented
-		String object=get(id, null);
+		String object=get(id, null).readEntity(String.class);
 		ObjectMapper mapper=new ObjectMapper();
 		TypeReference<HashMap<String, Object>> typeReference=
 				new TypeReference<HashMap<String, Object>>() {

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -194,6 +195,10 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                                                 m2.setPerson(name);
                                                 messages.add(m2);
                                             }
+                                            else{
+                                                m2.setPerson("Shadow Broker");
+                                                messages.add(m2);
+                                            }
                                             mAdapter.notifyDataSetChanged();
 
                                         } catch (Exception e) {
@@ -205,6 +210,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                                     public void failure(RetrofitError error) {
                                         Log.wtf("s40", error.getMessage());
                                         Log.wtf("s40", error.getUrl());
+                                        m2.setPerson("Shadow Broker");
+                                        messages.add(m2);
                                     }
                                 };
                                 service.service.getPerson(m2.personID, callback);
@@ -212,6 +219,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
                         }
                     }
+                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -25,12 +25,17 @@ import com.google.android.gms.common.api.Status;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.Query;
+import retrofit.mime.TypedInput;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -42,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements
 
         private static final String TAG = "SignInActivity";
         private static final int RC_SIGN_IN = 9001;
+    NonLocalDataService service=new NonLocalDataService();
+    String personID;
 
         private GoogleApiClient mGoogleApiClient;
         private TextView mStatusTextView;
@@ -51,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //switchToMain("3000");
             if (this.getIntent()!=null && this.getIntent().getExtras()!=null) {
                 logMeOut = this.getIntent().getExtras().getBoolean("logMeOut", false);
             }
@@ -69,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
+                    .requestIdToken("380073753318-jo66uj3ghqmqmjg32p1s1662mnukbohj.apps.googleusercontent.com")
                     .build();
             // [END configure_signin]
 
@@ -95,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements
             // [END customize_button]
         }
 
-        @Override
+    @Override
         public void onStart() {
             super.onStart();
 
@@ -141,43 +150,51 @@ public class LoginActivity extends AppCompatActivity implements
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
                 mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()) + acct.getDisplayName());
+                //acct.
                 updateUI(true);
-    //            Callback<Response> callback=new Callback<Response>() {
-    //                @Override
-    //                public void success(Response response, Response response2) {
-    //                    Log.wtf("s40", "found it");
-    //                    ObjectMapper mapper=new ObjectMapper();
-    //                    TypeReference<HashMap<String, Object>> typeReference=
-    //                            new TypeReference<HashMap<String, Object>>() {
-    //                            };
-    //                    try {
-    //                        HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
-    //                        boolean found = (boolean) map.get("found");
-    //                        if (found) {
-    //                            String personID=(String) map.get("personId");
-    //                            switchToMain(personID);
-    //                        }
-    //                        else{
-    //
-    //                        }
-    //                    }catch(Exception e){
-    //
-    //                    }
-    //
-    //
-    //                }
-    //
-    //                @Override
-    //                public void failure(RetrofitError error) {
-    ////                    mEmailView.setError(error.getMessage());
-    ////                    mEmailView.requestFocus();
-    //                }
-    //            };
-    //            LoginService loginService=new LoginService();
-    //            loginService.doLogin(acct.getEmail(), callback);
                 if (!logMeOut) {
-                    switchToMain("3000");
-                }
+                    checkValidity(acct.getId());
+                                    //switchToMain("3000");
+                                    //switchToMain(personID);
+                                }
+//                switchToMain("3000");
+//                Callback<Response> callback=new Callback<Response>() {
+//                    @Override
+//                    public void success(Response response, Response response2) {
+//                        Log.wtf("s40", "found it");
+//                        ObjectMapper mapper=new ObjectMapper();
+//                        TypeReference<HashMap<String, Object>> typeReference=
+//                                new TypeReference<HashMap<String, Object>>() {
+//                                };
+//                        try {
+//                            HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
+//                            boolean found = (boolean) map.get("found");
+//                            if (found) {
+//                               personID=(String) map.get("personId");
+////                                if (!logMeOut) {
+////                                    switchToMain("3000");
+////                                    //switchToMain(personID);
+////                                }
+//                            }
+//                            else{
+//
+//                            }
+//                        }catch(Exception e){
+//
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//    //                    mEmailView.setError(error.getMessage());
+//    //                    mEmailView.requestFocus();
+//                    }
+//                };
+//                LoginService loginService=new LoginService();
+//                loginService.doLogin(acct.getEmail(), callback);
+
 
 
 
@@ -186,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements
                 updateUI(false);
             }
         }
+
         // [END handleSignInResult]
         private void switchToMain(String id){
             Intent intent = new Intent(this, MainActivity.class);
@@ -256,6 +274,7 @@ public class LoginActivity extends AppCompatActivity implements
         private void updateUI(boolean signedIn) {
             if (signedIn) {
                 findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
                 mStatusTextView.setText(R.string.signed_out);
@@ -277,26 +296,89 @@ public class LoginActivity extends AppCompatActivity implements
                 case R.id.disconnect_button:
                     revokeAccess();
                     break;
+                case R.id.go_button:
+                    go();
+                    break;
             }
         }
-        private class LoginService {
-            RestAdapter adapter;
-            LoginServices service;
-            public LoginService() {
-                adapter = new RestAdapter.Builder()
-                        .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
-                        .build();
-                service=adapter.create(LoginServices.class);
-            }
+    public void go(){
+
+    }
 
 
-            public void doLogin(String username, Callback<Response> callback) {
-                service.login(username, callback);
+    private void checkValidity(final String token){
+
+        Callback<Response> callback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ObjectMapper mapper=new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference=
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+                    String personId= (String) o.get("personId");
+                    switchToMain(personId);
+                }
+                catch(Exception e){
+                    Log.wtf("login", e.getMessage());
+                }
             }
-        }
-        public interface LoginServices{
-            @GET("/api/login/{username}")
-            void login(@Path(value = "username") String username, Callback<Response> callback);
-        }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error.getResponse()!=null){
+                    Log.wtf("login", error.getResponse().getStatus()+"");
+                    Log.wtf("login", token);
+                    if (error.getResponse().getStatus()==420){
+                        Log.wtf("login", "Signup");
+                        signUp(token);
+                    }
+                }
+            }
+        };
+        service.verify(token, callback);
+    }
+    private void signUp(final String token){
+
+        Callback<Response> callback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                ObjectMapper mapper=new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference=
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+                    String personId= (String) o.get("personId");
+                    switchToMain(personId);
+                }
+                catch(Exception e){
+                    Log.wtf("login", e.getMessage());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                try {
+                    ObjectMapper mapper=new ObjectMapper();
+                    TypeReference<HashMap<String, Object>> typeReference=
+                            new TypeReference<HashMap<String, Object>>() {
+                            };
+                    HashMap<String, Object> errorMap=mapper.readValue(error.getResponse().getBody().in(), typeReference);
+                    Log.wtf("loginError", (String)errorMap.get("error"));
+                }catch(Exception e){
+                    Log.wtf("loginError Error", e.getMessage());
+                }
+//                if (error.getResponse()!=null){
+//                    Log.wtf("login", error.getResponse().getStatus()+"");
+//                    if (error.getResponse().getStatus()==420){
+//                        signUp(token);
+//                    }
+//                }
+            }
+        };
+        service.signUp(token, callback);
+    }
 }
 

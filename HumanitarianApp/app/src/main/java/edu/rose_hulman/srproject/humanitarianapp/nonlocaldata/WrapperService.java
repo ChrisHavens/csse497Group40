@@ -515,5 +515,9 @@ public interface WrapperService {
     void deleteShipment(@Path("id") String id,
                          Callback<Response> callback);
 
+    @GET("/api/login/{id}")
+    void login(@Path("id") String token, Callback<Response> callback);
 
+    @PUT("/api/login/add")
+    void addNewuser(@Body TypedInput token, Callback<Response> callback);
 }

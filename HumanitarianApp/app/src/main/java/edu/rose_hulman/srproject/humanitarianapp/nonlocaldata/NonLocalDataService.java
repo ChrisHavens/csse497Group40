@@ -42,7 +42,7 @@ public class NonLocalDataService {
         service.addNewPerson(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
     }
     public void addNewMessage(String parentID, MessageThread.Message message,  Callback<Response> callback){
-        service.addNewMessage(parentID, message.getItemID()+"",new TypedJsonString(message.toMessageSendString()), callback);
+        service.addNewMessage(parentID, message.getItemID() + "", new TypedJsonString(message.toMessageSendString()), callback);
     }
     public void addNewProject(Project project, Callback<Response> callback){
         service.addNewProject(project.getId() + "", new TypedJsonString(project.toJSON()), callback);
@@ -95,10 +95,10 @@ public class NonLocalDataService {
     }
 
     public void getMessagesList(String id, int start, int size, String time, Callback<Response>callback){
-        service.getMessagesList(id, start+"", size+"", time, callback);
+        service.getMessagesList(id, start + "", size + "", time, callback);
     }
     public void getMessagesList(String id, int start, int size, Callback<Response>callback){
-        service.getMessagesList(id, start+"", size+"", null, callback);
+        service.getMessagesList(id, start + "", size + "", null, callback);
     }
     public void getMessagesList(String id, String time, Callback<Response>callback){
         service.getMessagesList(id, null, null, time, callback);
@@ -173,5 +173,13 @@ public class NonLocalDataService {
     }
     public void deleteShipment(Shipment s, Callback<Response> callback){
         service.deleteChecklist(s.getID() + "", callback);
+    }
+
+    public void verify(String username, Callback<Response> callback) {
+        service.login(username, callback);
+    }
+    public void signUp(String token, Callback<Response> callback){
+        NonLocalDataService.TypedJsonString json= new NonLocalDataService.TypedJsonString("{\"id\":\""+token+"\"}");
+        service.addNewuser(json, callback);
     }
 }

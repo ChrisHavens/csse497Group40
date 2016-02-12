@@ -244,7 +244,9 @@ public class Person implements Serializable, Selectable {
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        sb.append(lastCheckin.toJSON()+",");
+        if (lastCheckin!=null) {
+            sb.append(lastCheckin.toJSON() + ",");
+        }
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");

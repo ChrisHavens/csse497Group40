@@ -79,6 +79,7 @@ public class NewUserDialogFragment extends DialogFragment {
         nameField=(EditText) view.findViewById(R.id.nameField);
         phoneField=(EditText) view.findViewById(R.id.phoneField);
         emailField=(EditText)view.findViewById(R.id.emailField);
+        emailField.setText(mListener.getEmail());
         roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
         roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
@@ -115,7 +116,9 @@ public class NewUserDialogFragment extends DialogFragment {
      */
     public interface AddPersonListener {
         // TODO: Update argument type and name
+        public String getEmail();
         public void addNewPerson(String name, String phone, String email, Roles.PersonRoles role);
+
     }
     //
     private class RoleSpinnerAdapter extends ArrayAdapter<String>{

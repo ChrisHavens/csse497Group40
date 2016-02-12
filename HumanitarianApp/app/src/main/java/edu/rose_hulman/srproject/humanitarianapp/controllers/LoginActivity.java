@@ -1,6 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +27,8 @@ import com.google.android.gms.common.api.Status;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
+import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -43,12 +47,13 @@ import retrofit.mime.TypedInput;
  */
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        View.OnClickListener, NewUserDialogFragment.AddPersonListener {
 
         private static final String TAG = "SignInActivity";
         private static final int RC_SIGN_IN = 9001;
     NonLocalDataService service=new NonLocalDataService();
     String personID;
+    String emailAddress;
 
         private GoogleApiClient mGoogleApiClient;
         private TextView mStatusTextView;
@@ -150,10 +155,11 @@ public class LoginActivity extends AppCompatActivity implements
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
                 mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()) + acct.getDisplayName());
+
                 //acct.
                 updateUI(true);
                 if (!logMeOut) {
-                    checkValidity(acct.getId());
+                    checkValidity(acct.getId(), acct.getEmail());
                                     //switchToMain("3000");
                                     //switchToMain(personID);
                                 }
@@ -306,7 +312,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-    private void checkValidity(final String token){
+    private void checkValidity(final String token, final String email){
 
         Callback<Response> callback = new Callback<Response>() {
             @Override
@@ -332,14 +338,15 @@ public class LoginActivity extends AppCompatActivity implements
                     Log.wtf("login", token);
                     if (error.getResponse().getStatus()==420){
                         Log.wtf("login", "Signup");
-                        signUp(token);
+                        //
+                        signUp(token, email);
                     }
                 }
             }
         };
         service.verify(token, callback);
     }
-    private void signUp(final String token){
+    private void signUp(final String token, final String email){
 
         Callback<Response> callback = new Callback<Response>() {
             @Override
@@ -350,8 +357,10 @@ public class LoginActivity extends AppCompatActivity implements
                         };
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
-                    String personId= (String) o.get("personId");
-                    switchToMain(personId);
+                    personID= (String) o.get("personId");
+                    emailAddress=email;
+                    addPerson();
+                    //switchToMain(personID);
                 }
                 catch(Exception e){
                     Log.wtf("login", e.getMessage());
@@ -379,6 +388,44 @@ public class LoginActivity extends AppCompatActivity implements
             }
         };
         service.signUp(token, callback);
+    }
+    public void addPerson() {
+        DialogFragment newFragment = new NewUserDialogFragment();
+        newFragment.show(getFragmentManager(), "addPerson");
+    }
+    public String getEmail(){
+        return emailAddress;
+    }
+
+    @Override
+    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+
+
+            Person p=new Person(name, phone, email, Long.parseLong(personID));
+
+            edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
+            location.setName("Omega 4 Relay");
+            location.setTime("2185-04-05 14:45");
+            location.setLat(34.56f);
+            location.setLng(-5.45f);
+
+            //location.setID(10000);
+
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(getApplicationContext(), "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
+                    switchToMain(personID);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            //NonLocalDataService service=new NonLocalDataService();
+            service.addNewPerson(p, responseCallback);
+
     }
 }
 

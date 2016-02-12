@@ -86,22 +86,22 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                 nameField.setText(item.getPerson());
                 textField.setText(item.message.getItem());
                 timeField.setText(item.message.getTime());
-                //if(Long.parseLong(mListener.getUserID())==item.getID()){
+                if(mListener.getUserID().equals(item.personID)){
                     layout.setBackgroundColor(getResources().getColor(R.color.SenderBlue));
 
                     //nameField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
                     nameField.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                     //textField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
                     textField.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-                //}
-                //else{
+                }
+                else{
                     layout.setBackgroundColor(getResources().getColor(R.color.RecipientGreen));
 
                     //nameField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
                     nameField.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                     //textField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
                     textField.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-                //}
+                }
                 return v;
             }
         };

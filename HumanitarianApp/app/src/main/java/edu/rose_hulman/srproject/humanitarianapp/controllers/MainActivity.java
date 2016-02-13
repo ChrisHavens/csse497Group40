@@ -37,6 +37,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddLocationDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddMessageThreadDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
@@ -112,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         EditChecklistDialogFragment.EditChecklistListener,
         AddNoteDialogFragment.AddNoteListener,
         AddShipmentDialogFragment.AddShipmentListener,
+        AddMessageThreadDialogFragment.AddMessageThreadListener,
         EditShipmentDialogFragment.EditShipmentListener,
         ProjectsListFragment.ProjectsListListener, ProjectFragment.ProjectFragmentListener,
         PeopleListFragment.PeopleListListener, GroupsListFragment.GroupsListListener,
@@ -683,6 +685,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         actions.addNewShipment(l);
     }
 
+    @Override
+    public void addNewMessageThread(final MessageThread m) {
+        Log.d("ED", "Got into the addNewMessageCall");
+        actions.addNewMessageThread(m);
+    }
+
 
     public void addProject() {
         //Toast.makeText(getApplicationContext(), "Number of projects in DB: " + this.storedProjects.size(), Toast.LENGTH_LONG).show();
@@ -704,6 +712,16 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         b.putLong("parentID", actions.getSelectedGroup().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
+    }
+
+    public void addMessageThread() {
+        DialogFragment newFragment = new AddMessageThreadDialogFragment();
+
+        Bundle b=new Bundle();
+        b.putLong("parentID", actions.getSelectedGroup().getId());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "addMessageThread");
+        //newFragment.show(getFragmentManager(), "addMessageThread");
     }
 
 
@@ -928,6 +946,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             addGroup();
         }
         else if (f instanceof ChecklistsListFragment){
+            Log.d("ED", "Inside ofvvvvv if statement thread");
             addChecklist();
         }
         else if (f instanceof LocationsListFragment){
@@ -941,6 +960,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
         else if (f instanceof ShipmentsListFragment){
             addShipment();
+        }
+        else if(f instanceof MessageThreadsListFragment){
+            Log.d("ED", "Inside of if statement thread");
+            addMessageThread();
         }
 
 

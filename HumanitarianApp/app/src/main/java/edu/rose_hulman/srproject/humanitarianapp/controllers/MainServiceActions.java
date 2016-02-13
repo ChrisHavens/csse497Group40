@@ -346,7 +346,27 @@ public class MainServiceActions {
 
         service.addNewChecklist(checklist, responseCallback);
     }
-    public void addNewMessageThread(){
+    public void addNewMessageThread(final MessageThread m){
+
+        Random rand = new Random();
+        long i = rand.nextInt(90000) + 10000;
+        i += 700000;
+        m.setID(i);
+        m.setItemIDs();
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(context, "Successful adding of new thread: " + m.getTitle(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        Log.d("ED","inside of addNewMessageThread");
+        service.addNewThread(m, responseCallback);
+
 
     }
     public void addNewMessage(String message, String userID){

@@ -185,7 +185,7 @@ public class AddPersonDialogFragment extends DialogFragment {
                         emailLayout.setVisibility(View.VISIBLE);
                         personDNE.setVisibility(View.GONE);
                         nameTextView.setText(p.getName());
-                        nameTextView.setText(p.getEmail());
+                        emailTextView.setText(p.getEmail());
 
                     }
                     else{

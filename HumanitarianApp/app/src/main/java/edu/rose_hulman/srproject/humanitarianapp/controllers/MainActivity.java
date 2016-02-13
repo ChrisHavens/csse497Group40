@@ -303,8 +303,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         //TODO, replace hard coded ID with actual one
 
-        long ID = 3105;
-        String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city, date);
+        long ID = Long.parseLong(getUserID());
+        String JSONed = String.format("{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}", lat, lng, city, date);
         Log.d("ED", JSONed);
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
@@ -317,9 +317,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-
+        long r=rand.nextInt(100)+(100*ID);
+        actions.service.checkIn(getUserID(),r+"", JSONed, responseCallback);
         //{"doc":{"lastLocation":{"lat":"80.01","lng":"57.34","name":"test","time":"2015-12-06 17:33"}}}
-        actions.service.updatePerson(ID, JSONed, responseCallback);
+        //actions.service.updatePerson(ID, JSONed, responseCallback);
 
 
 

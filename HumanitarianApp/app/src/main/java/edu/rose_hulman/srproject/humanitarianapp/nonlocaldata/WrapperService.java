@@ -216,6 +216,20 @@ public interface WrapperService {
                      @Body TypedInput body,
                      Callback<Response> callback);
 
+
+    @GET("/api/person/{id}/locations")
+    void getPersonLocationsList(@Path("id") String id,
+                                @Query("start") String start,
+                                @Query("size") String size,
+                                @Query("time") String time,
+                                Callback<Response> callback);
+
+    @PUT("/api/person/{id}/locations/add/{subid}")
+    @Headers("Accept: application/json")
+    void checkIn(@Path("id") String id, @Path("subid") String locationID,
+                 @Body TypedInput body, Callback<Response> callback);
+
+
     @POST("/api/person/search")
     @Headers("Accept: application/json")
     void searchPersons(@Body TypedInput body,

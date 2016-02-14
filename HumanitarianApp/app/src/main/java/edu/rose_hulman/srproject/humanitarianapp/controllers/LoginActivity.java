@@ -159,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements
                 //acct.
                 updateUI(true);
                 if (!logMeOut) {
+                    Log.wtf("s40-login", "!logMeOut");
                     checkValidity(acct.getId(), acct.getEmail());
                                     //switchToMain("3000");
                                     //switchToMain(personID);
@@ -308,15 +309,16 @@ public class LoginActivity extends AppCompatActivity implements
             }
         }
     public void go(){
-
+        switchToMain("3000");
     }
 
 
     private void checkValidity(final String token, final String email){
-
+        Log.wtf("s40-login", "In Verify!");
         Callback<Response> callback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
+                Log.wtf("s40-login", "Successful Verify!");
                 ObjectMapper mapper=new ObjectMapper();
                 TypeReference<HashMap<String, Object>> typeReference=
                         new TypeReference<HashMap<String, Object>>() {
@@ -324,7 +326,8 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                     String personId= (String) o.get("personId");
-                    switchToMain(personId);
+                    switchToMain("3000");
+                    //switchToMain(personId);
                 }
                 catch(Exception e){
                     Log.wtf("login", e.getMessage());
@@ -342,6 +345,9 @@ public class LoginActivity extends AppCompatActivity implements
                         signUp(token, email);
                     }
                 }
+                Log.wtf("s40-login", "Failed Failure!");
+                Log.wtf("s40-login", error.getMessage());
+                Log.wtf("s40-login", error.getUrl());
             }
         };
         service.verify(token, callback);
@@ -351,6 +357,7 @@ public class LoginActivity extends AppCompatActivity implements
         Callback<Response> callback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
+                Log.wtf("s40-login", "Successful Sign Up!");
                 ObjectMapper mapper=new ObjectMapper();
                 TypeReference<HashMap<String, Object>> typeReference=
                         new TypeReference<HashMap<String, Object>>() {
@@ -358,6 +365,7 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                     personID= (String) o.get("personId");
+                    Log.wtf("s40-login", personID);
                     emailAddress=email;
                     addPerson();
                     //switchToMain(personID);
@@ -414,6 +422,7 @@ public class LoginActivity extends AppCompatActivity implements
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
+                    Log.wtf("s40-login", "Successful Add!");
                     Toast.makeText(getApplicationContext(), "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
                     switchToMain(personID);
                 }

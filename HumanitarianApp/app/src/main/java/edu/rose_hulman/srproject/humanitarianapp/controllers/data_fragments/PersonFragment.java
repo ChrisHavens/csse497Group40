@@ -23,6 +23,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
@@ -118,6 +121,10 @@ public class PersonFragment extends Fragment {
     public void initializeMap()
     {
         final Person p=mListener.getSelectedPerson();
+        final List<LatLng> recentLocs = new ArrayList<>();
+
+              //  new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
+
         final LatLng currentLoc = new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
         FragmentManager f = getFragmentManager();
         FragmentTransaction fragmentTransaction = f.beginTransaction();
@@ -127,6 +134,10 @@ public class PersonFragment extends Fragment {
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
                 Marker marker =  map.addMarker(new MarkerOptions().position(currentLoc).title(p.getName()));
+                for (Person.PersonLocation pLoc: p.getLocations()){
+                    map.addMarker(new MarkerOptions().position(new LatLng(pLoc.getLat(), pLoc.getLng())).title(pLoc.getName()));
+                }
+                //Marker markers= map.addMarker()
                 marker.showInfoWindow();
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 7));
             }

@@ -26,7 +26,7 @@ import retrofit.mime.TypedString;
 public class NonLocalDataService {
 
     RestAdapter adapter = new RestAdapter.Builder()
-            .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
+            .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer2/rest")
             .build();
     public WrapperService service=adapter.create(WrapperService.class);
     final String notHiddenFilter="{\"missing\": {\"field\": \"dateArchived\"}},";
@@ -115,16 +115,48 @@ public class NonLocalDataService {
         service.getMessagesList(id, null, null, null, callback);
     }
     public void getMessagesListStart(String id, int start, String time, Callback<Response>callback){
-        service.getMessagesList(id, start+"", null, time, callback);
+        service.getMessagesList(id, start + "", null, time, callback);
     }
     public void getMessagesListStart(String id, int start, Callback<Response>callback){
-        service.getMessagesList(id, start+"", null, null, callback);
+        service.getMessagesList(id, start + "", null, null, callback);
     }
     public void getMessagesListSize(String id, int size, String time, Callback<Response>callback){
-        service.getMessagesList(id, null, size+"", time, callback);
+        service.getMessagesList(id, null, size + "", time, callback);
     }
     public void getMessagesListSize(String id, int size, Callback<Response>callback){
-        service.getMessagesList(id, null, size+"", null, callback);
+        service.getMessagesList(id, null, size + "", null, callback);
+    }
+
+
+
+
+    public void getPersonLocationsList(String id, int start, int size, String time, Callback<Response>callback){
+        service.getPersonLocationsList(id, start + "", size + "", time, callback);
+    }
+    public void getPersonLocationsList(String id, int start, int size, Callback<Response>callback){
+        service.getPersonLocationsList(id, start + "", size + "", null, callback);
+    }
+    public void getPersonLocationsList(String id, String time, Callback<Response>callback){
+        service.getPersonLocationsList(id, null, null, time, callback);
+    }
+    public void getPersonLocationsList(String id, Callback<Response>callback){
+        service.getPersonLocationsList(id, null, null, null, callback);
+    }
+    public void getPersonLocationsListStart(String id, int start, String time, Callback<Response>callback){
+        service.getPersonLocationsList(id, start + "", null, time, callback);
+    }
+    public void getPersonLocationsListStart(String id, int start, Callback<Response>callback){
+        service.getPersonLocationsList(id, start + "", null, null, callback);
+    }
+    public void getPersonLocationsListSize(String id, int size, String time, Callback<Response>callback){
+        service.getPersonLocationsList(id, null, size + "", time, callback);
+    }
+    public void getPersonLocationsListSize(String id, int size, Callback<Response>callback){
+        service.getPersonLocationsList(id, null, size + "", null, callback);
+    }
+
+    public void checkIn(String personID, String locationID, String json, Callback<Response> callback){
+        service.checkIn(personID, locationID, new TypedJsonString(json), callback);
     }
 
     /*

@@ -22,9 +22,10 @@ public class Person implements Serializable, Selectable {
     private Roles.PersonRoles role;
     private PersonLocation lastCheckin;
     private Date lastCheckinTime;
+    //private List<PersonLocation> lastLocations=new ArrayList<>();
     private List<Long> groupIDs =  new ArrayList<Long>();
     private List<Long> projectIDs =  new ArrayList<Long>();
-    private List<Location> locations =  new ArrayList<Location>();
+    private List<PersonLocation> locations =  new ArrayList<PersonLocation>();
     private long ID;
     private boolean isHidden=false;
 
@@ -107,7 +108,7 @@ public class Person implements Serializable, Selectable {
         }
         Person person = new Person(name, phoneNumber);
         if (initialAssignment != null) {
-            person.addLocation(initialAssignment);
+            //person.addLocation(initialAssignment);
         }
         if (initialProject != null) {
             person.projectIDs.add(initialProject.getId());
@@ -150,17 +151,29 @@ public class Person implements Serializable, Selectable {
     public void setLastCheckin(PersonLocation lastCheckin) {
         this.lastCheckin = lastCheckin;
     }
+    public void checkIn(PersonLocation location){
+        this.lastCheckin=location;
+        this.locations.add(location);
 
-    public List<Location> getLocations() {
+    }
+
+    public List<PersonLocation> getLocations() {
         return locations;
     }
 
-    public void addLocation(Location location) {
+    public void addLocation(PersonLocation location) {
         this.locations.add(location);
+        if (lastCheckin!=null) {
+            if (location.getTime().compareTo(lastCheckin.getTime()) > 0) {
+                lastCheckin = location;
+            }
+        }
+        else{
+            lastCheckin=location;
+        }
     }
 
-
-    public void setLocations(List<Location> locations) {
+    public void setLocations(List<PersonLocation> locations) {
         this.locations = locations;
     }
 
@@ -250,9 +263,9 @@ public class Person implements Serializable, Selectable {
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        if (lastCheckin!=null) {
-            sb.append(lastCheckin.toJSON() + ",");
-        }
+//        if (!lastLocations.isEmpty()) {
+//            sb.append(lastLocationsToString());
+//        }
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");
@@ -289,6 +302,18 @@ public class Person implements Serializable, Selectable {
         sb.append("]");
         return sb.toString();
     }
+//    private String lastLocationsToString(){
+//        StringBuilder sb=new StringBuilder();
+////        sb.append("\"recentLocations\": [");
+////        for (PersonLocation location: lastLocations){
+////            sb.append("{"+location.toJSON()+"},");
+////        }
+//        if (sb.charAt(sb.length()-1)==','){
+//            sb.deleteCharAt(sb.length()-1);
+//        }
+//        sb.append("],");
+//        return sb.toString();
+//    }
 
     public Roles.PersonRoles getRole() {
         return role;
@@ -349,12 +374,10 @@ public class Person implements Serializable, Selectable {
         }
         public String toJSON(){
             StringBuilder sb=new StringBuilder();
-            sb.append("\"lastLocation\": {");
             sb.append("\"lat\": \""+lat+"\",");
             sb.append("\"lng\": \""+lng+"\",");
             sb.append("\"name\": \""+name+"\",");
             sb.append("\"time\": \""+time+"\"");
-            sb.append("}");
             return sb.toString();
         }
     }

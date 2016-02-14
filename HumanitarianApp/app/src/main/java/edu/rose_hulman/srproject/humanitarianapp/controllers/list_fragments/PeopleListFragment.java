@@ -25,6 +25,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
+import retrofit.ResponseCallback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -127,6 +128,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     new TypeReference<HashMap<String, Object>>() {
                     };
             try {
+                NonLocalDataService service=new NonLocalDataService();
                 HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
@@ -136,7 +138,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Person p=new Person(Integer.parseInt(((String)map.get("_id"))));
+                    final Person p=new Person(Integer.parseInt(((String)map.get("_id"))));
                     p.setName((String) source.get("name"));
                     p.setEmail((String) source.get("email"));
                     p.setPhoneNumber((String) source.get("phone"));
@@ -144,14 +146,45 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                         p.setHidden(false);
                     else
                         p.setHidden(true);
+                    Callback<Response> subCallback=new ResponseCallback() {
+                        @Override
+                        public void success(Response response) {
+                            ObjectMapper mapper = new ObjectMapper();
+                            TypeReference<HashMap<String, Object>> typeReference =
+                                    new TypeReference<HashMap<String, Object>>() {
+                                    };
+                            try {
+                                HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+
+                                ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
+                                for (HashMap<String, Object> map : list) {
+
+                                    HashMap<String, Object> source = (HashMap) map.get("_source");
+                                    for (String s : source.keySet()) {
+                                        Log.e("Result", s);
+                                    }
+                                    Person.PersonLocation personLoc = new Person.PersonLocation();
+                                    personLoc.setLat(Float.parseFloat((String) source.get("lat")));
+                                    personLoc.setLng(Float.parseFloat((String) source.get("lng")));
+                                    personLoc.setName((String) source.get("name"));
+                                    personLoc.setTime((String) source.get("time"));
+                                    p.addLocation(personLoc);
+                                }
+                            } catch (Exception e) {
+
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    };
+                    service.getPersonLocationsListSize(p.getID()+"", 10, subCallback);
                     //Log.w("Type of lastLocation", .get("lastLocation"))
-                    HashMap<String, Object> lastLoc=(HashMap)source.get("lastLocation");
-                    Person.PersonLocation personLoc=new Person.PersonLocation();
-                    personLoc.setLat(Float.parseFloat((String)lastLoc.get("lat")));
-                    personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
-                    personLoc.setName((String) lastLoc.get("name"));
-                    personLoc.setTime((String) lastLoc.get("time"));
-                    p.setLastCheckin(personLoc);
+//                    HashMap<String, Object> lastLoc=(HashMap)source.get("lastLocation");
+//
+
                     Log.d("ED", p.toJSON());
                     persons.add(p);
                     //LocalDataSaver.addPerson(p);

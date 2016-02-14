@@ -91,7 +91,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             showHidden = mListener.getShowHidden();
             Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
             //if (mListener.getUserID().equals("-1")){
-            service.service.getProjectList(showHidden, new ProjectListCallback());
+            service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
             //}
             //else {
             //    service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
@@ -135,6 +135,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
         @Override
         public void success(Response response, Response response2) {
+            Log.wtf("URL", response.getUrl());
             Log.wtf("SUCCESS", "PRJListCallbacks");
             ObjectMapper mapper = new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference =
@@ -169,7 +170,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitErrorPLF", error.getMessage());
         }
     }
 

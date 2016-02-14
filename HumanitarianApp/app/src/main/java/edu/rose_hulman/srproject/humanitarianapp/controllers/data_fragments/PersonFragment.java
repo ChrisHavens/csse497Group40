@@ -125,7 +125,7 @@ public class PersonFragment extends Fragment {
 
               //  new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
 
-        final LatLng currentLoc = new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
+
         FragmentManager f = getFragmentManager();
         FragmentTransaction fragmentTransaction = f.beginTransaction();
         SupportMapFragment mapFragment = new SupportMapFragment();
@@ -133,13 +133,19 @@ public class PersonFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
-                Marker marker =  map.addMarker(new MarkerOptions().position(currentLoc).title(p.getName()));
+                if (p.getLastCheckin()!=null) {
+                    LatLng currentLoc = new LatLng(p.getLastCheckin().getLat(), p.getLastCheckin().getLng());
+
+                    Marker marker = map.addMarker(new MarkerOptions().position(currentLoc).title(p.getName()));
+                    marker.showInfoWindow();
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 7));
+                }
+
                 for (Person.PersonLocation pLoc: p.getLocations()){
                     map.addMarker(new MarkerOptions().position(new LatLng(pLoc.getLat(), pLoc.getLng())).title(pLoc.getName()));
                 }
                 //Marker markers= map.addMarker()
-                marker.showInfoWindow();
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 7));
+
             }
         });
         fragmentTransaction.add(R.id.fragment_container, mapFragment, "map");

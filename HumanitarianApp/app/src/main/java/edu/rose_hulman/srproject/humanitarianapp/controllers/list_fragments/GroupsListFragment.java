@@ -73,7 +73,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
         //if (mListener.getUserID().equals("-1")){
-            service.service.getGroupList(showHidden, mListener.getSelectedProject().getId()+"", new GroupListCallback());
+            service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getId()+"", new GroupListCallback());
         //}
         //else {
         //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getId() + "", new GroupListCallback());

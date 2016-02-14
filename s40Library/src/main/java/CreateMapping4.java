@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class CreateMapping4 {
     public static final String HOST="s40server.csse.rose-hulman.edu";
-    public static final String INDEXNAME="s40-2";
+    public static final String INDEXNAME="s40";
     public static final String INDEXNAME2="login";
     public static final String INDEXNAME3="database_info";
     public static void main(String[] args){

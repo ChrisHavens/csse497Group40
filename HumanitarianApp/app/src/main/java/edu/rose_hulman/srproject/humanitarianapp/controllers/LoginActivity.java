@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements
         private static final int RC_SIGN_IN = 9001;
     NonLocalDataService service=new NonLocalDataService();
     String personID;
+    String googleID;
     String emailAddress;
 
         private GoogleApiClient mGoogleApiClient;
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements
             mStatusTextView = (TextView) findViewById(R.id.status);
 
             // Button listeners
+            findViewById(R.id.go_button).setOnClickListener(this);
             findViewById(R.id.sign_in_button).setOnClickListener(this);
             findViewById(R.id.sign_out_button).setOnClickListener(this);
             findViewById(R.id.disconnect_button).setOnClickListener(this);
@@ -158,12 +160,14 @@ public class LoginActivity extends AppCompatActivity implements
 
                 //acct.
                 updateUI(true);
-                if (!logMeOut) {
-                    Log.wtf("s40-login", "!logMeOut");
-                    checkValidity(acct.getId(), acct.getEmail());
+                googleID=acct.getId();
+                emailAddress=acct.getEmail();
+//                if (!logMeOut) {
+//                    Log.wtf("s40-login", "!logMeOut");
+//                    checkValidity(acct.getId(), acct.getEmail());
                                     //switchToMain("3000");
                                     //switchToMain(personID);
-                                }
+//                                }
 //                switchToMain("3000");
 //                Callback<Response> callback=new Callback<Response>() {
 //                    @Override
@@ -309,7 +313,8 @@ public class LoginActivity extends AppCompatActivity implements
             }
         }
     public void go(){
-        switchToMain("3000");
+
+       checkValidity(googleID, emailAddress);
     }
 
 
@@ -326,8 +331,8 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                     String personId= (String) o.get("personId");
-                    switchToMain("3000");
-                    //switchToMain(personId);
+                    //switchToMain("3000");
+                    switchToMain(personId);
                 }
                 catch(Exception e){
                     Log.wtf("login", e.getMessage());
@@ -345,9 +350,17 @@ public class LoginActivity extends AppCompatActivity implements
                         signUp(token, email);
                     }
                 }
-                Log.wtf("s40-login", "Failed Failure!");
-                Log.wtf("s40-login", error.getMessage());
-                Log.wtf("s40-login", error.getUrl());
+                else{
+                    if (error.getMessage().equals("420")){
+                        signUp(token, email);
+                    }
+                    else {
+                        Log.wtf("s40-login", "Failed Failure!");
+                        Log.wtf("s40-login", error.getMessage());
+                        Log.wtf("s40-login", error.getUrl());
+                    }
+                }
+
             }
         };
         service.verify(token, callback);

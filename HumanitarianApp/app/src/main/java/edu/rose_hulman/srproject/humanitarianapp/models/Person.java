@@ -164,6 +164,12 @@ public class Person implements Serializable, Selectable {
         this.locations = locations;
     }
 
+    public boolean isInProject(long projectID){
+        return this.projectIDs.contains(projectID);
+    }
+    public boolean isInGroup(long groupID){
+        return this.groupIDs.contains(groupID);
+    }
 
     public long getID(){
         return this.ID;
@@ -244,7 +250,9 @@ public class Person implements Serializable, Selectable {
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");
-        sb.append(lastCheckin.toJSON()+",");
+        if (lastCheckin!=null) {
+            sb.append(lastCheckin.toJSON() + ",");
+        }
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"email\": \""+getEmail()+"\",");
         sb.append("\"phone\": \""+getPhoneNumber()+"\",");

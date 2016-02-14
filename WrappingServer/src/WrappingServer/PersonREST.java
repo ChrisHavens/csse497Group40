@@ -1,5 +1,6 @@
 package WrappingServer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -44,21 +45,21 @@ public class PersonREST {
 
     Client client = ClientBuilder.newClient(config);
 
-    WebTarget target = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/s40/person").build());
+    WebTarget target = client.target(UriBuilder.fromUri(Utils.mainURL+"/person").build());
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getList(
+	public Response getList(
 			@DefaultValue("false") @QueryParam("show_hidden") boolean showHidden, 
 			@DefaultValue("null") @QueryParam("projectID") String projectID,
 			@DefaultValue("null") @QueryParam("groupID") String groupID,
 			@DefaultValue("null") @QueryParam("time") String time){
 		
-	    Response response=null;
+	    //Response response=null;
 	    
 	    
 		if (projectID.equals("null") && groupID.equals("null") && showHidden && (time==null || time.equals("null"))){
 			
-			response = target.path("/_search").request().get(Response.class);
+			return target.path("/_search").request().get(Response.class);
 		}
 		else{
     		StringBuilder payload= new StringBuilder();
@@ -86,28 +87,22 @@ public class PersonREST {
     			payload.deleteCharAt(payload.length()-1);
     		}
     		payload.append("]}}}}}");
-    		response = target.path("/_search").request().post(Entity.entity(payload.toString(), MediaType.APPLICATION_JSON_TYPE));
+    		return target.path("/_search").request().post(Entity.entity(payload.toString(), MediaType.APPLICATION_JSON_TYPE));
 			
     	}
-		 try{
-			    return response.readEntity(String.class);
-			    }catch (NullPointerException e){
-			    	e.printStackTrace();
-			    }
-		 return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		 //return Response.status(Status.BAD_REQUEST).build();
 	}
 	@GET @Path("{id}")
-	public String get(@PathParam("id") String id,@DefaultValue("null") @QueryParam("time") String time){
+	public Response get(@PathParam("id") String id,@DefaultValue("null") @QueryParam("time") String time){
 		Response response=null;
-		response = target.path("/"+id).request().get(Response.class);
 		try{
-			String result=response.readEntity(String.class);
+			
 			if (time==null ||time.equals("null")){
-				return result;
+				return target.path("/"+id).request().get(Response.class);
 			}
 			
 			
-			
+			String result=response.readEntity(String.class);
 			ObjectMapper mapper=new ObjectMapper();
 	        TypeReference<HashMap<String, Object>> typeReference=
 	                new TypeReference<HashMap<String, Object>>() {
@@ -117,7 +112,7 @@ public class PersonREST {
 					HashMap<String, Object> map = mapper.readValue(result, typeReference);
 					HashMap<String, Object> mapSource=(HashMap<String, Object>)map.get("_source");
 					if (!mapSource.containsKey("timeModified")){
-						return result;
+						return Response.status(Status.OK).entity(result).build();
 					}
 					
 					
@@ -126,10 +121,10 @@ public class PersonREST {
 					
 					
 					if (((String)mapSource.get("timeModified")).compareTo(time)>0){
-						return result;
+						return Response.status(Status.OK).entity(result).build();
 					}
 					else{
-						return "304 Not Modified";
+						return Response.status(Status.NOT_MODIFIED).build();
 					}
 	            }catch(Exception e){
 	            	e.printStackTrace();
@@ -139,87 +134,191 @@ public class PersonREST {
 		    	e.printStackTrace();
 		    }
 		
-		    return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+		    return Response.status(Status.BAD_REQUEST).build();
 	}
 	@POST @Path("{id}/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String updatePerson(@PathParam("id") String id, String json){
+	public Response updatePerson(@PathParam("id") String id, String json){
 		if (!isSame(id, json)){
 			String endJson=json.substring(1);
-			Calendar rightNow = Calendar.getInstance();
-			StringBuilder sb=new StringBuilder();
-			sb.append(rightNow.get(Calendar.YEAR));
-			sb.append("-");
-			sb.append(rightNow.get(Calendar.MONTH)+1);
-			sb.append("-");
-			sb.append(rightNow.get(Calendar.DAY_OF_MONTH));
-			sb.append(" ");
-			sb.append(rightNow.get(Calendar.HOUR_OF_DAY));
-			sb.append(":");
-			sb.append(rightNow.get(Calendar.MINUTE));
-			String currTime=sb.toString();
+			String currTime=Utils.getCurrentDateTimeAsString();
 			String modJson=String.format("{\"timeModified\": \"%s\",", currTime)+endJson;
 			Response response = target.path("/"+id+"/_update").request().post(Entity.entity(modJson, MediaType.APPLICATION_JSON_TYPE));
-			return response.readEntity(String.class);
+			return response;
 		}
-		return "418 I'm a teapot";
+		return Response.status(CustomStatus.NO_CHANGES).build();
 	}
+	@POST @Path("{id}/projects/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addToProject(@PathParam("id") String id, String json){
+		
+		ObjectMapper mapper=new ObjectMapper();
+		TypeReference<HashMap<String, Object>> typeReference=
+				new TypeReference<HashMap<String, Object>>() {
+		};
+
+		try {
+			HashMap<String, Object> inputMap = mapper.readValue(json, typeReference);
+			if (inputMap.containsKey("projectId")){
+				String projID=(String)inputMap.get("projectId");
+				String object=get(id, null).readEntity(String.class);
+				HashMap<String, Object> map = mapper.readValue(object, typeReference);
+				if (map.containsKey("_source")){
+					HashMap<String, Object> source= (HashMap<String, Object>) map.get("_source");
+					if (source.containsKey("parentIDs")){
+						ArrayList<HashMap> parentIDs=(ArrayList) source.get("parentIDs");
+						StringBuilder sb= new StringBuilder();
+						sb.append("{\"doc\": { \"parentIDs\": [");
+						for (HashMap<String, Object> curr: parentIDs){
+							if (curr.containsKey("parentID")){
+								String currID=(String) curr.get("parentID");
+								if (currID.equals(projID)){
+									return Response.status(CustomStatus.DUP_PROJECT).build();
+								}
+								sb.append("{\"parentID\": \""+currID+"\"},");
+							}
+						}
+						sb.append("{\"parentID\": \""+projID+"\"}");
+						sb.append("]}}");
+						return updatePerson(id, sb.toString());
+						
+					}
+					else{
+						StringBuilder sb= new StringBuilder();
+						sb.append("\"doc\": { \"parentIDs\": [");
+						sb.append("{\"parentID\": \""+projID+"\"}");
+						sb.append("]}");
+						return updatePerson(id, sb.toString());
+					}
+//					return Response.ok().build();
+				}
+				return Response.status(Status.NOT_FOUND).build();
+				
+				
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+			
+		}catch(Exception e){
+			StringBuilder sb= new StringBuilder();
+			sb.append("{ \"error\": \""+e.getMessage()+"\"}");
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(sb.toString()).build();
+		
+		}
+	}
+	@POST @Path("{id}/groups/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addToGroup(@PathParam("id") String id, String json){
+		
+		ObjectMapper mapper=new ObjectMapper();
+		TypeReference<HashMap<String, Object>> typeReference=
+				new TypeReference<HashMap<String, Object>>() {
+		};
+
+		try {
+			HashMap<String, Object> inputMap = mapper.readValue(json, typeReference);
+			if (inputMap.containsKey("groupId")){
+				String projID=(String)inputMap.get("groupId");
+				String object=get(id, null).readEntity(String.class);
+				HashMap<String, Object> map = mapper.readValue(object, typeReference);
+				if (map.containsKey("_source")){
+					HashMap<String, Object> source= (HashMap<String, Object>) map.get("_source");
+					if (source.containsKey("parentIDs")){
+						ArrayList<HashMap> parentIDs=(ArrayList) source.get("parentIDs");
+						StringBuilder sb= new StringBuilder();
+						sb.append("{\"doc\": { \"parentIDs\": [");
+						for (HashMap<String, Object> curr: parentIDs){
+							if (curr.containsKey("parentID")){
+								String currID=(String) curr.get("parentID");
+								if (currID.equals(projID)){
+									return Response.status(CustomStatus.DUP_GROUP).build();
+								}
+								sb.append("{\"parentID\": \""+currID+"\"},");
+							}
+						}
+						sb.append("{\"parentID\": \""+projID+"\"}");
+						sb.append("]}}");
+						return updatePerson(id, sb.toString());
+						
+					}
+					else{
+						StringBuilder sb= new StringBuilder();
+						sb.append("\"doc\": { \"parentIDs\": [");
+						sb.append("{\"parentID\": \""+projID+"\"}");
+						sb.append("]}");
+						return updatePerson(id, sb.toString());
+					}
+//					return Response.ok().build();
+				}
+				return Response.status(Status.NOT_FOUND).build();
+				
+				
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+			
+		}catch(Exception e){
+			StringBuilder sb= new StringBuilder();
+			sb.append("{ \"error\": \""+e.getMessage()+"\"}");
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(sb.toString()).build();
+		
+		}
+	}
+	
 	@POST @Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String searchPerson(String json){
+	public Response searchPerson(String json){
 		Response response = target.path("/_search").request().post(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-		return response.readEntity(String.class);
+		return response;
 	}
 	
 	
 	@PUT @Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addPerson(@PathParam("id") String id, String json){
+	public Response addPerson(@PathParam("id") String id, String json){
 		Response response = target.path("/"+id).request().put(Entity.entity(json, MediaType.APPLICATION_JSON_TYPE));
-		return response.readEntity(String.class);
+		return response;
 	}
 	@POST @Path("{id}/visibility")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
+	public Response changeProjectStatus(@PathParam("id") String id, @QueryParam("status") String status){
 		 StringBuilder sb=new StringBuilder();
 		sb.append("{\"doc\":{\"dateArchived\": ");
 		if (status.equalsIgnoreCase("hide")){
-        Calendar calendar=Calendar.getInstance();
-        String date=String.format("%04d-%02d-%02d", calendar.get
-                (Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH));
+			 String date=Utils.getCurrentDateAsString();
         sb.append("\""+date+"\"");
 		}
 		else if (status.equalsIgnoreCase("show")){
 			sb.append("null");
 		}
 		else{
-			return Response.status(Status.BAD_REQUEST).build().readEntity(String.class);
+			return Response.status(Status.BAD_REQUEST).build();
 		}
         sb.append("}}");
         
         return updatePerson(id, sb.toString());
 	}
 	@DELETE @Path("{id}")
-	public String deletePerson(@PathParam("id") String id){
+	public Response deletePerson(@PathParam("id") String id){
 		Response response = target.path("/"+id).request().delete(Response.class);
-		return response.readEntity(String.class);
+		return response;
 	}
 	@GET @Path("{id}/parents")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getParents(@PathParam("id") String id){
+	public Response getParents(@PathParam("id") String id){
 		String add="?fields=parentIDs.parentID";
-		WebTarget target2 = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/s40/person").build());
-		Response response = target2.path("/"+id).queryParam("fields", "parentIDs.parentID").request().get(Response.class);
-		return response.readEntity(String.class);
+		//WebTarget target2 = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/s40/person").build());
+		Response response = target.path("/"+id).queryParam("fields", "parentIDs.parentID").request().get(Response.class);
+		return response;
 		
 		
 	}
 	public static String getParentsInfo(@PathParam("id") String id){
 		ClientConfig config = new ClientConfig();
 	    Client client = ClientBuilder.newClient(config);
-		WebTarget target2 = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/s40/person").build());
+		WebTarget target2 = client.target(UriBuilder.fromUri(Utils.mainURL+"/person").build());
 		Response response = target2.path("/"+id).queryParam("fields", "parentIDs.parentID").request().get(Response.class);
 		return response.readEntity(String.class);
 		
@@ -227,7 +326,7 @@ public class PersonREST {
 	}
 	private boolean isSame(String id, String json){
 		//TODO: not implemented
-		String object=get(id, null);
+		String object=get(id, null).readEntity(String.class);
 		ObjectMapper mapper=new ObjectMapper();
 		TypeReference<HashMap<String, Object>> typeReference=
 				new TypeReference<HashMap<String, Object>>() {

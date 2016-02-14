@@ -160,6 +160,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", error.getMessage());
+            Log.wtf("RetrofitError", error.getUrl());
         }
     }
     public interface ThreadsListListener{

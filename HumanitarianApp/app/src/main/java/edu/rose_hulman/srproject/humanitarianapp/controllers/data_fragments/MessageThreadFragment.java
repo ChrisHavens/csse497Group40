@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +41,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
     private ThreadFragmentListener mListener;
     private MessageThread messageThread;
-    private ArrayList<MessageThread.Message> messages=new ArrayList<>();
+    private ArrayList<MessageListMessage> messages=new ArrayList<>();
+    private ArrayList<MessageListMessage> messages2=new ArrayList<>();
     private EditText mEditText;
     private Button mSendButton;
 
@@ -52,7 +55,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListArrayAdapter<MessageThread.Message> mAdapter;
+    private ListArrayAdapter<MessageListMessage> mAdapter;
 
     public MessageThreadFragment() {
         // Required empty public constructor
@@ -69,21 +72,21 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                              Bundle savedInstanceState) {
         messageThread =mListener.getSelectedThread();
 
-        mAdapter=new ListArrayAdapter<MessageThread.Message>(getActivity(),
+        mAdapter=new ListArrayAdapter<MessageListMessage>(getActivity(),
                 R.layout.list_message, messages){
 
             @Override
-            public View customiseView(View v, final MessageThread.Message item) {
+            public View customiseView(View v, final MessageListMessage item) {
                 RelativeLayout layout=(RelativeLayout)v.findViewById(R.id.message_layout);
 
                 TextView nameField=(TextView)v.findViewById(R.id.nameField);
                 TextView textField=(TextView)v.findViewById(R.id.textField);
                 TextView timeField=(TextView)v.findViewById(R.id.timeField);
 
-                nameField.setText(item.getSender().getName());
-                textField.setText(item.getItem());
-                timeField.setText(item.getTime());
-                if(Long.parseLong(mListener.getUserID())==item.getSender().getID()){
+                nameField.setText(item.getPerson());
+                textField.setText(item.message.getItem());
+                timeField.setText(item.message.getTime());
+                if(mListener.getUserID().equals(item.personID)){
                     layout.setBackgroundColor(getResources().getColor(R.color.SenderBlue));
 
                     //nameField.setBackgroundColor(getResources().getColor(R.color.accent_material_dark));
@@ -149,7 +152,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         if (this.mAdapter != null) {
             this.mAdapter.notifyDataSetChanged();
         }
-        NonLocalDataService service = new NonLocalDataService();
+        final NonLocalDataService service = new NonLocalDataService();
         service.getMessagesList(mListener.getSelectedThread().getID() + "", new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -161,7 +164,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
 
                     ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
-                    for (int i = list.size() - 1; i > -1; i--) {
+                    for (int i = 0; i< list.size(); i++) {
                         HashMap<String, Object> map = list.get(i);
                         HashMap<String, Object> source = (HashMap) map.get("_source");
                         if (source != null) {
@@ -169,14 +172,54 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                                     (String) source.get("personID"), (String) source.get("sentDate"));
                             m.setItemID(Long.parseLong((String) map.get("_id")));
                             messageThread.addItem(m);
-                            messages.add(m);
+                            final MessageListMessage m2=new MessageListMessage(m, "", (String)source.get("personID"));
+                            messages2.add(m2);
 
                             if (mAdapter != null) {
                                 mAdapter.notifyDataSetChanged();
 
                             }
+
+                                Callback<Response> callback= new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        ObjectMapper mapper = new ObjectMapper();
+                                        TypeReference<HashMap<String, Object>> typeReference =
+                                                new TypeReference<HashMap<String, Object>>() {
+                                                };
+                                        try {
+                                            HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
+                                            HashMap<String, Object> source = (HashMap) map.get("_source");
+                                            if (source != null) {
+                                                String name = (String) source.get("name");
+                                                m2.setPerson(name);
+                                                messages.add(m2);
+                                            }
+                                            else{
+                                                m2.setPerson("Shadow Broker");
+                                                messages.add(m2);
+                                            }
+                                            mAdapter.notifyDataSetChanged();
+
+                                        } catch (Exception e) {
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Log.wtf("s40", error.getMessage());
+                                        Log.wtf("s40", error.getUrl());
+                                        m2.setPerson("Shadow Broker");
+                                        messages.add(m2);
+                                    }
+                                };
+                                service.service.getPerson(m2.personID, callback);
+
+
                         }
                     }
+                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -184,9 +227,15 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.wtf("RetrofitError", error.getMessage());
+                Log.wtf("RetrofitError", error.getUrl());
             }
         });
+//        Log.wtf("s40", messages2.size() + "");
+//        Log.wtf("s40", messageThread.getItemList().size()+"");
+
+
+
     }
 
     @Override
@@ -218,6 +267,33 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         public void sendMessage(String message);
         //public void addNewMessage(MessageThread.Message message);
 
+    }
+    public class MessageListMessage {
+        MessageThread.Message message;
+        String person;
+        String personID;
+
+        public MessageListMessage(MessageThread.Message message, String person, String personID) {
+            this.message = message;
+            this.person = person;
+            this.personID=personID;
+        }
+
+        public MessageThread.Message getMessage() {
+            return message;
+        }
+
+        public void setMessage(MessageThread.Message message) {
+            this.message = message;
+        }
+
+        public String getPerson() {
+            return person;
+        }
+
+        public void setPerson(String person) {
+            this.person = person;
+        }
     }
 
 

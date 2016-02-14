@@ -30,7 +30,7 @@ public class IDGettingService {
 		ClientConfig config = new ClientConfig();
 	    Client client = ClientBuilder.newClient(config);
 
-	    WebTarget target = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/database_info/info").build());
+	    WebTarget target = client.target(UriBuilder.fromUri(Utils.databaseURL+"/info").build());
 		Response response=null;
 		response = target.path("/info").request().get(Response.class);
 			try{
@@ -91,7 +91,7 @@ public class IDGettingService {
 			}
 	    sb.append(id);
 	    sb.append("}}");
-	    WebTarget target = client.target(UriBuilder.fromUri("http://s40server.csse.rose-hulman.edu:9200/database_info/info").build());
+	    WebTarget target = client.target(UriBuilder.fromUri(Utils.databaseURL+"/info").build());
 		Response response = target.path("/info/_update").request().post(Entity.entity(sb.toString(), MediaType.APPLICATION_JSON_TYPE));
 		
 		return response.readEntity(String.class);

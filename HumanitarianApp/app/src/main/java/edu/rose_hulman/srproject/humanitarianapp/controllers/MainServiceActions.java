@@ -189,7 +189,70 @@ public class MainServiceActions {
         //NonLocalDataService service=new NonLocalDataService();
         service.addNewPerson(p, responseCallback);
     }
-    
+    public void addPersonToProjectOrGroup(final Person p) {
+        long projectID=selectedProject.getId();
+
+        if (getSelectedGroup()!=null) {
+            addPersonToGroup(p, projectID, getSelectedGroup().getId());
+        }
+        else{
+            addPersonToProject(p, projectID);
+        }
+
+    }
+    private void addPersonToProject(final Person p, final long projectID){
+
+
+//        Person p=new Person(name, phone, email);
+//        edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
+//        location.setName("Omega 4 Relay");
+//        location.setTime("2185-04-05 14:45");
+//        location.setLat(34.56f);
+//        location.setLng(-5.45f);
+//
+//        //location.setID(10000);
+//        p.setLastCheckin(location);
+        p.addProjectID(projectID);
+
+//
+//        //location.setId(10000);
+//        p.setLastCheckin(location);
+//        p.addProjectID(projectID);
+//        if (groupID != -1) {
+//            p.addGroupID(groupID);
+//        }
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to project "+projectID, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+//        //NonLocalDataService service=new NonLocalDataService();
+        service.addPersonToProject(p.getID()+"",projectID+"", responseCallback);
+    }
+    private void addPersonToGroup(final Person p, long projectID, final long groupID){
+        if (!p.isInProject(projectID)){
+            addPersonToProject(p, projectID);
+        }
+        p.addGroupID(groupID);
+        Callback<Response> responseCallback = new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to group "+groupID, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+            }
+        };
+        service.addPersonToGroup(p.getID()+"", groupID+"", responseCallback);
+    }
 
     public void addNewProject(final String name) {
 //        Random rand=new Random();
@@ -370,6 +433,7 @@ public class MainServiceActions {
 
     }
     public void addNewMessage(String message, String userID){
+        Log.wtf("s40", userID);
         Callback<Response> addResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -385,9 +449,10 @@ public class MainServiceActions {
         MessageThread.Message message1=new MessageThread.Message(message, userID);
         Log.wtf("s40",message1.getTime());
         message1=getSelectedMessageThread().addBuildNewMessage(message1);
+        //Log.wtf("s40-6", message1.)
         Log.wtf("s40-4", getSelectedMessageThread().getID()+"");
         Log.wtf("s40-3", message1.getItemID()+"");
-        service.addNewMessage(getSelectedMessageThread(), message1, addResponse);
+        service.addNewMessage(getSelectedMessageThread().getID()+"", message1, addResponse);
     }
     public void hideProject() {
         Callback<Response> hideResponse=new Callback<Response>() {

@@ -47,7 +47,7 @@ public class NonLocalDataService {
         service.addPersonToGroup(personID, new TypedJsonString(json), callback);
     }
     public void addNewThread(MessageThread thread, Callback<Response> callback){
-        service.addNewPerson(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
+        service.addNewThread(thread.getID() + "", new TypedJsonString(thread.toJSON()), callback);
     }
     public void addNewMessage(String parentID, MessageThread.Message message,  Callback<Response> callback){
         service.addNewMessage(parentID, message.getItemID() + "", new TypedJsonString(message.toMessageSendString()), callback);

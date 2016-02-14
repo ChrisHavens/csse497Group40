@@ -7,7 +7,10 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -143,30 +146,50 @@ public class EditPersonDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_person_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
-        nameField.setOnClickListener(new View.OnClickListener() {
+        nameField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                nameEdited=true;
+            public void afterTextChanged(Editable e) {
+                nameEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
         phoneField=(EditText) view.findViewById(R.id.phoneField);
-        phoneField.setOnTouchListener(new View.OnTouchListener() {
+        phoneField.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onTouch(View v, MotionEvent m) {
-                if (m.getAction() == MotionEvent.ACTION_DOWN) {
-                    phoneEdited = true;
-                    Log.d("ED", "phone was edited");
-                }
-                return false;
+            public void afterTextChanged(Editable e) {
+                phoneEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
         emailField=(EditText)view.findViewById(R.id.emailField);
-        emailField.setOnClickListener(new View.OnClickListener() {
+        emailField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                emailEdited=true;
+            public void afterTextChanged(Editable e) {
+                emailEdited = true;
             }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
+
         NonLocalDataService service=new NonLocalDataService();
         service.service.getPerson("" + personToEditID, new Callback<Response>() {
             @Override

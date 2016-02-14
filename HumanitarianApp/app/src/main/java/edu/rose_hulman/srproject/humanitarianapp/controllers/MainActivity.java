@@ -37,6 +37,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddChecklistDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddLocationDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddMessageThreadDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
@@ -112,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         EditChecklistDialogFragment.EditChecklistListener,
         AddNoteDialogFragment.AddNoteListener,
         AddShipmentDialogFragment.AddShipmentListener,
+        AddMessageThreadDialogFragment.AddMessageThreadListener,
         EditShipmentDialogFragment.EditShipmentListener,
         ProjectsListFragment.ProjectsListListener, ProjectFragment.ProjectFragmentListener,
         PeopleListFragment.PeopleListListener, GroupsListFragment.GroupsListListener,
@@ -197,6 +199,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        setVisibilityAdd(true);
+        setVisibilityEdit(false);
+        setVisibilityShow(false);
+        setVisibilityHide(false);
+        setVisibilityShowHidden(true);
         return true;
     }
 
@@ -290,12 +297,15 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         String latS = loc.getLatitude() + "";
         String lngS = loc.getLongitude() + "";
         String city = "";
+        String country = "";
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
         Log.d("ED", date);
         List<Address> addresses = gcd.getFromLocation(lat, lng , 1);
-        if (addresses.size() > 0)
+        if (addresses.size() > 0) {
             city = addresses.get(0).getLocality();
-        CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city;
+            country = addresses.get(0).getCountryName();
+        }
+        CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city + ", " + country;
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -304,7 +314,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         //TODO, replace hard coded ID with actual one
 
         long ID = Long.parseLong(getUserID());
-        String JSONed = String.format("{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}", lat, lng, city, date);
+        String JSONed = String.format("{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}", lat, lng, city + ", " + country, date);
+
+        //String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city + ", " + country, date);
+
         Log.d("ED", JSONed);
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
@@ -385,7 +398,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         }
     }
-    private void changeFragmentToSelected(Fragment fragment, Selectable selected){
+    private void changeFragmentToSelected(Fragment fragment, Selectable selected) {
         Log.d("ED", "changing fragments");
         setVisibilityAdd(false);
         setVisibilityEdit(true);
@@ -681,6 +694,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         actions.addNewShipment(l);
     }
 
+    @Override
+    public void addNewMessageThread(final MessageThread m) {
+        Log.d("ED", "Got into the addNewMessageCall");
+        actions.addNewMessageThread(m);
+    }
+
 
     public void addProject() {
         //Toast.makeText(getApplicationContext(), "Number of projects in DB: " + this.storedProjects.size(), Toast.LENGTH_LONG).show();
@@ -702,6 +721,16 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         b.putLong("parentID", actions.getSelectedGroup().getId());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
+    }
+
+    public void addMessageThread() {
+        DialogFragment newFragment = new AddMessageThreadDialogFragment();
+
+        Bundle b=new Bundle();
+        b.putLong("parentID", actions.getSelectedGroup().getId());
+        newFragment.setArguments(b);
+        newFragment.show(getFragmentManager(), "addMessageThread");
+        //newFragment.show(getFragmentManager(), "addMessageThread");
     }
 
 
@@ -926,6 +955,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             addGroup();
         }
         else if (f instanceof ChecklistsListFragment){
+            Log.d("ED", "Inside ofvvvvv if statement thread");
             addChecklist();
         }
         else if (f instanceof LocationsListFragment){
@@ -939,6 +969,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
         else if (f instanceof ShipmentsListFragment){
             addShipment();
+        }
+        else if(f instanceof MessageThreadsListFragment){
+            Log.d("ED", "Inside of if statement thread");
+            addMessageThread();
         }
 
 

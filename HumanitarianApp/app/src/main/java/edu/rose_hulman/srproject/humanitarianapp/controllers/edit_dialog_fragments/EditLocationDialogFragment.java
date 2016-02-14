@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,24 +138,48 @@ public class EditLocationDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_add_location_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
-        nameField.setOnClickListener(new View.OnClickListener() {
+        nameField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                nameEdited=true;
+            public void afterTextChanged(Editable e) {
+                nameEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
         latField=(EditText) view.findViewById(R.id.latField);
-        latField.setOnClickListener(new View.OnClickListener() {
+        latField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                latEdited=true;
+            public void afterTextChanged(Editable e) {
+                latEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
         lngField=(EditText)view.findViewById(R.id.lngField);
-        lngField.setOnClickListener(new View.OnClickListener() {
+        lngField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                lngEdited=true;
+            public void afterTextChanged(Editable e) {
+                lngEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
         NonLocalDataService service=new NonLocalDataService();

@@ -80,5 +80,6 @@
     <string name="email_label">Email: </string>
     <string name="name_label">Name: </string>
     <string name="personDNE">No such person.</string>
+    <string name="makeMessage">Add new message Thread</string>
 </resources>
 

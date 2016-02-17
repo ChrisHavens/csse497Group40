@@ -17,6 +17,7 @@ import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -202,7 +203,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
             Log.e("RetrofitError", error.getMessage());
         }
     }
-    public interface PeopleListListener{
+    public interface PeopleListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Person t);
         boolean getShowHidden();
         boolean isFromProject();

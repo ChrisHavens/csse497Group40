@@ -251,7 +251,7 @@ public class ApplicationWideData {
                         Log.e("RetrofitError", error.getMessage());
                     }
                 };
-                service.addNewProject(project, responseCallback);
+                service.addNewProject(project, userID+"", responseCallback);
                 project.fullClean();
                 LocalDataSaver.addProject(project);
             }

@@ -1,5 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -34,7 +36,7 @@ import retrofit.client.Response;
  */
 public class EditLocationDialogFragment extends DialogFragment {
 
-
+    private Interfaces.UserIDGetter mListener;
     private EditText nameField;
     private EditText latField;
     private EditText lngField;
@@ -102,7 +104,7 @@ public class EditLocationDialogFragment extends DialogFragment {
 //                                String email = emailField.getText().toString();
                                     //TODO implement role
 
-                                    service.updateLocation(location.getID(), sb.toString(), new Callback<Response>() {
+                                    service.updateLocation(location.getID(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             Log.wtf("s40", "Successful edit of location " + location.getName());
@@ -225,7 +227,22 @@ public class EditLocationDialogFragment extends DialogFragment {
         });
         return view;
     }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (Interfaces.UserIDGetter) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
 
 

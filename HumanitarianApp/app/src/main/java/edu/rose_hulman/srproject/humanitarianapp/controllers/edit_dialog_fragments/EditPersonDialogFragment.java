@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -40,7 +41,7 @@ import retrofit.client.Response;
 public class EditPersonDialogFragment extends DialogFragment {
 
 
-    //private EditPersonListener mListener;
+    private Interfaces.UserIDGetter mListener;
     private EditText nameField;
     private EditText phoneField;
     private EditText emailField;
@@ -109,7 +110,7 @@ public class EditPersonDialogFragment extends DialogFragment {
                                     //TODO implement role
                                     Roles.PersonRoles role = Roles.PersonRoles.valueOf(((String) roleSpinner.getSelectedItem()).toUpperCase());
                                     Log.d("ED", sb.toString());
-                                    service.updatePerson(person.getID(), sb.toString(), new Callback<Response>() {
+                                    service.updatePerson(person.getID(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             Log.wtf("s40", "Successful edit of person " + person.getName());
@@ -245,17 +246,17 @@ public class EditPersonDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-           // mListener = (EditPersonListener) activity;
+            mListener = (Interfaces.UserIDGetter) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement AddPersonListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mListener = null;
     }
 
     /**
@@ -293,5 +294,6 @@ public class EditPersonDialogFragment extends DialogFragment {
 
         }
     }
+
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -148,11 +149,11 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
             Log.e("RetrofitError", error.getMessage());
         }
     }
-    public interface GroupsListListener{
+    public interface GroupsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Group t);
         boolean getShowHidden();
         Project getSelectedProject();
-        String getUserID();
+
     }
 
 

@@ -42,8 +42,6 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 
 
     public ShipmentsListFragment(){
-//        shipments.add(new Shipment("Potatoes", "HQ", "Little Village", "14:30", "2016/11/15"));
-//        shipments.add(new Shipment("Lumber", "Big Village", "Small Village", "17:15", "2016/11/21"));
     }
 
 

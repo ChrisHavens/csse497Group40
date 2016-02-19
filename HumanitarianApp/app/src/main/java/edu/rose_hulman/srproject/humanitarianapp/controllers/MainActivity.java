@@ -157,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         ApplicationWideData.db = db;
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables();
-        actions=new MainServiceActions(getApplicationContext());
+        actions=new MainServiceActions(getApplicationContext(), userID);
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);

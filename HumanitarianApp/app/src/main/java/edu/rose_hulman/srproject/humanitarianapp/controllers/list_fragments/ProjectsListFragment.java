@@ -17,6 +17,7 @@ import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
@@ -125,10 +126,10 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         return projects;
     }
 
-    public interface ProjectsListListener {
+    public interface ProjectsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Project t);
         boolean getShowHidden();
-        String getUserID();
+
     }
 
     public class ProjectListCallback implements Callback<Response> {

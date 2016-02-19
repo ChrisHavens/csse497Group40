@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -162,7 +163,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             Log.e("RetrofitError", error.getMessage());
         }
     }
-    public interface ChecklistsListListener{
+    public interface ChecklistsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Checklist t);
         boolean getShowHidden();
         Group getSelectedGroup();

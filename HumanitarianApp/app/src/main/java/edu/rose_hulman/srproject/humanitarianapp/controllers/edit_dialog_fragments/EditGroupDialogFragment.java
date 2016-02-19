@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddGroupDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -30,7 +31,7 @@ import retrofit.client.Response;
 public class EditGroupDialogFragment extends DialogFragment {
 
 
-    //private AddGroupListener mListener;
+    private Interfaces.UserIDGetter mListener;
     private EditText nameField;
     private long groupID;
     private Group group;
@@ -65,7 +66,7 @@ public class EditGroupDialogFragment extends DialogFragment {
                         NonLocalDataService service=new NonLocalDataService();
                         StringBuilder sb=new StringBuilder();
                         sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateGroup(group.getId(), sb.toString(), new Callback<Response>() {
+                        service.updateGroup(group.getId(), sb.toString(),mListener.getUserID(),  new Callback<Response>() {
                             @Override
                             public void success(Response response, Response response2) {
                                 Log.wtf("s40", "Successful edit of group " + group.getName());
@@ -104,7 +105,7 @@ public class EditGroupDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            //mListener = (AddGroupListener) activity;
+            mListener = (Interfaces.UserIDGetter) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -114,7 +115,7 @@ public class EditGroupDialogFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        mListener = null;
     }
 
     /**
@@ -127,10 +128,6 @@ public class EditGroupDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-//    public interface AddGroupListener {
-//        // TODO: Update argument type and name
-//        public void addGroup(String name);
-//
-//    }
+
 
 }

@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 //import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -26,7 +25,7 @@ import retrofit.client.Response;
  */
 public class EditProjectDialogFragment extends DialogFragment {
 
-    private Interfaces.UserIDGetter mListener;
+
     //private EditProjectListener mListener;
     private EditText nameField;
     private long projectID;
@@ -63,7 +62,7 @@ public class EditProjectDialogFragment extends DialogFragment {
                         NonLocalDataService service=new NonLocalDataService();
                         StringBuilder sb=new StringBuilder();
                         sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateProject(p.getId(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
+                        service.updateProject(p.getId(), sb.toString(), new Callback<Response>() {
                             @Override
                             public void success(Response response, Response response2) {
                                 Log.wtf("s40", "Successful edit of project "+p.getName());
@@ -101,18 +100,18 @@ public class EditProjectDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (Interfaces.UserIDGetter) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        try {
+//            mListener = (EditProjectListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
     /**

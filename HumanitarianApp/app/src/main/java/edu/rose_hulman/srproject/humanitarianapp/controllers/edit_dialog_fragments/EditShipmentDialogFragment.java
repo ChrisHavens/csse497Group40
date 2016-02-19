@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.widgets.TextPicker;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -325,7 +324,7 @@ public class EditShipmentDialogFragment extends DialogFragment
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface EditShipmentListener extends Interfaces.UserIDGetter{
+    public interface EditShipmentListener {
         public void addNewShipment(Shipment l);
         public Shipment getSelectedShipment();
     }

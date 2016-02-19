@@ -60,14 +60,12 @@ public interface WrapperService {
     @PUT("/api/project/{id}")
     @Headers("Accept: application/json")
     void addNewProject(@Path("id") String projectID,
-                       @Query("person") String person,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
     @POST("/api/project/{id}/update")
     @Headers("Accept: application/json")
     void updateProject(@Path("id") String projectID,
-                       @Query("person") String person,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
@@ -80,7 +78,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityProject(@Path("id") String projectID,
                        @Query("status") String status,
-                                 @Query("person") String person,
                        Callback<Response> callback);
 
     /*
@@ -126,14 +123,12 @@ public interface WrapperService {
     @PUT("/api/group/{id}")
     @Headers("Accept: application/json")
     void addNewGroup(@Path("id") String id,
-                     @Query("person") String person,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
     @POST("/api/group/{id}/update")
     @Headers("Accept: application/json")
     void updateGroup(@Path("id") String id,
-                     @Query("person") String person,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
@@ -146,7 +141,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityGroup(@Path("id") String id,
                                  @Query("status") String status,
-                               @Query("person") String person,
                                  Callback<Response> callback);
     /*
    Persons
@@ -201,28 +195,24 @@ public interface WrapperService {
     @PUT("/api/person/{id}")
     @Headers("Accept: application/json")
     void addNewPerson(@Path("id") String id,
-                      @Query("person") String person,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
     @POST("/api/person/{id}/projects/add")
     @Headers("Accept: application/json")
     void addPersonToProject(@Path("id") String id,
-                            @Query("person") String person,
                       @Body TypedInput body,
                       Callback<Response> callback);
 
     @POST("/api/person/{id}/groups/add")
     @Headers("Accept: application/json")
     void addPersonToGroup(@Path("id") String id,
-                          @Query("person") String person,
                       @Body TypedInput body,
                       Callback<Response> callback);
 
     @POST("/api/person/{id}/update")
     @Headers("Accept: application/json")
     void updatePerson(@Path("id") String id,
-                      @Query("person") String person,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
@@ -249,7 +239,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityPerson(@Path("id") String id,
                                @Query("status") String status,
-                                @Query("person") String person,
                                Callback<Response> callback);
     /*
   Locations
@@ -305,14 +294,12 @@ public interface WrapperService {
     @PUT("/api/location/{id}")
     @Headers("Accept: application/json")
     void addNewLocation(@Path("id") String id,
-                        @Query("person") String person,
                       @Body TypedInput body,
                       Callback<Response> callback);
 
     @POST("/api/location/{id}/update")
     @Headers("Accept: application/json")
     void updateLocation(@Path("id") String id,
-                        @Query("person") String person,
                       @Body TypedInput body,
                       Callback<Response> callback);
 
@@ -325,7 +312,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityLocation(@Path("id") String id,
                                 @Query("status") String status,
-                                  @Query("person") String person,
                                 Callback<Response> callback);
     /*
    Notes
@@ -353,14 +339,12 @@ public interface WrapperService {
     @PUT("/api/note/{id}")
     @Headers("Accept: application/json")
     void addNewNote(@Path("id") String id,
-                    @Query("person") String person,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
     @POST("/api/note/{id}/update")
     @Headers("Accept: application/json")
     void updateNote(@Path("id") String id,
-                    @Query("person") String person,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
@@ -373,7 +357,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityNote(@Path("id") String id,
                                @Query("status") String status,
-                              @Query("person") String person,
                                Callback<Response> callback);
 
     /*
@@ -402,14 +385,12 @@ public interface WrapperService {
     @PUT("/api/checklist/{id}")
     @Headers("Accept: application/json")
     void addNewChecklist(@Path("id") String id,
-                         @Query("person") String person,
                     @Body TypedInput body,
                     Callback<Response> callback);
 
     @POST("/api/checklist/{id}/update")
     @Headers("Accept: application/json")
     void updateChecklist(@Path("id") String id,
-                         @Query("person") String person,
                     @Body TypedInput body,
                     Callback<Response> callback);
 
@@ -422,7 +403,6 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityChecklist(@Path("id") String id,
                               @Query("status") String status,
-                                   @Query("person") String person,
                               Callback<Response> callback);
 
 
@@ -452,14 +432,12 @@ public interface WrapperService {
     @PUT("/api/thread/{id}")
     @Headers("Accept: application/json")
     void addNewThread(@Path("id") String id,
-                      @Query("person") String person,
                          @Body TypedInput body,
                          Callback<Response> callback);
 
     @POST("/api/thread/{id}/update")
     @Headers("Accept: application/json")
     void updateThread(@Path("id") String id,
-                      @Query("person") String person,
                          @Body TypedInput body,
                          Callback<Response> callback);
 
@@ -472,22 +450,14 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityThread(@Path("id") String id,
                                    @Query("status") String status,
-                                @Query("person") String person,
                                    Callback<Response> callback);
     @PUT("/api/thread/{id}/messages/add/{subid}")
     @Headers("Accept: application/json")
-    void addNewMessage(@Path("id") String id,
-                       @Path("subid") String subid,
-                       @Query("person") String person,
-                       @Body TypedInput body,
-                       Callback<Response> callback);
+    void addNewMessage(@Path("id") String id, @Path("subid") String subid, @Body TypedInput body, Callback<Response> callback);
 
     @GET("/api/thread/{id}/messages")
-    void getMessagesList(@Path("id") String id,
-                         @Query("start") String start,
-                         @Query("size") String size,
-                         @Query("time") String time,
-                         Callback<Response> callback);
+    void getMessagesList(@Path("id") String id, @Query("start") String start, @Query("size") String size,
+                         @Query("time") String time, Callback<Response> callback);
 
 
     /*
@@ -516,14 +486,12 @@ public interface WrapperService {
     @PUT("/api/shipment/{id}")
     @Headers("Accept: application/json")
     void addNewShipment(@Path("id") String id,
-                        @Query("person") String person,
                     @Body TypedInput body,
                     Callback<Response> callback);
 
     @POST("/api/shipment/{id}/update")
     @Headers("Accept: application/json")
     void updateShipment(@Path("id") String id,
-                        @Query("person") String person,
                     @Body TypedInput body,
                     Callback<Response> callback);
 
@@ -536,42 +504,41 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void changeVisibilityShipment(@Path("id") String id,
                               @Query("status") String status,
-                                  @Query("person") String person,
                               Callback<Response> callback);
 
     // Deletion - testing use only
     @DELETE("/api/project/{id}")
     @Headers("Accept: application/json")
-    void deleteProject(@Path("id") String id,@Query("person") String person,
+    void deleteProject(@Path("id") String id,
                        Callback<Response> callback);
     @DELETE("/api/group/{id}")
     @Headers("Accept: application/json")
-    void deleteGroup(@Path("id") String id,@Query("person") String person,
+    void deleteGroup(@Path("id") String id,
                        Callback<Response> callback);
     @DELETE("/api/person/{id}")
     @Headers("Accept: application/json")
-    void deletePerson(@Path("id") String id,@Query("person") String person,
+    void deletePerson(@Path("id") String id,
                         Callback<Response> callback);
     @DELETE("/api/location/{id}")
     @Headers("Accept: application/json")
-    void deleteLocation(@Path("id") String id,@Query("person") String person,
+    void deleteLocation(@Path("id") String id,
                      Callback<Response> callback);
     @DELETE("/api/note/{id}")
     @Headers("Accept: application/json")
-    void deleteNote(@Path("id") String id,@Query("person") String person,
+    void deleteNote(@Path("id") String id,
                     Callback<Response> callback);
     @DELETE("/api/checklist/{id}")
     @Headers("Accept: application/json")
-    void deleteChecklist(@Path("id") String id,@Query("person") String person,
+    void deleteChecklist(@Path("id") String id,
                                   Callback<Response> callback);
     @DELETE("/api/thread/{id}")
     @Headers("Accept: application/json")
-    void deleteThread(@Path("id") String id,@Query("person") String person,
+    void deleteThread(@Path("id") String id,
                          Callback<Response> callback);
 
     @DELETE("/api/shipment/{id}")
     @Headers("Accept: application/json")
-    void deleteShipment(@Path("id") String id,@Query("person") String person,
+    void deleteShipment(@Path("id") String id,
                          Callback<Response> callback);
 
     @GET("/api/login/{id}")

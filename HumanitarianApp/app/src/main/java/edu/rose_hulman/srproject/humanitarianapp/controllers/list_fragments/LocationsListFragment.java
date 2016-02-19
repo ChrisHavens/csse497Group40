@@ -18,7 +18,6 @@ import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -143,7 +142,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         }
     }
 
-    public interface LocationsListListener extends Interfaces.UserIDGetter{
+    public interface LocationsListListener{
         void onItemSelected(Location t);
         boolean getShowHidden();
         Project getSelectedProject();

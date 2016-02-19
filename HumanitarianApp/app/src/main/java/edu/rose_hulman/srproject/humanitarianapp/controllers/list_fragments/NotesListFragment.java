@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -146,7 +145,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             Log.e("RetrofitError", error.getMessage());
         }
     }
-    public interface NotesListListener extends Interfaces.UserIDGetter{
+    public interface NotesListListener{
         void onItemSelected(Note t);
         boolean getShowHidden();
         Group getSelectedGroup();

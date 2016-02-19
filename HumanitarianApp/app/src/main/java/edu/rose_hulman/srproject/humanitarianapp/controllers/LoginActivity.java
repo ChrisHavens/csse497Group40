@@ -446,7 +446,7 @@ public class LoginActivity extends AppCompatActivity implements
                 }
             };
             //NonLocalDataService service=new NonLocalDataService();
-            service.addNewPerson(p, personID,responseCallback);
+            service.addNewPerson(p, responseCallback);
 
     }
 }

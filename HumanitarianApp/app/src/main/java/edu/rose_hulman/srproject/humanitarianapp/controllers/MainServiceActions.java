@@ -40,12 +40,9 @@ public class MainServiceActions {
     private List<Project> storedProjects;
     private boolean isFromProject=false;
     private Context context;
-    private String userID;
-    public MainServiceActions(Context context, String userID){
+    public MainServiceActions(Context context){
         this.service=new NonLocalDataService();
         this.context=context;
-        this.userID=userID;
-
     }
 
     public Group getSelectedGroup() {
@@ -139,7 +136,7 @@ public class MainServiceActions {
         body=body.replaceAll("\n", "\\\n");
         this.selectedNote.setTitle(title);
         this.selectedNote.setBody(body);
-        service.updateNote(this.selectedNote.getID(), title, body, userID, new Callback<Response>() {
+        service.updateNote(this.selectedNote.getID(), title, body, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
 
@@ -190,7 +187,7 @@ public class MainServiceActions {
             }
         };
         //NonLocalDataService service=new NonLocalDataService();
-        service.addNewPerson(p,  userID, responseCallback);
+        service.addNewPerson(p, responseCallback);
     }
     public void addPersonToProjectOrGroup(final Person p) {
         long projectID=selectedProject.getId();
@@ -236,7 +233,7 @@ public class MainServiceActions {
             }
         };
 //        //NonLocalDataService service=new NonLocalDataService();
-        service.addPersonToProject(p.getID()+"",projectID+"",  userID, responseCallback);
+        service.addPersonToProject(p.getID()+"",projectID+"", responseCallback);
     }
     private void addPersonToGroup(final Person p, long projectID, final long groupID){
         if (!p.isInProject(projectID)){
@@ -254,7 +251,7 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addPersonToGroup(p.getID()+"", groupID+"",  userID, responseCallback);
+        service.addPersonToGroup(p.getID()+"", groupID+"", responseCallback);
     }
 
     public void addNewProject(final String name) {
@@ -281,7 +278,7 @@ public class MainServiceActions {
             Toast.makeText(context, "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
         }
         if (!ApplicationWideData.getManualSync()) {
-            service.addNewProject(p,  userID, responseCallback);
+            service.addNewProject(p, responseCallback);
         }
     }
 
@@ -306,7 +303,7 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewGroup(g,  userID, responseCallback);
+        service.addNewGroup(g, responseCallback);
         Callback<Response> responseCallback2 = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -318,7 +315,7 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addNewProject(selectedProject,  userID, responseCallback);
+        service.addNewProject(selectedProject, responseCallback);
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
@@ -343,7 +340,7 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewLocation(l,  userID, responseCallback);
+        service.addNewLocation(l, responseCallback);
 
     }
 
@@ -374,7 +371,7 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addNewNote(note,  userID, responseCallback);
+        service.addNewNote(note, responseCallback);
     }
 
     public void addNewShipment(final Shipment l) {
@@ -389,7 +386,7 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addNewShipment(l,  userID, responseCallback);
+        service.addNewShipment(l, responseCallback);
     }
     public void addNewChecklist(final Checklist checklist) {
         Random rand = new Random();
@@ -410,7 +407,7 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewChecklist(checklist,  userID, responseCallback);
+        service.addNewChecklist(checklist, responseCallback);
     }
     public void addNewMessageThread(final MessageThread m){
 
@@ -431,7 +428,7 @@ public class MainServiceActions {
             }
         };
         Log.d("ED","inside of addNewMessageThread");
-        service.addNewThread(m,  userID, responseCallback);
+        service.addNewThread(m, responseCallback);
 
 
     }
@@ -455,7 +452,7 @@ public class MainServiceActions {
         //Log.wtf("s40-6", message1.)
         Log.wtf("s40-4", getSelectedMessageThread().getID()+"");
         Log.wtf("s40-3", message1.getItemID()+"");
-        service.addNewMessage(getSelectedMessageThread().getID()+"", message1, userID,  addResponse);
+        service.addNewMessage(getSelectedMessageThread().getID()+"", message1, addResponse);
     }
     public void hideProject() {
         Callback<Response> hideResponse=new Callback<Response>() {
@@ -474,7 +471,7 @@ public class MainServiceActions {
         if(selectedProject.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityProject(selectedProject.getId() + "", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityProject(selectedProject.getId() + "", hideOrShow, hideResponse);
         //hide("project", selectedProject.getId() + "", hideResponse);
     }
 
@@ -497,7 +494,7 @@ public class MainServiceActions {
         if(selectedGroup.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityGroup(selectedGroup.getId() + "", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityGroup(selectedGroup.getId() + "", hideOrShow, hideResponse);
 //        service.hide("group", selectedGroup.getId() + "", hideResponse);
     }
 
@@ -519,7 +516,7 @@ public class MainServiceActions {
         if(selectedChecklist.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow, hideResponse);
     }
 
 
@@ -540,7 +537,7 @@ public class MainServiceActions {
         if(selectedLocation.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow, hideResponse);
 //        service.hide("location", selectedLocation.getID()+"", hideResponse);
     }
 
@@ -562,7 +559,7 @@ public class MainServiceActions {
         if(selectedNote.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow, hideResponse);
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
@@ -583,7 +580,7 @@ public class MainServiceActions {
         if(selectedPerson.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityPerson(selectedPerson.getID()+"", hideOrShow,  userID, hideResponse);
+        service.service.changeVisibilityPerson(selectedPerson.getID()+"", hideOrShow, hideResponse);
 
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
@@ -602,7 +599,7 @@ public class MainServiceActions {
 
             }
         };
-        service.changeVisibilityShipment(selectedShipment.getID() + "", "hide",  userID, hideResponse);
+        service.service.changeVisibilityShipment(selectedShipment.getID()+"", "hide", hideResponse);
 //        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
 
     }
@@ -619,6 +616,6 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewChecklist(c,  userID, responseCallback);
+        service.addNewChecklist(c, responseCallback);
     }
 }

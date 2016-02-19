@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
@@ -164,7 +163,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
             Log.wtf("RetrofitError", error.getUrl());
         }
     }
-    public interface ThreadsListListener extends Interfaces.UserIDGetter{
+    public interface ThreadsListListener{
         void onItemSelected(MessageThread t);
         boolean getShowHidden();
         Group getSelectedGroup();

@@ -1,0 +1,30 @@
+<h1>{{project._source.name}}</h1>
+<ul class="specs">
+
+<li class="ID">ID: {{project._id}}</li>
+
+
+
+	<li>
+		<span>Name: </span>
+		{{project._source.name}}
+    </li>
+	
+	<li>
+	<a ng-href="#/groups" ng-click=>Group IDs:</a>
+	<ul class="subIDs">
+	<dd ng-repeat="group in project._source.groupIDs"><li><a href="#/projects/{{proj._id}}">{{proj._source.name}}</a>
+	ID: {{group.groupID}}
+	</li>
+	</dd>
+	</ul>
+	</li>
+  
+  
+  <li>
+  <span>Hidden: {{project._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

@@ -1,0 +1,12 @@
+[{"_index":"s40","_type":"project","_id":"101002","_score":1.0,"_source":{"timeModified": "2016-01-02 12:40","name": "Harvest the organics","groupIDs": [{"groupID": "200001"},{"groupID": "201001"}],"dateArchived": "2183-10-04"}},{"_index":"s40","_type":"project","_id":"101010","_score":1.0,"_source":{"timeModified": "2016-01-12 10:08","name": "EWB Ghana","groupIDs": [{"groupID": "201010"},{"groupID": "201011"}]}},{"_index":"s40","_type":"project","_id":"101111","_score":1.0,"_source":{"name": "s40","groupIDs": []}},{"_index":"s40","_type":"project","_id":"0","_score":1.0,"_source":{"name": "test","groupIDs": []}},{"_index":"s40","_type":"project","_id":"101000","_score":1.0,"_source":{"timeModified": "2016-01-12 10:08","name": "Stop the Reapers","groupIDs": [{"groupID": "200000"},{"groupID": "201000"}]}},{"_index":"s40","_type":"project","_id":"100002","_score":1.0,"_source":{"timeModified": "2016-01-12 10:08","name": "Bring Mark Watney Home","groupIDs": [{"groupID": "201002"}]}},{"_index":"s40","_type":"project","_id":"101001","_score":1.0,"_source":{"timeModified": "2016-01-12 10:08","name": "Run the country","groupIDs": [{"groupID": "202001"},{"groupID": "200004"}]}},{"_index":"s40","_type":"project","_id":"100111","_score":1.0,"_source":{
+               "timeModified": "2016-01-12 10:08",
+               "name": "EWB Ghana",
+               "groupIDs": [
+                  {
+                     "groupID": "201010"
+                  },
+                  {
+                     "groupID": "201011"
+                  }
+               ]
+            }}]

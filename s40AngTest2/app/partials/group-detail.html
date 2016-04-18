@@ -1,0 +1,20 @@
+<h1>{{group._source.name}}</h1>
+<ul class="specs">
+
+<li class="ID">ID: {{group._id}}</li>
+
+
+
+	<li>
+		<span>Name: </span>
+		{{group._source.name}}
+    </li>
+  
+  
+  <li>
+  <span>Hidden: {{group._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

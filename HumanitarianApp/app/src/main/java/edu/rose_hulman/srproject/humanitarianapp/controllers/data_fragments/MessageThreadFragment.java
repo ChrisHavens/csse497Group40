@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
@@ -45,6 +47,12 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
     private ArrayList<MessageListMessage> messages2=new ArrayList<>();
     private EditText mEditText;
     private Button mSendButton;
+    private Comparator<MessageListMessage> comparator=new Comparator<MessageListMessage>() {
+        @Override
+        public int compare(MessageListMessage lhs, MessageListMessage rhs) {
+            return rhs.getMessage().getTime().compareTo(lhs.getMessage().getTime());
+        }
+    };
 
     /**
      * The fragment's ListView/GridView.
@@ -174,6 +182,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                             messageThread.addItem(m);
                             final MessageListMessage m2=new MessageListMessage(m, "", (String)source.get("personID"));
                             messages2.add(m2);
+                            Collections.sort(messages, comparator);
+                            Collections.sort(messages2, comparator);
 
                             if (mAdapter != null) {
                                 mAdapter.notifyDataSetChanged();
@@ -194,10 +204,12 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                                                 String name = (String) source.get("name");
                                                 m2.setPerson(name);
                                                 messages.add(m2);
+                                                Collections.sort(messages, comparator);
                                             }
                                             else{
                                                 m2.setPerson("Shadow Broker");
                                                 messages.add(m2);
+                                                Collections.sort(messages, comparator);
                                             }
                                             mAdapter.notifyDataSetChanged();
 
@@ -212,6 +224,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                                         Log.wtf("s40", error.getUrl());
                                         m2.setPerson("Shadow Broker");
                                         messages.add(m2);
+                                        Collections.sort(messages, comparator);
                                     }
                                 };
                                 service.service.getPerson(m2.personID, callback);

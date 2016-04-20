@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -152,16 +153,17 @@ public class MainServiceActions {
         });
     }
 
-    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+    public void addNewPerson(final String name, String phone, String email) {
         long projectID=selectedProject.getId();
         long groupID=-1;
         if (getSelectedGroup()!=null) {
             groupID = getSelectedGroup().getId();
         }
-        Person p=new Person(name, phone, email);
+        Person p=new Person(((long)((int)Calendar.getInstance().getTimeInMillis())), name, phone, email);
+
         edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
         location.setName("Omega 4 Relay");
-        location.setTime("2185-04-05 14:45");
+        location.setTime("1985-04-05 14:45");
         location.setLat(34.56f);
         location.setLng(-5.45f);
 
@@ -203,31 +205,51 @@ public class MainServiceActions {
         }
 
     }
+    public void removePersonFromProjectOrGroup(final Person p){
+        final long projectID=selectedProject.getId();
+        if (getSelectedGroup()!=null){
+            final long groupID=getSelectedGroup().getId();
+            p.removeGroupID(groupID);
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful removal of person: " + p.getName()+" from group "+groupID, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", error.getUrl());
+                }
+            };
+            service.removePersonFromGroup(p.getID()+"", groupID+"", userID+"", responseCallback);
+        }
+        else{
+            p.removeProjectID(projectID);
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful removal of person: " + p.getName()+" from project "+projectID, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", error.getUrl());
+                }
+            };
+            service.removePersonFromProject(p.getID() + "", projectID + "", userID + "", responseCallback);
+        }
+    }
     private void addPersonToProject(final Person p, final long projectID){
 
 
-//        Person p=new Person(name, phone, email);
-//        edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation location=new edu.rose_hulman.srproject.humanitarianapp.models.Person.PersonLocation();
-//        location.setName("Omega 4 Relay");
-//        location.setTime("2185-04-05 14:45");
-//        location.setLat(34.56f);
-//        location.setLng(-5.45f);
-//
-//        //location.setID(10000);
-//        p.setLastCheckin(location);
         p.addProjectID(projectID);
 
-//
-//        //location.setId(10000);
-//        p.setLastCheckin(location);
-//        p.addProjectID(projectID);
-//        if (groupID != -1) {
-//            p.addGroupID(groupID);
-//        }
         Callback<Response> responseCallback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to project "+projectID, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to project "+projectID, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -246,7 +268,7 @@ public class MainServiceActions {
         Callback<Response> responseCallback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to group "+groupID, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to group "+groupID, Toast.LENGTH_SHORT).show();
             }
 
             @Override

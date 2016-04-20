@@ -2,7 +2,7 @@
     android:background="@drawable/bg"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment"
+    tools:context="edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonToSomethingDialogFragment"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
@@ -40,11 +40,35 @@
         android:id="@+id/emailField"
         android:layout_gravity="center_horizontal"
         android:hint="Email" />
+    <!--
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/roleSpinner"
-        android:layout_gravity="center_horizontal" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/helpURLButton" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/url"
+                android:layout_gravity="center_horizontal"
+                android:editable="true"
+                android:hint="URL" />
+
+        </LinearLayout>
+
+
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/roleSpinner"
+            android:layout_gravity="center_horizontal" />
+            -->
 
 </LinearLayout>

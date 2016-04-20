@@ -219,6 +219,16 @@ public interface WrapperService {
                       @Body TypedInput body,
                       Callback<Response> callback);
 
+    @POST("/api/person/{id}/unlink/{pgid}")
+    @Headers("Accept: application/json")
+    void removePersonFromProjectOrGroup(@Path("id") String id,
+                                        @Path("pgid") String pgid,
+                            @Query("person") String person,
+                                        @Body TypedInput body,
+                            Callback<Response> callback);
+
+
+
     @POST("/api/person/{id}/update")
     @Headers("Accept: application/json")
     void updatePerson(@Path("id") String id,
@@ -251,6 +261,8 @@ public interface WrapperService {
                                @Query("status") String status,
                                 @Query("person") String person,
                                Callback<Response> callback);
+
+
     /*
   Locations
    */

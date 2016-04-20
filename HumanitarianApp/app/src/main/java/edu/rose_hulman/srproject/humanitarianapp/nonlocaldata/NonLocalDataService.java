@@ -1,9 +1,12 @@
 package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
 
+import android.app.Application;
 import android.util.Log;
 
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -26,7 +29,7 @@ import retrofit.mime.TypedString;
 public class NonLocalDataService {
 
     RestAdapter adapter = new RestAdapter.Builder()
-            .setEndpoint("http://s40server.csse.rose-hulman.edu:8080/WrappingServer/rest")
+            .setEndpoint("http://"+PreferencesManager.getURL()+":8080/WrappingServer/rest")
             .build();
     public WrapperService service=adapter.create(WrapperService.class);
     final String notHiddenFilter="{\"missing\": {\"field\": \"dateArchived\"}},";
@@ -36,39 +39,45 @@ public class NonLocalDataService {
      */
 
     public void addNewPerson(Person person,  String changerID,Callback<Response> callback){
-        service.addNewPerson(person.getID() + "",changerID, new TypedJsonString(person.toJSON()), callback);
+        service.addNewPerson(person.getID() + "", changerID, new TypedJsonString(person.toJSON()), callback);
     }
     public void addPersonToProject(String personID, String projectID, String changerID,Callback<Response> callback){
         String json="{\"projectId\": \""+projectID+"\"}";
-        service.addPersonToProject(personID, changerID,new TypedJsonString(json), callback);
+        service.addPersonToProject(personID, changerID, new TypedJsonString(json), callback);
     }
     public void addPersonToGroup(String personID, String groupID, String changerID,Callback<Response> callback){
         String json="{\"groupId\": \""+groupID+"\"}";
-        service.addPersonToGroup(personID, changerID,new TypedJsonString(json), callback);
+        service.addPersonToGroup(personID, changerID, new TypedJsonString(json), callback);
+    }
+    public void removePersonFromProject(String personID, String projectID, String changerID, Callback<Response> callback){
+       service.removePersonFromProjectOrGroup(personID, projectID, changerID,new TypedJsonString("{}"), callback);
+    }
+    public void removePersonFromGroup(String personID, String groupID, String changerID, Callback<Response>callback){
+        service.removePersonFromProjectOrGroup(personID, groupID, changerID, new TypedJsonString("{}"),callback);
     }
     public void addNewThread(MessageThread thread, String changerID,Callback<Response> callback){
-        service.addNewThread(thread.getID() + "", changerID,new TypedJsonString(thread.toJSON()), callback);
+        service.addNewThread(thread.getID() + "", changerID, new TypedJsonString(thread.toJSON()), callback);
     }
     public void addNewMessage(String parentID, MessageThread.Message message,  String changerID,Callback<Response> callback){
-        service.addNewMessage(parentID, message.getItemID() + "", changerID,new TypedJsonString(message.toMessageSendString()), callback);
+        service.addNewMessage(parentID, message.getItemID() + "", changerID, new TypedJsonString(message.toMessageSendString()), callback);
     }
     public void addNewProject(Project project, String changerID,Callback<Response> callback){
-        service.addNewProject(project.getId() + "", changerID,new TypedJsonString(project.toJSON()), callback);
+        service.addNewProject(project.getId() + "", changerID, new TypedJsonString(project.toJSON()), callback);
     }
     public void addNewGroup(Group group, String changerID,Callback<Response> callback){
-        service.addNewGroup(group.getId() + "", changerID,new TypedJsonString(group.toJSON()), callback);
+        service.addNewGroup(group.getId() + "", changerID, new TypedJsonString(group.toJSON()), callback);
     }
     public void addNewLocation(Location location, String changerID,Callback<Response> callback){
-        service.addNewLocation(location.getID() + "", changerID,new TypedJsonString(location.toJSON()), callback);
+        service.addNewLocation(location.getID() + "", changerID, new TypedJsonString(location.toJSON()), callback);
     }
     public void addNewNote(Note note, String changerID,Callback<Response> callback){
-        service.addNewNote(note.getID() + "", changerID,new TypedJsonString(note.toJSON()), callback);
+        service.addNewNote(note.getID() + "", changerID, new TypedJsonString(note.toJSON()), callback);
     }
     public void addNewShipment(Shipment shipment, String changerID,Callback<Response> callback){
-        service.addNewShipment(shipment.getID() + "",changerID, new TypedJsonString(shipment.toJSON()), callback);
+        service.addNewShipment(shipment.getID() + "", changerID, new TypedJsonString(shipment.toJSON()), callback);
     }
     public void addNewChecklist(Checklist checklist, String changerID,Callback<Response> callback){
-        service.addNewChecklist(checklist.getID() + "", changerID,new TypedJsonString(checklist.toJSON()), callback);
+        service.addNewChecklist(checklist.getID() + "", changerID, new TypedJsonString(checklist.toJSON()), callback);
 
     }
 
@@ -77,21 +86,21 @@ public class NonLocalDataService {
      */
 
     public void updateProject(long projectID, String json, String changerID,Callback<Response> callback){
-        service.updateProject(projectID + "", changerID,new TypedJsonString(json), callback);
+        service.updateProject(projectID + "", changerID, new TypedJsonString(json), callback);
 
     }
     public void updateGroup(long groupID, String json, String changerID,Callback<Response> callback){
-        service.updateGroup(groupID + "", changerID,new TypedJsonString(json), callback);
+        service.updateGroup(groupID + "", changerID, new TypedJsonString(json), callback);
 
     }
 
     public void updatePerson(long personId, String json, String changerID,Callback<Response> callback){
-        service.updatePerson(personId + "", changerID,new TypedJsonString(json), callback);
+        service.updatePerson(personId + "", changerID, new TypedJsonString(json), callback);
 
 
     }
     public void updateLocation(long locationId, String json,String changerID, Callback<Response> callback){
-        service.updateLocation(locationId + "",changerID, new TypedJsonString(json), callback);
+        service.updateLocation(locationId + "", changerID, new TypedJsonString(json), callback);
 
     }
     public void updateNote(double id, String title, String body, String changerID,Callback<Response> callback){
@@ -99,7 +108,7 @@ public class NonLocalDataService {
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());
 
-        service.updateNote(id + "",changerID, new TypedJsonString(sb.toString()), callback);
+        service.updateNote(id + "", changerID, new TypedJsonString(sb.toString()), callback);
     }
 
     public void getMessagesList(String id, int start, int size, String time, Callback<Response>callback){
@@ -273,4 +282,8 @@ public class NonLocalDataService {
     {
         service.changeVisibilityProject(id, status, changerID, callback);
     }
+    public void searchPersons(String json, Callback<Response> callback){
+        service.searchPersons(new TypedJsonString(json), callback);
+    }
+
 }

@@ -1,0 +1,25 @@
+<h1>{{ship._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{ship}}</li>-->
+<li class="ID">ID: {{ship._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{ship._source.name}}
+    </li>
+	
+	<li>Contents: {{ship._source.contents}}</li>
+	<li>Destination ID: <a href="#/locations/{{ship._source.toLocationID}}">{{ship._source.toLocationID}}</a></li>
+	<li>Source ID: <a href="#/locations/{{ship._source.fromLocationID}}">{{ship._source.fromLocationID}}</a></li>
+	<li>Parent ID: {{ship._source.parentID}}</li>
+	<li>Pickup time: {{ship._source.pickupTime}}</li>
+	<li>Status: {{ship._source.status}}</li>
+  <li>
+  <span>Hidden: {{ship._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

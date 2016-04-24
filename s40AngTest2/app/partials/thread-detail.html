@@ -1,0 +1,39 @@
+<h1>{{thread._source.name}}</h1>
+<ul class="specs">
+<li class="ID">ID: {{thread._id}}</li>
+
+	<li>
+		<span>Name: </span>
+		{{thread._source.name}}
+    </li>
+	
+	<li>Contents:
+	<ul class="messages">
+	<dd ng-repeat="message in messages | orderBy : 'sort'" class='thumbnail'><li>
+	Message: {{message._source.text}}
+	<ul>
+		<li>Sent By: <a href="#/persons/{{message._source.personID}}">{{message._source.personID}}</a></li>
+		<li>At: {{message._source.sentDate}}</li>
+	</ul>
+	</li>
+	</dd>
+	</ul></li>
+	<li>Parent ID: <a href="#/groups/{{thread._source.parentID}}">{{thread._source.parentID}}</a></li>
+  <li>
+  <span>Hidden: {{thread._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>
+<script>
+	$scope.dereference = function(ID,persons){
+		var log = [];
+		angular.forEach(persons, function(value, key) {
+		if value._id === ID{
+			log.push(value._source.name);
+		}
+		}, log);
+		
+	};
+</script>

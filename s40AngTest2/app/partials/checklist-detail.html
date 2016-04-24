@@ -1,0 +1,33 @@
+<h1>{{clist._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{clist}}</li>-->
+<li class="ID">ID: {{clist._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{clist._source.name}}
+    </li>
+	
+	<li>Contents:
+	<ul class="subIDs">
+	<dd ng-repeat="clistitem in clist._source.checklistItems"><li>
+	Item: {{clistitem.task}} {{clistitem.isDone | checklistmark}}
+	<ul>
+		<dd ng-repeat="clistsubitem in clistitem.sublistItems"><li>
+		SubItem: {{clistsubitem.task}} {{clistsubitem.isDone | checklistmark}}
+		</li>
+		</dd>
+	</ul>
+	</li>
+	</dd>
+	</ul></li>
+	<li>Parent ID: <a href="#/groups/{{clist._source.parentID}}">{{clist._source.parentID}}</a></li>
+  <li>
+  <span>Hidden: {{clist._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

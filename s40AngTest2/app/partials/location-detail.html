@@ -1,0 +1,23 @@
+<h1>{{loc._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{loc}}</li>-->
+<li class="ID">ID: {{loc._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{loc._source.name}}
+    </li>
+	
+	<li>Latitude: {{loc._source.lat}}</li>
+	<li>Longitude: {{loc._source.lng}}</li>
+  
+  
+  <li>
+  <span>Hidden: {{loc._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

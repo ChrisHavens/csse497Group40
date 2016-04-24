@@ -1,6 +1,5 @@
 <h1>{{project._source.name}}</h1>
 <ul class="specs">
-
 <li class="ID">ID: {{project._id}}</li>
 
 
@@ -10,11 +9,10 @@
 		{{project._source.name}}
     </li>
 	
-	<li>
-	<a ng-href="#/groups" ng-click=>Group IDs:</a>
+	<li>Group IDs:
 	<ul class="subIDs">
-	<dd ng-repeat="group in project._source.groupIDs"><li><a href="#/projects/{{proj._id}}">{{proj._source.name}}</a>
-	ID: {{group.groupID}}
+	<dd ng-repeat="group in project._source.groupIDs"><li>
+	ID: <a href="#/groups/{{group.groupID}}">{{group.groupID}}</a>
 	</li>
 	</dd>
 	</ul>

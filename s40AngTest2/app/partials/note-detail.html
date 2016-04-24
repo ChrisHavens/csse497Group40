@@ -1,0 +1,21 @@
+<h1>{{note._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{note}}</li>-->
+<li class="ID">ID: {{note._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{note._source.name}}
+    </li>
+	
+	<div style="white-space:pre-wrap;"><li>Contents:<p class="thumbnail">{{note._source.contents}}</p></div></li>
+	<li>Parent ID: <a href="#/groups/{{note._source.parentID}}">{{note._source.parentID}}</a></li>
+  <li>
+  <span>Hidden: {{note._source | checkmark}}
+  </span>
+  </li>
+  
+  
+</ul>

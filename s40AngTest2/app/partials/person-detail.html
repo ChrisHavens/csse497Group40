@@ -1,20 +1,26 @@
-<h1>{{project._source.name}}</h1>
+<h1>{{person._source.name}}</h1>
 <ul class="specs">
 
-<li class="ID">ID: {{project._id}}</li>
+<li class="ID">ID: {{person._id}}</li>
 
 
 
 	<li>
 		<span>Name: </span>
-		{{project._source.name}}
+		{{person._source.name}}
     </li>
-	
 	<li>
-	<a ng-href="#/groups" ng-click=>Group IDs:</a>
+		<span>Email: </span>
+		<a href="mailto:{{person._source.email}}">{{person._source.email}}</a>
+    </li>
+	<li>
+		<span>Phone: </span>
+		{{person._source.phone}}
+    </li>
+	<li>Parent IDs:
 	<ul class="subIDs">
-	<dd ng-repeat="group in project._source.groupIDs"><li><a href="#/projects/{{proj._id}}">{{proj._source.name}}</a>
-	ID: {{group.groupID}}
+	<dd ng-repeat="group in person._source.parentIDs"><li><a href="#/projects/{{proj._id}}">{{proj._source.name}}</a>
+	ID: {{group.parentID}}
 	</li>
 	</dd>
 	</ul>
@@ -22,7 +28,7 @@
   
   
   <li>
-  <span>Hidden: {{project._source | checkmark}}
+  <span>Hidden: {{person._source | checkmark}}
   </span>
   </li>
   

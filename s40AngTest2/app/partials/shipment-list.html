@@ -15,9 +15,9 @@
 	
       <!--Body content-->
       <ul class='people'>
-<li ng-repeat="person in persons | filter:query | orderBy:orderprop" class="thumbnail">
-            <a href="#/persons/{{person._id}}">{{person._source.name}}</a>
-            <p>{{person._source.timeModified}}</p>
+<li ng-repeat="ship in shipments | filter:query | orderBy:orderprop" class="thumbnail">
+            <a href="#/shipments/{{ship._id}}">{{ship._source.name}}</a>
+            <p>{{ship._source.timeModified}}</p>
 </li>
 </ul>
 

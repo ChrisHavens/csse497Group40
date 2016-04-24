@@ -12,12 +12,11 @@
 </p>
     </div>
     <div class="col-md-10">
-	
       <!--Body content-->
-      <ul class='people'>
-<li ng-repeat="person in persons | filter:query | orderBy:orderprop" class="thumbnail">
-            <a href="#/persons/{{person._id}}">{{person._source.name}}</a>
-            <p>{{person._source.timeModified}}</p>
+      <ul class='threads'>
+<li ng-repeat="thread in threads | filter:query | orderBy:orderprop" class="thumbnail">
+            <a href="#/threads/{{thread._id}}">{{thread._source.name}}</a>
+            <p>{{thread._source.timeModified}}</p>
 </li>
 </ul>
 

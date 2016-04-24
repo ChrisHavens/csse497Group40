@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -145,7 +143,7 @@ public class EditPersonDialogFragment extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_person_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_person_to_something_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
         nameField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,8 +233,8 @@ public class EditPersonDialogFragment extends DialogFragment {
 //        nameField.setText(person.getName(), TextView.BufferType.EDITABLE);
 //        phoneField.setText(person.getPhoneNumber(), TextView.BufferType.EDITABLE);
 //        emailField.setText(person.getEmail(), TextView.BufferType.EDITABLE);
-        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
-        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
+//        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
+//        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
     }
 

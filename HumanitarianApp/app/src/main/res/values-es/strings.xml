@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">s40 Humanitarian App</string>
+    <string name="action_call">Llamar</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_sign_in">Ingresa o Registro</string>
+    <string name="action_sign_in_short"> Iniciar sesión</string>
+    <string name="action_text">Texto</string>
+    <string name="addChecklist">Añadir una nueva lista de verificación</string>
+    <string name="addGroup">Añadir un nuevo grupo</string>
+    <string name="addLocation">Añadir una nueva ubicación</string>
+    <string name="addNote">Añadir una nueva nota</string>
+    <string name="addPerson">Añadir una nueva persona</string>
+    <string name="addProject">Añadir un nuevo proyecto</string>
+    <string name="addShipment">Añadir un nuevo envío</string>
+    <string name="addNewChecklistItem">Añadir un artículo </string>
+    <string name="addNewSublistItem">Añadir un artículo secundario</string>
+    <string name="checklists">Listas de verificación</string>
+    <string name="chooseDate">Elegir la fecha</string>
+    <string name="chooseLocations">Elegir la ubicación</string>
+    <string name="chooseTime">Elegir la Hora</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="date">Fecha:</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="editMembers"> editar los miembros</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="email_label" translatable="false">Email:</string>
+    <string name="error_field_required">Este campo es requerido.</string>
+    <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
+    <string name="error_invalid_email">Esta dirección de correo electrónico no es válido</string>
+    <string name="error_invalid_password">Esta contraseña es demasiado corta</string>
+    <string name="error_no_matching_password">Estas contraseñas no coinciden</string>
+    <string name="from" translatable="false">De:</string>
+    <string name="groups">Grupos</string>
+    <string name="hideHiddenItems">Esconder artículos escondidos</string>
+    <string name="item">Artículo</string>
+    <string name="lastLoc">Última ubicación conocida:</string>
+    <string name="lastMod">Última modificación:</string>
+    <string name="loading" translatable="false">Cargando...</string>
+    <string name="locations">Ubicaciónes</string>
+    <string name="manage_account_label">Administrar cuenta</string>
+    <string name="mapShowText">Mostrar en el mapa</string>
+    <string name="myLoc">Mi ubicación</string>
+    <string name="name" translatable="false">Nombre</string>
+    <string name="name_label" translatable="false">Nombre:</string>
+    <string name="notes" translatable="false">Notas</string>
+    <string name="people">Personas</string>
+    <string name="phone" translatable="false">Teléfono</string>
+    <string name="profile_picture_desc">Foto de perfil</string>
+    <string name="projects">Proyectos</string>
+    <string name="prompt_email" translatable="false">Email</string>
+    <string name="prompt_name">Nombre</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="save">Guardar</string>
+    <string name="saveChanges">Guardar cambios</string>
+    <string name="search" translatable="false">Buscar</string>
+    <string name="send" translatable="false">Enviar</string>
+    <string name="shipments">Envíos</string>
+    <string name="short_app_name">s40</string>
+    <string name="showHiddenItems">Mostrar artículos escondidos</string>
+    <string name="sign_in_label">Iniciar sesión</string>
+    <string name="sign_out" translatable="false">Finalizar la sesión</string>
+    <string name="sign_out_label">Finalizar la sesión</string>
+    <string name="sign_up_label">Regístrate</string>
+    <string name="signed_in_fmt" translatable="false">Registrado:</string>
+    <string name="signed_out" translatable="false">Cerró sesión</string>
+    <string name="subitem">Artículo secundario</string>
+    <string name="time">Hora:</string>
+    <string name="title_activity_login">Iniciar sesión</string>
+    <string name="to" translatable="false">A:</string>
+    <string name="welcome">Bienvenidos</string>
+</resources>

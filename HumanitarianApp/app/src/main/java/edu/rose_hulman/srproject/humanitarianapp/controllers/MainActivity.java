@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +39,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddMessageThreadDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonToSomethingDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddShipmentDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ChecklistFragment;
@@ -69,7 +69,6 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.Mess
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
@@ -81,30 +80,20 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 
-import edu.rose_hulman.srproject.humanitarianapp.models.*;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 //import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
 public class MainActivity extends ActionBarActivity implements //TabSwitchListener,
-        AddPersonDialogFragment.AddPersonListener, //MainFragment.CRUDListener,
+        AddPersonToSomethingDialogFragment.AddPersonListener, //MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
         AddChecklistDialogFragment.AddChecklistListener,
@@ -125,7 +114,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener, CRUDInterface,
         android.support.v4.app.FragmentManager.OnBackStackChangedListener,
         MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener,
-                GoogleApiClient.OnConnectionFailedListener
+                GoogleApiClient.OnConnectionFailedListener,
+        AddPersonDialogFragment.AddPersonListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -351,9 +341,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
         if (fragment instanceof ProjectsListFragment){
             changeFragmentToListNoBackStack(new ProjectsListFragment());
+            actions.setSelectedGroup(null);
         }
         else if(fragment instanceof ProjectFragment){
             Log.d("TAG", "ProjectFragment");
+            actions.setSelectedGroup(null);
             resetToolbar();
         }
         else if (fragment instanceof GroupsListFragment){
@@ -418,6 +410,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         setVisibilityEdit(false);
         setVisibilityShow(false);
         setVisibilityHide(false);
+        if(fragment instanceof PeopleListFragment){
+            setVisibilityEdit(true);
+        }
         setVisibilityShowHidden(true);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -451,6 +446,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Log.d("TAG", "This is a certain type of fragment");
         setVisibilityAdd(true);
         setVisibilityEdit(false);
+        if(fragment instanceof PeopleListFragment){
+            setVisibilityEdit(true);
+        }
         setVisibilityShow(false);
         setVisibilityHide(false);
         setVisibilityShowHidden(true);
@@ -662,11 +660,35 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 //    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
 //        actions.addNewPerson(name,phone,email,role);
 //    }
+
+
     @Override
-    public void addNewPerson(Person p) {
-        actions.addPersonToProjectOrGroup(p);
-        //actions.addNewPerson(name,phone,email,role);
+    public void addNewPerson(final String name, String phone, String email) {
+
+        actions.addNewPerson(name, phone, email);
+
     }
+    @Override
+    public void addPersonToProjectOrGroup(Person p){
+        actions.addPersonToProjectOrGroup(p);
+    }
+
+    @Override
+    public void removePersonFromProjectOrGroup(Person p){
+        actions.removePersonFromProjectOrGroup(p);
+    }
+
+    @Override
+    public String getSelectedProjectOrGroup() {
+
+        if (actions.getSelectedGroup()==null){
+            return actions.getSelectedProject().getId()+"";
+        }
+        else{
+            return actions.getSelectedGroup().getId()+"";
+        }
+    }
+
     @Override
 
     public void addNewProject(final String name) {
@@ -825,6 +847,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         b.putLong("personID", actions.getSelectedPerson().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editPerson");
+    }
+    public void showEditMembers(){
+        DialogFragment newFragment = new AddPersonToSomethingDialogFragment();
+        newFragment.show(getFragmentManager(), "addPerson");
     }
 
 
@@ -1003,6 +1029,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         else if (f instanceof ShipmentFragment){
             showEditShipment();
         }
+        else if (f instanceof PeopleListFragment){
+            showEditMembers();
+        }
 
     }
 
@@ -1074,5 +1103,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
         return p.getName();
     }
+
+
 
 }

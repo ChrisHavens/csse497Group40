@@ -78,6 +78,12 @@ public class Person implements Serializable, Selectable {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+    public Person(long id, String name, String phoneNumber, String email) {
+        this.ID=id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
 
 
@@ -227,6 +233,8 @@ public class Person implements Serializable, Selectable {
     public void addProjectID(long id){
         this.projectIDs.add(id);
     }
+    public void removeGroupID(long id){this.groupIDs.remove(id);}
+    public void removeProjectID(long id){this.projectIDs.remove(id);}
 
 
     public void updateProjectIDs(long oldID, long newID){

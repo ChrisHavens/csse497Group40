@@ -205,27 +205,33 @@ public interface WrapperService {
                      @Body TypedInput body,
                      Callback<Response> callback);
 
-    @POST("/api/person/{id}/projects/add")
+    @PUT("/api/person/{id}/projects/{projectID}")
     @Headers("Accept: application/json")
     void addPersonToProject(@Path("id") String id,
+                            @Path("projectID") String projectID,
                             @Query("person") String person,
-                      @Body TypedInput body,
-                      Callback<Response> callback);
+                                            Callback<Response> callback);
 
-    @POST("/api/person/{id}/groups/add")
+    @POST("/api/person/{id}/groups/{groupID}")
     @Headers("Accept: application/json")
     void addPersonToGroup(@Path("id") String id,
+                          @Path("groupID") String groupID,
                           @Query("person") String person,
-                      @Body TypedInput body,
                       Callback<Response> callback);
 
-    @POST("/api/person/{id}/unlink/{pgid}")
+    @DELETE("/api/person/{id}/projects/{projectID}")
     @Headers("Accept: application/json")
-    void removePersonFromProjectOrGroup(@Path("id") String id,
-                                        @Path("pgid") String pgid,
+    void removePersonFromProject(@Path("id") String id,
+                                        @Path("projectID") String projectID,
                             @Query("person") String person,
-                                        @Body TypedInput body,
-                            Callback<Response> callback);
+                                        Callback<Response> callback);
+
+    @DELETE("/api/person/{id}/groups/{groupID}")
+    @Headers("Accept: application/json")
+    void removePersonFromGroup(@Path("id") String id,
+                                 @Path("groupID") String groupID,
+                                 @Query("person") String person,
+                                 Callback<Response> callback);
 
 
 

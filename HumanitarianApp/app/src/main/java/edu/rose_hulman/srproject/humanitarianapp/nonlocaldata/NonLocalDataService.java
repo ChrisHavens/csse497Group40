@@ -42,18 +42,16 @@ public class NonLocalDataService {
         service.addNewPerson(person.getID() + "", changerID, new TypedJsonString(person.toJSON()), callback);
     }
     public void addPersonToProject(String personID, String projectID, String changerID,Callback<Response> callback){
-        String json="{\"projectId\": \""+projectID+"\"}";
-        service.addPersonToProject(personID, changerID, new TypedJsonString(json), callback);
+        service.addPersonToProject(personID, projectID, changerID, callback);
     }
     public void addPersonToGroup(String personID, String groupID, String changerID,Callback<Response> callback){
-        String json="{\"groupId\": \""+groupID+"\"}";
-        service.addPersonToGroup(personID, changerID, new TypedJsonString(json), callback);
+       service.addPersonToGroup(personID, groupID, changerID, callback);
     }
     public void removePersonFromProject(String personID, String projectID, String changerID, Callback<Response> callback){
-       service.removePersonFromProjectOrGroup(personID, projectID, changerID,new TypedJsonString("{}"), callback);
+       service.removePersonFromProject(personID, projectID, changerID, callback);
     }
     public void removePersonFromGroup(String personID, String groupID, String changerID, Callback<Response>callback){
-        service.removePersonFromProjectOrGroup(personID, groupID, changerID, new TypedJsonString("{}"),callback);
+        service.removePersonFromGroup(personID, groupID, changerID, callback);
     }
     public void addNewThread(MessageThread thread, String changerID,Callback<Response> callback){
         service.addNewThread(thread.getID() + "", changerID, new TypedJsonString(thread.toJSON()), callback);

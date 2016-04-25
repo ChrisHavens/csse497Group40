@@ -36,6 +36,7 @@ public class Group implements Serialisable, Selectable {
 
     private long id;
     private long projectID;
+
     private int dirtyBits = 0;
     private Person leader;
     private String name;
@@ -277,13 +278,13 @@ public class Group implements Serialisable, Selectable {
 
     public String getParentString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\"projectIDs\": [");
+//        sb.append("\"projectIDs\": [");
 
 
         String formatted = "" + projectID;
-        sb.append("{\"projectID\": \"" + formatted + "\"}");
+        sb.append("\"projectID\": \"" + formatted + "\"");
 
-        sb.append("]");
+        //sb.append("]");
         return sb.toString();
     }
 

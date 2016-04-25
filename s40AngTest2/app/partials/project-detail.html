@@ -1,3 +1,4 @@
+<script src="Scripts/modalService.js"></script>
 <h1>{{project._source.name}}</h1>
 <ul class="specs">
 <li class="ID">ID: {{project._id}}</li>
@@ -17,12 +18,13 @@
 	</dd>
 	</ul>
 	</li>
-  
+	
   
   <li>
   <span>Hidden: {{project._source | checkmark}}
   </span>
   </li>
   
+  <input type="button" id="delete" value="Delete Project" ng-click="DeleteProject()" />
   
 </ul>

@@ -1,9 +1,9 @@
 'use strict';
 
 /* Controllers */
-var phonecatControllers = angular.module('phonecatControllers', []);
+var phonecatControllers = angular.module('phonecatControllers', ['phonecatServices']);
 
-phonecatControllers.controller('LoginCtrl', ['$scope', '$http', '$location', function($scope, $http, $location){
+phonecatControllers.controller('LoginCtrl', ['$scope','$rootScope', '$http', '$location', function($scope,$rootScope, $http, $location){
 	
 	$scope.Login=function(userid){
 		$http.get('http://localhost:8080/WrappingServer/rest/api/person/'+userid).success(function(data){
@@ -12,7 +12,7 @@ phonecatControllers.controller('LoginCtrl', ['$scope', '$http', '$location', fun
 		$scope.loginresponse = data
 		
 		if ($scope.loginresponse.found){
-			
+			$rootScope.uID = userid;
 			$location.path('/home');
 			
 		}
@@ -32,22 +32,30 @@ phonecatControllers.controller('ProjectListCtrl', ['$scope', '$http',function($s
 	$scope.orderprop='timeModified';
 	}]);
 	
-phonecatControllers.controller('ProjectDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('ProjectDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope', function($scope, $routeParams, $http, $timeout, modalService,$rootScope){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/project/'+$routeParams.projectId).success(function(data){
 		$scope.project=data;
 	
 	});
-	$scope.Delete=function(userid){
-		$http.get('http://localhost:8080/WrappingServer/rest/api/person/'+userid).success(function(data){
-			
-			
-		$scope.loginresponse = data
+	$scope.DeleteProject=function(){
+		var projID = $scope.project._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Project',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this project?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/project/'+projID+'?person='+$rootScope.uID).success(function(data){
 		
-		if ($scope.loginresponse.found){
+			$scope.response = data;
+			if ($scope.response.found){
 			
-			$location.path('/home');
+				$location.path('/projects');
 			
-		}
+			}
+        });
+		
 	});
 		
 		

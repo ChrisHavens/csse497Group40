@@ -1,3 +1,6 @@
+<head>
+<title>Location: {{loc._source.name}}</title>
+</head>
 <h1>{{loc._source.name}}</h1>
 <ul class="specs">
 <!--<li>{{loc}}</li>-->
@@ -19,5 +22,6 @@
   </span>
   </li>
   
+  <input type="button" id="delete" value="Delete Location" ng-click="DeleteLocation()" />
   
 </ul>

@@ -26,8 +26,8 @@
     <string name="notes" translatable="false">Notes</string>
     <string name="projects">Projects</string>
     <string name="groups">Groups</string>
-    <string name="to" translatable="false">To: </string>
-    <string name="from" translatable="false">From: </string>
+    <string name="to">To: </string>
+    <string name="from">From: </string>
     <string name="date">Date: </string>
     <string name="time">Time: </string>
     <string name="lastLoc">Last Known Location:</string>
@@ -63,28 +63,28 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="send" translatable="false">Send</string>
+    <string name="send">Send</string>
     <string name="threads" translatable="false">Message Threads</string>
     <string name="signed_out" translatable="false">Signed out</string>
-    <string name="sign_out" translatable="false">Sign out</string>
+    <string name="sign_out">Sign out</string>
     <string name="disconnect">Disconnect</string>
     <string name="signed_in_fmt" translatable="false">Signed in:   </string>
-    <string name="loading" translatable="false">Loading...</string>
+    <string name="loading">Loading...</string>
     <string name="mapShowText">Show on map</string>
     <string name="changeSync">Switch sync modes</string>
     <string name="forceSync">Sync</string>
-    <string name="noneFound">No %1$s found</string>
+    <string name="noneFound" translatable="false">No %1$s found</string>
     <string name="newUser">Complete Sign Up</string>
     <string name="idNumber">Person ID: </string>
     <string name="check">Check</string>
     <string name="email_label" translatable="false">Email: </string>
     <string name="name_label" translatable="false">Name: </string>
     <string name="personDNE">No such person.</string>
-    <string name="makeMessage">Add new message Thread</string>
+    <string name="makeMessage" translatable="false">Add new message Thread</string>
     <string name="helpURL">The URL associated with the server for your organisation. For example: s40server.csse.rose-hulman.edu</string>
-    <string name="search" translatable="false">Search</string>
+    <string name="search">Search</string>
     <string name="editMembers">Edit Members</string>
-    <string name="phone" translatable="false">Phone</string>
+    <string name="phone">Phone</string>
     <string name="email" translatable="false">Email</string>
     <string name="name" translatable="false">Name</string>
 </resources>

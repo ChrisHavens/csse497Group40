@@ -1,5 +1,5 @@
 
-<title>Group Detail</title>
+<title>Group: {{group._source.name}}</title>
 
 <body>
 <h1>{{group._source.name}}</h1>
@@ -19,6 +19,6 @@
   <span>Hidden: {{group._source | checkmark}}
   </span>
   </li>
-  
+  <input type="button" id="delete" value="Delete Group" ng-click="DeleteGroup()" />
   
 </ul>

@@ -1,3 +1,6 @@
+<head>
+<title>Thread: {{thread._source.name}}</title>
+</head>
 <h1>{{thread._source.name}}</h1>
 <ul class="specs">
 <li class="ID">ID: {{thread._id}}</li>
@@ -24,16 +27,6 @@
   </span>
   </li>
   
+  <input type="button" id="delete" value="Delete Thread" ng-click="DeleteThread()" />
   
 </ul>
-<script>
-	$scope.dereference = function(ID,persons){
-		var log = [];
-		angular.forEach(persons, function(value, key) {
-		if value._id === ID{
-			log.push(value._source.name);
-		}
-		}, log);
-		
-	};
-</script>

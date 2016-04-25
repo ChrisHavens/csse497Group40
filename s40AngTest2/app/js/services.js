@@ -11,7 +11,7 @@ function ($uibModal) {
         backdrop: true,
         keyboard: true,
         modalFade: true,
-        templateUrl: '/app/partials/modal.html'
+        templateUrl: 'partials/modal.html'
     };
 
     var modalOptions = {

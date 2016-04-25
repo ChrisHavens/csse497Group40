@@ -22,7 +22,14 @@ phonecatControllers.controller('LoginCtrl', ['$scope','$rootScope', '$http', '$l
 	}
 	
 	}]);
-
+phonecatControllers.controller('HomeCtrl', ['$scope','$rootScope', '$http', '$location', function($scope,$rootScope, $http, $location){
+	
+	
+		
+		
+	
+	
+	}]);
 phonecatControllers.controller('ProjectListCtrl', ['$scope', '$http',function($scope, $http){
 
 	$http.get('http://localhost:8080/WrappingServer/rest/api/project?show_hidden=true').success(function(data){
@@ -32,7 +39,7 @@ phonecatControllers.controller('ProjectListCtrl', ['$scope', '$http',function($s
 	$scope.orderprop='timeModified';
 	}]);
 	
-phonecatControllers.controller('ProjectDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope', function($scope, $routeParams, $http, $timeout, modalService,$rootScope){
+phonecatControllers.controller('ProjectDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/project/'+$routeParams.projectId).success(function(data){
 		$scope.project=data;
 	
@@ -73,12 +80,32 @@ phonecatControllers.controller('GroupListCtrl', ['$scope', '$http',function($sco
 	
 
 	
-phonecatControllers.controller('GroupDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('GroupDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/group/'+$routeParams.groupId).success(function(data){
 		$scope.group=data;
 	
 	});
-	
+	$scope.DeleteGroup=function(){
+		var groupID = $scope.group._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Group',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this group?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/group/'+groupID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/groups');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 
 phonecatControllers.controller('PersonListCtrl', ['$scope', '$http',function($scope, $http){
@@ -90,12 +117,32 @@ phonecatControllers.controller('PersonListCtrl', ['$scope', '$http',function($sc
 	$scope.orderprop='timeModified';
 	}]);
 	
-phonecatControllers.controller('PersonDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('PersonDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/person/'+$routeParams.personId).success(function(data){
 		$scope.person=data;
 	
 	});
-	
+	$scope.DeletePerson=function(){
+		var persID = $scope.person._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Person',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this person?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/person/'+persID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/persons');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 phonecatControllers.controller('LocationListCtrl', ['$scope', '$http',function($scope, $http){
 
@@ -106,12 +153,32 @@ phonecatControllers.controller('LocationListCtrl', ['$scope', '$http',function($
 	$scope.orderprop='timeModified';
 	}]);
 	
-phonecatControllers.controller('LocationDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('LocationDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/location/'+$routeParams.locationId).success(function(data){
 		$scope.loc=data;
 	
 	});
-	
+	$scope.DeleteLocation=function(){
+		var locID = $scope.loc._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Location',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this location?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/location/'+locID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/locations');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 
 phonecatControllers.controller('ShipmentListCtrl', ['$scope', '$http',function($scope, $http){
@@ -122,12 +189,32 @@ phonecatControllers.controller('ShipmentListCtrl', ['$scope', '$http',function($
 	});
 	$scope.orderprop='timeModified';
 	}]);
-phonecatControllers.controller('ShipmentDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('ShipmentDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/shipment/'+$routeParams.shipmentId).success(function(data){
 		$scope.ship=data;
 	
 	});
-	
+	$scope.DeleteShipment=function(){
+		var shipID = $scope.ship._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Shipment',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this shipment?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/shipment/'+shipID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/shipments');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 phonecatControllers.controller('NoteListCtrl', ['$scope', '$http',function($scope, $http){
 
@@ -137,12 +224,32 @@ phonecatControllers.controller('NoteListCtrl', ['$scope', '$http',function($scop
 	});
 	$scope.orderprop='timeModified';
 	}]);
-phonecatControllers.controller('NoteDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('NoteDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/note/'+$routeParams.noteId).success(function(data){
 		$scope.note=data;
 	
 	});
-	
+	$scope.DeleteNote=function(){
+		var noteID = $scope.note._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Note',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this note?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/note/'+noteID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/notes');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 phonecatControllers.controller('ChecklistListCtrl', ['$scope', '$http',function($scope, $http){
 
@@ -152,12 +259,32 @@ phonecatControllers.controller('ChecklistListCtrl', ['$scope', '$http',function(
 	});
 	$scope.orderprop='timeModified';
 	}]);
-phonecatControllers.controller('ChecklistDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('ChecklistDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/checklist/'+$routeParams.checklistId).success(function(data){
 		$scope.clist=data;
 	
 	});
-	
+	$scope.DeleteChecklist=function(){
+		var clistID = $scope.clist._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Checklist',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this checklist?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/checklist/'+clistID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/checklists');
+			
+			}
+        });
+		
+	});
+	}
 	}]);
 phonecatControllers.controller('ThreadListCtrl', ['$scope', '$http',function($scope, $http){
 
@@ -167,7 +294,7 @@ phonecatControllers.controller('ThreadListCtrl', ['$scope', '$http',function($sc
 	});
 	$scope.orderprop='timeModified';
 	}]);
-phonecatControllers.controller('ThreadDetailCtrl', ['$scope', '$routeParams' ,'$http', function($scope, $routeParams, $http){
+phonecatControllers.controller('ThreadDetailCtrl', ['$scope', '$routeParams' ,'$http','$timeout','modalService','$rootScope','$location', function($scope, $routeParams, $http, $timeout, modalService,$rootScope, $location){
 	$http.get('http://localhost:8080/WrappingServer/rest/api/thread/'+$routeParams.threadId).success(function(data){
 		$scope.thread=data;
 	
@@ -180,5 +307,25 @@ phonecatControllers.controller('ThreadDetailCtrl', ['$scope', '$routeParams' ,'$
 		$scope.people=data.hits.hits;
 		
 	});
-	
+	$scope.DeleteThread=function(){
+		var tID = $scope.thread._id;
+		var modalOptions = {
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Delete Thread',
+            headerText: 'Are you sure?',
+            bodyText: 'Are you sure you want to delete this thread?'
+        };
+		 modalService.showModal({}, modalOptions).then(function (result) {
+            $http.delete('http://localhost:8080/WrappingServer/rest/api/thread/'+tID+'?person='+$rootScope.uID).success(function(data){
+		
+			$scope.response = data;
+			if ($scope.response.found){
+			
+				$location.path('/threads');
+			
+			}
+        });
+		
+	});
+	}
 	}]);

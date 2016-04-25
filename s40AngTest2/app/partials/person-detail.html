@@ -1,3 +1,6 @@
+<head>
+<title>{{person._source.name}}</title>
+</head>
 <h1>{{person._source.name}}</h1>
 <ul class="specs">
 
@@ -31,6 +34,6 @@
   <span>Hidden: {{person._source | checkmark}}
   </span>
   </li>
-  
+  <input type="button" id="delete" value="Delete Person" ng-click="DeletePerson()" />
   
 </ul>

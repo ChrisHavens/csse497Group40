@@ -1,3 +1,6 @@
+<head>
+<title>Shipment: {{ship._source.name}}</title>
+</head>
 <h1>{{ship._source.name}}</h1>
 <ul class="specs">
 <!--<li>{{ship}}</li>-->
@@ -20,6 +23,6 @@
   <span>Hidden: {{ship._source | checkmark}}
   </span>
   </li>
-  
+  <input type="button" id="delete" value="Delete Shipment" ng-click="DeleteShipment()" />
   
 </ul>

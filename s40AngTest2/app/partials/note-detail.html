@@ -1,3 +1,6 @@
+<head>
+<title>Note: {{note._source.name}}</title>
+</head>
 <h1>{{note._source.name}}</h1>
 <ul class="specs">
 <!--<li>{{note}}</li>-->
@@ -17,5 +20,6 @@
   </span>
   </li>
   
+  <input type="button" id="delete" value="Delete Note" ng-click="DeleteNote()" />
   
 </ul>

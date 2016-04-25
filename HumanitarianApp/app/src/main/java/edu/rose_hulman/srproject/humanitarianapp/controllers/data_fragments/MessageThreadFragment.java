@@ -134,8 +134,11 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
             @Override
             public void onClick(View v) {
                 String message=mEditText.getText().toString();
-                mEditText.setText("");
-                mListener.sendMessage(message);
+                if (!message.isEmpty() && !(message.trim().isEmpty())){
+                    mEditText.setText("");
+                    mListener.sendMessage(message);
+                }
+
 
             }
         });

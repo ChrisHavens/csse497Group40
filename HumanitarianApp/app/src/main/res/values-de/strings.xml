@@ -64,4 +64,10 @@
     <string name="search" translatable="false"> Suche</string>
     <string name="send" translatable="false">Senden</string>
     <string name="welcome">Wilkommen</string>
+    <string name="mapShowText"> Auf der Karte anzeigen</string>
+    <string name="newUser"> vollständige anmelden</string>
+    <string name="personDNE">so jemanden kenne</string>
+    <string name="sign_out" translatable="false">austragen</string>
+    <string name="signed_out">abgemeldet</string>
+    <string name="signed_in_fmt">angemeldet</string>
 </resources>

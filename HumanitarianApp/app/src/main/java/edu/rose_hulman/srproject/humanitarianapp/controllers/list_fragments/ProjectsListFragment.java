@@ -149,7 +149,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    Project p = new Project(Integer.parseInt(((String) map.get("_id"))));
+                    Project p = new Project(Long.parseLong(((String) map.get("_id"))));
                     p.setName((String) source.get("name"));
                     if(source.get("dateArchived") == null)
                         p.setHidden(false);

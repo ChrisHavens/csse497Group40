@@ -173,7 +173,10 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                         };
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
-
+                    HashMap<String, Object> m1=(HashMap) o.get("hits");
+                    int count=(Integer) m1.get("total");
+                    Log.wtf("Count: ", count+"");
+                    messageThread.setCount(count);
                     ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                     for (int i = 0; i< list.size(); i++) {
                         HashMap<String, Object> map = list.get(i);

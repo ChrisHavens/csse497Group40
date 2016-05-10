@@ -33,7 +33,7 @@ public class PreferencesManager {
         edit.putString("URL", url);
     }
     public static String getURL(){
-        return preferences.getString("URL", "s40server.csse.rose-hulman.edu");
+        return preferences.getString("URL", "NULL");
     }
     public static void setID(String id){
         SharedPreferences.Editor edit=preferences.edit();

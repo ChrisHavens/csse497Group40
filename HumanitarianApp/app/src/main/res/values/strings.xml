@@ -87,5 +87,15 @@
     <string name="phone">Phone</string>
     <string name="email" translatable="false">Email</string>
     <string name="name" translatable="false">Name</string>
+    <string name="badURL">This address is acceptable, however, because it is not an https connection, we cannot guarantee the security of your data. You should ask your supervisor for more information.</string>
+    <string name="acceptBadURL">I understand, continue using this address.</string>
+    <string name="rejectBadURL">Change address.</string>
+    <string name="serverColon">Server:</string>
+    <string name="localColon">Local:</string>
+    <string name="server">Server</string>
+    <string name="local">Local</string>
+    <string name="other">Other</string>
+    <string name="choose_other">Other Value</string>
+    <string name="changedVersion">Changed Version:</string>
 </resources>
 

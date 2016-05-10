@@ -38,8 +38,8 @@ public class NewUserDialogFragment extends DialogFragment {
     private EditText nameField;
     private EditText phoneField;
     private EditText emailField;
-    private ImageButton helpButton;
-    private PopupWindow popup;
+//    private ImageButton helpButton;
+//    private PopupWindow popup;
     //private Spinner roleSpinner;
 
 

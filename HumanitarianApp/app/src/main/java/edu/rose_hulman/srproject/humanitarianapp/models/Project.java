@@ -102,7 +102,7 @@ public class Project implements Serialisable, Selectable {
         this.onServer = true;
     }
 
-    public long getId() {
+    public long getID() {
         return this.id;
     }
 
@@ -511,7 +511,7 @@ public class Project implements Serialisable, Selectable {
 
 
 
-    public long getId() {
+    public long getID() {
         return ID;
     }
 
@@ -520,7 +520,7 @@ public class Project implements Serialisable, Selectable {
     }
 
     public void setManager(Person manager) {
-        this.adminIDs.add(manager.getId()) = ;
+        this.adminIDs.add(manager.getID()) = ;
     }
 
     public String getName() {

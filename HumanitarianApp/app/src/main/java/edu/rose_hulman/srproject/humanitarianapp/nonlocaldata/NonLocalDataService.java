@@ -1,11 +1,9 @@
 package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
 
-import android.app.Application;
 import android.util.Log;
 
 
-import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -60,10 +58,10 @@ public class NonLocalDataService {
         service.addNewMessage(parentID, message.getItemID() + "", changerID, new TypedJsonString(message.toMessageSendString()), callback);
     }
     public void addNewProject(Project project, String changerID,Callback<Response> callback){
-        service.addNewProject(project.getId() + "", changerID, new TypedJsonString(project.toJSON()), callback);
+        service.addNewProject(project.getID() + "", changerID, new TypedJsonString(project.toJSON()), callback);
     }
     public void addNewGroup(Group group, String changerID,Callback<Response> callback){
-        service.addNewGroup(group.getId() + "", changerID, new TypedJsonString(group.toJSON()), callback);
+        service.addNewGroup(group.getID() + "", changerID, new TypedJsonString(group.toJSON()), callback);
     }
     public void addNewLocation(Location location, String changerID,Callback<Response> callback){
         service.addNewLocation(location.getID() + "", changerID, new TypedJsonString(location.toJSON()), callback);
@@ -198,10 +196,10 @@ public class NonLocalDataService {
 
     // Delete requests- for testing use only
     public void deleteProject(Project p, String changerID,Callback<Response> callback){
-        service.deleteProject(p.getId() + "", changerID,callback);
+        service.deleteProject(p.getID() + "", changerID,callback);
     }
     public void deleteGroup(Group g, String changerID,Callback<Response> callback){
-        service.deleteGroup(g.getId() + "", changerID, callback);
+        service.deleteGroup(g.getID() + "", changerID, callback);
     }
     public void deletePerson(Person p, String changerID,Callback<Response> callback){
         service.deletePerson(p.getID() + "", changerID, callback);
@@ -282,6 +280,9 @@ public class NonLocalDataService {
     }
     public void searchPersons(String json, Callback<Response> callback){
         service.searchPersons(new TypedJsonString(json), callback);
+    }
+    public void resolveConflict(String type, String json, Callback<Response> callback){
+        service.resolveConflict(type, json, callback);
     }
 
 }

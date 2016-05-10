@@ -9,10 +9,10 @@
         app:showAsAction="always"
         ></item>
     <item
-        android:id="@+id/showHiddenButton"
-        android:orderInCategory="200"
-        android:title="@string/showHiddenItems"
-        app:showAsAction="ifRoom"
+        android:id="@+id/forceSync"
+        android:orderInCategory="700"
+        android:title="@string/forceSync"
+        app:showAsAction="always"
         ></item>
 
     <item
@@ -40,11 +40,12 @@
         app:showAsAction="never"
         ></item>
     <item
-        android:id="@+id/forceSync"
-        android:orderInCategory="700"
-        android:title="@string/forceSync"
+        android:id="@+id/showHiddenButton"
+        android:orderInCategory="200"
+        android:title="@string/showHiddenItems"
         app:showAsAction="never"
         ></item>
+
     <item
         android:id="@+id/logout"
         android:orderInCategory="700"

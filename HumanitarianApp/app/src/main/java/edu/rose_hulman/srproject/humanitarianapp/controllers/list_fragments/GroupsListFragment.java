@@ -18,7 +18,6 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -74,10 +73,10 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
         //if (mListener.getUserID().equals("-1")){
-            service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getId()+"", new GroupListCallback());
+            service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID()+"", new GroupListCallback());
         //}
         //else {
-        //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getId() + "", new GroupListCallback());
+        //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
         //}
 //        Group a=new Group("Group 40", mListener.getSelectedProject());
 //        Group b=new Group("Group 41", mListener.getSelectedProject());

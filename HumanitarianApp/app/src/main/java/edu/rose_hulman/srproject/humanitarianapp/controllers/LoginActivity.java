@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setOnClickListener(this);
             findViewById(R.id.sign_out_button).setOnClickListener(this);
             findViewById(R.id.disconnect_button).setOnClickListener(this);
-
+            findViewById(R.id.changeURLButton).setOnClickListener(this);
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements
                 emailAddress=acct.getEmail();
 //                if (!logMeOut) {
 //                    Log.wtf("s40-login", "!logMeOut");
-//                    checkValidity(acct.getId(), acct.getEmail());
+//                    checkValidity(acct.getID(), acct.getEmail());
                                     //switchToMain("3000");
                                     //switchToMain(personID);
 //                                }
@@ -302,12 +302,14 @@ public class LoginActivity extends AppCompatActivity implements
         private void updateUI(boolean signedIn) {
             if (signedIn) {
                 findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                findViewById(R.id.changeURLButton).setVisibility(View.GONE);
                 //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
                 mStatusTextView.setText(R.string.signed_out);
 
                 findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.changeURLButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
@@ -317,6 +319,9 @@ public class LoginActivity extends AppCompatActivity implements
             switch (v.getId()) {
                 case R.id.sign_in_button:
                     signIn();
+                    break;
+                case R.id.changeURLButton:
+                    changeURL();
                     break;
                 case R.id.sign_out_button:
                     signOut();
@@ -432,6 +437,10 @@ public class LoginActivity extends AppCompatActivity implements
             }
         };
         service.signUp(token, callback);
+    }
+
+    public void changeURL(){
+
     }
     public void addPerson() {
         DialogFragment newFragment = new NewUserDialogFragment();

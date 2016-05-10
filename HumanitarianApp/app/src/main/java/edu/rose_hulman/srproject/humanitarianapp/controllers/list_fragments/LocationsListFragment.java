@@ -20,9 +20,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
-import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -86,7 +84,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getId()+"", new LocationListCallback());
+        service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID()+"", new LocationListCallback());
      //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 

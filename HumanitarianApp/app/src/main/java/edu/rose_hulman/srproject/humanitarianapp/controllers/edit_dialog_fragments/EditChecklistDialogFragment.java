@@ -206,6 +206,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
             }
         });
         map.put(item, v);
+        checklist.addItem(item);
         return v;
 
 

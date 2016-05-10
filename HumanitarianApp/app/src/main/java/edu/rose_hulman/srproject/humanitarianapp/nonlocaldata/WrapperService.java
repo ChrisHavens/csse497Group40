@@ -206,14 +206,12 @@ public interface WrapperService {
                      Callback<Response> callback);
 
     @PUT("/api/person/{id}/projects/{projectID}")
-    @Headers("Accept: application/json")
     void addPersonToProject(@Path("id") String id,
                             @Path("projectID") String projectID,
                             @Query("person") String person,
                                             Callback<Response> callback);
 
-    @POST("/api/person/{id}/groups/{groupID}")
-    @Headers("Accept: application/json")
+    @PUT("/api/person/{id}/groups/{groupID}")
     void addPersonToGroup(@Path("id") String id,
                           @Path("groupID") String groupID,
                           @Query("person") String person,
@@ -597,4 +595,14 @@ public interface WrapperService {
 
     @PUT("/api/login/add")
     void addNewuser(@Body TypedInput token, Callback<Response> callback);
+
+
+    @GET("/api/thread/{id}/messages/count")
+    void getMessageCount(@Path("id") String id, Callback<Response> callback);
+
+    @GET("/api/sync/changes/dummy")
+    void getDummyConflicts(Callback<Response> callback);
+
+    @GET("/api/sync/resolve/{type}/{id}")
+    void resolveConflict(@Path("type")String type, @Path("id") String id, Callback<Response> callback);
 }

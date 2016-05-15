@@ -83,7 +83,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         for(Project existingProject: overallProjects){
             boolean included = false;
             for(Project project: this.projects) {
-                if (project.getId() == existingProject.getId()) {
+                if (project.getID() == existingProject.getID()) {
                     included = true;
                     break;
                 }

@@ -282,6 +282,12 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         if (id== R.id.forceSync){
             ApplicationWideData.sync();
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            String text = PreferencesManager.getSyncTime(null);
+            String time = MessageThread.getCurrTime();
+            Toast toast = Toast.makeText(context, time, duration);
+            toast.show();
             return true;
         }
         if (id==R.id.logout){

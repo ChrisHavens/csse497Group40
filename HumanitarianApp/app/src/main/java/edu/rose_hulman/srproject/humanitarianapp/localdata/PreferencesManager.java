@@ -18,7 +18,13 @@ public class PreferencesManager {
     }
 
     public static void setSyncDate(String date){
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("SyncTime", date);
+    }
 
+    public static void setSyncDateLong(long date){
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putLong("SyncTimeLong", date);
     }
 
     public static boolean getSyncType(){
@@ -28,12 +34,16 @@ public class PreferencesManager {
     public static String getSyncTime(String date){
         return preferences.getString("SyncTime", "01-01-1970 00:00:00");
     }
+
+    public static long getSyncTimeLong(){
+        return  preferences.getLong("SyncTimeLong", 0);
+    }
     public static void setURL(String url){
         SharedPreferences.Editor edit=preferences.edit();
         edit.putString("URL", url);
     }
     public static String getURL(){
-        return preferences.getString("URL", "NULL");
+        return preferences.getString("URL", "s40server.csse.rose-hulman.edu");
     }
     public static void setID(String id){
         SharedPreferences.Editor edit=preferences.edit();

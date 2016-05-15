@@ -1,15 +1,20 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -229,6 +234,10 @@ public class ApplicationWideData {
     public static void sync() {
         //Save all of the projects
         saveNewProjects();
+        String time = MessageThread.getCurrTime();
+        PreferencesManager.setSyncDate(time);
+        long unixTime = System.currentTimeMillis() / 1000L;
+
     }
 
     public static boolean getManualSync(){

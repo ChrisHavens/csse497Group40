@@ -10,7 +10,7 @@
         ></item>
     <item
         android:id="@+id/forceSync"
-        android:orderInCategory="700"
+        android:orderInCategory="250"
         android:title="@string/forceSync"
         app:showAsAction="always"
         ></item>

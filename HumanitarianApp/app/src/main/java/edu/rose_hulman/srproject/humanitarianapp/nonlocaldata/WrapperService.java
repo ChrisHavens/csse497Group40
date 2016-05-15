@@ -68,6 +68,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updateProject(@Path("id") String projectID,
                        @Query("person") String person,
+                       @Query("lastSync") String time,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
@@ -134,6 +135,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updateGroup(@Path("id") String id,
                      @Query("person") String person,
+                     @Query("lastSync") String time,
                        @Body TypedInput body,
                        Callback<Response> callback);
 
@@ -237,6 +239,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updatePerson(@Path("id") String id,
                       @Query("person") String person,
+                      @Query("lastSync") String time,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
@@ -329,6 +332,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updateLocation(@Path("id") String id,
                         @Query("person") String person,
+                        @Query("lastSync") String time,
                       @Body TypedInput body,
                       Callback<Response> callback);
 
@@ -377,6 +381,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updateNote(@Path("id") String id,
                     @Query("person") String person,
+                    @Query("lastSync") String time,
                      @Body TypedInput body,
                      Callback<Response> callback);
 
@@ -540,6 +545,7 @@ public interface WrapperService {
     @Headers("Accept: application/json")
     void updateShipment(@Path("id") String id,
                         @Query("person") String person,
+                        @Query("lastSync") String time,
                     @Body TypedInput body,
                     Callback<Response> callback);
 

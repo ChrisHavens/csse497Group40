@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -88,7 +89,7 @@ public class AddNoteDialogFragment extends DialogFragment {
         mListener = null;
     }
     private String format(String s){
-        s.replaceAll("\\\\n", "\\\\u000A");
+        s.replaceAll("\\n", "\\u000A");
         return s;
     }
 

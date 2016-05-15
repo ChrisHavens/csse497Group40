@@ -82,21 +82,21 @@ public class NonLocalDataService {
      */
 
     public void updateProject(long projectID, String json, String changerID,Callback<Response> callback){
-        service.updateProject(projectID + "", changerID, new TypedJsonString(json), callback);
+        service.updateProject(projectID + "", changerID, System.currentTimeMillis()+"", new TypedJsonString(json), callback);
 
     }
     public void updateGroup(long groupID, String json, String changerID,Callback<Response> callback){
-        service.updateGroup(groupID + "", changerID, new TypedJsonString(json), callback);
+        service.updateGroup(groupID + "", changerID, System.currentTimeMillis()+"",new TypedJsonString(json), callback);
 
     }
 
     public void updatePerson(long personId, String json, String changerID,Callback<Response> callback){
-        service.updatePerson(personId + "", changerID, new TypedJsonString(json), callback);
+        service.updatePerson(personId + "", changerID, System.currentTimeMillis()+"",new TypedJsonString(json), callback);
 
 
     }
     public void updateLocation(long locationId, String json,String changerID, Callback<Response> callback){
-        service.updateLocation(locationId + "", changerID, new TypedJsonString(json), callback);
+        service.updateLocation(locationId + "", changerID, System.currentTimeMillis()+"",new TypedJsonString(json), callback);
 
     }
     public void updateNote(double id, String title, String body, String changerID,Callback<Response> callback){
@@ -104,7 +104,7 @@ public class NonLocalDataService {
         sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
         Log.w("Note:", id+" "+sb.toString());
 
-        service.updateNote(id + "", changerID, new TypedJsonString(sb.toString()), callback);
+        service.updateNote(id + "", changerID, System.currentTimeMillis()+"",new TypedJsonString(sb.toString()), callback);
     }
 
     public void getMessagesList(String id, int start, int size, String time, Callback<Response>callback){

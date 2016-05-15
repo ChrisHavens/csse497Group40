@@ -18,8 +18,6 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Location;
-import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -70,7 +68,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getId()+"", new ChecklistListCallback());
+        service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID()+"", new ChecklistListCallback());
     }
 
     @Override

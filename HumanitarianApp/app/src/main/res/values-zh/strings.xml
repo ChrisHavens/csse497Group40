@@ -58,5 +58,18 @@
     <string name="title_activity_login">登录</string>
     <string name="to">到</string>
     <string name="welcome">欢迎来到演示环节</string>
-    <string name="mapShowText">Show on map</string>
+    <string name="name">姓名</string>
+    <string name="name_label">姓名:</string>
+    <string name="email">电子邮件</string>
+    <string name="email_label">电子邮件:</string>
+    <string name="loading">载入中...</string>
+    <string name="phone"> 电话号码</string>
+    <string name="search"> 搜索</string>
+    <string name="send" translatable="false">发送</string>
+    <string name="mapShowText">在地图上显示</string>
+    <string name="newUser">完成注册</string>
+    <string name="personDNE">查无此人</string>
+    <string name="sign_out" translatable="false">登出</string>
+    <string name="signed_in_fmt">已登录</string>
+    <string name="signed_out">已登出</string>
 </resources>

@@ -205,19 +205,33 @@ public interface WrapperService {
                      @Body TypedInput body,
                      Callback<Response> callback);
 
-    @POST("/api/person/{id}/projects/add")
-    @Headers("Accept: application/json")
+    @PUT("/api/person/{id}/projects/{projectID}")
     void addPersonToProject(@Path("id") String id,
+                            @Path("projectID") String projectID,
                             @Query("person") String person,
-                      @Body TypedInput body,
+                                            Callback<Response> callback);
+
+    @PUT("/api/person/{id}/groups/{groupID}")
+    void addPersonToGroup(@Path("id") String id,
+                          @Path("groupID") String groupID,
+                          @Query("person") String person,
                       Callback<Response> callback);
 
-    @POST("/api/person/{id}/groups/add")
+    @DELETE("/api/person/{id}/projects/{projectID}")
     @Headers("Accept: application/json")
-    void addPersonToGroup(@Path("id") String id,
-                          @Query("person") String person,
-                      @Body TypedInput body,
-                      Callback<Response> callback);
+    void removePersonFromProject(@Path("id") String id,
+                                        @Path("projectID") String projectID,
+                            @Query("person") String person,
+                                        Callback<Response> callback);
+
+    @DELETE("/api/person/{id}/groups/{groupID}")
+    @Headers("Accept: application/json")
+    void removePersonFromGroup(@Path("id") String id,
+                                 @Path("groupID") String groupID,
+                                 @Query("person") String person,
+                                 Callback<Response> callback);
+
+
 
     @POST("/api/person/{id}/update")
     @Headers("Accept: application/json")
@@ -251,6 +265,8 @@ public interface WrapperService {
                                @Query("status") String status,
                                 @Query("person") String person,
                                Callback<Response> callback);
+
+
     /*
   Locations
    */
@@ -579,4 +595,14 @@ public interface WrapperService {
 
     @PUT("/api/login/add")
     void addNewuser(@Body TypedInput token, Callback<Response> callback);
+
+
+    @GET("/api/thread/{id}/messages/count")
+    void getMessageCount(@Path("id") String id, Callback<Response> callback);
+
+    @GET("/api/sync/changes/dummy")
+    void getDummyConflicts(Callback<Response> callback);
+
+    @GET("/api/sync/resolve/{type}/{id}")
+    void resolveConflict(@Path("type")String type, @Path("id") String id, Callback<Response> callback);
 }

@@ -1,0 +1,36 @@
+<head>
+<link rel="shortcut icon" type="image/png" href="icon.png"/>
+<link href="login.css" type="text/css" rel="stylesheet" />
+<title>Shipment: {{ship._source.name}}</title>
+</head>
+<div id="imagebanner">
+			<img src="icon.png" alt="ICON" height="42" width="42" />
+		</div>
+		<h1 id="title"> HMA ADMIN</h1>
+ <div class="temp">
+<h1>{{ship._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{ship}}</li>-->
+<li class="ID">ID: {{ship._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{ship._source.name}}
+    </li>
+	
+	<li>Contents: {{ship._source.contents}}</li>
+	<li>Destination ID: <a href="#/locations/{{ship._source.toLocationID}}">{{ship._source.toLocationID}}</a></li>
+	<li>Source ID: <a href="#/locations/{{ship._source.fromLocationID}}">{{ship._source.fromLocationID}}</a></li>
+	<li>Parent ID: {{ship._source.parentID}}</li>
+	<li>Pickup time: {{ship._source.pickupTime}}</li>
+	<li>Status: {{ship._source.status}}</li>
+  <li>
+  <span>Hidden: {{ship._source | checkmark}}
+  </span>
+  </li>
+  <input type="button" id="delete" value="Delete Shipment" ng-click="DeleteShipment()" />
+  
+</ul>
+</div>

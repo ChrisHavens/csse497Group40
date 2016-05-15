@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -210,13 +208,17 @@ public class EditPersonDialogFragment extends DialogFragment {
                     person.setEmail((String) source.get("email"));
                     person.setPhoneNumber((String) source.get("phone"));
                     //Log.w("Type of lastLocation", .get("lastLocation"))
-                    HashMap<String, Object> lastLoc = (HashMap) source.get("lastLocation");
-                    Person.PersonLocation personLoc = new Person.PersonLocation();
-                    personLoc.setLat(Float.parseFloat((String) lastLoc.get("lat")));
-                    personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
-                    personLoc.setName((String) lastLoc.get("name"));
-                    personLoc.setTime((String) lastLoc.get("time"));
-                    person.setLastCheckin(personLoc);
+                    if (source.containsKey("lastLocation") ){
+
+                        HashMap<String, Object> lastLoc = (HashMap) source.get("lastLocation");
+                        Person.PersonLocation personLoc = new Person.PersonLocation();
+                        personLoc.setLat(Float.parseFloat((String) lastLoc.get("lat")));
+                        personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
+                        personLoc.setName((String) lastLoc.get("name"));
+                        personLoc.setTime((String) lastLoc.get("time"));
+
+                        person.setLastCheckin(personLoc);
+                    }
                     nameField.setText(person.getName());
                     phoneField.setText(person.getPhoneNumber());
                     emailField.setText(person.getEmail());
@@ -235,8 +237,8 @@ public class EditPersonDialogFragment extends DialogFragment {
 //        nameField.setText(person.getName(), TextView.BufferType.EDITABLE);
 //        phoneField.setText(person.getPhoneNumber(), TextView.BufferType.EDITABLE);
 //        emailField.setText(person.getEmail(), TextView.BufferType.EDITABLE);
-        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
-        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
+//        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
+//        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
     }
 

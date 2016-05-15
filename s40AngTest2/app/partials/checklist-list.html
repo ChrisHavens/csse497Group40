@@ -1,0 +1,35 @@
+<head>
+<title>Checklists</title>
+</head>
+<link rel="shortcut icon" type="image/png" href="icon.png"/>
+<link href="login.css" type="text/css" rel="stylesheet" />
+<div id="imagebanner">
+			<img src="icon.png" alt="ICON" height="42" width="42" />
+		</div>
+		<h1 id="title"> HMA ADMIN</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      <p>Search: <input ng-model="query"></p>
+	  <p>Sort by:
+<select ng-model="orderprop">
+  <option value="name">Alphabetical</option>
+  <option value="dateModified">Newest</option>
+</select>
+</p>
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+      <ul class='clists'>
+<li ng-repeat="clist in clists | filter:query | orderBy:orderprop" class="thumbnail">
+            <a href="#/checklists/{{clist._id}}">{{clist._source.name}}</a>
+            <p>{{clist._source.timeModified}}</p>
+</li>
+</ul>
+
+
+    </div>
+  </div>
+</div>

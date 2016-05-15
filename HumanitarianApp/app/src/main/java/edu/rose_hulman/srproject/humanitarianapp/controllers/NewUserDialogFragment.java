@@ -8,11 +8,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,7 +38,9 @@ public class NewUserDialogFragment extends DialogFragment {
     private EditText nameField;
     private EditText phoneField;
     private EditText emailField;
-    private Spinner roleSpinner;
+//    private ImageButton helpButton;
+//    private PopupWindow popup;
+    //private Spinner roleSpinner;
 
 
 
@@ -58,8 +66,8 @@ public class NewUserDialogFragment extends DialogFragment {
                         String name=nameField.getText().toString();
                         String phone=phoneField.getText().toString();
                         String email=emailField.getText().toString();
-                        Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
-                        mListener.addNewPerson(name, phone, email, role);
+                        //Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
+                        mListener.addNewPerson(name, phone, email, Roles.PersonRoles.WORKER);
                         NewUserDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -75,13 +83,36 @@ public class NewUserDialogFragment extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
+
         View view= inflater.inflate(R.layout.fragment_new_user_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
         phoneField=(EditText) view.findViewById(R.id.phoneField);
         emailField=(EditText)view.findViewById(R.id.emailField);
         emailField.setText(mListener.getEmail());
-        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
-        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
+//        helpButton=(ImageButton)view.findViewById(R.id.helpURLButton);
+//        popup=new PopupWindow(this.getActivity());
+//        final FrameLayout layout=new FrameLayout(this.getActivity());
+//        TextView tv=new TextView(this.getActivity());
+//        tv.setText(getResources().getString(R.string.helpURL));
+//        layout.addView(tv);
+//        popup.setContentView(layout);
+//        popup.showAtLocation(helpButton, Gravity.BOTTOM, 10, 10);
+//        helpButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                    popup.showAtLocation(layout, Gravity.BOTTOM, 10, 10);
+//                    popup.update(50, 50, 300, 80);
+//
+//
+//                }
+//
+//
+//
+//        });
+
+//        roleSpinner=(Spinner)view.findViewById(R.id.roleSpinner);
+//        roleSpinner.setAdapter(new RoleSpinnerAdapter(this.getActivity(), android.R.layout.simple_list_item_1,Roles.roles));
         return view;
     }
 
@@ -142,5 +173,6 @@ public class NewUserDialogFragment extends DialogFragment {
 
         }
     }
+
 
 }

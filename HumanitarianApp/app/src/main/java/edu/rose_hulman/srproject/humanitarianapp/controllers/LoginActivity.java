@@ -3,7 +3,10 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +30,7 @@ import com.google.android.gms.common.api.Status;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -51,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         private static final String TAG = "SignInActivity";
         private static final int RC_SIGN_IN = 9001;
-    NonLocalDataService service=new NonLocalDataService();
+    NonLocalDataService service;
     String personID;
     String googleID;
     String emailAddress;
@@ -78,37 +82,47 @@ public class LoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setOnClickListener(this);
             findViewById(R.id.sign_out_button).setOnClickListener(this);
             findViewById(R.id.disconnect_button).setOnClickListener(this);
-
+            findViewById(R.id.changeURLButton).setOnClickListener(this);
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
-                    .requestIdToken("380073753318-jo66uj3ghqmqmjg32p1s1662mnukbohj.apps.googleusercontent.com")
+                    //.requestIdToken("380073753318-jo66uj3ghqmqmjg32p1s1662mnukbohj.apps.googleusercontent.com")
                     .build();
             // [END configure_signin]
+            PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
+            service=new NonLocalDataService();
+            Log.wtf("Network status", isNetworkAvailable()+"");
+            if (isNetworkAvailable()||PreferencesManager.getID().equals("-1")) {
 
-            // [START build_client]
-            // Build a GoogleApiClient with access to the Google Sign-In API and the
-            // options specified by gso.
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-            // [END build_client]
 
-            // [START customize_button]
-            // Customize sign-in button. The sign-in button can be displayed in
-            // multiple sizes and color schemes. It can also be contextually
-            // rendered based on the requested scopes. For example. a red button may
-            // be displayed when Google+ scopes are requested, but a white button
-            // may be displayed when only basic profile is requested. Try adding the
-            // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
-            // difference.
-            SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-            signInButton.setSize(SignInButton.SIZE_STANDARD);
-            signInButton.setScopes(gso.getScopeArray());
-            // [END customize_button]
+                // [START build_client]
+                // Build a GoogleApiClient with access to the Google Sign-In API and the
+                // options specified by gso.
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .build();
+
+                // [END build_client]
+
+                // [START customize_button]
+                // Customize sign-in button. The sign-in button can be displayed in
+                // multiple sizes and color schemes. It can also be contextually
+                // rendered based on the requested scopes. For example. a red button may
+                // be displayed when Google+ scopes are requested, but a white button
+                // may be displayed when only basic profile is requested. Try adding the
+                // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
+                // difference.
+                SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+                signInButton.setSize(SignInButton.SIZE_STANDARD);
+                signInButton.setScopes(gso.getScopeArray());
+                // [END customize_button]
+            }
+            else{
+                switchToMain(PreferencesManager.getID());
+            }
         }
 
     @Override
@@ -121,8 +135,9 @@ public class LoginActivity extends AppCompatActivity implements
                 // and the GoogleSignInResult will be available instantly.
                 Log.d(TAG, "Got cached sign-in");
                 GoogleSignInResult result = opr.get();
-                handleSignInResult(result);
-            } else {
+
+                    handleSignInResult(result);
+                } else {
                 // If the user has not previously signed in on this device or the sign-in has expired,
                 // this asynchronous branch will attempt to sign in the user silently.  Cross-device
                 // single sign-on will occur in this branch.
@@ -164,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements
                 emailAddress=acct.getEmail();
 //                if (!logMeOut) {
 //                    Log.wtf("s40-login", "!logMeOut");
-//                    checkValidity(acct.getId(), acct.getEmail());
+//                    checkValidity(acct.getID(), acct.getEmail());
                                     //switchToMain("3000");
                                     //switchToMain(personID);
 //                                }
@@ -233,6 +248,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         // [START signOut]
         private void signOut() {
+            PreferencesManager.setID("-1");
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
@@ -247,6 +263,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         // [START revokeAccess]
         private void revokeAccess() {
+            PreferencesManager.setID("-1");
             Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
@@ -285,12 +302,14 @@ public class LoginActivity extends AppCompatActivity implements
         private void updateUI(boolean signedIn) {
             if (signedIn) {
                 findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                findViewById(R.id.changeURLButton).setVisibility(View.GONE);
                 //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             } else {
                 mStatusTextView.setText(R.string.signed_out);
 
                 findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.changeURLButton).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
@@ -300,6 +319,9 @@ public class LoginActivity extends AppCompatActivity implements
             switch (v.getId()) {
                 case R.id.sign_in_button:
                     signIn();
+                    break;
+                case R.id.changeURLButton:
+                    changeURL();
                     break;
                 case R.id.sign_out_button:
                     signOut();
@@ -313,8 +335,12 @@ public class LoginActivity extends AppCompatActivity implements
             }
         }
     public void go(){
-
-       checkValidity(googleID, emailAddress);
+        if(isNetworkAvailable()) {
+            checkValidity(googleID, emailAddress);
+        }
+        else{
+            switchToMain(PreferencesManager.getID());
+        }
     }
 
 
@@ -331,6 +357,7 @@ public class LoginActivity extends AppCompatActivity implements
                 try {
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                     String personId= (String) o.get("personId");
+                    PreferencesManager.setID(personId);
                     //switchToMain("3000");
                     switchToMain(personId);
                 }
@@ -380,6 +407,7 @@ public class LoginActivity extends AppCompatActivity implements
                     personID= (String) o.get("personId");
                     Log.wtf("s40-login", personID);
                     emailAddress=email;
+                    PreferencesManager.setID(personID);
                     addPerson();
                     //switchToMain(personID);
                 }
@@ -409,6 +437,10 @@ public class LoginActivity extends AppCompatActivity implements
             }
         };
         service.signUp(token, callback);
+    }
+
+    public void changeURL(){
+
     }
     public void addPerson() {
         DialogFragment newFragment = new NewUserDialogFragment();
@@ -448,6 +480,12 @@ public class LoginActivity extends AppCompatActivity implements
             //NonLocalDataService service=new NonLocalDataService();
             service.addNewPerson(p, personID,responseCallback);
 
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 

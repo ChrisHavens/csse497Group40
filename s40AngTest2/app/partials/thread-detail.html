@@ -1,0 +1,40 @@
+<head>
+<link rel="shortcut icon" type="image/png" href="icon.png"/>
+<link href="login.css" type="text/css" rel="stylesheet" />
+<title>Thread: {{thread._source.name}}</title>
+</head>
+<div id="imagebanner">
+			<img src="icon.png" alt="ICON" height="42" width="42" />
+		</div>
+		<h1 id="title"> HMA ADMIN</h1>
+ <div class="temp">
+<h1>{{thread._source.name}}</h1>
+<ul class="specs">
+<li class="ID">ID: {{thread._id}}</li>
+
+	<li>
+		<span>Name: </span>
+		{{thread._source.name}}
+    </li>
+	
+	<li>Contents:
+	<ul class="messages">
+	<dd ng-repeat="message in messages | orderBy : 'sort'" class='thumbnail'><li>
+	Message: {{message._source.text}}
+	<ul>
+		<li>Sent By: <a href="#/persons/{{message._source.personID}}">{{message._source.personID}}</a></li>
+		<li>At: {{message._source.sentDate}}</li>
+	</ul>
+	</li>
+	</dd>
+	</ul></li>
+	<li>Parent ID: <a href="#/groups/{{thread._source.parentID}}">{{thread._source.parentID}}</a></li>
+  <li>
+  <span>Hidden: {{thread._source | checkmark}}
+  </span>
+  </li>
+  
+  <input type="button" id="delete" value="Delete Thread" ng-click="DeleteThread()" />
+  
+</ul>
+</div>

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -32,7 +31,7 @@ public class ApplicationWideData {
 
     public static int userID = 0;
     public static int createdObjectCounter;
-    public static boolean manualSnyc;
+    public static final boolean manualSnyc = false;
     public static SQLiteDatabase db = null;
 
     public static void initilizeKnownVariables() {
@@ -47,13 +46,13 @@ public class ApplicationWideData {
         if (userID == 0) {
             Random rand = new Random();
             userID = rand.nextInt();
-            createdObjectCounter = 0;
+            createdObjectCounter = rand.nextInt();
         } else {
             //Will eventually only check the counter, but using random for now to avoid collisions.
             Random rand = new Random();
             createdObjectCounter = rand.nextInt();
         }
-        manualSnyc = PreferencesManager.getSyncType();
+        //manualSnyc = PreferencesManager.getSyncType();
         LocalDataLoader.loadEverything();
         if (!manualSnyc) {
             sync();
@@ -99,7 +98,7 @@ public class ApplicationWideData {
 
     public static Group getGroupByID(long id) {
         for(Group group: knownGroups) {
-            if (group.getId() == id) {
+            if (group.getID() == id) {
                 return group;
             }
         }
@@ -157,7 +156,7 @@ public class ApplicationWideData {
 
     public static void addNewProject(Project project) {
         for(Project existingProject: knownProjects){
-            if (project.getId() == existingProject.getId()){
+            if (project.getID() == existingProject.getID()){
                 return;
             }
         }
@@ -166,7 +165,7 @@ public class ApplicationWideData {
 
     public static void addExistingProject(Project project) {
         for(Project existingProject: knownProjects){
-            if (project.getId() == existingProject.getId()){
+            if (project.getID() == existingProject.getID()){
                 knownProjects.remove(existingProject);
                 knownProjects.add(project);
                 return;
@@ -177,7 +176,7 @@ public class ApplicationWideData {
 
     public static Project getProjectByID(long id) {
         for(Project project: knownProjects) {
-            if (project.getId() == id) {
+            if (project.getID() == id) {
                 return project;
             }
         }
@@ -212,7 +211,7 @@ public class ApplicationWideData {
     }
 
     public static void switchSyncMode() {
-        manualSnyc = !manualSnyc;
+        //manualSnyc = !manualSnyc;
         PreferencesManager.setSyncType(manualSnyc);
         if(!manualSnyc) {
             sync();
@@ -222,9 +221,9 @@ public class ApplicationWideData {
     public static void forceSync() {
         //Save all of the projects
         Boolean original = manualSnyc;
-        manualSnyc = false;
+        //manualSnyc = false;
         saveNewProjects();
-        manualSnyc = original;
+        //manualSnyc = original;
     }
 
     public static void sync() {

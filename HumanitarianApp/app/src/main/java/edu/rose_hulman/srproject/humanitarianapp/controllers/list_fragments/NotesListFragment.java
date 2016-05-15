@@ -16,7 +16,6 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -75,7 +74,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         }
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.service.getNoteList(showHidden, mListener.getSelectedGroup().getId()+"", new NoteListCallback());
+        service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID()+"", new NoteListCallback());
 //        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,13 @@ public class MessageThread implements Selectable{
     private boolean isHidden=false;
     private HashMap<String, Message> itemList=new HashMap<String, Message>();
     private int dirtyBits = 0;
+    private int count=0;
+    private Comparator<Message> comparator= new Comparator<Message>() {
+        @Override
+        public int compare(Message lhs, Message rhs) {
+            return lhs.getTime().compareTo(rhs.getTime());
+        }
+    };
 
     /**
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -100,9 +109,11 @@ public class MessageThread implements Selectable{
         ]
       }
          */
+        List<Message> itemList=getItemList();
+        Collections.sort(itemList,comparator);
         StringBuilder sb= new StringBuilder();
-        for (int i=0; i<getItemList().size(); i++){
-            Message item=getItemList().get(i);
+        for (int i=0; i<itemList.size(); i++){
+            Message item=itemList.get(i);
             sb.append(item.toJSON());
             sb.append(",");
         }
@@ -175,7 +186,9 @@ public class MessageThread implements Selectable{
         Log.wtf("s40-5", itemList.size()+"");
 
         long base=this.id*1000;
-        long base2=(base+itemList.size()+1);
+        count++;
+        long base2=(base+count+1);
+
         message.setItemID(base2);
         Log.wtf("s40-2", message.getTime());
         itemList.put(message.getItemID()+"", message);
@@ -201,6 +214,14 @@ public class MessageThread implements Selectable{
 
     public void setDirtyBits(int dirtyBits) {
         this.dirtyBits = dirtyBits;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public static class Message{

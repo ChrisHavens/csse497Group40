@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">s40 Humanitarian App</string>
+    <string name="action_call">電話</string>
+    <string name="action_settings">セッティング</string>
+    <string name="action_sign_in">サインインまたは登録</string>
+    <string name="action_sign_in_short">サインイン</string>
+    <string name="addChecklist">新しいチェックリストを追加する</string>
+    <string name="action_text">テキスト</string>
+    <string name="addGroup">新しいグループを追加する</string>
+    <string name="addLocation">新しい場所を追加する</string>
+    <string name="addNewChecklistItem">新しいアイテムを追加する</string>
+    <string name="addNewSublistItem">新しいサブアイテムを追加する</string>
+    <string name="addNote">新しいメモを追加する</string>
+    <string name="addPerson">新しい人を追加する</string>
+    <string name="addProject">新しいプロジェクトを追加する</string>
+    <string name="addShipment">新しい出荷を追加する</string>
+    <string name="checklists">チェックリスト</string>
+    <string name="chooseDate">日付を選択する</string>
+    <string name="chooseLocations">場所を選択する</string>
+    <string name="chooseTime">時間を選択する</string>
+    <string name="confirm_password">パスワードを認証する</string>
+    <string name="date"> 日付:</string>
+    <string name="disconnect">切断</string>
+    <string name="editMembers">メンバーを編集する</string>
+    <string name="email" translatable="false">メール</string>
+    <string name="email_label" translatable="false">メール:</string>
+    <string name="error_field_required">この項目は必須です。</string>
+    <string name="error_incorrect_password">このパスワードが正しくありません。</string>
+    <string name="error_invalid_email">このメールアドレスは無効です。</string>
+    <string name="error_invalid_password">このパスワードは短すぎます。</string>
+    <string name="error_no_matching_password">これらのパスワードが一致しません。</string>
+    <string name="from" translatable="false">から：</string>
+    <string name="groups">グループ</string>
+    <string name="hideHiddenItems">隠されたアイテムを非表示</string>
+    <string name="item">アイテム</string>
+    <string name="lastLoc">最後の既知の場所:</string>
+    <string name="lastMod">最終更新日:</string>
+    <string name="loading" translatable="false"> 読み込んでいます...</string>
+    <string name="locations">場所</string>
+    <string name="manage_account_label">アカウントの管理</string>
+    <string name="mapShowText">地図に表示</string>
+    <string name="myLoc">私の場所</string>
+    <string name="name" translatable="false">名前</string>
+    <string name="name_label" translatable="false">名前:</string>
+    <string name="notes" translatable="false">ノート</string>
+    <string name="people">人々</string>
+    <string name="phone" translatable="false">電話</string>
+    <string name="profile_picture_desc">プロフィールの写真</string>
+    <string name="projects">プロジェクト</string>
+    <string name="prompt_email" translatable="false">メール</string>
+    <string name="prompt_name">名前</string>
+    <string name="prompt_password">パスワード</string>
+    <string name="save">保存する</string>
+    <string name="saveChanges">変更内容を保存</string>
+    <string name="search" translatable="false">サーチ</string>
+    <string name="send" translatable="false">送信</string>
+    <string name="shipments">出荷</string>
+    <string name="short_app_name">s40</string>
+    <string name="sign_in_label">サインイン</string>
+    <string name="showHiddenItems">隠されたアイテムを表示</string>
+    <string name="sign_out" translatable="false"> サインアウト</string>
+    <string name="sign_out_label"> サインアウト</string>
+    <string name="sign_up_label">サインアップ</string>
+    <string name="signed_in_fmt" translatable="false">サインイン</string>
+    <string name="signed_out" translatable="false">サインアウト</string>
+    <string name="subitem">サブアイテム</string>
+    <string name="time">時間</string>
+    <string name="title_activity_login">サインイン</string>
+    <string name="to" translatable="false">へ:</string>
+    <string name="welcome">ようこそ</string>
+</resources>

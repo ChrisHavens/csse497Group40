@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,8 +25,11 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -40,6 +42,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddMessageThreadDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddNoteDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonToSomethingDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddShipmentDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ChecklistFragment;
@@ -69,42 +72,31 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.Mess
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
+import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
-import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 
-import edu.rose_hulman.srproject.humanitarianapp.models.*;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 //import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
 public class MainActivity extends ActionBarActivity implements //TabSwitchListener,
-        AddPersonDialogFragment.AddPersonListener, //MainFragment.CRUDListener,
+        AddPersonToSomethingDialogFragment.AddPersonListener, //MainFragment.CRUDListener,
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
         AddChecklistDialogFragment.AddChecklistListener,
@@ -125,7 +117,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocationsListFragment.LocationsListListener, LocationFragment.LocationFragmentListener, CRUDInterface,
         android.support.v4.app.FragmentManager.OnBackStackChangedListener,
         MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener,
-                GoogleApiClient.OnConnectionFailedListener
+                GoogleApiClient.OnConnectionFailedListener,
+        AddPersonDialogFragment.AddPersonListener,
+        ConflictResolutionDialogFragment.ConflictResolutionListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -139,6 +133,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     private boolean showHidden=false;
     private String userID;
     private CoordinatesGetter coordGetter;
+    private HashMap<Selectable, List<Conflict>> conflictsMap=new HashMap<Selectable, List<Conflict>>();
+    private HashMap<Selectable, List<Conflict>> resolvedConflictsMap=new HashMap<Selectable, List<Conflict>>();
+    private Iterator<Map.Entry<Selectable, List<Conflict>>> conflictsIterator;
+    private Map.Entry<Selectable, List<Conflict>> currConflict;
 
 
 
@@ -199,6 +197,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.forceSync).setTitle("Last Sync Time:/n"+PreferencesManager.getSyncTime(null));
         setVisibilityAdd(true);
         setVisibilityEdit(false);
         setVisibilityShow(false);
@@ -362,9 +361,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
         if (fragment instanceof ProjectsListFragment){
             changeFragmentToListNoBackStack(new ProjectsListFragment());
+            actions.setSelectedGroup(null);
         }
         else if(fragment instanceof ProjectFragment){
             Log.d("TAG", "ProjectFragment");
+            actions.setSelectedGroup(null);
             resetToolbar();
         }
         else if (fragment instanceof GroupsListFragment){
@@ -429,6 +430,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         setVisibilityEdit(false);
         setVisibilityShow(false);
         setVisibilityHide(false);
+        if(fragment instanceof PeopleListFragment){
+            setVisibilityEdit(true);
+        }
         setVisibilityShowHidden(true);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -462,6 +466,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Log.d("TAG", "This is a certain type of fragment");
         setVisibilityAdd(true);
         setVisibilityEdit(false);
+        if(fragment instanceof PeopleListFragment){
+            setVisibilityEdit(true);
+        }
         setVisibilityShow(false);
         setVisibilityHide(false);
         setVisibilityShowHidden(true);
@@ -673,11 +680,35 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 //    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
 //        actions.addNewPerson(name,phone,email,role);
 //    }
+
+
     @Override
-    public void addNewPerson(Person p) {
-        actions.addPersonToProjectOrGroup(p);
-        //actions.addNewPerson(name,phone,email,role);
+    public void addNewPerson(final String name, String phone, String email) {
+
+        actions.addNewPerson(name, phone, email);
+
     }
+    @Override
+    public void addPersonToProjectOrGroup(Person p){
+        actions.addPersonToProjectOrGroup(p);
+    }
+
+    @Override
+    public void removePersonFromProjectOrGroup(Person p){
+        actions.removePersonFromProjectOrGroup(p);
+    }
+
+    @Override
+    public String getSelectedProjectOrGroup() {
+
+        if (actions.getSelectedGroup()==null){
+            return actions.getSelectedProject().getID()+"";
+        }
+        else{
+            return actions.getSelectedGroup().getID()+"";
+        }
+    }
+
     @Override
 
     public void addNewProject(final String name) {
@@ -729,7 +760,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddChecklistDialogFragment();
 
         Bundle b=new Bundle();
-        b.putLong("parentID", actions.getSelectedGroup().getId());
+        b.putLong("parentID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
     }
@@ -738,7 +769,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddMessageThreadDialogFragment();
 
         Bundle b=new Bundle();
-        b.putLong("parentID", actions.getSelectedGroup().getId());
+        b.putLong("parentID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addMessageThread");
         //newFragment.show(getFragmentManager(), "addMessageThread");
@@ -748,7 +779,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void addLocation() {
         DialogFragment newFragment = new AddLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addLocation");
     }
@@ -758,7 +789,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddNoteDialogFragment();
 
 //        Bundle b=new Bundle();
-//        b.putLong("parentID", g.getId());
+//        b.putLong("parentID", g.getID());
 //        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addNote");
     }
@@ -773,10 +804,25 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void addShipment() {
         DialogFragment newFragment = new AddShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addShipment");
+    }
+
+    public void showConflictResolution(HashMap<Selectable, List<Conflict>> conflicts){
+        this.conflictsMap=conflicts;
+        conflictsIterator=conflictsMap.entrySet().iterator();
+        currConflict=conflictsIterator.next();
+        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+
+        newFragment.show(getFragmentManager(), "conflictResolution");
+    }
+    private void showConflictResolution(){
+        currConflict=conflictsIterator.next();
+        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+
+        newFragment.show(getFragmentManager(), "conflictResolution");
     }
 
 
@@ -784,20 +830,20 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
 
     public void showEditProject() {
-        //Log.wtf("ProjectID", selectedProject.getId()+"");
+        //Log.wtf("ProjectID", selectedProject.getID()+"");
         DialogFragment newFragment = new EditProjectDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editProject");
     }
 
 
     public void showEditGroup() {
-        //Log.wtf("GroupID", selectedGroup.getId()+"");
+        //Log.wtf("GroupID", selectedGroup.getID()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editGroup");
     }
@@ -809,7 +855,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         DialogFragment newFragment = new EditChecklistDialogFragment();
 //        Bundle b=new Bundle();
-//        b.putLong("checklistID", c.getId());
+//        b.putLong("checklistID", c.getID());
 //        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editChecklist");
     }
@@ -837,13 +883,17 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editPerson");
     }
+    public void showEditMembers(){
+        DialogFragment newFragment = new AddPersonToSomethingDialogFragment();
+        newFragment.show(getFragmentManager(), "addPerson");
+    }
 
 
     public void showEditShipment() {
         DialogFragment newFragment = new EditShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editShipment");
     }
@@ -1014,6 +1064,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         else if (f instanceof ShipmentFragment){
             showEditShipment();
         }
+        else if (f instanceof PeopleListFragment){
+            showEditMembers();
+        }
 
     }
 
@@ -1086,4 +1139,29 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         return p.getName();
     }
 
+    @Override
+    public void resolveConflicts(List<Conflict> conflicts) {
+        currConflict.setValue(conflicts);
+        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+        if (conflictsIterator.hasNext()){
+            showConflictResolution();
+        }
+        else{
+            //
+        }
+
+    }
+
+    @Override
+    public List<Conflict> getConflicts() {
+        return currConflict.getValue();
+    }
+
+
+
+
+//    @Override
+//    public List<ConflictResolutionDialogFragment.Conflict> getConflicts() {
+//        return null;
+//    }
 }

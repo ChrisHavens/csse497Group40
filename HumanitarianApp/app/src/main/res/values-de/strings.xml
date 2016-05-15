@@ -5,7 +5,6 @@
     <string name="action_call">Telefon</string>
     <string name="action_sign_in">anmelden oder registrieren</string>
     <string name="action_sign_in_short">anmelden</string>
-    <string name="action_text">Text</string>
     <string name="addChecklist">fügen Sie eine neue Checkliste</string>
     <string name="addGroup">fügen Sie eine neue Gruppe</string>
     <string name="addLocation"> fügen Sie einen neuen Standort</string>
@@ -15,7 +14,7 @@
     <string name="addPerson">Neue Person hinzufügen</string>
     <string name="addProject">fügen Sie ein neues Projekt</string>
     <string name="addShipment"> fügen Sie eine neue Sendung</string>
-    <string name="checklists">Kontrollliste</string>
+    <string name="checklists">Kontroll-liste</string>
     <string name="chooseDate">Datum wählen</string>
     <string name="chooseLocations">Ort wählen</string>
     <string name="chooseTime"> wählen Zeit</string>
@@ -37,7 +36,6 @@
     <string name="myLoc">mein Standort</string>
     <string name="notes">Note</string>
     <string name="people">Menschen</string>
-    <string name="permission_rationale"></string>
     <string name="profile_picture_desc">Profilbild</string>
     <string name="projects">Projekte</string>
     <string name="prompt_password">Passwort</string>
@@ -52,5 +50,24 @@
     <string name="time"> Zeit:</string>
     <string name="title_activity_login">anmelden</string>
     <string name="to">zu:</string>
-    <string name="mapShowText">Show on map</string>
+    <string name="email">E-Mail</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="email_label">E-Mail:</string>
+    <string name="short_app_name">s40</string>
+    <string name="prompt_email" translatable="false">E-Mail</string>
+    <string name="prompt_name">Name</string>
+    <string name="name">Name</string>
+    <string name="name_label">Name:</string>
+    <string name="action_text">Text</string>
+    <string name="loading">Laden...</string>
+    <string name="phone">Telefon</string>
+    <string name="search" translatable="false"> Suche</string>
+    <string name="send" translatable="false">Senden</string>
+    <string name="welcome">Wilkommen</string>
+    <string name="mapShowText"> Auf der Karte anzeigen</string>
+    <string name="newUser"> vollständige anmelden</string>
+    <string name="personDNE">so jemanden kenne</string>
+    <string name="sign_out" translatable="false">austragen</string>
+    <string name="signed_out">abgemeldet</string>
+    <string name="signed_in_fmt">angemeldet</string>
 </resources>

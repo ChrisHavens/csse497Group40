@@ -52,5 +52,20 @@
     <string name="action_sign_in_short">로그인</string>
     <string name="action_text">텍스트</string>
     <string name="projects">프로젝트</string>
-    <string name="mapShowText">Show on map</string>
+    <string name="name">이름</string>
+    <string name="name_label">이름:</string>
+    <string name="prompt_email" translatable="false">이메일</string>
+    <string name="email">이메일</string>
+    <string name="email_label">이메일:</string>
+    <string name="from">에서:</string>
+    <string name="loading">로드...</string>
+    <string name="notes">노트</string>
+    <string name="people">사람들</string>
+    <string name="phone"> 전화 번호</string>
+    <string name="search" translatable="false"> 수색</string>
+    <string name="send" translatable="false">보내다</string>
+    <string name="to">에:</string>
+    <string name="mapShowText"></string>
+    <string name="sign_out" translatable="false">로그아웃</string>
+    <string name="signed_in_fmt"></string>
 </resources>

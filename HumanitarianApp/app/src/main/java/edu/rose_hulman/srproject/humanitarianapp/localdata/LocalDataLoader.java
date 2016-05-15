@@ -1,7 +1,5 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +58,10 @@ public class LocalDataLoader {
         List<Group> groups = ApplicationWideData.getAllGroups();
         Map<Long, Project> projectMap = new HashMap<>();
         for (Project project : projects) {
-            projectMap.put(project.getId(), project);
+            projectMap.put(project.getID(), project);
         }
         for(Group group: groups) {
-            long id = group.getId();
+            long id = group.getID();
             long projectId = group.getProjectId();
             if (projectMap.containsKey(projectId)){
                 Project project = projectMap.get(projectId);

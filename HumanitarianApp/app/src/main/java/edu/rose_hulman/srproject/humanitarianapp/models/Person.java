@@ -2,8 +2,6 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 //import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +76,12 @@ public class Person implements Serializable, Selectable {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+    public Person(long id, String name, String phoneNumber, String email) {
+        this.ID=id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
 
 
@@ -111,10 +115,10 @@ public class Person implements Serializable, Selectable {
             //person.addLocation(initialAssignment);
         }
         if (initialProject != null) {
-            person.projectIDs.add(initialProject.getId());
+            person.projectIDs.add(initialProject.getID());
         }
         if (initialGroup != null) {
-            person.groupIDs.add(initialGroup.getId());
+            person.groupIDs.add(initialGroup.getID());
         }
         return person;
 
@@ -227,6 +231,8 @@ public class Person implements Serializable, Selectable {
     public void addProjectID(long id){
         this.projectIDs.add(id);
     }
+    public void removeGroupID(long id){this.groupIDs.remove(id);}
+    public void removeProjectID(long id){this.projectIDs.remove(id);}
 
 
     public void updateProjectIDs(long oldID, long newID){

@@ -34,9 +34,9 @@
         android:icon="@drawable/ic_menu_mylocation"
         app:showAsAction="always"></item>
     <item
-        android:id="@+id/changeSync"
+        android:id="@+id/switchSync"
         android:orderInCategory="600"
-        android:title="@string/changeSync"
+        android:title="@string/toManSync"
         app:showAsAction="never"
         ></item>
     <item

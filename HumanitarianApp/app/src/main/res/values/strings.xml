@@ -71,7 +71,8 @@
     <string name="signed_in_fmt">Signed in:   </string>
     <string name="loading">Loading...</string>
     <string name="mapShowText">Show on map</string>
-    <string name="changeSync">Switch sync modes</string>
+    <string name="toManSync">Switch to manual sync</string>
+    <string name="toAutoSync">Switch to automatic sync</string>
     <string name="forceSync">Sync</string>
     <string name="noneFound">No %1$s found</string>
     <string name="newUser">Complete Sign Up</string>

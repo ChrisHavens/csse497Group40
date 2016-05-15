@@ -32,5 +32,9 @@ public abstract class ListArrayAdapter<T> extends ArrayAdapter<T> {
         return customiseView(view, objects.get(position));
 
     }
+
+    public List<T> getList() {
+        return this.objects;
+    }
     public abstract View customiseView(View v, T object);
 }

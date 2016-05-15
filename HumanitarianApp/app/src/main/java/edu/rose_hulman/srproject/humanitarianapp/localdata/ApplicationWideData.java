@@ -46,12 +46,11 @@ public class ApplicationWideData {
         //Pull these numbers from local storage only when a user is known
         if (userID == 0) {
             Random rand = new Random();
-            int userID = rand.nextInt();
+            userID = rand.nextInt();
             createdObjectCounter = 0;
         } else {
             //Will eventually only check the counter, but using random for now to avoid collisions.
             Random rand = new Random();
-            int userID = rand.nextInt();
             createdObjectCounter = rand.nextInt();
         }
         manualSnyc = PreferencesManager.getSyncType();

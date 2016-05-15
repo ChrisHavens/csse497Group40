@@ -102,7 +102,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Checklist checklist=new Checklist();
+                        checklist=new Checklist();
                         String name = nameField.getText().toString();
                         checklist.setTitle(name);
                         checklist.setParentID(checklist.getParentID());
@@ -206,6 +206,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
             }
         });
         map.put(item, v);
+        checklist.addItem(item);
         return v;
 
 

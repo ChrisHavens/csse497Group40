@@ -265,8 +265,19 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             refreshContent();
             return true;
         }
-        if (id== R.id.changeSync){
+        if (id== R.id.switchSync){
             ApplicationWideData.switchSyncMode();
+            if(ApplicationWideData.getManualSync()){
+                MenuItem syncSwitch = toolbar.getMenu().findItem(R.id.switchSync);
+                if (syncSwitch != null){
+                    syncSwitch.setTitle("To Auto Sync");
+                }
+            } else {
+                MenuItem syncSwitch = toolbar.getMenu().findItem(R.id.switchSync);
+                if (syncSwitch != null){
+                    syncSwitch.setTitle("To Manual Sync");
+                }
+            }
             return true;
         }
 

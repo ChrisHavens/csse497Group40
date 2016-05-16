@@ -116,7 +116,8 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Location l=new Location(Integer.parseInt(((String)map.get("_id"))));
+                    long id = Long.parseLong(((String)map.get("_id")));
+                    Location l=new Location(id);
                     l.setName((String) source.get("name"));
                     if(source.get("dateArchived") == null)
                         l.setHidden(false);

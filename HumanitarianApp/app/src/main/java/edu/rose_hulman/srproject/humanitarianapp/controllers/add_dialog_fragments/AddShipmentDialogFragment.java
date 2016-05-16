@@ -100,7 +100,6 @@ public class AddShipmentDialogFragment extends DialogFragment
 
         NonLocalDataService service=new NonLocalDataService();
         service.service.getLocationListByProjectID(false, projectID+"", new LocationListCallback());
-//        service.getAllLocations(projectID,false,false, new LocationListCallback());
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
@@ -209,6 +208,7 @@ public class AddShipmentDialogFragment extends DialogFragment
                        shipment.setToName(to.getName());
                        shipment.setFrom(from.getID() + "");
                        shipment.setFromName(from.getName());
+                       shipment.setLastLocation(from);
                        toField.setText(to.getName());
                        fromField.setText(from.getName());
                        layout.removeAllViews();
@@ -372,7 +372,8 @@ public class AddShipmentDialogFragment extends DialogFragment
                     for (String s: source.keySet()){
                         Log.e("Result", s);
                     }
-                    Location l=new Location(Integer.parseInt(((String)map.get("_id"))));
+                    long val= Long.parseLong(((String)map.get("_id")));
+                    Location l=new Location(val);
                     l.setName((String) source.get("name"));
                     l.setLat(Float.parseFloat((String) source.get("lat")));
                     l.setLng(Float.parseFloat((String) source.get("lng")));

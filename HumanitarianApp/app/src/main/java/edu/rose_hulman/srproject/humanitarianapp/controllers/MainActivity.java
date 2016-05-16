@@ -158,6 +158,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
         //LocalDataSaver.clearUpdatedSelectables();
+        //LocalDataSaver.clearAddedSelectables();
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
         actions=new MainServiceActions(getApplicationContext(), userID);

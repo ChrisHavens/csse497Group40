@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -315,6 +316,7 @@ public class ApplicationWideData {
 
     private static class ProjectListCallback implements Callback<Response>{
         private HashMap<String, Project> updated;
+        private List<String> ids=new ArrayList<>();
         private final MainActivity activity;
         public ProjectListCallback(HashMap<String,Project> updated, MainActivity activity){
             this.updated=updated;
@@ -331,6 +333,7 @@ public class ApplicationWideData {
                 HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                 ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map : list) {
+                    ids.add((String) map.get("_id"));
                     Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
                     if (updated.containsKey(((String) map.get("_id")))){
@@ -351,6 +354,13 @@ public class ApplicationWideData {
                     }
 
 
+                }
+                for (String entry: updated.keySet()){
+                    if (!ids.contains(entry)){
+                        Toast.makeText(activity, "Deleting: "+entry, Toast.LENGTH_SHORT).show();
+                        ApplicationWideData.deleteProjectByID(Long.parseLong(entry));
+
+                    }
                 }
 
             } catch (IOException e) {

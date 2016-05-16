@@ -74,7 +74,7 @@ public class EditProjectDialogFragment extends DialogFragment {
 
                                 @Override
                                 public void failure(RetrofitError error) {
-                                    Log.e("s40 RetroFitError", error.getMessage());
+                                    Log.e("s40 RetroFitError", error.getStatus());
                                     //Log.e("s40 RetroFitE")
                                 }
                             });

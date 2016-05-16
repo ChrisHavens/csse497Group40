@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by bollivga on 10/20/2015.
  */
 public class LocalDataDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "Humanitarian.db";
     private static final String[] TABLE_NAMES={"Location", "People", "Checklist",
         "Project", "Group", "Email", "Phone", "Shipment", "Note","ChecklistItem",
@@ -19,30 +19,38 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "[Name] [nchar](50) NOT NULL," +
             "[Lat] [int] NOT NULL," +
             "[Lon] [int] NOT NULL," +
+            "[DateModified] [nchar](50) NOT NULL," +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
             "[ID] [int] NOT NULL," +
-            "[Name] [nchar](50) NOT NULL)";
+            "[Name] [nchar](50) NOT NULL)" +
+            "[DateModified] [nchar](50) NOT NULL," +
+            "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_PROJECT = "CREATE TABLE [Project](" +
             "[ID] [int] NOT NULL," +
             "[Name] [nchar](50) NOT NULL," +
             "[Description] [nchar] (250) NOT NULL," +
+            "[DateModified] [nchar](50) NOT NULL," +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_GROUP = "CREATE TABLE [Group](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_EMAIL = "CREATE TABLE [Email](\n" +
             "\t[ID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[Email] [nchar](30) NOT NULL)";
     private static final String SQL_PHONE = "CREATE TABLE [Phone](\n" +
             "\t[ID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[Phone#] [nchar](20) NOT NULL)";
     //TODO: Update table to store the data acutally needed by the shipments.
     private static final String SQL_SHIPMENT = "CREATE TABLE [Shipment](\n" +
@@ -53,12 +61,14 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[LastLoc] [int] NOT NULL,\n" +
             "\t[FromLoc] [int] NOT NULL,\n" +
             "\t[Contents] [nchar](140) NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_NOTE = "CREATE TABLE [Note](\n" +
             "\t[ID] [int] NOT NULL,\n" +
             "\t[Name] [nchar](50) NOT NULL,\n" +
             "\t[Contents] [nchar](140) NOT NULL,\n" +
             "\t[OwnerID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_CHECKLIST_ITEM = "CREATE TABLE [ChecklistItem](\n" +
             "\t[ID] [nchar](10) NOT NULL,\n" +
@@ -66,39 +76,48 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[Person?] [int] NULL,\n" +
             "\t[Done] [boolean] NOT NULL,\n" +
             "\t[Info] [nchar](140) NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_GROUP_LOC_REL = "CREATE TABLE [GroupLocRel](\n" +
             "\t[GroupID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[LocID] [int] NOT NULL\n" +
             ")";
     private static final String SQL_PERSON_GROUP_REL = "CREATE TABLE [PersonGroupRel](\n" +
             "\t[PersonID] [int] NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[GroupID] [int] NULL\n" +
             ")";
     private static final String SQL_PERSON_PROJ_REL = "CREATE TABLE [PersonProjRel](\n" +
             "\t[PersonID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[ProjID] [int] NOT NULL\n" +
             ")";
     private static final String SQL_PERSON_LOC_REL = "CREATE TABLE [PersonLocRel](\n" +
             "\t[PersonID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[LocID] [int] NOT NULL\n" +
             ")";
     private static final String SQL_SHIPMENT_GROUP_REL = "CREATE TABLE [ShipmentGroupRel](\n" +
             "\t[ShipmentID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[SuperID] [int] NOT NULL\n" +
             ")";
 
     private static final String SQL_Project_GROUP_REL = "CREATE TABLE [ProjectGroupRel](\n" +
             "\t[ProjectID] [int] NOT NULL,\n" +
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[GroupID] [int] NOT NULL\n" +
             ")";
     private static final String SQL_UPDATED_IDs= "CREATE TABLE [UpdatedIDs](\n"+
             "\t[ID] [int] NOT NULL,\n"+
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[Type] [nChar](50) NOT NULL\n)";
     private static final String SQL_ADDED_IDs="CREATE TABLE [AddedIDs](\n"+
             "\t[ID] [int] NOT NULL,\n"+
+            "\t[DateModified] [nchar](50) NOT NULL,\n" +
             "\t[Type] [nChar](50) NOT NULL\n)";
-    private static final String SQL_DELETE_ENTRIES =
+    private static final String SQL_DROP_TABLE =
             "DROP TABLE IF EXISTS [%s]" ;
 
     public LocalDataDBHelper(Context context) {
@@ -130,7 +149,8 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
         for (String s: TABLE_NAMES) {
-            db.execSQL(String.format(SQL_DELETE_ENTRIES, s));
+            db.execSQL(String.format(SQL_DROP_TABLE, s));
+
         }
         onCreate(db);
     }

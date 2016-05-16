@@ -7,4 +7,5 @@ public interface Selectable {
     public boolean isHidden();
     public long getID();
     public String getDateTimeModified();
+    public void setDateTimeModified(String dateTime);
 }

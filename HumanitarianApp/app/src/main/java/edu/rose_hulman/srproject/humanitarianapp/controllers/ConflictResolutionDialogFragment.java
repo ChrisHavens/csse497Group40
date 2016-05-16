@@ -46,7 +46,7 @@ public class ConflictResolutionDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        adapter=new ConflictResolutionListAdapter(getActivity(), R.layout.fragment_conflict_resolution_dialog,conflicts);
+        adapter=new ConflictResolutionListAdapter(getActivity(), R.layout.list_conflict_resolution,conflicts);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();

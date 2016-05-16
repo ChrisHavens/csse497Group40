@@ -606,7 +606,7 @@ public interface WrapperService {
     @GET("/api/thread/{id}/messages/count")
     void getMessageCount(@Path("id") String id, Callback<Response> callback);
 
-    @GET("/api/sync/changes/dummy")
+    @POST("/api/sync/changes/dummy")
     void getDummyConflicts(Callback<Response> callback);
 
     @GET("/api/sync/resolve/{type}/{id}")

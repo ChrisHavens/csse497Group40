@@ -283,31 +283,8 @@ public class ApplicationWideData {
         Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
         Log.wtf(userID + "", "USER ID2");
         String time = PreferencesManager.getSyncTime();
-        HashMap<Long, String> map = getDeletedList(time);
-        Set<Long> longs = map.keySet();
-        for(Long val: longs){
-            String type = map.get(val);
-            if (type.equals("Project")){
-                deleteProjectByID(val);
-            } else if(type.equals("Person")){
-                //deletePersonByID(val);
-            } else if(type.equals("Group")){
-                //deleteGroupByID(val);
-            } else if(type.equals("Location")){
-                //deleteGroupByID(val);
-            } else if (type.equals("Shipment")){
-                //deleteGroupByID(val);
-            } else if(type.equals("Checklist")) {
-                //deleteGroupByID(val);
-            } else if(type.equals("MessageThread")) {
-                //deleteGroupByID(val);
-            } else if(type.equals("Note")) {
-                //deleteGroupByID(val);
-            } else
-            {
-                Log.wtf("Recived deletion of type: ", type);
-            }
-        }
+        getDeletedList(time);
+
     }
 
     public static boolean getManualSync(){
@@ -407,8 +384,49 @@ public class ApplicationWideData {
         return map;
     }
 
-    public static HashMap<Long,String> getDeletedList(String time){
-        return null;
+    public static void getDeletedList(String time){
+
+        NonLocalDataService service= new NonLocalDataService();
+        Callback<Response> callback = new Callback<Response>() {
+            @Override
+            public void success (Response response, Response response2){
+                HashMap<String,String> map = LocalDataRetriver.getDeletedHashMap(response);
+                if(map == null){
+                    return;
+                }
+                Set<String> longs = map.keySet();
+                for(String stringVal: longs){
+                    long val = Long.parseLong(stringVal);
+                    String type = map.get(stringVal);
+                    if (type.equals("Project")){
+                        deleteProjectByID(val);
+                    } else if(type.equals("Person")){
+                        //deletePersonByID(val);
+                    } else if(type.equals("Group")){
+                        //deleteGroupByID(val);
+                    } else if(type.equals("Location")){
+                        //deleteGroupByID(val);
+                    } else if (type.equals("Shipment")){
+                        //deleteGroupByID(val);
+                    } else if(type.equals("Checklist")) {
+                        //deleteGroupByID(val);
+                    } else if(type.equals("Message Thread")) {
+                        //deleteGroupByID(val);
+                    } else if(type.equals("Note")) {
+                        //deleteGroupByID(val);
+                    } else
+                    {
+                        Log.wtf("Recived deletion of type: ", type);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("RetroFitError", "Do deletion" + error.getMessage());
+            }
+        };
+        service.getDeleted(time, callback);
     }
     public static void doUpdateProject(final Project project, final MainActivity activity) {
         NonLocalDataService service= new NonLocalDataService();

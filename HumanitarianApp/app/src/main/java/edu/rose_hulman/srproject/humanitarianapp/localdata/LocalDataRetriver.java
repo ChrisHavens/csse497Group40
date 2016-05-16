@@ -4,11 +4,13 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
+import retrofit.client.Response;
 
 /**
  * Created by Chris on 11/2/2015.
@@ -64,6 +66,9 @@ public class LocalDataRetriver {
             items.add(retrieveItem(id, type));
         }
         return items;
+    }
+    public static HashMap<String, String> getDeletedHashMap(Response response){
+
     }
 
 

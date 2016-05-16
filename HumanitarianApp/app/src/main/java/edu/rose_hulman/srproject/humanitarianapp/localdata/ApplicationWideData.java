@@ -283,6 +283,7 @@ public class ApplicationWideData {
         }
         Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
         Log.wtf(userID + "", "USER ID2");
+        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback(updated, activity));
         String time = PreferencesManager.getSyncTime();
         getDeletedList(time);
 

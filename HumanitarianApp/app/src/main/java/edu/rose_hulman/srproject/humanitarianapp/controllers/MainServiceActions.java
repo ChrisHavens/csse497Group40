@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
@@ -323,6 +324,11 @@ public class MainServiceActions {
         }
         if (!ApplicationWideData.getManualSync()) {
             service.addNewProject(p,  userID, responseCallback);
+        }
+        else{
+            Log.wtf("Added project", "to added table");
+            LocalDataSaver.addNewSelectable(p, "Project");
+            Log.wtf("Size of added table", LocalDataRetriver.getAllAdded().size()+"");
         }
     }
 

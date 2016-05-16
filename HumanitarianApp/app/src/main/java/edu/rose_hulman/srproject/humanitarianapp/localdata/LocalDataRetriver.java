@@ -18,7 +18,7 @@ public class LocalDataRetriver {
     private static String allProjectsQuery = "Select * From [Project]";
     private static String allGroupsQuery = "Select * From [Group]";
     private static String allUpdatedQuery = "Select * From [UpdatedIDs]";
-    private static String allAddedQuery = "Select * From [UpdatedIDs]";
+    private static String allAddedQuery = "Select * From [AddedIDs]";
 
     public static List<Project> getStoredProjects() {
         List<Project> projects = new ArrayList<Project>();

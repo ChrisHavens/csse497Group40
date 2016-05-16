@@ -257,9 +257,12 @@ public class ApplicationWideData {
         //Save all of the projects
 
         //saveNewProjects(activity);
-
-
+        List<Selectable> added= LocalDataRetriver.getAllAdded();
+        Toast.makeText(activity, added.size()+"", Toast.LENGTH_LONG).show();
+        addNewItems(added);
+        LocalDataSaver.clearAddedSelectables();
         NonLocalDataService service = new NonLocalDataService();
+
         HashMap<String, Project> updated=new HashMap<>();
         List<Selectable> selectables=LocalDataRetriver.getAllUpdated();
         for (Selectable s: selectables){
@@ -276,6 +279,24 @@ public class ApplicationWideData {
 
     public static boolean getManualSync(){
         return manualSnyc;
+    }
+    private static void addNewItems(List<Selectable> added){
+        NonLocalDataService service=new NonLocalDataService();
+        for (Selectable s: added){
+            if (s instanceof Project){
+                service.addNewProject((Project) s, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.wtf("s40 Adding New Projects", error.getMessage());
+                    }
+                });
+            }
+        }
     }
 
     private static class ProjectListCallback implements Callback<Response>{

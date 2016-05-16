@@ -36,7 +36,7 @@ public class ApplicationWideData {
 
     public static int userID = 0;
     public static int createdObjectCounter;
-    public static final boolean manualSnyc = false;
+    public static final boolean manualSnyc = true;
     public static SQLiteDatabase db = null;
 
     public static void initilizeKnownVariables() {
@@ -166,6 +166,7 @@ public class ApplicationWideData {
             }
         }
         knownProjects.add(project);
+        LocalDataSaver.addProject(project);
     }
 
     public static void addExistingProject(Project project) {
@@ -177,6 +178,7 @@ public class ApplicationWideData {
             }
         }
         knownProjects.add(project);
+        LocalDataSaver.updateProject(project);
     }
 
     public static Project getProjectByID(long id) {

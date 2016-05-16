@@ -92,17 +92,21 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                 storedProjects.add(existingProject);
             }
         }
+        this.projects.addAll(storedProjects);
         for (Project project : this.projects) {
             Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
         }
         if (this.adapter != null) {
-            this.adapter.notifyDataSetChanged();
             this.adapter.addAll(storedProjects);
+            this.adapter.notifyDataSetChanged();
         }
+
+        Toast.makeText(this.getActivity(), "Displayed projects: " + this.projects.size(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(), "Added projects: " + storedProjects.size(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(), "Saved projects: " + overallProjects.size(), Toast.LENGTH_LONG).show();
          if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-            Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
         }
     }

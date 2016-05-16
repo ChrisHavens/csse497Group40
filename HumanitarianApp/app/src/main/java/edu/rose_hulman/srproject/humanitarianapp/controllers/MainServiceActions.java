@@ -305,7 +305,7 @@ public class MainServiceActions {
 //        i+=100000;
 //        Project p= new Project(name, i);
         Project p = new Project(name);
-
+        ApplicationWideData.addNewProject(p);
 
         Callback<Response> responseCallback = new Callback<Response>() {
             @Override

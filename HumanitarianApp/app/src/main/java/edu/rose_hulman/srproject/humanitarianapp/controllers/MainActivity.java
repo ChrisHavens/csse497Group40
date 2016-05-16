@@ -73,6 +73,7 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataDBHelper;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
@@ -85,6 +86,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -155,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
         setContentView(R.layout.activity_main);
-        ApplicationWideData.initilizeKnownVariables();
+        ApplicationWideData.initilizeKnownVariables(this);
         actions=new MainServiceActions(getApplicationContext(), userID);
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
@@ -266,7 +268,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             return true;
         }
         if (id== R.id.switchSync){
-            ApplicationWideData.switchSyncMode();
+            ApplicationWideData.switchSyncMode(this);
             if(ApplicationWideData.getManualSync()){
                 MenuItem syncSwitch = toolbar.getMenu().findItem(R.id.switchSync);
                 if (syncSwitch != null){
@@ -282,13 +284,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
 
         if (id== R.id.forceSync){
-            ApplicationWideData.sync();
-            Context context = getApplicationContext();
-            int duration = Toast.LENGTH_SHORT;
-            String text = PreferencesManager.getSyncTime(null);
-            String time = MessageThread.getCurrTime();
-            Toast toast = Toast.makeText(context, time, duration);
-            toast.show();
+            saveNewProjects(this);
+//            ApplicationWideData.sync(this);
+//            Context context = getApplicationContext();
+//            int duration = Toast.LENGTH_SHORT;
+//            String text = PreferencesManager.getSyncTime(null);
+//            String time = MessageThread.getCurrTime();
+//            Toast toast = Toast.makeText(context, time, duration);
+//            toast.show();
             return true;
         }
         if (id==R.id.logout){
@@ -826,7 +829,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         newFragment.show(getFragmentManager(), "conflictResolution");
     }
     private void showConflictResolution(){
-        currConflict=conflictsIterator.next();
+        Toast.makeText(this, "ShowConflictResolution", Toast.LENGTH_SHORT).show();
+        //currConflict=conflictsIterator.next();
         DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
         newFragment.show(getFragmentManager(), "conflictResolution");
@@ -1148,14 +1152,33 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     @Override
     public void resolveConflicts(List<Conflict> conflicts) {
-        currConflict.setValue(conflicts);
+
+//        this.conflictsMap=conflicts;
+//        conflictsIterator=conflictsMap.entrySet().iterator();
+//        currConflict=conflictsIterator.next();
+//        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+//        if (conflictsIterator.hasNext()){
+//            showConflictResolution();
+//        }
+//        else{
+//            //
+//        }
+
+    }
+
+
+    public void resolveConflicts(HashMap<Selectable, List<Conflict>> conflicts) {
+        Toast.makeText(this, "Let's resolve a conflict", Toast.LENGTH_SHORT).show();
+        this.conflictsMap=conflicts;
+        conflictsIterator=conflictsMap.entrySet().iterator();
+        currConflict=conflictsIterator.next();
         resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
-        if (conflictsIterator.hasNext()){
+        //if (conflictsIterator.hasNext()){
             showConflictResolution();
-        }
-        else{
+        //}
+        //else{
             //
-        }
+        //}
 
     }
 
@@ -1163,6 +1186,30 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public List<Conflict> getConflicts() {
         return currConflict.getValue();
     }
+
+    private static void saveNewProjects(final MainActivity activity) {
+        Toast.makeText(activity, "HI!", Toast.LENGTH_LONG).show();
+        NonLocalDataService service=new NonLocalDataService();
+
+                Callback<Response> responseCallback = new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000), response);
+                        activity.resolveConflicts(conflicts);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        if (error.getResponse().getStatus()==418){
+                            HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000),error.getResponse());
+                            activity.resolveConflicts(conflicts);
+                        }
+                        Log.e("RetrofitError", error.getMessage());
+                    }
+                };
+                service.service.getDummyConflicts(responseCallback);
+            }
+
 
 
 

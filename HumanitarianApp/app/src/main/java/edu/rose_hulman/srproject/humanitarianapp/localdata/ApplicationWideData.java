@@ -1,5 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
+import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -16,18 +18,24 @@ import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
+
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
+
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
+import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
+import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedInput;
 
 /**
  * Created by havenscs on 10/25/2015.
@@ -45,7 +53,7 @@ public class ApplicationWideData {
     public static final boolean manualSnyc = false;
     public static SQLiteDatabase db = null;
 
-    public static void initilizeKnownVariables() {
+    public static void initilizeKnownVariables(MainActivity activity) {
         knownChecklists = new ArrayList();
         knownGroups = new ArrayList();
         knownLocations = new ArrayList();
@@ -66,7 +74,7 @@ public class ApplicationWideData {
         //manualSnyc = PreferencesManager.getSyncType();
         LocalDataLoader.loadEverything();
         if (!manualSnyc) {
-            sync();
+            sync(activity);
         }
     }
 
@@ -222,25 +230,30 @@ public class ApplicationWideData {
 
     }
 
-    public static void switchSyncMode() {
+    public static void switchSyncMode(MainActivity activity) {
         //manualSnyc = !manualSnyc;
         PreferencesManager.setSyncType(manualSnyc);
         if(!manualSnyc) {
-            sync();
+            sync(activity);
         }
     }
 
-    public static void forceSync() {
+    public static void forceSync(MainActivity activity) {
         //Save all of the projects
-        Boolean original = manualSnyc;
-        saveNewProjects();
+
+        sync(activity);
+
     }
 
-    public static void sync() {
+    public static void sync(MainActivity activity) {
         //Save all of the projects
-        saveNewProjects();
+
+        saveNewProjects(activity);
+        String time = MessageThread.getCurrTime();
+        PreferencesManager.setSyncDate(time);
         NonLocalDataService service = new NonLocalDataService();
         service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback());
+
 
     }
 
@@ -248,25 +261,54 @@ public class ApplicationWideData {
         return manualSnyc;
     }
 
-    private static void saveNewProjects() {
+    private static void saveNewProjects(final MainActivity activity) {
         NonLocalDataService service = new NonLocalDataService();
-        for(Project project : knownProjects){
+        for(final Project project : knownProjects){
             if (project.getIsDirty()[0]) {
                 Callback<Response> responseCallback = new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
+
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
+                        if (error.getResponse().getStatus()==418){
+                            HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(project, error.getResponse());
+                            activity.resolveConflicts(conflicts);
+                        }
                         Log.e("RetrofitError", error.getMessage());
                     }
                 };
-                service.addNewProject(project, userID+"", responseCallback);
+                StringBuilder sb=new StringBuilder();
+                sb.append("{\"doc\": ");
+                sb.append(project.toJSON());
+                sb.append("}");
+                service.updateProject(project.getID(), sb.toString(), userID+"", responseCallback);
                 project.fullClean();
                 LocalDataSaver.addProject(project);
             }
         }
+    }
+    public static HashMap<Selectable, List<Conflict>> getConflicts(Project project, Response response){
+        HashMap<Selectable, List<Conflict>> map=new HashMap<Selectable, List<Conflict>>();
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference =
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        List<Conflict> conflicts=new ArrayList<>();
+        try {
+            HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+            for (String key: o.keySet()){
+                HashMap<String, Object> keyMap=(HashMap)o.get(key);
+                Conflict c = new Conflict(key, (String)keyMap.get("server"), (String)keyMap.get("local"));
+                conflicts.add(c);
+            }
+        }catch(Exception e){
+
+        }
+        map.put(project, conflicts);
+        return map;
     }
 
     private static void emptyProjectTable(){

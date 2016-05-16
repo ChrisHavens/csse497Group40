@@ -104,7 +104,7 @@ public class EditLocationDialogFragment extends DialogFragment {
 //                                String email = emailField.getText().toString();
                                     //TODO implement role
 
-                                    service.updateLocation(location.getID(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
+                                    service.updateLocation(location, sb.toString(), mListener.getUserID(),new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             Log.wtf("s40", "Successful edit of location " + location.getName());

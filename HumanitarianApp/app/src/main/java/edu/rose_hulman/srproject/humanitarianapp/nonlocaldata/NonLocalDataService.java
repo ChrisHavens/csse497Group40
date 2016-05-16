@@ -81,30 +81,30 @@ public class NonLocalDataService {
     Update requests --Request to database server has body and is of type POST!
      */
 
-    public void updateProject(long projectID, String json, String changerID,Callback<Response> callback){
-        service.updateProject(projectID + "", changerID, PreferencesManager.getSyncTime(), new TypedJsonString(json), callback);
+    public void updateProject(Project project, String json, String changerID,Callback<Response> callback){
+        service.updateProject(project.getID() + "", changerID, project.getDateTimeModified(), new TypedJsonString(json), callback);
 
     }
-    public void updateGroup(long groupID, String json, String changerID,Callback<Response> callback){
-        service.updateGroup(groupID + "", changerID, PreferencesManager.getSyncTime(),new TypedJsonString(json), callback);
+    public void updateGroup(Group group, String json, String changerID,Callback<Response> callback){
+        service.updateGroup(group.getID() + "", changerID, group.getDateTimeModified(),new TypedJsonString(json), callback);
 
     }
 
-    public void updatePerson(long personId, String json, String changerID,Callback<Response> callback){
-        service.updatePerson(personId + "", changerID, PreferencesManager.getSyncTime(),new TypedJsonString(json), callback);
+    public void updatePerson(Person person, String json, String changerID,Callback<Response> callback){
+        service.updatePerson(person.getID() + "", changerID, person.getDateTimeModified(),new TypedJsonString(json), callback);
 
 
     }
-    public void updateLocation(long locationId, String json,String changerID, Callback<Response> callback){
-        service.updateLocation(locationId + "", changerID, PreferencesManager.getSyncTime(),new TypedJsonString(json), callback);
+    public void updateLocation(Location location, String json,String changerID, Callback<Response> callback){
+        service.updateLocation(location.getID()+ "", changerID, location.getDateTimeModified(),new TypedJsonString(json), callback);
 
     }
-    public void updateNote(double id, String title, String body, String changerID,Callback<Response> callback){
+    public void updateNote(Note note, String changerID,Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"contents\": \""+body+"\", \"title\": \""+title+"\"}}");
-        Log.w("Note:", id+" "+sb.toString());
+        sb.append("{\"doc\":{\"contents\": \""+note.getBody()+"\", \"title\": \""+note.getTitle()+"\"}}");
+        Log.w("Note:", note.getID()+" "+sb.toString());
 
-        service.updateNote(id + "", changerID, PreferencesManager.getSyncTime(),new TypedJsonString(sb.toString()), callback);
+        service.updateNote(note.getID() + "", changerID, note.getDateTimeModified(),new TypedJsonString(sb.toString()), callback);
     }
 
     public void getMessagesList(String id, int start, int size, String time, Callback<Response>callback){

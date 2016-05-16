@@ -65,7 +65,7 @@ public class EditProjectDialogFragment extends DialogFragment {
                             NonLocalDataService service = new NonLocalDataService();
                             StringBuilder sb = new StringBuilder();
                             sb.append("{\"doc\":{\"name\": \"" + name + "\"}}");
-                            service.updateProject(p.getID(), sb.toString(), mListener.getUserID(), new Callback<Response>() {
+                            service.updateProject(p, sb.toString(), mListener.getUserID(), new Callback<Response>() {
                                 @Override
                                 public void success(Response response, Response response2) {
                                     Log.wtf("s40", "Successful edit of project " + p.getName());

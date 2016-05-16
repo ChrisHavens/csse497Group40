@@ -108,7 +108,7 @@ public class EditPersonDialogFragment extends DialogFragment {
                                     //TODO implement role
                                     Roles.PersonRoles role = Roles.PersonRoles.valueOf(((String) roleSpinner.getSelectedItem()).toUpperCase());
                                     Log.d("ED", sb.toString());
-                                    service.updatePerson(person.getID(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
+                                    service.updatePerson(person, sb.toString(), mListener.getUserID(),new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             Log.wtf("s40", "Successful edit of person " + person.getName());

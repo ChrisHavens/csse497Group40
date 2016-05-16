@@ -36,7 +36,7 @@ public class Group implements Serialisable, Selectable {
 
     private long id;
     private long projectID;
-
+    private String datetime;
     private int dirtyBits = 0;
     private Person leader;
     private String name;
@@ -312,5 +312,14 @@ public class Group implements Serialisable, Selectable {
 
     public void setDirtyBits(int dirtyBits) {
         this.dirtyBits = dirtyBits;
+    }
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
+
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
     }
 }

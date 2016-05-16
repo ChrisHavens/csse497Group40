@@ -20,6 +20,7 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
     private long ID;
     private boolean isHidden=false;
     private int dirtyBits = 0;
+    private String datetime;
 
     /*
      All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -423,5 +424,14 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
 
     public void setDirtyBits(int dirtyBits) {
         this.dirtyBits = dirtyBits;
+    }
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
+
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
     }
 }

@@ -70,6 +70,20 @@ public class Note implements Selectable{
         return id;
     }
 
+    @Override
+    public String getDateTimeModified() {
+        return date+" "+time;
+    }
+
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        String[] split=dateTime.split(" ");
+        if (split.length==2){
+            this.date=split[0];
+            this.time=split[1];
+        }
+    }
+
     public void setID(long id) {
         this.id = id;
     }

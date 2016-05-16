@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location implements Selectable{
+    private String datetime;
     private long ID;                //0
     private float lng;              //1
     private float lat;              //2
@@ -151,7 +152,15 @@ public class Location implements Selectable{
         sb.append("]");
         return sb.toString();
     }
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
 
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
+    }
     @Override
     public boolean isHidden() {
         return isHidden;

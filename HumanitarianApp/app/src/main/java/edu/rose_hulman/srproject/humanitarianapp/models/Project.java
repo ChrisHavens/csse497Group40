@@ -39,6 +39,7 @@ public class Project implements Serialisable, Selectable {
      private List<Long> checklistIDs;       //#7
      private List<Long> shipmentIDs;        //#8
     private boolean isHidden=false;
+    private String datetime;
 
     public boolean equals(Object obj){
         if(obj.getClass().equals(this.getClass())){
@@ -481,6 +482,15 @@ public class Project implements Serialisable, Selectable {
 
     public void setHidden(boolean hidden) {
         this.isHidden = hidden;
+    }
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
+
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
     }
 }
 

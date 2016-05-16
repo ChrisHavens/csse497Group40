@@ -31,6 +31,7 @@ public class MessageThread implements Selectable{
             return lhs.getTime().compareTo(rhs.getTime());
         }
     };
+    private String datetime;
 
     /**
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -348,7 +349,15 @@ public class MessageThread implements Selectable{
         }
     }
 
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
 
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
+    }
 
 
 }

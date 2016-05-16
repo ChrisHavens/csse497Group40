@@ -14,6 +14,7 @@ public class Checklist implements Selectable{
     private boolean isHidden=false;
     private List<ChecklistItem> itemList=new ArrayList<ChecklistItem>();
     private int dirtyBits = 0;
+    private String datetime;
 
     /**
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -181,6 +182,16 @@ public class Checklist implements Selectable{
 
     public long getID() {
         return id;
+    }
+
+    @Override
+    public String getDateTimeModified() {
+        return datetime;
+    }
+
+    @Override
+    public void setDateTimeModified(String dateTime) {
+        this.datetime=dateTime;
     }
 
     public void setID(long id) {

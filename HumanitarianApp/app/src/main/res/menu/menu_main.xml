@@ -8,12 +8,7 @@
         android:icon="@drawable/ic_visibility_off_white_48dp"
         app:showAsAction="always"
         ></item>
-    <item
-        android:id="@+id/forceSync"
-        android:orderInCategory="700"
-        android:title="@string/forceSync"
-        app:showAsAction="always"
-        ></item>
+
 
     <item
         android:id="@+id/editButton"
@@ -43,6 +38,12 @@
         android:id="@+id/showHiddenButton"
         android:orderInCategory="200"
         android:title="@string/showHiddenItems"
+        app:showAsAction="never"
+        ></item>
+    <item
+        android:id="@+id/forceSync"
+        android:orderInCategory="250"
+        android:title="@string/forceSync"
         app:showAsAction="never"
         ></item>
 

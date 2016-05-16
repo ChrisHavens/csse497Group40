@@ -57,14 +57,14 @@ public class Project implements Serialisable, Selectable {
      public Project(long id){
         this.removeImplicitVariableDeclarations();
         this.id = id;
-        //ApplicationWideData.addNewProject(this);
+        ApplicationWideData.addNewProject(this);
      }
 
      public Project(long id, String name){
         this.removeImplicitVariableDeclarations();
         this.id = id;
         this.name = name;
-        //ApplicationWideData.addNewProject(this);
+        ApplicationWideData.addNewProject(this);
      }
 
      public Project(long id, String name, String description){
@@ -72,7 +72,7 @@ public class Project implements Serialisable, Selectable {
         this.id = id;
         this.name = name;
         this.description = description;
-        //ApplicationWideData.addNewProject(this);
+        ApplicationWideData.addNewProject(this);
      }
 
      public Project(String name){
@@ -91,7 +91,7 @@ public class Project implements Serialisable, Selectable {
         this.id = SerilizationConstants.generateID(SerilizationConstants.PROJECT_NUM);
         Arrays.fill(isDirty, true);
         this.onServer = false;
-        //ApplicationWideData.addNewProject(this);
+        ApplicationWideData.addNewProject(this);
      }
 
      private void removeImplicitVariableDeclarations() {

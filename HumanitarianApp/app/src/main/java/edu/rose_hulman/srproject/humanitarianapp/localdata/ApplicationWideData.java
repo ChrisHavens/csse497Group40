@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
@@ -282,9 +283,31 @@ public class ApplicationWideData {
         Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
         Log.wtf(userID + "", "USER ID2");
         String time = PreferencesManager.getSyncTime();
-        getDeletedList(time);
-
-
+        HashMap<Long, String> map = getDeletedList(time);
+        Set<Long> longs = map.keySet();
+        for(Long val: longs){
+            String type = map.get(val);
+            if (type.equals("Project")){
+                deleteProjectByID(val);
+            } else if(type.equals("Person")){
+                //deletePersonByID(val);
+            } else if(type.equals("Group")){
+                //deleteGroupByID(val);
+            } else if(type.equals("Location")){
+                //deleteGroupByID(val);
+            } else if (type.equals("Shipment")){
+                //deleteGroupByID(val);
+            } else if(type.equals("Checklist")) {
+                //deleteGroupByID(val);
+            } else if(type.equals("MessageThread")) {
+                //deleteGroupByID(val);
+            } else if(type.equals("Note")) {
+                //deleteGroupByID(val);
+            } else
+            {
+                Log.wtf("Recived deletion of type: ", type);
+            }
+        }
     }
 
     public static boolean getManualSync(){

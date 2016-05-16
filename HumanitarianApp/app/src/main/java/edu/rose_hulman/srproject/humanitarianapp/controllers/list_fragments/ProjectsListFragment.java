@@ -169,15 +169,19 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    Project p = new Project(Long.parseLong(((String) map.get("_id"))));
-                    p.setName((String) source.get("name"));
+                    long id = Long.parseLong(((String) map.get("_id")));
+                    String name = (String) source.get("name");
+
+                    Project p = new Project(id, name);
                     if(source.get("dateArchived") == null)
                         p.setHidden(false);
                     else
                         p.setHidden(true);
                     ApplicationWideData.addExistingProject(p);
-                    LocalDataSaver.addProject(p);
-                    projectList.add(p);
+                    LocalDataSaver.updateProject(p);
+                    if(!projectList.contains(p)) {
+                        projectList.add(p);
+                    }
 
                 }
                 adapter.notifyDataSetChanged();

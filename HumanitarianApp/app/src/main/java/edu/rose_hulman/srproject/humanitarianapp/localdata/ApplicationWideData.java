@@ -170,6 +170,8 @@ public class ApplicationWideData {
         return null;
     }
 
+
+
     public static List<Person> getAllPersons() {
         return knownPersons;
 
@@ -183,9 +185,18 @@ public class ApplicationWideData {
         }
         knownProjects.add(project);
         LocalDataSaver.addProject(project);
-//        if (manualSnyc){
-//            LocalDataSaver.addNewSelectable(project, "Project");
-//        }
+    }
+
+    public static boolean deleteProjectByID(long id){
+        for(Project existingProject: knownProjects){
+            if (id == existingProject.getID()){
+                boolean bool = knownProjects.remove(existingProject);
+                bool = bool && LocalDataSaver.deleteProject(id);
+                return bool;
+
+            }
+        }
+        return false;
     }
 
     public static void addExistingProject(Project project) {
@@ -241,9 +252,7 @@ public class ApplicationWideData {
     public static void switchSyncMode(MainActivity activity) {
         manualSnyc = !manualSnyc;
         PreferencesManager.setSyncType(manualSnyc);
-        if(!manualSnyc) {
             sync(activity);
-        }
     }
 
     public static void forceSync(MainActivity activity) {
@@ -271,8 +280,9 @@ public class ApplicationWideData {
             }
         }
         Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
-        Log.wtf(userID+"", "USER ID2");
-        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback(updated, activity));
+        Log.wtf(userID + "", "USER ID2");
+        String time = PreferencesManager.getSyncTime();
+        getDeletedList(time);
 
 
     }
@@ -369,29 +379,31 @@ public class ApplicationWideData {
         map.put(project, conflicts);
         return map;
     }
+
+    public static HashMap<Long,String> getDeletedList(String time){
+        return null;
+    }
     public static void doUpdateProject(final Project project, final MainActivity activity) {
         NonLocalDataService service= new NonLocalDataService();
-        service.updateProject(project.getID(), "{\"doc\":"+project.toJSON()+"}", userID+"",
-      new  Callback<Response> (){
+        service.updateProject(project.getID(), "{\"doc\":" + project.toJSON() + "}", userID + "",
+                new Callback<Response>() {
 
-            @Override
-            public void success (Response response, Response response2){
+                    @Override
+                    public void success(Response response, Response response2) {
 
-            }
+                    }
 
-            @Override
-            public void failure (RetrofitError error){
-                if (error.getResponse().getStatus() == 418) {
+                    @Override
+                    public void failure(RetrofitError error) {
+                        if (error.getResponse().getStatus() == 418) {
 //                    Log.wtf("Conflict FOUND:", error.getResponse().getBody().toString());
-                    HashMap<Selectable, List<Conflict>> conflicts = ApplicationWideData.getConflicts(project, error.getResponse());
-                    Log.wtf("Conflicts: ", conflicts.toString());
-                    activity.showConflictResolution(conflicts);
-                }
-                Log.wtf("RetroFitError", "Do Update Project"+error.getMessage());
-            }
-        });
+                            HashMap<Selectable, List<Conflict>> conflicts = ApplicationWideData.getConflicts(project, error.getResponse());
+                            Log.wtf("Conflicts: ", conflicts.toString());
+                            activity.showConflictResolution(conflicts);
+                        }
+                        Log.wtf("RetroFitError", "Do Update Project" + error.getMessage());
+                    }
+                });
     }
-
-
 
 }

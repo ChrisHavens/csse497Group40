@@ -38,6 +38,15 @@ public class LocalDataSaver {
         //Save all of the lists to the relations table
     }
 
+    public static boolean deleteProject(long id){
+
+        String tableName = "[Project]";
+        String selection = "ID=?";
+        String[] selectionArgs = {Long.toString(id)};
+        int ret = ApplicationWideData.db.delete(tableName, selection, selectionArgs);
+        return ret != 0;
+    }
+
     public static boolean addProject(Project project) {
         String name = project.getName();
         String description = project.getDescription();

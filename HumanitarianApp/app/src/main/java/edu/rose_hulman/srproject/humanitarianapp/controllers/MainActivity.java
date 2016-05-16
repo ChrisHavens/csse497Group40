@@ -286,7 +286,6 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
 
         if (id== R.id.forceSync){
-//            saveNewProjects(this);
             ApplicationWideData.sync(this);
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;

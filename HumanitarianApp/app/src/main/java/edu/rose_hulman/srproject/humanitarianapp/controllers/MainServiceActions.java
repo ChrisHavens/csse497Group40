@@ -662,6 +662,37 @@ public class MainServiceActions {
 
         service.addNewChecklist(c, userID, responseCallback);
     }
+    public void resolveConflicts(Selectable s, List<Conflict> conflicts){
+        Callback<Response> hideResponse=new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                //Toast.makeText(context, "Successfully hid shipment", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.wtf("s40", error.getMessage());
+
+            }
+        };
+        String type="";
+        if (s instanceof Project){
+            type="project";
+        }
+        else if (s instanceof Group){
+            type="group";
+        }
+        else if (s instanceof Person){
+            type="person";
+        }
+        else if (s instanceof Note){
+            type="note";
+        }
+        else if (s instanceof Shipment){
+            type="shipment";
+        }
+        service.service.resolveConflict(type,s.getID()+"", hideResponse);
+    }
 
 //    public void resolveConflicts(List<Conflict> conflicts){
 //        //resolved=conflicts;

@@ -284,14 +284,14 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
 
         if (id== R.id.forceSync){
-            saveNewProjects(this);
-//            ApplicationWideData.sync(this);
-//            Context context = getApplicationContext();
-//            int duration = Toast.LENGTH_SHORT;
-//            String text = PreferencesManager.getSyncTime(null);
-//            String time = MessageThread.getCurrTime();
-//            Toast toast = Toast.makeText(context, time, duration);
-//            toast.show();
+//            saveNewProjects(this);
+            ApplicationWideData.sync(this);
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            String text = PreferencesManager.getSyncTime(null);
+            String time = MessageThread.getCurrTime();
+            Toast toast = Toast.makeText(context, time, duration);
+            toast.show();
             return true;
         }
         if (id==R.id.logout){
@@ -821,19 +821,27 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     }
 
     public void showConflictResolution(HashMap<Selectable, List<Conflict>> conflicts){
+        //Toast.makeText(this, "Let's resolve a conflict", Toast.LENGTH_SHORT).show();
         this.conflictsMap=conflicts;
         conflictsIterator=conflictsMap.entrySet().iterator();
         currConflict=conflictsIterator.next();
+        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+
+
         DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
         newFragment.show(getFragmentManager(), "conflictResolution");
     }
-    private void showConflictResolution(){
-        Toast.makeText(this, "ShowConflictResolution", Toast.LENGTH_SHORT).show();
-        //currConflict=conflictsIterator.next();
-        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+    private void showNextConflictResolution(){
+        if (conflictsIterator.hasNext()){
+            currConflict=conflictsIterator.next();
+            DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
-        newFragment.show(getFragmentManager(), "conflictResolution");
+            newFragment.show(getFragmentManager(), "conflictResolution");
+        }
+//        Toast.makeText(this, "ShowConflictResolution", Toast.LENGTH_SHORT).show();
+        //currConflict=conflictsIterator.next();
+
     }
 
 
@@ -1152,6 +1160,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     @Override
     public void resolveConflicts(List<Conflict> conflicts) {
+        Selectable s=currConflict.getKey();
+        actions.resolveConflicts(s, conflicts);
+        showNextConflictResolution();
 
 //        this.conflictsMap=conflicts;
 //        conflictsIterator=conflictsMap.entrySet().iterator();
@@ -1167,48 +1178,35 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     }
 
 
-    public void resolveConflicts(HashMap<Selectable, List<Conflict>> conflicts) {
-        Toast.makeText(this, "Let's resolve a conflict", Toast.LENGTH_SHORT).show();
-        this.conflictsMap=conflicts;
-        conflictsIterator=conflictsMap.entrySet().iterator();
-        currConflict=conflictsIterator.next();
-        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
-        //if (conflictsIterator.hasNext()){
-            showConflictResolution();
-        //}
-        //else{
-            //
-        //}
 
-    }
 
     @Override
     public List<Conflict> getConflicts() {
         return currConflict.getValue();
     }
 
-    private static void saveNewProjects(final MainActivity activity) {
-        Toast.makeText(activity, "HI!", Toast.LENGTH_LONG).show();
-        NonLocalDataService service=new NonLocalDataService();
-
-                Callback<Response> responseCallback = new Callback<Response>() {
-                    @Override
-                    public void success(Response response, Response response2) {
-                        HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000), response);
-                        activity.resolveConflicts(conflicts);
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        if (error.getResponse().getStatus()==418){
-                            HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000),error.getResponse());
-                            activity.resolveConflicts(conflicts);
-                        }
-                        Log.e("RetrofitError", error.getMessage());
-                    }
-                };
-                service.service.getDummyConflicts(responseCallback);
-            }
+//    private static void saveNewProjects(final MainActivity activity) {
+//        Toast.makeText(activity, "HI!", Toast.LENGTH_LONG).show();
+//        NonLocalDataService service=new NonLocalDataService();
+//
+//                Callback<Response> responseCallback = new Callback<Response>() {
+//                    @Override
+//                    public void success(Response response, Response response2) {
+//                        HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000), response);
+//                        activity.resolveConflicts(conflicts);
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        if (error.getResponse().getStatus()==418){
+//                            HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(new Project(201000),error.getResponse());
+//                            activity.resolveConflicts(conflicts);
+//                        }
+//                        Log.e("RetrofitError", error.getMessage());
+//                    }
+//                };
+//                service.service.getDummyConflicts(responseCallback);
+//            }
 
 
 

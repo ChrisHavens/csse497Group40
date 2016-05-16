@@ -275,7 +275,7 @@ public class ApplicationWideData {
                     public void failure(RetrofitError error) {
                         if (error.getResponse().getStatus()==418){
                             HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(project, error.getResponse());
-                            activity.resolveConflicts(conflicts);
+                            activity.showConflictResolution(conflicts);
                         }
                         Log.e("RetrofitError", error.getMessage());
                     }

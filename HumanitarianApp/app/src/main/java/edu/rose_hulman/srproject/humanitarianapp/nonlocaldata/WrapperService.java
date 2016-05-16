@@ -611,4 +611,6 @@ public interface WrapperService {
 
     @GET("/api/sync/resolve/{type}/{id}")
     void resolveConflict(@Path("type")String type, @Path("id") String id, Callback<Response> callback);
+
+
 }

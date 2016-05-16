@@ -297,6 +297,10 @@ public class ApplicationWideData {
                 });
             }
         }
+        if (LocalDataRetriver.getAllUpdated().size()==0){
+            String time = MessageThread.getCurrTime();
+            PreferencesManager.setSyncDate(time);
+        }
     }
 
     private static class ProjectListCallback implements Callback<Response>{
@@ -376,7 +380,11 @@ public class ApplicationWideData {
 
             @Override
             public void success (Response response, Response response2){
-
+                LocalDataSaver.deleteUpdatedProject(project);
+                if (LocalDataRetriver.getAllUpdated().size()==0){
+                    String time = MessageThread.getCurrTime();
+                    PreferencesManager.setSyncDate(time);
+                }
             }
 
             @Override

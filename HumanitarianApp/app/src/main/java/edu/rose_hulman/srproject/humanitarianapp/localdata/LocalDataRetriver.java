@@ -1,6 +1,10 @@
 package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
 import android.database.Cursor;
+import android.util.Log;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +72,27 @@ public class LocalDataRetriver {
         return items;
     }
     public static HashMap<String, String> getDeletedHashMap(Response response){
+        HashMap<String, String> results=new HashMap<String, String>();
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference =
+                new TypeReference<HashMap<String, Object>>() {
+
+                };
+        try {
+            HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+            if (o.containsKey("deleted")){
+                ArrayList<HashMap<String, Object>> list=(ArrayList)o.get("deleted");
+                for (HashMap<String, Object> item: list){
+                    if (item.containsKey("id") && item.containsKey("type")){
+                        results.put((String)item.get("id"), (String)item.get("type"));
+                    }
+                }
+            }
+            return results;
+        }catch(Exception e){
+            Log.wtf("Error in get Deleted HashMap", e.getMessage());
+        }
+        return null;
 
     }
 

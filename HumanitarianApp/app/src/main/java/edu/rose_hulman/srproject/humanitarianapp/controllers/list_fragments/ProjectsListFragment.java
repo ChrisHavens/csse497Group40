@@ -92,17 +92,21 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                 storedProjects.add(existingProject);
             }
         }
+        this.projects.addAll(storedProjects);
         for (Project project : this.projects) {
             Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
         }
         if (this.adapter != null) {
-            this.adapter.notifyDataSetChanged();
             this.adapter.addAll(storedProjects);
+            this.adapter.notifyDataSetChanged();
         }
+
+        Toast.makeText(this.getActivity(), "Displayed projects: " + this.projects.size(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(), "Added projects: " + storedProjects.size(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(), "Saved projects: " + overallProjects.size(), Toast.LENGTH_LONG).show();
          if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-            Toast.makeText(this.getActivity(), mListener.getUserID(), Toast.LENGTH_LONG).show();
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
         }
     }
@@ -165,15 +169,19 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    Project p = new Project(Long.parseLong(((String) map.get("_id"))));
-                    p.setName((String) source.get("name"));
+                    long id = Long.parseLong(((String) map.get("_id")));
+                    String name = (String) source.get("name");
+
+                    Project p = new Project(id, name);
                     if(source.get("dateArchived") == null)
                         p.setHidden(false);
                     else
                         p.setHidden(true);
                     ApplicationWideData.addExistingProject(p);
-                    LocalDataSaver.addProject(p);
-                    projectList.add(p);
+                    LocalDataSaver.updateProject(p);
+                    if(!projectList.contains(p)) {
+                        projectList.add(p);
+                    }
 
                 }
                 adapter.notifyDataSetChanged();

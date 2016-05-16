@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
+
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
+
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -175,17 +180,18 @@ public class ApplicationWideData {
             }
         }
         knownProjects.add(project);
+        LocalDataSaver.addProject(project);
     }
 
     public static void addExistingProject(Project project) {
         for(Project existingProject: knownProjects){
             if (project.getID() == existingProject.getID()){
                 knownProjects.remove(existingProject);
-                knownProjects.add(project);
-                return;
+                break;
             }
         }
         knownProjects.add(project);
+        LocalDataSaver.updateProject(project);
     }
 
     public static Project getProjectByID(long id) {
@@ -234,15 +240,20 @@ public class ApplicationWideData {
 
     public static void forceSync(MainActivity activity) {
         //Save all of the projects
+
         sync(activity);
+
     }
 
     public static void sync(MainActivity activity) {
         //Save all of the projects
+
         saveNewProjects(activity);
         String time = MessageThread.getCurrTime();
         PreferencesManager.setSyncDate(time);
-        long unixTime = System.currentTimeMillis() / 1000L;
+        NonLocalDataService service = new NonLocalDataService();
+        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback());
+
 
     }
 
@@ -298,6 +309,51 @@ public class ApplicationWideData {
         }
         map.put(project, conflicts);
         return map;
+    }
+
+    private static void emptyProjectTable(){
+        knownProjects = new ArrayList<>();
+        db.delete("[Project]", null, null);
+    }
+
+    public static class ProjectListCallback implements Callback<Response> {
+
+        @Override
+        public void success(Response response, Response response2) {
+            Log.wtf("URL", response.getUrl());
+            Log.wtf("SUCCESS", "PRJListCallbacks");
+            ObjectMapper mapper = new ObjectMapper();
+            List<Project> projectList;
+            TypeReference<HashMap<String, Object>> typeReference =
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try {
+                //emptyProjectTable();
+                HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+                ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
+                for (HashMap<String, Object> map : list) {
+                    Log.w("Found a project", map.toString());
+                    HashMap<String, Object> source = (HashMap) map.get("_source");
+
+                    Project p = new Project(Long.parseLong(((String) map.get("_id"))));
+                    p.setName((String) source.get("name"));
+                    if(source.get("dateArchived") == null)
+                        p.setHidden(false);
+                    else
+                        p.setHidden(true);
+                    ApplicationWideData.addExistingProject(p);
+                    //LocalDataSaver.addProject(p);
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("RetrofitErrorPLF", error.getMessage());
+        }
     }
 
 }

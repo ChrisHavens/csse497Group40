@@ -173,28 +173,28 @@ public class ConflictResolutionDialogFragment extends DialogFragment {
             localValue.setText(conflict.localVersion);
             RadioButton serverButton=(RadioButton)v.findViewById(R.id.radioButtonServer);
             RadioButton localButton=(RadioButton)v.findViewById(R.id.radioButtonLocal);
-            RadioButton otherButton=(RadioButton)v.findViewById(R.id.radioButtonOther);
-            other_layout=(LinearLayout)v.findViewById(R.id.other_layout);
-            other_layout.setVisibility(View.GONE);
-            serverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    conflict.setChosenVersionToServer();
-                }
-            });
-            localButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    conflict.setChosenVersionToLocal();
-                }
-            });
-            otherButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    other_layout.setVisibility(View.VISIBLE);
-                }
-            });
-            otherOption=(EditText) other_layout.findViewById(R.id.changedVersion);
+            //RadioButton otherButton=(RadioButton)v.findViewById(R.id.radioButtonOther);
+//            other_layout=(LinearLayout)v.findViewById(R.id.other_layout);
+//            other_layout.setVisibility(View.GONE);
+//            serverButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    conflict.setChosenVersionToServer();
+//                }
+//            });
+//            localButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    conflict.setChosenVersionToLocal();
+//                }
+//            });
+//            otherButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    other_layout.setVisibility(View.VISIBLE);
+//                }
+//            });
+//            otherOption=(EditText) other_layout.findViewById(R.id.changedVersion);
             Button buttonOk=(Button) other_layout.findViewById(R.id.buttonOK);
             Button buttonCancel=(Button) other_layout.findViewById(R.id.buttonCancel);
             buttonOk.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +206,7 @@ public class ConflictResolutionDialogFragment extends DialogFragment {
             buttonCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    other_layout.setVisibility(View.GONE);
+                    //other_layout.setVisibility(View.GONE);
                 }
             });
             return v;

@@ -150,6 +150,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Intent intent=getIntent();
         userID=intent.getStringExtra("userID");
         Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
+        ApplicationWideData.userID = Integer.parseInt(userID);
         // Startup Code Here
         PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
@@ -1151,6 +1152,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     @Override
     public void resolveConflicts(List<Conflict> conflicts) {
+
 //        this.conflictsMap=conflicts;
 //        conflictsIterator=conflictsMap.entrySet().iterator();
 //        currConflict=conflictsIterator.next();

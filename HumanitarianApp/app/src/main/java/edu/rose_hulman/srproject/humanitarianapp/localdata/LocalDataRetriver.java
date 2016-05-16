@@ -14,7 +14,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
  */
 public class LocalDataRetriver {
 
-    private static String allProjectsQuery = "Select * From Project";
+    private static String allProjectsQuery = "Select * From [Project]";
     private static String allGroupsQuery = "Select * From [Group]";
 
     public static List<Project> getStoredProjects() {

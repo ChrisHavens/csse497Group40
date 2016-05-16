@@ -32,7 +32,7 @@ public class Person implements Serializable, Selectable {
     private static List<Person> knownPersons = new ArrayList<Person>();
     private static long newWorkerCount = (new Random()).nextInt(900)+100;
     private static List<Person> localIDPersons = new ArrayList<Person>();
-    private String datetime;
+    private String datetime = "1970-01-01 1:00";
 
     /*
      * All of the variables post refactoring. Also, the order is important and based off type NOT
@@ -113,7 +113,6 @@ public class Person implements Serializable, Selectable {
         }
         Person person = new Person(name, phoneNumber);
         if (initialAssignment != null) {
-            //person.addLocation(initialAssignment);
         }
         if (initialProject != null) {
             person.projectIDs.add(initialProject.getID());

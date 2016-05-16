@@ -103,16 +103,11 @@ public class EditPersonDialogFragment extends DialogFragment {
                                     }
                                     sb.append("}}");
                                     NonLocalDataService service = new NonLocalDataService();
-//                                String phone = phoneField.getText().toString();
-//                                String email = emailField.getText().toString();
-                                    //TODO implement role
-                                    Roles.PersonRoles role = Roles.PersonRoles.valueOf(((String) roleSpinner.getSelectedItem()).toUpperCase());
                                     Log.d("ED", sb.toString());
                                     service.updatePerson(person, sb.toString(), mListener.getUserID(),new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             Log.wtf("s40", "Successful edit of person " + person.getName());
-                                            //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
                                         }
 
                                         @Override

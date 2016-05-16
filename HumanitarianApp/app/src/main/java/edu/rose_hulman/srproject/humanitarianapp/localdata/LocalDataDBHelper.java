@@ -23,7 +23,7 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
             "[ID] [int] NOT NULL," +
-            "[Name] [nchar](50) NOT NULL)" +
+            "[Name] [nchar](50) NOT NULL," +
             "[DateModified] [nchar](50) NOT NULL," +
             "[DirtyBits] [int] NOT NULL)";
     private static final String SQL_CHECKLIST = "CREATE TABLE [Checklist](\n" +

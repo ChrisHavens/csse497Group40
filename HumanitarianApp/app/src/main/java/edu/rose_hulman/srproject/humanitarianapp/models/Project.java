@@ -112,6 +112,7 @@ public class Project implements Serialisable, Selectable {
         this.locationIDs =  new ArrayList<Long>();
         this.checklistIDs = new ArrayList<Long>();
         this.shipmentIDs = new ArrayList<Long>();
+         this.datetime = "1970-01-01 1:00";
      }
 
      public void fullClean() {

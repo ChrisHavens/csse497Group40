@@ -158,7 +158,7 @@ public class MainServiceActions {
         this.selectedNote.setLastModified(MessageThread.getCurrTime());
         this.selectedNote.setTitle(title);
         this.selectedNote.setBody(body);
-        service.updateNote(this.selectedNote.getID(), title, body, userID, new Callback<Response>() {
+        service.updateNote(this.selectedNote, userID, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
 

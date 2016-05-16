@@ -52,6 +52,7 @@ public class LocalDataSaver {
         String description = project.getDescription();
         long id = project.getID();
         int dirtyBits = project.getDirtyBits();
+        String dateModified = project.getDateTimeModified();
 
         //Save the above to the project table
 
@@ -59,6 +60,7 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Name", name);
         values.put("Description", description);
+        values.put("DateModified", dateModified);
         values.put("DirtyBits", dirtyBits);
         String tableName = "[Project]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);

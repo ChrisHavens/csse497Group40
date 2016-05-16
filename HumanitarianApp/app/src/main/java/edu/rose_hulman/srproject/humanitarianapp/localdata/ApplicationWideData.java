@@ -50,7 +50,7 @@ public class ApplicationWideData {
     public static List<Project> knownProjects;
     public static List<Shipment> knownShipments;
 
-    public static int userID = 0;
+    public static long userID = 0;
     public static int createdObjectCounter;
     public static boolean manualSnyc = false;
     public static SQLiteDatabase db = null;
@@ -283,7 +283,7 @@ public class ApplicationWideData {
         }
         Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
         Log.wtf(userID + "", "USER ID2");
-        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback(updated, activity));
+        service.service.getProjectList(Long.toString(userID), false, new ProjectListCallback(updated, activity));
         String time = PreferencesManager.getSyncTime();
         getDeletedList(time);
 
@@ -337,19 +337,23 @@ public class ApplicationWideData {
                     ids.add((String) map.get("_id"));
                     Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
-                    if (updated.containsKey(((String) map.get("_id")))){
-                        doUpdateProject(updated.get((String)map.get("_id")),activity);
+                    String idString = (String) map.get("_id");
+                    if (updated.containsKey(idString)){
+                        doUpdateProject(updated.get(idString),activity);
 
                     }
                     else {
-                        long id = Long.parseLong(((String) map.get("_id")));
+                        long id = Long.parseLong(idString);
                         String name = (String) source.get("name");
 
                         Project p = new Project(id, name);
-                        if (source.get("dateArchived") == null)
+                        if (source.get("dateArchived") == null) {
+
                             p.setHidden(false);
-                        else
+                        }
+                        else {
                             p.setHidden(true);
+                        }
                         ApplicationWideData.addExistingProject(p);
                         LocalDataSaver.updateProject(p);
                     }

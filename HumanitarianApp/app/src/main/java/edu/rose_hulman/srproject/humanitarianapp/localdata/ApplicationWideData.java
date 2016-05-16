@@ -441,7 +441,7 @@ public class ApplicationWideData {
     }
     public static void doUpdateProject(final Project project, final MainActivity activity) {
         NonLocalDataService service= new NonLocalDataService();
-        service.updateProject(project.getID(), "{\"doc\":" + project.toJSON() + "}", userID + "",
+        service.updateProject(project, "{\"doc\":" + project.toJSON() + "}", userID + "",
                 new Callback<Response>() {
             @Override
             public void success (Response response, Response response2){

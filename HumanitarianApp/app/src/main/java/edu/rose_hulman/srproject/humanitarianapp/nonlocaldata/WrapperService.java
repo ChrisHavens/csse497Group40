@@ -609,8 +609,8 @@ public interface WrapperService {
     @POST("/api/sync/changes/dummy")
     void getDummyConflicts(Callback<Response> callback);
 
-    @GET("/api/sync/resolve/{type}/{id}")
-    void resolveConflict(@Path("type")String type, @Path("id") String id, Callback<Response> callback);
+    @POST("/api/sync/resolve/{type}/{id}")
+    void resolveConflict(@Path("type")String type, @Path("id") String id, @Body TypedInput body,Callback<Response> callback);
 
 
 }

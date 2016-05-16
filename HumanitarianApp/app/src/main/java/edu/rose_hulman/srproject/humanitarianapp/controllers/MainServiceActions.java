@@ -671,13 +671,14 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                Log.wtf("s40R", error.getMessage());
 
             }
         };
         String type="";
         if (s instanceof Project){
             type="project";
+            service.resolveConflict(type,s.getID()+"",((Project)s).toJSON(), hideResponse);
         }
         else if (s instanceof Group){
             type="group";
@@ -691,7 +692,7 @@ public class MainServiceActions {
         else if (s instanceof Shipment){
             type="shipment";
         }
-        service.service.resolveConflict(type,s.getID()+"", hideResponse);
+
     }
 
 //    public void resolveConflicts(List<Conflict> conflicts){

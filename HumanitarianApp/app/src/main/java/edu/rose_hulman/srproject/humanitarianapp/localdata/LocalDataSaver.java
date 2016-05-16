@@ -9,6 +9,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
+import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 
 /**
@@ -33,6 +34,7 @@ public class LocalDataSaver {
         String[] selectionArgs = {Long.toString(id)};
         ApplicationWideData.db.update(tableName, values, selection, selectionArgs);
 
+
         //Save all of the lists to the relations table
     }
 
@@ -52,9 +54,24 @@ public class LocalDataSaver {
         String tableName = "[Project]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
+
         return true;
 
         //Save all of the lists to the relations table
+    }
+    public static boolean addNewSelectable(Selectable selectable, String type){
+        ContentValues values=new ContentValues();
+        values.put("Type", type);
+        values.put("ID",selectable.getID()+"");
+        ApplicationWideData.db.insertWithOnConflict("[AddedIDs]", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        return true;
+    }
+    public static boolean addUpdatedSelectable(Selectable selectable, String type){
+        ContentValues values=new ContentValues();
+        values.put("Type", type);
+        values.put("ID",selectable.getID()+"");
+        ApplicationWideData.db.insertWithOnConflict("[UpdatedIDs]", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        return true;
     }
     public static void updatePerson(Person person) {
         String name = person.getName();
@@ -68,6 +85,7 @@ public class LocalDataSaver {
         String selection = "ID=?";
         String[] selectionArgs = {Long.toString(id)};
         ApplicationWideData.db.update(tableName, values, selection, selectionArgs);
+
 
         //Save all of the lists to the relations table
     }
@@ -87,6 +105,14 @@ public class LocalDataSaver {
         return true;
 
         //Save all of the lists to the relations table
+    }
+    public static boolean clearUpdatedSelectables(){
+        ApplicationWideData.db.delete("[UpdatedIDs]", null, null);
+        return true;
+    }
+    public static boolean clearAddedSelectables(){
+        ApplicationWideData.db.delete("[AddedIDs]", null, null);
+        return true;
     }
 
     public static void updateGroup(Group group) {

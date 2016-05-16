@@ -147,6 +147,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent intent=getIntent();
         userID=intent.getStringExtra("userID");
         Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
@@ -156,6 +157,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
+        LocalDataSaver.clearUpdatedSelectables();
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
         actions=new MainServiceActions(getApplicationContext(), userID);
@@ -200,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.forceSync).setTitle("Last Sync Time:/n"+PreferencesManager.getSyncTime(null));
+        menu.findItem(R.id.forceSync).setTitle("Last Sync Time: "+PreferencesManager.getSyncTime());
         setVisibilityAdd(true);
         setVisibilityEdit(false);
         setVisibilityShow(false);
@@ -288,9 +290,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             ApplicationWideData.sync(this);
             Context context = getApplicationContext();
             int duration = Toast.LENGTH_SHORT;
-            String text = PreferencesManager.getSyncTime(null);
+            String text = PreferencesManager.getSyncTime();
+
             String time = MessageThread.getCurrTime();
-            Toast toast = Toast.makeText(context, time, duration);
+            //PreferencesManager.setSyncDate(time);
+            Toast toast = Toast.makeText(context, PreferencesManager.getSyncTime(), duration);
             toast.show();
             return true;
         }
@@ -831,6 +835,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
         newFragment.show(getFragmentManager(), "conflictResolution");
+        String time = MessageThread.getCurrTime();
+        PreferencesManager.setSyncDate(time);
     }
     private void showNextConflictResolution(){
         if (conflictsIterator.hasNext()){
@@ -839,6 +845,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
             newFragment.show(getFragmentManager(), "conflictResolution");
         }
+
+
+
 //        Toast.makeText(this, "ShowConflictResolution", Toast.LENGTH_SHORT).show();
         //currConflict=conflictsIterator.next();
 

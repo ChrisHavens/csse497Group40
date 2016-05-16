@@ -8,8 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by bollivga on 10/20/2015.
  */
 public class LocalDataDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Humanitarian.db";
+    private static final String[] TABLE_NAMES={"Location", "People", "Checklist",
+        "Project", "Group", "Email", "Phone", "Shipment", "Note","ChecklistItem",
+        "GroupLocRel", "PersonGroupRel", "PersonProjRel", "PersonLocRel", "ShipmentGroupRel",
+    "ProjectGroupRel", "UpdatedIDs", "AddedIDs"};
     private static final String SQL_LOCATION = "CREATE TABLE [Location](" +
             "[ID] [int] NOT NULL," +
             "[Name] [nchar](50) NOT NULL," +
@@ -88,6 +91,14 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "\t[ProjectID] [int] NOT NULL,\n" +
             "\t[GroupID] [int] NOT NULL\n" +
             ")";
+    private static final String SQL_UPDATED_IDs= "CREATE TABLE [UpdatedIDs](\n"+
+            "\t[ID] [int] NOT NULL,\n"+
+            "\t[Type] [nChar](50) NOT NULL\n)";
+    private static final String SQL_ADDED_IDs="CREATE TABLE [AddedIDs](\n"+
+            "\t[ID] [int] NOT NULL,\n"+
+            "\t[Type] [nChar](50) NOT NULL\n)";
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS [%s]" ;
 
     public LocalDataDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -111,10 +122,15 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_PERSON_PROJ_REL);
         db.execSQL(SQL_SHIPMENT_GROUP_REL);
         db.execSQL(SQL_Project_GROUP_REL);
+        db.execSQL(SQL_UPDATED_IDs);
+        db.execSQL(SQL_ADDED_IDs);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
-
+        for (String s: TABLE_NAMES) {
+            db.execSQL(String.format(SQL_DELETE_ENTRIES, s));
+        }
+        onCreate(db);
     }
 }

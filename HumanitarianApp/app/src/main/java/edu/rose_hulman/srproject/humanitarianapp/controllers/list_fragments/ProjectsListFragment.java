@@ -54,7 +54,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             @Override
             public View customiseView(View v, Project project) {
                 TextView line1 = (TextView) v.findViewById(android.R.id.text1);
-                line1.setText(project.getName());
+                line1.setText(project.getName()+" ("+project.getID()+")");
                 return v;
             }
         };
@@ -107,6 +107,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
          if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
+             Log.wtf(mListener.getUserID(), "USER ID");
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
         }
     }

@@ -1,11 +1,18 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import android.util.Log;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
@@ -85,6 +92,7 @@ public class Project implements Serialisable, Selectable {
         this.name = name;
         this.description = description;
      }
+
 
      public void setupAsNew() {
         this.removeImplicitVariableDeclarations();

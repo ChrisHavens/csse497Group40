@@ -50,8 +50,9 @@ public class ApplicationWideData {
 
     public static int userID = 0;
     public static int createdObjectCounter;
-    public static final boolean manualSnyc = false;
+    public static boolean manualSnyc = false;
     public static SQLiteDatabase db = null;
+    public static String previousSyncTime;
 
     public static void initilizeKnownVariables(MainActivity activity) {
         knownChecklists = new ArrayList();
@@ -60,6 +61,7 @@ public class ApplicationWideData {
         knownPersons = new ArrayList();
         knownProjects = new ArrayList();
         knownShipments = new ArrayList();
+
 
         //Pull these numbers from local storage only when a user is known
         if (userID == 0) {
@@ -181,6 +183,9 @@ public class ApplicationWideData {
         }
         knownProjects.add(project);
         LocalDataSaver.addProject(project);
+//        if (manualSnyc){
+//            LocalDataSaver.addNewSelectable(project, "Project");
+//        }
     }
 
     public static void addExistingProject(Project project) {
@@ -192,6 +197,9 @@ public class ApplicationWideData {
         }
         knownProjects.add(project);
         LocalDataSaver.updateProject(project);
+//        if (manualSnyc){
+//            LocalDataSaver.addUpdatedSelectable(project, "Project");
+//        }
     }
 
     public static Project getProjectByID(long id) {
@@ -231,7 +239,7 @@ public class ApplicationWideData {
     }
 
     public static void switchSyncMode(MainActivity activity) {
-        //manualSnyc = !manualSnyc;
+        manualSnyc = !manualSnyc;
         PreferencesManager.setSyncType(manualSnyc);
         if(!manualSnyc) {
             sync(activity);
@@ -248,11 +256,20 @@ public class ApplicationWideData {
     public static void sync(MainActivity activity) {
         //Save all of the projects
 
-        saveNewProjects(activity);
-        String time = MessageThread.getCurrTime();
-        PreferencesManager.setSyncDate(time);
+        //saveNewProjects(activity);
+
+
         NonLocalDataService service = new NonLocalDataService();
-        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback());
+        HashMap<String, Project> updated=new HashMap<>();
+        List<Selectable> selectables=LocalDataRetriver.getAllUpdated();
+        for (Selectable s: selectables){
+            if (s instanceof Project){
+                updated.put(s.getID()+"", (Project)s);
+            }
+        }
+        Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
+        Log.wtf(userID+"", "USER ID2");
+        service.service.getProjectList(Integer.toString(userID), false, new ProjectListCallback(updated, activity));
 
 
     }
@@ -261,33 +278,54 @@ public class ApplicationWideData {
         return manualSnyc;
     }
 
-    private static void saveNewProjects(final MainActivity activity) {
-        NonLocalDataService service = new NonLocalDataService();
-        for(final Project project : knownProjects){
-            if (project.getIsDirty()[0]) {
-                Callback<Response> responseCallback = new Callback<Response>() {
-                    @Override
-                    public void success(Response response, Response response2) {
+    private static class ProjectListCallback implements Callback<Response>{
+        private HashMap<String, Project> updated;
+        private final MainActivity activity;
+        public ProjectListCallback(HashMap<String,Project> updated, MainActivity activity){
+            this.updated=updated;
+            this.activity=activity;
+        }
+
+        @Override
+        public void success(Response response, Response response2) {
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference =
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try {
+                HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+                ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
+                for (HashMap<String, Object> map : list) {
+                    Log.w("Found a project", map.toString());
+                    HashMap<String, Object> source = (HashMap) map.get("_source");
+                    if (updated.containsKey(((String) map.get("_id")))){
+                        doUpdateProject(updated.get((String)map.get("_id")),activity);
 
                     }
+                    else {
+                        long id = Long.parseLong(((String) map.get("_id")));
+                        String name = (String) source.get("name");
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        if (error.getResponse().getStatus()==418){
-                            HashMap<Selectable, List<Conflict>> conflicts=ApplicationWideData.getConflicts(project, error.getResponse());
-                            activity.showConflictResolution(conflicts);
-                        }
-                        Log.e("RetrofitError", error.getMessage());
+                        Project p = new Project(id, name);
+                        if (source.get("dateArchived") == null)
+                            p.setHidden(false);
+                        else
+                            p.setHidden(true);
+                        ApplicationWideData.addExistingProject(p);
+                        LocalDataSaver.updateProject(p);
                     }
-                };
-                StringBuilder sb=new StringBuilder();
-                sb.append("{\"doc\": ");
-                sb.append(project.toJSON());
-                sb.append("}");
-                service.updateProject(project.getID(), sb.toString(), userID+"", responseCallback);
-                project.fullClean();
-                LocalDataSaver.addProject(project);
+
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+
         }
     }
     public static HashMap<Selectable, List<Conflict>> getConflicts(Project project, Response response){
@@ -310,50 +348,29 @@ public class ApplicationWideData {
         map.put(project, conflicts);
         return map;
     }
+    public static void doUpdateProject(final Project project, final MainActivity activity) {
+        NonLocalDataService service= new NonLocalDataService();
+        service.updateProject(project.getID(), "{\"doc\":"+project.toJSON()+"}", userID+"",
+      new  Callback<Response> (){
 
-    private static void emptyProjectTable(){
-        knownProjects = new ArrayList<>();
-        db.delete("[Project]", null, null);
-    }
+            @Override
+            public void success (Response response, Response response2){
 
-    public static class ProjectListCallback implements Callback<Response> {
-
-        @Override
-        public void success(Response response, Response response2) {
-            Log.wtf("URL", response.getUrl());
-            Log.wtf("SUCCESS", "PRJListCallbacks");
-            ObjectMapper mapper = new ObjectMapper();
-            List<Project> projectList;
-            TypeReference<HashMap<String, Object>> typeReference =
-                    new TypeReference<HashMap<String, Object>>() {
-                    };
-            try {
-                //emptyProjectTable();
-                HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
-                ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
-                for (HashMap<String, Object> map : list) {
-                    Log.w("Found a project", map.toString());
-                    HashMap<String, Object> source = (HashMap) map.get("_source");
-
-                    Project p = new Project(Long.parseLong(((String) map.get("_id"))));
-                    p.setName((String) source.get("name"));
-                    if(source.get("dateArchived") == null)
-                        p.setHidden(false);
-                    else
-                        p.setHidden(true);
-                    ApplicationWideData.addExistingProject(p);
-                    //LocalDataSaver.addProject(p);
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
 
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e("RetrofitErrorPLF", error.getMessage());
-        }
+            @Override
+            public void failure (RetrofitError error){
+                if (error.getResponse().getStatus() == 418) {
+//                    Log.wtf("Conflict FOUND:", error.getResponse().getBody().toString());
+                    HashMap<Selectable, List<Conflict>> conflicts = ApplicationWideData.getConflicts(project, error.getResponse());
+                    Log.wtf("Conflicts: ", conflicts.toString());
+                    activity.showConflictResolution(conflicts);
+                }
+                Log.wtf("RetroFitError", "Do Update Project"+error.getMessage());
+            }
+        });
     }
+
+
 
 }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 //import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -57,24 +58,29 @@ public class EditProjectDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String name=nameField.getText().toString();
+                        String name = nameField.getText().toString();
                         p.setName(name);
                         LocalDataSaver.updateProject(p);
-                        NonLocalDataService service=new NonLocalDataService();
-                        StringBuilder sb=new StringBuilder();
-                        sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateProject(p.getID(), sb.toString(), mListener.getUserID(),new Callback<Response>() {
-                            @Override
-                            public void success(Response response, Response response2) {
-                                Log.wtf("s40", "Successful edit of project "+p.getName());
-                                //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
-                            }
+                        if (!ApplicationWideData.manualSnyc) {
+                            NonLocalDataService service = new NonLocalDataService();
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("{\"doc\":{\"name\": \"" + name + "\"}}");
+                            service.updateProject(p.getID(), sb.toString(), mListener.getUserID(), new Callback<Response>() {
+                                @Override
+                                public void success(Response response, Response response2) {
+                                    Log.wtf("s40", "Successful edit of project " + p.getName());
+                                    //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
+                                }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e("s40 RetroFitError", error.getMessage());
-                            }
-                        });
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Log.e("s40 RetroFitError", error.getMessage());
+                                    //Log.e("s40 RetroFitE")
+                                }
+                            });
+                        } else {
+                            LocalDataSaver.addUpdatedSelectable(p, "Project");
+                        }
                         EditProjectDialogFragment.this.getDialog().dismiss();
                     }
                 })

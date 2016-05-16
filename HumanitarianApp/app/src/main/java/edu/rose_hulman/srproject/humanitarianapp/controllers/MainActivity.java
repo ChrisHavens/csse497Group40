@@ -157,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
-        LocalDataSaver.clearUpdatedSelectables();
+        //LocalDataSaver.clearUpdatedSelectables();
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
         actions=new MainServiceActions(getApplicationContext(), userID);
@@ -844,6 +844,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
             newFragment.show(getFragmentManager(), "conflictResolution");
         }
+
 
 
 

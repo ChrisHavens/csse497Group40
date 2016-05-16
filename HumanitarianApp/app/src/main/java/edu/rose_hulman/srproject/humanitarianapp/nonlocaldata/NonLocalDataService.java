@@ -282,7 +282,10 @@ public class NonLocalDataService {
         service.searchPersons(new TypedJsonString(json), callback);
     }
     public void resolveConflict(String type, String id, String json, Callback<Response> callback){
-        service.resolveConflict(type, id,new TypedJsonString(json), callback);
+        service.resolveConflict(type, id, new TypedJsonString(json), callback);
+    }
+    public void getDeleted(String time, Callback<Response> callback){
+        service.getDeleted(time, callback);
     }
 
 

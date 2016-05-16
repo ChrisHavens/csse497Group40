@@ -612,5 +612,7 @@ public interface WrapperService {
     @POST("/api/sync/resolve/{type}/{id}")
     void resolveConflict(@Path("type")String type, @Path("id") String id, @Body TypedInput body,Callback<Response> callback);
 
+    @GET("/api/utils/deleted")
+    void getDeleted(@Query("time") String time, Callback<Response> callback);
 
 }

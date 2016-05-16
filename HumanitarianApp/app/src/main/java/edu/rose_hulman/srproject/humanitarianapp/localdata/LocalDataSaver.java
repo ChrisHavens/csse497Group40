@@ -98,6 +98,11 @@ public class LocalDataSaver {
 
         //Save all of the lists to the relations table
     }
+    public static boolean deleteUpdatedProject(Project project){
+        ContentValues values = new ContentValues();
+        return ApplicationWideData.db.delete("[Project]", "ID" + "=" + project.getID()+"", null) > 0;
+
+    }
 
     public static boolean addPerson(Person person) {
         String name = person.getName();

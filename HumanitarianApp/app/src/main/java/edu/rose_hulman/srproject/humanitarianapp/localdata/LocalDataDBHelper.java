@@ -21,6 +21,13 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
             "[Lon] [int] NOT NULL," +
             "[DateModified] [nchar](50) NOT NULL," +
             "[DirtyBits] [int] NOT NULL)";
+
+    private static final String ALL_THINGS_MASHUP = "CREATE TABLE [AllData](" +
+            "[ID] [int] NOT NULL," +
+            "[Type] [nchar](20) NOT NULL," +
+            "[DateModified] [nchar](20) NOT NULL," +
+            "[Body] [text] NOT NULL)";
+
     private static final String SQL_PEOPLE = "CREATE TABLE [People](" +
             "[ID] [int] NOT NULL," +
             "[Name] [nchar](50) NOT NULL," +

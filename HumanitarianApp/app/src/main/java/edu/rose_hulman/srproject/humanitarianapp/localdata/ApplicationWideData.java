@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -128,6 +129,30 @@ public class ApplicationWideData {
         return null;
     }
 
+    public static List<Group> getGroupsByProjectID(long id) {
+        List<Group> groups = new ArrayList<Group>();
+        for(Group group: knownGroups) {
+            if (group.getProjectId() == id) {
+                groups.add(group);
+            }
+        }
+        return groups;
+    }
+
+    public static Object getGroupOrProject(long id){
+        for(Project proj: knownProjects){
+            if(proj.getID() == id){
+                return proj;
+            }
+        }
+        for(Group group: knownGroups){
+            if(group.getID() == id){
+                return group;
+            }
+        }
+        return null;
+    }
+
     public static List<Group> getAllGroups() {
         return knownGroups;
 
@@ -209,10 +234,6 @@ public class ApplicationWideData {
             }
         }
         knownProjects.add(project);
-        LocalDataSaver.updateProject(project);
-//        if (manualSnyc){
-//            LocalDataSaver.addUpdatedSelectable(project, "Project");
-//        }
     }
 
     public static Project getProjectByID(long id) {

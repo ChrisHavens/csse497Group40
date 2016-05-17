@@ -22,6 +22,7 @@ import retrofit.client.Response;
 public class LocalDataRetriver {
 
     private static String allProjectsQuery = "Select * From [Project]";
+    private static String mostDataQuery = "Select * From [AllData] Where Type = ?";
     private static String allGroupsQuery = "Select * From [Group]";
     private static String allUpdatedQuery = "Select * From [UpdatedIDs]";
     private static String allAddedQuery = "Select * From [AddedIDs]";
@@ -44,9 +45,21 @@ public class LocalDataRetriver {
             Project project = new Project(id, name, description, isDirty, onServer);
             projects.add(project);
         }
+        return projects;
+    }
 
-
-
+    public static List<Project> getStoredProjectsSecond(){
+        List<Project> projects = new ArrayList<Project>();
+        String[] params = {"Project"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(2);
+            Project project = null;
+            //project = Project.fromJSON(id, text);
+            projects.add(project);
+        }
         return projects;
     }
     public static List<Selectable> getAllUpdated(){

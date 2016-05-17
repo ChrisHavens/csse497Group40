@@ -113,18 +113,9 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    for (String s: source.keySet()){
-                        Log.e("Result", s);
-                    }
+
                     long id = Long.parseLong(((String)map.get("_id")));
-                    Location l=new Location(id);
-                    l.setName((String) source.get("name"));
-                    if(source.get("dateArchived") == null)
-                        l.setHidden(false);
-                    else
-                        l.setHidden(true);
-                    l.setLat(Float.parseFloat((String) source.get("lat")));
-                    l.setLng(Float.parseFloat((String) source.get("lng")));
+                    Location l= Location.parseJSON(id, source);
                     locations.add(l);
                     //LocalDataSaver.addLocation(l);
                     adapter.notifyDataSetChanged();

@@ -2,6 +2,9 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -92,7 +95,7 @@ public class MessageThread implements Selectable{
 }
          */
         StringBuilder sb=new StringBuilder();
-        sb.append("{\"name\": \""+getTitle()+"\",");
+        sb.append("{\"name\": \"" + getTitle() + "\",");
         sb.append("\"parentID\": \""+parentID+"\",");
         sb.append("\"messageItems\": [");
         sb.append(getMessagesJSON());
@@ -111,11 +114,11 @@ public class MessageThread implements Selectable{
       }
          */
         List<Message> itemList=getItemList();
-        Collections.sort(itemList,comparator);
+        Collections.sort(itemList, comparator);
         StringBuilder sb= new StringBuilder();
         for (int i=0; i<itemList.size(); i++){
             Message item=itemList.get(i);
-            sb.append(item.toJSON());
+            sb.append(item.getItemID());
             sb.append(",");
         }
         if (sb.toString().endsWith(",")){
@@ -124,6 +127,51 @@ public class MessageThread implements Selectable{
         return sb.toString();
 
     }
+    public static MessageThread fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            MessageThread l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+
+    }
+    public static MessageThread parseJSON(long lg, HashMap<String, Object> source){
+        MessageThread thread=new MessageThread(lg);
+        if (source.containsKey("name")){
+            thread.setTitle((String)source.get("name"));
+        }
+        if (source.containsKey("parentID")){
+            thread.setParentID(Long.parseLong((String) source.get("parentID")));
+        }
+        if(source.get("dateArchived") == null)
+            thread.setHidden(false);
+        else
+            thread.setHidden(true);
+        if (source.containsKey("messageItems")){
+            ArrayList<String> itemIDs= (ArrayList<String>)source.get("messageItems");
+            List<Message> messages=new ArrayList<>();
+            for (String item: itemIDs){
+                //messages.add(Message.parseJSON(itemMap));
+            }
+            thread.setItemList(messages);
+
+        }
+        return thread;
+
+    }
+
     @Override
     public boolean isHidden() {
         return isHidden;
@@ -140,8 +188,10 @@ public class MessageThread implements Selectable{
     }
 
     public void setItemList(List<Message> itemList) {
-        for (Message item: itemList){
-            this.itemList.put(item.getItemID()+"", item);
+        if (itemList!=null) {
+            for (Message item : itemList) {
+                this.itemList.put(item.getItemID() + "", item);
+            }
         }
     }
 
@@ -263,22 +313,9 @@ public class MessageThread implements Selectable{
         }
         public String toJSON(){
             StringBuilder sb=new StringBuilder();
-            sb.append("{\"messageID\": \""+itemID+"\",");
-            if (getSender()!=null) {
-
-                sb.append("\"personID\": \"" + sender+"\",");
-            }
-            sb.append("\"sentDate\": \""+getTime()+"\",");
-            sb.append("\"text\": \""+getItem()+"\"");
-
-            sb.append("}");
-            return sb.toString();
-        }
-        public String toMessageSendString(){
-            StringBuilder sb=new StringBuilder();
             sb.append("{");
 
-                sb.append("\"personID\": \"" + sender+"\",");
+            sb.append("\"personID\": \"" + sender+"\",");
 
             sb.append("\"sentDate\": \""+getTime()+"\",");
             // sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
@@ -288,6 +325,41 @@ public class MessageThread implements Selectable{
             Log.wtf("S40", sb.toString());
             return sb.toString();
         }
+
+        public static Message fromJSON(long lg, String json){
+            ObjectMapper mapper=new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeReference=
+                    new TypeReference<HashMap<String, Object>>() {
+                    };
+            try {
+                HashMap<String, Object> source = mapper.readValue(json, typeReference);
+                Message m=parseJSON(lg, source);
+                return m;
+
+
+
+
+
+            }catch(Exception e){
+
+            }
+            return null;
+
+        }
+        public static Message parseJSON(long lg, HashMap<String, Object> source){
+            Message message=new Message(lg);
+            if (source.containsKey("personID")){
+                message.setSender((String)source.get("personID"));
+            }
+            if (source.containsKey("sentDate")){
+                message.setTime((String) source.get("sentDate"));
+            }
+            if (source.containsKey("text")){
+                message.setItem((String)source.get("text"));
+            }
+            return message;
+        }
+
 
         public String getSender() {
             return sender;

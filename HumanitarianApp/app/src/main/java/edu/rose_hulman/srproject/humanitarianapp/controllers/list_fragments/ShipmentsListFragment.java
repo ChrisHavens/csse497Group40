@@ -17,6 +17,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -120,23 +121,21 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    for (String s: source.keySet()){
-                        Log.e("Result", s);
-                    }
-                    Shipment s=new Shipment(Integer.parseInt(((String)map.get("_id"))));
-                    s.setContents((String) source.get("contents"));
-                    s.setFrom((String) source.get("fromLocationID"));
-                    s.setTo((String) source.get("toLocationID"));
+
+                    Shipment s=Shipment.parseJSON(Long.parseLong(((String)map.get("_id"))), source);
+//                    s.setContents((String) source.get("contents"));
+//                    s.setFrom((String) source.get("fromLocationID"));
+//                    s.setTo((String) source.get("toLocationID"));
                     service.service.getLocation(s.getTo(), new ShipmentToLocationCallbacks(s));
                     service.service.getLocation(s.getFrom(), new ShipmentFromLocationCallbacks(s));
                     //s.setLast((String) source.get("fromLocationID"));
-                    s.setName((String) source.get("name"));
-                    String[] split=((String) source.get("pickupTime")).split(" ");
-                    if (split.length==2) {
-                        s.setDate(split[0]);
-                        s.setTime(split[1]);
-                    }
-                    s.setStatus((String) source.get("status"));
+//                    s.setName((String) source.get("name"));
+//                    String[] split=((String) source.get("pickupTime")).split(" ");
+//                    if (split.length==2) {
+//                        s.setDate(split[0]);
+//                        s.setTime(split[1]);
+//                    }
+//                    s.setStatus((String) source.get("status"));
                     shipments.add(s);
                     //LocalDataSaver.addShipment(s);
                     adapter.notifyDataSetChanged();

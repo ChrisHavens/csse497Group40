@@ -235,15 +235,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
 //                            Log.e("Result", s);
 //                        }
 
-                        final Person p = new Person(Integer.parseInt(((String) map.get("_id"))));
-
-                        p.setName((String) source.get("name"));
-                        p.setEmail((String) source.get("email"));
-                        p.setPhoneNumber((String) source.get("phone"));
-                        if (source.get("dateArchived") == null)
-                            p.setHidden(false);
-                        else
-                            p.setHidden(true);
+                        final Person p= Person.parseJSON(Long.parseLong((String)map.get("_id")),source);
                         ArrayList<HashMap<String, Object>> parentIDs = (ArrayList<HashMap<String, Object>>) source.get("parentIDs");
                         boolean in = false;
                         if (parentIDs != null){

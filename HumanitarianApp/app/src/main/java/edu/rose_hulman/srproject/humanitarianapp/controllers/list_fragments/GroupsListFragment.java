@@ -124,17 +124,9 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    for (String s: source.keySet()){
-                        Log.e("Result", s);
-                    }
+
                     long id = Long.parseLong((String)map.get("_id"));
-                    String name = (String) source.get("name");
-                    Group g=new Group(id);
-                    g.setName(name);
-                    if(source.get("dateArchived") == null)
-                        g.setHidden(false);
-                    else
-                        g.setHidden(true);
+                    Group g= Group.parseJSON(id, source);
                     groups.add(g);
                     //LocalDataSaver.addGroup(p);
                     adapter.notifyDataSetChanged();

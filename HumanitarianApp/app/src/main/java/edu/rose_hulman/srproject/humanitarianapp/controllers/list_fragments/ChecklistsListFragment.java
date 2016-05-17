@@ -108,44 +108,12 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
                 HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
-                for (HashMap<String, Object> map: list){
+                for (HashMap<String, Object> map: list) {
 
-                    HashMap<String, Object> source=(HashMap)map.get("_source");
+                    HashMap<String, Object> source = (HashMap) map.get("_source");
+                    Checklist l= Checklist.parseJSON(Long.parseLong((String)map.get("_id")), source);
 
-                    Checklist l=new Checklist(Integer.parseInt(((String)map.get("_id"))));
-                    l.setTitle((String)source.get("name"));
-                    if(source.get("dateArchived") == null)
-                        l.setHidden(false);
-                    else
-                        l.setHidden(true);
-                    l.setParentID(Long.parseLong((String)source.get("parentID")));
 
-                    ArrayList<HashMap<String, Object>> items=(ArrayList)source.get("checklistItems");
-                    for (HashMap item: items) {
-                        Checklist.ChecklistItem checklistItem = new Checklist.ChecklistItem((String) item.get("task"));
-                        ArrayList<HashMap<String, Object>> subitems = (ArrayList) item.get("sublistItems");
-
-                        for (HashMap subitem : subitems) {
-                            Checklist.SublistItem sublistItem = new Checklist.SublistItem((String) subitem.get("task"));
-                            //TODO:
-                            //sublistItem.setAssigned();
-                            if (subitem.containsKey("sublistItemID")&&!((String)subitem.get("sublistItemID")).equals("null")) {
-                                sublistItem.setItemID(Long.parseLong((String) subitem.get("sublistItemID")));
-                            }
-                            if (subitem.containsKey("isDone")) {
-                                sublistItem.setDone((boolean) subitem.get("isDone"));
-                            }
-                            checklistItem.addNewSublistItem(sublistItem);
-
-                        }
-                        if (item.containsKey("checklistItemID")&&!((String)item.get("checklistItemID")).equals("null")) {
-                            checklistItem.setItemID(Long.parseLong((String) item.get("checklistItemID")));
-                        }
-                        if (item.containsKey("isDone")) {
-                            checklistItem.setDone((boolean) item.get("isDone"));
-                        }
-                        l.addItem(checklistItem);
-                    }
                     checklists.add(l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

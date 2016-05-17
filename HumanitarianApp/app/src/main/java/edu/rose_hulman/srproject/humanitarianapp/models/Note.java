@@ -1,6 +1,10 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by daveyle on 10/4/2015.
@@ -105,6 +109,36 @@ public class Note implements Selectable{
         sb.append("\"parentID\": \""+getParentID()+"\"");
         sb.append("}");
         return sb.toString();
+    }
+    public static Note fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Note l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Note parseJSON(long lg, HashMap<String, Object> source){
+        Note n= new Note(lg);
+        n.setTitle((String) source.get("name"));
+        if(source.get("dateArchived") == null)
+            n.setHidden(false);
+        else
+            n.setHidden(true);
+        n.setBody((String) source.get("contents"));
+        n.setLastModified((String) source.get("lastModTime"));
+        return n;
     }
 
     @Override

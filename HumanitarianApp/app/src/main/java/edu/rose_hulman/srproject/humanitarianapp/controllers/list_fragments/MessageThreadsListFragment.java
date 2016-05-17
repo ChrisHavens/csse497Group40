@@ -124,14 +124,14 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
                 for (HashMap<String, Object> map: list){
                     //Log.wtf("s40", "object");
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-
-                    MessageThread l=new MessageThread(Integer.parseInt(((String)map.get("_id"))));
-                    l.setTitle((String)source.get("name"));
-                    if(source.get("dateArchived") == null)
-                        l.setHidden(false);
-                    else
-                        l.setHidden(true);
-                    l.setParentID(Long.parseLong((String)source.get("parentID")));
+                    MessageThread l= MessageThread.parseJSON(Long.parseLong((String)map.get("_id")),source);
+//                    MessageThread l=new MessageThread(Integer.parseInt(((String)map.get("_id"))));
+//                    l.setTitle((String)source.get("name"));
+//                    if(source.get("dateArchived") == null)
+//                        l.setHidden(false);
+//                    else
+//                        l.setHidden(true);
+//                    l.setParentID(Long.parseLong((String)source.get("parentID")));
 
 //                    ArrayList<HashMap<String, Object>> items=(ArrayList)source.get("messageItems");
 //                    for (HashMap item: items) {

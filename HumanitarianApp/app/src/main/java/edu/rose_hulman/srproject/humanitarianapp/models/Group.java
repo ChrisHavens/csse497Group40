@@ -1,6 +1,10 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
@@ -275,6 +279,36 @@ public class Group implements Serialisable, Selectable {
         sb.append("}");
         return sb.toString();
     }
+    public static Group fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Group g=parseJSON(lg, source);
+            return g;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Group parseJSON(long lg, HashMap<String, Object> source){
+        String name = (String) source.get("name");
+        Group g=new Group(lg);
+        g.setName(name);
+        if(source.get("dateArchived") == null)
+            g.setHidden(false);
+        else
+            g.setHidden(true);
+        g.setProjectID(Long.parseLong((String)source.get("projectID")));
+        return g;
+    }
 
     public String getParentString() {
         StringBuilder sb = new StringBuilder();
@@ -287,6 +321,8 @@ public class Group implements Serialisable, Selectable {
         //sb.append("]");
         return sb.toString();
     }
+
+
 
     public static List<Group> getKnownGroups() {
         return ApplicationWideData.getAllGroups();

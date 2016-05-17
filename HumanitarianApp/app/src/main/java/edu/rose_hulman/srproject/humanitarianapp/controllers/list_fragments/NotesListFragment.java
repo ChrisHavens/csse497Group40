@@ -118,17 +118,9 @@ public class NotesListFragment extends AbstractListFragment<Note>{
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    for (String s: source.keySet()){
-                        Log.e("Result", s);
-                    }
-                    Note n=new Note(Integer.parseInt(((String)map.get("_id"))));
-                    n.setTitle((String) source.get("name"));
-                    if(source.get("dateArchived") == null)
-                        n.setHidden(false);
-                    else
-                        n.setHidden(true);
-                    n.setBody((String) source.get("contents"));
-                    n.setLastModified((String) source.get("lastModTime"));
+
+                    Note n=Note.parseJSON(Long.parseLong((String)map.get("_id")), source);
+
                     notes.add(n);
                     //LocalDataSaver.addNote(n);
                     adapter.notifyDataSetChanged();

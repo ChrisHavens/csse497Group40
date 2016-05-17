@@ -471,6 +471,47 @@ public class Project implements Serialisable, Selectable {
         return sb.toString();
     }
 
+    public static Project fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Project l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Project parseJSON(long lg, HashMap<String, Object> source){
+       Project p= new Project(lg);
+        String name = (String) source.get("name");
+
+        p.setName(name);
+        if(source.get("dateArchived") == null)
+            p.setHidden(false);
+        else
+            p.setHidden(true);
+        parseGroupIDs(p, (ArrayList<HashMap<String, Object>>)source.get("groupIDs"));
+        return p;
+
+    }
+    public static void parseGroupIDs(Project p, ArrayList<HashMap<String, Object>> list){
+        if (list!=null) {
+            for (HashMap<String, Object> item : list) {
+                String itemID = (String) item.get("groupID");
+                p.addGroupByID(Long.parseLong(itemID));
+
+            }
+        }
+    }
 
     public String getDescription() {
         return description;

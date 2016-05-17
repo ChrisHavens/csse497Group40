@@ -2,9 +2,14 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 //import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -320,7 +325,47 @@ public class Person implements Serializable, Selectable {
 //        sb.append("],");
 //        return sb.toString();
 //    }
+    public static Person fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Person l=parseJSON(lg, source);
+            return l;
 
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+
+    }
+    public static Person parseJSON(long lg, HashMap<String, Object> source){
+        Person p=new Person(lg);
+        p.setName((String) source.get("name"));
+        p.setEmail((String) source.get("email"));
+        p.setPhoneNumber((String) source.get("phone"));
+        if(source.get("dateArchived") == null)
+            p.setHidden(false);
+        else
+            p.setHidden(true);
+        parseParentIDs(p, (ArrayList<HashMap<String, Object>>)source.get("parentIDs"));
+        return p;
+
+    }
+    public static void parseParentIDs(Person p, ArrayList<HashMap<String, Object>> list){
+        if (list!=null) {
+            for (HashMap<String, Object> item : list) {
+                String itemID = (String) item.get("parentID");
+                //TODO: add to proper group/parent
+            }
+        }
+    }
     public Roles.PersonRoles getRole() {
         return role;
     }

@@ -1,6 +1,10 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Location implements Selectable{
@@ -151,6 +155,46 @@ public class Location implements Selectable{
         }
         sb.append("]");
         return sb.toString();
+    }
+    public static Location fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Location l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Location parseJSON(long id, HashMap<String, Object> source){
+        Location l=new Location(id);
+        l.setName((String) source.get("name"));
+        if(source.get("dateArchived") == null)
+            l.setHidden(false);
+        else
+            l.setHidden(true);
+        l.setLat(Float.parseFloat((String) source.get("lat")));
+        l.setLng(Float.parseFloat((String) source.get("lng")));
+        List<Long> parentIDs=new ArrayList<>();
+        ArrayList<HashMap<String, Object>> list=(ArrayList<HashMap<String, Object>>)source.get("parentIDs");
+        if (list!=null) {
+            for (HashMap<String, Object> parent :list) {
+                if (parent.containsKey("parentID")) {
+                    parentIDs.add(Long.parseLong((String) parent.get("parentID")));
+                }
+            }
+        }
+        l.setProjectIDs(parentIDs);
+        return l;
     }
     @Override
     public String getDateTimeModified() {

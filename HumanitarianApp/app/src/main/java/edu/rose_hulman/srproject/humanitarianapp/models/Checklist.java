@@ -1,7 +1,11 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -151,6 +155,65 @@ public class Checklist implements Selectable{
             sb.append("}");
         }
         return sb.toString();
+    }
+    public static Checklist fromJSON(long lg, String json){
+
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Checklist l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Checklist parseJSON(long lg, HashMap<String, Object> source) {
+        Checklist l = new Checklist(lg);
+        l.setTitle((String) source.get("name"));
+        if (source.get("dateArchived") == null)
+            l.setHidden(false);
+        else
+            l.setHidden(true);
+        l.setParentID(Long.parseLong((String) source.get("parentID")));
+
+        ArrayList<HashMap<String, Object>> items = (ArrayList) source.get("checklistItems");
+        if (items!=null) {
+            for (HashMap item : items) {
+                Checklist.ChecklistItem checklistItem = new Checklist.ChecklistItem((String) item.get("task"));
+                ArrayList<HashMap<String, Object>> subitems = (ArrayList) item.get("sublistItems");
+
+                for (HashMap subitem : subitems) {
+                    Checklist.SublistItem sublistItem = new Checklist.SublistItem((String) subitem.get("task"));
+                    //TODO:
+                    //sublistItem.setAssigned();
+                    if (subitem.containsKey("sublistItemID") && !((String) subitem.get("sublistItemID")).equals("null")) {
+                        sublistItem.setItemID(Long.parseLong((String) subitem.get("sublistItemID")));
+                    }
+                    if (subitem.containsKey("isDone")) {
+                        sublistItem.setDone((boolean) subitem.get("isDone"));
+                    }
+                    checklistItem.addNewSublistItem(sublistItem);
+
+                }
+                if (item.containsKey("checklistItemID") && !((String) item.get("checklistItemID")).equals("null")) {
+                    checklistItem.setItemID(Long.parseLong((String) item.get("checklistItemID")));
+                }
+                if (item.containsKey("isDone")) {
+                    checklistItem.setDone((boolean) item.get("isDone"));
+                }
+                l.addItem(checklistItem);
+            }
+        }
+        return l;
     }
     public List<ChecklistItem> getItemList() {
         return itemList;

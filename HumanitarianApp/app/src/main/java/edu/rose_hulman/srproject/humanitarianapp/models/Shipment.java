@@ -1,5 +1,10 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 
 /**
@@ -397,6 +402,40 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         sb.append("}");
         return sb.toString();
     }
+    public static Shipment fromJSON(long lg, String json){
+        ObjectMapper mapper=new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeReference=
+                new TypeReference<HashMap<String, Object>>() {
+                };
+        try {
+            HashMap<String, Object> source = mapper.readValue(json, typeReference);
+            Shipment l=parseJSON(lg, source);
+            return l;
+
+
+
+
+
+        }catch(Exception e){
+
+        }
+        return null;
+    }
+    public static Shipment parseJSON(long lg, HashMap<String, Object> source){
+        Shipment s= new Shipment(lg);
+        s.setContents((String) source.get("contents"));
+        s.setFrom((String) source.get("fromLocationID"));
+        s.setTo((String) source.get("toLocationID"));
+        s.setName((String) source.get("name"));
+        String[] split=((String) source.get("pickupTime")).split(" ");
+        if (split.length==2) {
+            s.setDate(split[0]);
+            s.setTime(split[1]);
+        }
+        s.setStatus((String) source.get("status"));
+        return s;
+    }
+
     public Shipment clone(){
         Shipment newShipment=new Shipment(this.getID());
         newShipment.setDate(this.getDate());

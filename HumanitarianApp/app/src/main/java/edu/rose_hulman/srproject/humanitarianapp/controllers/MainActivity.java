@@ -157,6 +157,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
+        //LocalDataSaver.clearAll();
         //LocalDataSaver.clearUpdatedSelectables();
         //LocalDataSaver.clearAddedSelectables();
         setContentView(R.layout.activity_main);

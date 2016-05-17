@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by bollivga on 10/20/2015.
  */
 public class LocalDataDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "Humanitarian.db";
     private static final String[] TABLE_NAMES={"Location", "People", "Checklist",
         "Project", "Group", "Email", "Phone", "Shipment", "Note","ChecklistItem",
@@ -151,6 +151,8 @@ public class LocalDataDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_Project_GROUP_REL);
         db.execSQL(SQL_UPDATED_IDs);
         db.execSQL(SQL_ADDED_IDs);
+        db.execSQL(ALL_THINGS_MASHUP);
+
     }
 
     @Override

@@ -130,6 +130,10 @@ public class LocalDataSaver {
         ApplicationWideData.db.delete("[AddedIDs]", null, null);
         return true;
     }
+    public static boolean clearAll(){
+        ApplicationWideData.db.delete("[AllData]", null, null);
+        return true;
+    }
 
     public static void updateGroup(Group group) {
         String name = group.getName();

@@ -16,6 +16,8 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -72,9 +74,21 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID()+"", new NoteListCallback());
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID() + "", new NoteListCallback());
+        }
+        else{
+            Group g= mListener.getSelectedGroup();
+            long gId=g.getID();
+            List<Note> allNotes=ApplicationWideData.getAllNotes();
+            for (Note c: allNotes){
+                if (c.getParentID()==gId){
+                    checklists.add(c);
+                }
+            }
+        }
 //        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 

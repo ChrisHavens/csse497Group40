@@ -1,6 +1,7 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 import android.app.Activity;
+import android.app.Application;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -66,9 +68,21 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID()+"", new ChecklistListCallback());
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID() + "", new ChecklistListCallback());
+        }
+        else{
+            Group g= mListener.getSelectedGroup();
+            long gId=g.getID();
+            List<Checklist> allChecklists=ApplicationWideData.getAllChecklists();
+            for (Checklist c: allChecklists){
+                if (c.getParentID()==gId){
+                    checklists.add(c);
+                }
+            }
+        }
     }
 
     @Override

@@ -202,15 +202,19 @@ public class AddShipmentDialogFragment extends DialogFragment
                dateButton.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       to=(Location)toSpinner.getSelectedItem();
+                           to=(Location)toSpinner.getSelectedItem();
                        from=(Location)fromSpinner.getSelectedItem();
-                       shipment.setTo(to.getID() + "");
-                       shipment.setToName(to.getName());
-                       shipment.setFrom(from.getID() + "");
-                       shipment.setFromName(from.getName());
-                       shipment.setLastLocation(from);
-                       toField.setText(to.getName());
-                       fromField.setText(from.getName());
+                       if (to!=null) {
+                           shipment.setTo(to.getID() + "");
+                           shipment.setToName(to.getName());
+                           toField.setText(to.getName());
+                       }
+                       if (from!=null) {
+                           shipment.setFrom(from.getID() + "");
+                           shipment.setFromName(from.getName());
+                           shipment.setLastLocation(from);
+                           fromField.setText(from.getName());
+                       }
                        layout.removeAllViews();
                        layout.addView(createDateChooser());
                    }

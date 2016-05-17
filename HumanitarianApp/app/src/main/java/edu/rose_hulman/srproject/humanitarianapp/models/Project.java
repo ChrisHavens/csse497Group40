@@ -390,6 +390,9 @@ public class Project implements Serialisable, Selectable {
         }
         this.groupIDs.add(ID);
     }
+    public List<Long> getGroupIDs(){
+        return this.groupIDs;
+    }
 
     public void updateID(long newID) {
         long oldID = this.id;

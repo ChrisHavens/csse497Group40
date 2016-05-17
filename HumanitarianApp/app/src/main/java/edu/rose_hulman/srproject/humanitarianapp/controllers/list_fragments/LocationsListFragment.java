@@ -20,6 +20,9 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
+import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -82,9 +85,21 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID()+"", new LocationListCallback());
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new LocationListCallback());
+        }
+        else{
+            Project p= mListener.getSelectedProject();
+            long gId=p.getID();
+            List<Location> allLocs=ApplicationWideData.getAllLocations();
+            for (Location c: allLocs){
+                if (c.getProjectIDs().contains(gId)){
+                    locations.add(c);
+                }
+            }
+        }
      //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 

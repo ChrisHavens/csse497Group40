@@ -2,6 +2,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 
 import android.app.Activity;
+import android.app.Application;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -70,10 +72,19 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        //if (mListener.getUserID().equals("-1")){
-            service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID()+"", new GroupListCallback());
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            //if (mListener.getUserID().equals("-1")){
+            service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
+        }
+        else{
+            Project p= mListener.getSelectedProject();
+            List<Long> longs=p.getGroupIDs();
+            for (Long l: longs){
+                groups.add(ApplicationWideData.getGroupByID(l));
+            }
+        }
         //}
         //else {
         //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());

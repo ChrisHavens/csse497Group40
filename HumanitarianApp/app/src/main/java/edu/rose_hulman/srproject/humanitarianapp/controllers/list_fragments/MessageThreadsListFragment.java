@@ -16,6 +16,8 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -66,10 +68,22 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        Log.wtf("s40", "Here");
-        service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            Log.wtf("s40", "Here");
+            service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
+        }
+        else{
+            Group g= mListener.getSelectedGroup();
+            long gId=g.getID();
+            List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
+            for (MessageThread thread: allThreads){
+                if (thread.getParentID()==gId){
+                    threads.add(thread);
+                }
+            }
+        }
     }
 
     @Override

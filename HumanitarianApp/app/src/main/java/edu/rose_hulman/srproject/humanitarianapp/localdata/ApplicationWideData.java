@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,6 +118,15 @@ public class ApplicationWideData {
     public static List<Checklist> getAllChecklists() {
         return knownChecklists;
 
+    }
+
+    public static void overwriteChecklists(Collection<Checklist> checklists){
+        knownChecklists.clear();
+        knownChecklists.addAll(checklists);
+
+        for(Checklist checklist: knownChecklists){
+            LocalDataSaver.saveChecklist(checklist);
+        }
     }
 
     public static void addNewGroup(Group group) {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -16,6 +17,78 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
  * Created by Chris on 11/2/2015.
  */
 public class LocalDataSaver {
+
+    public static void saveChecklist(Checklist checklist){
+        long id = checklist.getID();
+        String body = checklist.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Checklist");
+        values.put("Body", body);
+    }
+
+    public static void saveProject(Project project){
+        long id = project.getID();
+        String body = project.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Project");
+        values.put("Body", body);
+    }
+
+    public static void saveGroup(Group group){
+        long id = group.getID();
+        String body = group.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Group");
+        values.put("Body", body);
+    }
+
+    public static void savePerson(Person person){
+        long id = person.getID();
+        String body = person.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Person");
+        values.put("Body", body);
+    }
+
+    public static void saveLocation(Location location){
+        long id = location.getID();
+        String body = location.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Location");
+        values.put("Body", body);
+    }
+
+    public static void saveShipment(Shipment shipment){
+        long id = shipment.getID();
+        String body = shipment.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Shipment");
+        values.put("Body", body);
+    }
+
+    public static void saveMessage(MessageThread.Message message){
+        long id = message.getItemID();
+        String body = message.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "Message");
+        values.put("Body", body);
+    }
+
+    public static void saveMessageThread(MessageThread messageThread){
+        long id = messageThread.getID();
+        String body = messageThread.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", "MessageThread");
+        values.put("Body", body);
+    }
 
     public static void updateProject(Project project) {
         String name = project.getName();

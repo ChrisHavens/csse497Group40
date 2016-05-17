@@ -30,6 +30,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
+import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
@@ -50,6 +51,9 @@ public class ApplicationWideData {
     public static List<Person> knownPersons;
     public static List<Project> knownProjects;
     public static List<Shipment> knownShipments;
+    public static List<Note> knownNotes;
+    public static List<MessageThread> knownMessageThreads;
+    public static List<MessageThread.Message> knownMessages;
 
     public static long userID = 0;
     public static int createdObjectCounter;
@@ -64,6 +68,9 @@ public class ApplicationWideData {
         knownPersons = new ArrayList();
         knownProjects = new ArrayList();
         knownShipments = new ArrayList();
+        knownNotes = new ArrayList();
+        knownMessageThreads = new ArrayList();
+        knownMessages = new ArrayList();
 
 
         //Pull these numbers from local storage only when a user is known
@@ -201,7 +208,6 @@ public class ApplicationWideData {
 
     public static List<Person> getAllPersons() {
         return knownPersons;
-
     }
 
     public static void addNewProject(Project project) {
@@ -220,7 +226,6 @@ public class ApplicationWideData {
                 boolean bool = knownProjects.remove(existingProject);
                 bool = bool && LocalDataSaver.deleteProject(id);
                 return bool;
-
             }
         }
         return false;
@@ -247,7 +252,6 @@ public class ApplicationWideData {
 
     public static List<Project> getAllProjects() {
         return knownProjects;
-
     }
 
     public static void addNewShipment(Shipment shipment) {
@@ -270,6 +274,32 @@ public class ApplicationWideData {
     public static List<Shipment> getAllShipments() {
         return knownShipments;
 
+    }
+
+    public static List<Note> getAllNotes(){
+        return knownNotes;
+    }
+
+    public static Note getNoteByID(long id) {
+        for(Note note: knownNotes){
+            if (note.getID() == id){
+                return note;
+            }
+        }
+        return null;
+    }
+
+    public static List<MessageThread> getAllMessageThreads(){
+        return knownMessageThreads;
+    }
+
+    public static MessageThread getMessageThreadByID(long id){
+        for(MessageThread thread: knownMessageThreads){
+            if (thread.getID() == id){
+                return thread;
+            }
+        }
+        return null;
     }
 
     public static void switchSyncMode(MainActivity activity) {
@@ -320,9 +350,7 @@ public class ApplicationWideData {
                 service.addNewProject((Project) s, userID + "", new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
-
                     }
-
                     @Override
                     public void failure(RetrofitError error) {
                         Log.wtf("s40 Adding New Projects", error.getMessage());
@@ -361,7 +389,6 @@ public class ApplicationWideData {
                     String idString = (String) map.get("_id");
                     if (updated.containsKey(idString)){
                         doUpdateProject(updated.get(idString),activity);
-
                     }
                     else {
                         long id = Long.parseLong(idString);
@@ -378,14 +405,11 @@ public class ApplicationWideData {
                         ApplicationWideData.addExistingProject(p);
                         LocalDataSaver.updateProject(p);
                     }
-
-
                 }
                 for (String entry: updated.keySet()){
                     if (!ids.contains(entry)){
                         Toast.makeText(activity, "Deleting: "+entry, Toast.LENGTH_SHORT).show();
                         ApplicationWideData.deleteProjectByID(Long.parseLong(entry));
-
                     }
                 }
 

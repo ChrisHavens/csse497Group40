@@ -76,9 +76,10 @@ public class LocalDataLoader {
     }
 
     public static void loadEverything() {
-        loadInitialEverything();
-        loadProjects();
-        loadGroups();
+        List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
+        ApplicationWideData.initialProjects(projects);
+        List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
+        ApplicationWideData.initialGroups(groups);
         loadPersons();
         loadLocations();
         loadChecklists();

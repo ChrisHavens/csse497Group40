@@ -85,7 +85,10 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         List<Long> longs=p.getGroupIDs();
         Toast.makeText(getActivity(), "Size: "+longs.size(), Toast.LENGTH_LONG).show();
         for (Long l: longs){
-            groups.put(l, ApplicationWideData.getGroupByID(l));
+            Group g=ApplicationWideData.getGroupByID(l);
+            if (g!=null) {
+                groups.put(l, g);
+            }
         }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();

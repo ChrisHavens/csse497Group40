@@ -180,8 +180,10 @@ public class ApplicationWideData {
         }
     }
 
-    public static void addChecklistMap(HashMap<Long, Checklist> checklists){
-
+    public static void addChecklistHashMap(HashMap<Long, Checklist> checklists){
+        for (Long l: checklists.keySet()){
+            knownChecklists.add(checklists.get(l));
+        }
     }
 
     public static void initialProjects(List<Project> projects){
@@ -564,7 +566,10 @@ public class ApplicationWideData {
                         //deleteGroupByID(val);
                     } else if(type.equals("Note")) {
                         //deleteGroupByID(val);
-                    } else
+                    } else if (type.equals("Message")){
+
+                    }
+                    else
                     {
                         Log.wtf("Recived deletion of type: ", type);
                     }

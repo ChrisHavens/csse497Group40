@@ -1,5 +1,6 @@
 package edu.rose_hulman.srproject.humanitarianapp.nonlocaldata;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -275,7 +276,7 @@ public class TakeAHugeDump {
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
                     Checklist c=Checklist.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
-
+                    Log.wtf("Checklist: ", c.toJSON());
 
                     if(!checklistList.containsKey(c.getID())) {
                         checklistList.put(c.getID(), c);
@@ -283,7 +284,8 @@ public class TakeAHugeDump {
                     LocalDataSaver.saveChecklist(c);
 
                 }
-                ApplicationWideData.addChecklistMap(checklistList);
+                ApplicationWideData.addChecklistHashMap(checklistList);
+                Log.wtf("Checklist Count", ApplicationWideData.getAllChecklists().size()+"");
 
             } catch (IOException e) {
                 e.printStackTrace();

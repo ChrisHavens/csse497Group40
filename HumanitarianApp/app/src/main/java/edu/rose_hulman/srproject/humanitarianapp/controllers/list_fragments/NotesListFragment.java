@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,6 +84,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<Note> allNotes=ApplicationWideData.getAllNotes();
+        Toast.makeText(getActivity(), allNotes.size()+"", Toast.LENGTH_SHORT).show();
         for (Note c: allNotes){
             if (c.getParentID()==gId){
                 notes.put(c.getID(), c);

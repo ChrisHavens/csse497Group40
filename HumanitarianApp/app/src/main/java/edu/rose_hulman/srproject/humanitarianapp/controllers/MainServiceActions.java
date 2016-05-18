@@ -153,6 +153,7 @@ public class MainServiceActions {
         this.selectedNote.setLastModified(ApplicationWideData.getCurrentTime());
         this.selectedNote.setTitle(title);
         this.selectedNote.setBody(body);
+        LocalDataSaver.saveNote(selectedNote);
         if (!ApplicationWideData.manualSnyc) {
             service.updateNote(this.selectedNote, userID, new Callback<Response>() {
                 @Override
@@ -168,8 +169,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedNote, "Note");
+            context.refreshLists();
         }
-        LocalDataSaver.saveNote(selectedNote);
+
     }
 
     public void addNewPerson(final String name, String phone, String email) {
@@ -199,6 +201,7 @@ public class MainServiceActions {
         if (groupID != -1) {
             p.addGroupID(groupID);
         }
+        LocalDataSaver.savePerson(p);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -217,8 +220,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(p, "Person");
+            context.refreshLists();
         }
-        LocalDataSaver.savePerson(p);
+
 
     }
     public void addPersonToProjectOrGroup(final Person p) {
@@ -236,6 +240,7 @@ public class MainServiceActions {
     }
     public void removePersonFromProjectOrGroup(final Person p){
         final long projectID=selectedProject.getID();
+        LocalDataSaver.savePerson(p);
         if (getSelectedGroup()!=null){
             final long groupID=getSelectedGroup().getID();
             p.removeGroupID(groupID);
@@ -258,7 +263,7 @@ public class MainServiceActions {
             else{
                 LocalDataSaver.addUpdatedSelectable(p, "Person");
             }
-            LocalDataSaver.savePerson(p);
+
         }
         else{
             p.removeProjectID(projectID);
@@ -280,6 +285,7 @@ public class MainServiceActions {
             }
             else{
                 LocalDataSaver.addUpdatedSelectable(p, "Person");
+                context.refreshLists();
             }
             LocalDataSaver.savePerson(p);
         }
@@ -288,6 +294,7 @@ public class MainServiceActions {
 
 
         p.addProjectID(projectID);
+        LocalDataSaver.savePerson(p);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -308,14 +315,16 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(p, "Person");
+            context.refreshLists();
         }
-        LocalDataSaver.savePerson(p);
+
     }
     private void addPersonToGroup(final Person p, long projectID, final long groupID){
         if (!p.isInProject(projectID)){
             addPersonToProject(p, projectID);
         }
         p.addGroupID(groupID);
+        LocalDataSaver.savePerson(p);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -333,8 +342,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(p, "Person");
+            context.refreshLists();
         }
-        LocalDataSaver.savePerson(p);
+
     }
 
     public void addNewProject(final String name) {
@@ -357,15 +367,16 @@ public class MainServiceActions {
             }
         };
 
-        boolean success = LocalDataSaver.addProject(p);
-        if (success) {
-            Toast.makeText(context, "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
-        }
+//        boolean success = LocalDataSaver.addProject(p);
+//        if (success) {
+//            Toast.makeText(context, "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
+//        }
         if (!ApplicationWideData.getManualSync()) {
             service.addNewProject(p, userID, responseCallback);
         }
         else{
             LocalDataSaver.addNewSelectable(p, "Project");
+            context.refreshLists();
         }
             LocalDataSaver.saveProject(p);
             Log.wtf("Added project", "to added table");
@@ -396,6 +407,7 @@ public class MainServiceActions {
             });
         } else {
             LocalDataSaver.addUpdatedSelectable(p, "Project");
+            context.refreshLists();
         }
     }
 
@@ -409,6 +421,8 @@ public class MainServiceActions {
         g.setName(name);
         g.setProject(selectedProject);
         selectedProject.getGroupIDs().add(g.getID());
+        LocalDataSaver.saveGroup(g);
+        LocalDataSaver.saveProject(selectedProject);
 
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
@@ -428,11 +442,11 @@ public class MainServiceActions {
         else{
             LocalDataSaver.addNewSelectable(g, "Group");
             LocalDataSaver.addUpdatedSelectable(selectedProject, "Project");
+            context.refreshLists();
         }
 
 
-        LocalDataSaver.saveGroup(g);
-        LocalDataSaver.saveProject(selectedProject);
+
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
@@ -444,6 +458,7 @@ public class MainServiceActions {
 
 
     public void addNewLocation(final Location l) {
+        LocalDataSaver.saveLocation(l);
         if (!ApplicationWideData.manualSnyc) {
 
             Callback<Response> responseCallback = new Callback<Response>() {
@@ -463,8 +478,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(l, "Location");
+            context.refreshLists();
         }
-        LocalDataSaver.saveLocation(l);
+
 
     }
 
@@ -484,6 +500,7 @@ public class MainServiceActions {
 //        String s=sdf.format(date);
 //        //LocalDateTime time;
 //        note.setLastModified(s);
+        LocalDataSaver.saveNote(note);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -501,11 +518,13 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(note, "Note");
+            context.refreshLists();
         }
-        LocalDataSaver.saveNote(note);
+
     }
 
     public void addNewShipment(final Shipment l) {
+        LocalDataSaver.saveShipment(l);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -523,8 +542,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(l, "Shipment");
+            context.refreshLists();
         }
-        LocalDataSaver.saveShipment(l);
+
     }
     public void addNewChecklist(final Checklist checklist) {
         Random rand = new Random();
@@ -532,6 +552,7 @@ public class MainServiceActions {
         i += 700000;
         checklist.setID(i);
         checklist.setItemIDs();
+        LocalDataSaver.saveChecklist(checklist);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -550,8 +571,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(checklist, "Checklist");
+            context.refreshLists();
         }
-        LocalDataSaver.saveChecklist(checklist);
+
     }
     public void addNewMessageThread(final MessageThread m){
 
@@ -560,6 +582,7 @@ public class MainServiceActions {
         i += 700000;
         m.setID(i);
         m.setItemIDs();
+        LocalDataSaver.saveMessageThread(m);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -578,8 +601,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(m, "Message Thread");
+            context.refreshLists();
         }
-        LocalDataSaver.saveMessageThread(m);
+
 
 
     }
@@ -591,6 +615,7 @@ public class MainServiceActions {
         //Log.wtf("s40-6", message1.)
         Log.wtf("s40-4", getSelectedMessageThread().getID() + "");
         Log.wtf("s40-3", message1.getID() + "");
+        LocalDataSaver.saveMessage(message1);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> addResponse = new Callback<Response>() {
                 @Override
@@ -610,13 +635,15 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addNewSelectable(message1, "Message");
+            context.refreshLists();
         }
-        LocalDataSaver.saveMessage(message1);
+
     }
     public void hideProject() {
         String hideOrShow = "hide";
         if(selectedProject.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveProject(selectedProject);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> hideResponse = new Callback<Response>() {
                 @Override
@@ -636,8 +663,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedProject, "Project");
+            context.refreshLists();
         }
-        LocalDataSaver.saveProject(selectedProject);
+
 
 
 
@@ -650,6 +678,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedGroup.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveGroup(selectedGroup);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -670,8 +699,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedGroup, "Group");
+            context.refreshLists();
         }
-        LocalDataSaver.saveGroup(selectedGroup);
+
 //        service.hide("group", selectedGroup.getID() + "", hideResponse);
     }
 
@@ -680,6 +710,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedChecklist.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveChecklist(selectedChecklist);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -700,8 +731,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedChecklist, "Checklist");
+            context.refreshLists();
         }
-        LocalDataSaver.saveChecklist(selectedChecklist);
+
     }
 
 
@@ -709,6 +741,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedLocation.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveLocation(selectedLocation);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -729,8 +762,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedLocation, "Location");
+            context.refreshLists();
         }
-        LocalDataSaver.saveLocation(selectedLocation);
+
     }
 
 
@@ -738,6 +772,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedNote.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveNote(selectedNote);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -758,8 +793,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedNote, "Note");
+            context.refreshLists();
         }
-        LocalDataSaver.saveNote(selectedNote);
+
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
@@ -767,6 +803,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedPerson.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.savePerson(selectedPerson);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -786,8 +823,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedPerson, "Person");
+            context.refreshLists();
         }
-        LocalDataSaver.savePerson(selectedPerson);
+
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
 
@@ -796,6 +834,7 @@ public class MainServiceActions {
         String hideOrShow = "hide";
         if(selectedShipment.isHidden())
             hideOrShow = "show";
+        LocalDataSaver.saveShipment(selectedShipment);
         if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
@@ -814,26 +853,34 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(selectedShipment, "Shipment");
+            context.refreshLists();
         }
-        LocalDataSaver.saveShipment(selectedShipment);
+
 //        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
 
     }
     public void editChecklist(final Checklist c){
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful editing of checklist: "+c.getTitle(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+        LocalDataSaver.saveChecklist(c);
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful editing of checklist: " + c.getTitle(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
 
-        service.addNewChecklist(c, userID, responseCallback);
+
+            service.addNewChecklist(c, userID, responseCallback);
+        }else{
+            LocalDataSaver.addUpdatedSelectable(c, "Checklist");
+        }
+
     }
     public void resolveConflicts(Selectable s, List<Conflict> conflicts){
         Callback<Response> hideResponse=new Callback<Response>() {
@@ -869,6 +916,7 @@ public class MainServiceActions {
 
     }
     public void updateGroup(final Group group){
+        LocalDataSaver.saveGroup(group);
         if (!ApplicationWideData.manualSnyc) {
 
             StringBuilder sb = new StringBuilder();
@@ -877,6 +925,7 @@ public class MainServiceActions {
                 @Override
                 public void success(Response response, Response response2) {
                     Log.wtf("s40", "Successful edit of group " + group.getName());
+                    context.refreshLists();
                     //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
                 }
 
@@ -888,16 +937,19 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(group, "Group");
+            context.refreshLists();
         }
-        LocalDataSaver.saveGroup(group);
+
     }
     public void updateLocation(final Location location){
+        LocalDataSaver.saveLocation(location);
         if (!ApplicationWideData.manualSnyc) {
             String doc = "{\"doc\":" + location.toJSON() + "}";
             service.updateLocation(location, doc, userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     Log.wtf("s40", "Successful edit of location " + location.getName());
+                    context.refreshLists();
                     //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
                 }
 
@@ -908,17 +960,20 @@ public class MainServiceActions {
             });
         }else{
             LocalDataSaver.addUpdatedSelectable(location, "Location");
+            context.refreshLists();
         }
-        LocalDataSaver.saveLocation(location);
+
 
     }
     public void updatePerson(final Person person){
+        LocalDataSaver.savePerson(person);
         if (!ApplicationWideData.manualSnyc) {
             String json = "{\"doc\":" + person.toJSON() + "}";
             service.updatePerson(person, json, userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     Log.wtf("s40", "Successful edit of person " + person.getName());
+                    context.refreshLists();
                 }
 
                 @Override
@@ -929,8 +984,9 @@ public class MainServiceActions {
         }
         else{
             LocalDataSaver.addUpdatedSelectable(person, "Person");
+            context.refreshLists();
         }
-        LocalDataSaver.savePerson(person);
+
     }
 
 

@@ -79,6 +79,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         long gId=g.getID();
         List<Checklist> allChecklists=ApplicationWideData.getAllChecklists();
         for (Checklist c: allChecklists){
+            Log.wtf("Found a checklist", c.toJSON());
             if (c.getParentID()==gId){
                 checklists.put(c.getID(), c);
             }

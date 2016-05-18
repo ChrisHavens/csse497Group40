@@ -180,7 +180,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     Project p=Project.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
                     ApplicationWideData.addExistingProject(p);
-                    LocalDataSaver.updateProject(p);
+                    //LocalDataSaver.updateProject(p);
                     if(!projectList.contains(p)) {
                         projectList.add(p);
                     }

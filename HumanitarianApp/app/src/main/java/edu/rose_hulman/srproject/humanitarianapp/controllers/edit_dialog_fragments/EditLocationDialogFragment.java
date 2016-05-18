@@ -36,7 +36,7 @@ import retrofit.client.Response;
  */
 public class EditLocationDialogFragment extends DialogFragment {
 
-    private Interfaces.UserIDGetter mListener;
+    private EditLocationCallbacks mListener;
     private EditText nameField;
     private EditText latField;
     private EditText lngField;
@@ -74,48 +74,34 @@ public class EditLocationDialogFragment extends DialogFragment {
 //
 //
                                 if (nameEdited || latEdited || latEdited) {
-                                    StringBuilder sb = new StringBuilder();
-                                    sb.append("{\"doc\":{");
+//                                    StringBuilder sb = new StringBuilder();
+//                                    sb.append("{\"doc\":{");
                                     if (nameEdited) {
                                         String name = nameField.getText().toString();
-                                        sb.append("\"name\": \"" + name + "\"");
+//                                        sb.append("\"name\": \"" + name + "\"");
                                         location.setName(name);
-                                        if (latEdited || lngEdited) {
-                                            sb.append(",");
-                                        }
+//                                        if (latEdited || lngEdited) {
+//                                            sb.append(",");
+//                                        }
                                     }
                                     if (latEdited) {
                                         float lat = Float.parseFloat(latField.getText().toString());
-                                        sb.append("\"lat\": \"" + lat + "\"");
+//                                        sb.append("\"lat\": \"" + lat + "\"");
                                         location.setLat(lat);
-                                        if (lngEdited) {
-                                            sb.append(",");
-                                        }
+//                                        if (lngEdited) {
+//                                            sb.append(",");
+//                                        }
                                     }
                                     if (lngEdited) {
                                         float lng = Float.parseFloat(lngField.getText().toString());
-                                        sb.append("\"lng\": \"" + lng + "\"");
+//                                        sb.append("\"lng\": \"" + lng + "\"");
                                         location.setLng(lng);
                                     }
-                                    sb.append("}}");
+//                                    sb.append("}}");
 
-                                    NonLocalDataService service = new NonLocalDataService();
-//                                String phone = phoneField.getText().toString();
-//                                String email = emailField.getText().toString();
-                                    //TODO implement role
 
-                                    service.updateLocation(location, sb.toString(), mListener.getUserID(),new Callback<Response>() {
-                                        @Override
-                                        public void success(Response response, Response response2) {
-                                            Log.wtf("s40", "Successful edit of location " + location.getName());
-                                            //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
-                                        }
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            Log.e("s40 RetroFitError", error.getMessage());
-                                        }
-                                    });
+                                    mListener.updateLocation(location);
                                 }
                                 EditLocationDialogFragment.this.getDialog().dismiss();
                             }
@@ -231,7 +217,7 @@ public class EditLocationDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (Interfaces.UserIDGetter) activity;
+            mListener = (EditLocationCallbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -242,6 +228,9 @@ public class EditLocationDialogFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    public interface EditLocationCallbacks{
+        public void updateLocation(Location l);
     }
 
 

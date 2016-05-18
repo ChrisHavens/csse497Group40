@@ -153,7 +153,7 @@
 //        ApplicationWideData.knownPersons = new ArrayList();
 //        Person p = new Person("Billyjoebob","309-555-1061");
 //        Person.PersonLocation loc = new Person.PersonLocation();
-//        loc.setTime("1994-07-29 00:00");
+//        loc.setDateTimeModified("1994-07-29 00:00");
 //        p.setLastCheckin(loc);
 //        System.out.println(p.toJSON());
 //        service.addNewPerson(p, responseCallback);

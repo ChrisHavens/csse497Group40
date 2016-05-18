@@ -195,7 +195,7 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         this.toName = toName;
     }
 
-    public void setTime(String time){
+    public void setDateTimeModified(String time){
         this.time = time;
         this.isDirty[7] = true;
     }

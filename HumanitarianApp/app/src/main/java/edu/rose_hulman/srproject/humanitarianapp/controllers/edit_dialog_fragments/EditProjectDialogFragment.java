@@ -27,7 +27,7 @@ import retrofit.client.Response;
  */
 public class EditProjectDialogFragment extends DialogFragment {
 
-    private Interfaces.UserIDGetter mListener;
+    private EditProjectListener mListener;
     //private EditProjectListener mListener;
     private EditText nameField;
     private long projectID;
@@ -60,27 +60,8 @@ public class EditProjectDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String name = nameField.getText().toString();
                         p.setName(name);
-                        LocalDataSaver.updateProject(p);
-                        if (!ApplicationWideData.manualSnyc) {
-                            NonLocalDataService service = new NonLocalDataService();
-                            StringBuilder sb = new StringBuilder();
-                            sb.append("{\"doc\":{\"name\": \"" + name + "\"}}");
-                            service.updateProject(p, sb.toString(), mListener.getUserID(), new Callback<Response>() {
-                                @Override
-                                public void success(Response response, Response response2) {
-                                    Log.wtf("s40", "Successful edit of project " + p.getName());
-                                    //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
-                                }
+                        mListener.updateProject(p);
 
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    Log.e("s40 RetroFitError", error.getResponse().getStatus()+"");
-                                    //Log.e("s40 RetroFitE")
-                                }
-                            });
-                        } else {
-                            LocalDataSaver.addUpdatedSelectable(p, "Project");
-                        }
                         EditProjectDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -108,7 +89,7 @@ public class EditProjectDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (Interfaces.UserIDGetter) activity;
+            mListener = (EditProjectListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -131,10 +112,10 @@ public class EditProjectDialogFragment extends DialogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-//    public interface EditProjectListener {
-//        // TODO: Update argument type and name
-//        public void editProject(Project p);
-//
-//    }
+    public interface EditProjectListener {
+        // TODO: Update argument type and name
+        public void updateProject(Project p);
+
+    }
 
 }

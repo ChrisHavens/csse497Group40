@@ -347,7 +347,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
 //                            personLoc.setLat(Float.parseFloat((String) lastLoc.get("lat")));
 //                            personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
 //                            personLoc.setName((String) lastLoc.get("name"));
-//                            personLoc.setTime((String) lastLoc.get("time"));
+//                            personLoc.setDateTimeModified((String) lastLoc.get("time"));
 //                            p.setLastCheckin(personLoc);
 //                        }
 //                        nameLayout.setVisibility(View.VISIBLE);

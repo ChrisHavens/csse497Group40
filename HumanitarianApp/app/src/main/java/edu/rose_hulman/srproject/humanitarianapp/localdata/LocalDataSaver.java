@@ -123,14 +123,14 @@ public class LocalDataSaver {
     }
 
     public static void saveMessage(MessageThread.Message message){
-        long id = message.getItemID();
+        long id = message.getID();
         String type = "Message";
         String body = message.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
         values.put("Type", type);
         values.put("Body", body);
-        values.put("DateModified", message.getTime());
+        values.put("DateModified", message.getDateTimeModified());
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);

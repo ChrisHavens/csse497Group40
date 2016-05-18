@@ -381,6 +381,14 @@ public class ApplicationWideData {
         }
         return null;
     }
+    public static MessageThread.Message getMessageByID(long id){
+        for(MessageThread.Message message: knownMessages){
+            if (message.getID() == id){
+                return message;
+            }
+        }
+        return null;
+    }
 
     public static void switchSyncMode(MainActivity activity) {
         manualSnyc = !manualSnyc;

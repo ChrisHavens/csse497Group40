@@ -6,13 +6,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 
@@ -31,7 +28,7 @@ public class MessageThread implements Selectable{
     private Comparator<Message> comparator= new Comparator<Message>() {
         @Override
         public int compare(Message lhs, Message rhs) {
-            return lhs.getTime().compareTo(rhs.getTime());
+            return lhs.getDateTimeModified().compareTo(rhs.getDateTimeModified());
         }
     };
     private String datetime;
@@ -65,7 +62,7 @@ public class MessageThread implements Selectable{
     public MessageThread(String title, List<Message> itemList) {
         this.title = title;
         for (Message item: itemList){
-            this.itemList.put(item.getItemID()+"", item);
+            this.itemList.put(item.getID()+"", item);
         }
             //this.itemList = itemList;
     }
@@ -78,7 +75,7 @@ public class MessageThread implements Selectable{
     public MessageThread(String title, List<Message> itemList, long id) {
         this.title = title;
         for (Message item: itemList){
-            this.itemList.put(item.getItemID()+"", item);
+            this.itemList.put(item.getID()+"", item);
         }
         this.id = id;
     }
@@ -118,7 +115,7 @@ public class MessageThread implements Selectable{
         StringBuilder sb= new StringBuilder();
         for (int i=0; i<itemList.size(); i++){
             Message item=itemList.get(i);
-            sb.append(item.getItemID());
+            sb.append(item.getID());
             sb.append(",");
         }
         if (sb.toString().endsWith(",")){
@@ -190,7 +187,7 @@ public class MessageThread implements Selectable{
     public void setItemList(List<Message> itemList) {
         if (itemList!=null) {
             for (Message item : itemList) {
-                this.itemList.put(item.getItemID() + "", item);
+                this.itemList.put(item.getID() + "", item);
             }
         }
     }
@@ -204,7 +201,7 @@ public class MessageThread implements Selectable{
     }
 
     public void addItem(Message item){
-        this.itemList.put(item.getItemID() + "", item);
+        this.itemList.put(item.getID() + "", item);
     }
 
     public long getParentID() {
@@ -228,7 +225,7 @@ public class MessageThread implements Selectable{
         for (String index: itemList.keySet()){
             long base2=(base+i)*1000;
             Message item=itemList.get(index);
-            item.setItemID(base2+i);
+            item.setID(base2 + i);
             i++;
 
         }
@@ -240,13 +237,13 @@ public class MessageThread implements Selectable{
         count++;
         long base2=(base+count+1);
 
-        message.setItemID(base2);
-        Log.wtf("s40-2", message.getTime());
-        itemList.put(message.getItemID()+"", message);
+        message.setID(base2);
+        Log.wtf("s40-2", message.getDateTimeModified());
+        itemList.put(message.getID()+"", message);
         //2016-01-10 > 2016-01-09
 
-        if (this.newestTime==null || message.getTime().compareTo(this.newestTime)>0){
-            this.newestTime=message.getTime();
+        if (this.newestTime==null || message.getDateTimeModified().compareTo(this.newestTime)>0){
+            this.newestTime=message.getDateTimeModified();
         }
         return message;
     }
@@ -275,7 +272,7 @@ public class MessageThread implements Selectable{
         this.count = count;
     }
 
-    public static class Message{
+    public static class Message implements Selectable{
         private long itemID;
         private String item;
         private String sender;
@@ -317,7 +314,7 @@ public class MessageThread implements Selectable{
 
             sb.append("\"personID\": \"" + sender+"\",");
 
-            sb.append("\"sentDate\": \""+getTime()+"\",");
+            sb.append("\"sentDate\": \""+ getDateTimeModified()+"\",");
             // sb.append("\"text\": \""+item.getItem().replaceAll("\\\\n", "\\\\n")+"\"");
             sb.append("\"text\": \""+getItem()+"\"");
 
@@ -352,7 +349,7 @@ public class MessageThread implements Selectable{
                 message.setSender((String)source.get("personID"));
             }
             if (source.containsKey("sentDate")){
-                message.setTime((String) source.get("sentDate"));
+                message.setDateTimeModified((String) source.get("sentDate"));
             }
             if (source.containsKey("text")){
                 message.setItem((String)source.get("text"));
@@ -385,19 +382,26 @@ public class MessageThread implements Selectable{
 
         }
 
-        public long getItemID() {
+        @Override
+        public boolean isHidden() {
+            return false;
+        }
+
+        public long getID() {
             return itemID;
         }
 
-        public void setItemID(long itemID) {
+        
+
+        public void setID(long itemID) {
             this.itemID = itemID;
         }
 
-        public String getTime() {
+        public String getDateTimeModified() {
             return time;
         }
 
-        public void setTime(String time) {
+        public void setDateTimeModified(String time) {
             this.time = time;
         }
     }

@@ -409,7 +409,7 @@ public class TakeAHugeDump {
 
                     if (!messages.contains(c)){
                         messages.add(c);
-                        messageHashMap.put(c.getItemID(), c);
+                        messageHashMap.put(c.getID(), c);
                     }
                     LocalDataSaver.saveMessage(c);
 

@@ -122,7 +122,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener,
                 GoogleApiClient.OnConnectionFailedListener,
         AddPersonDialogFragment.AddPersonListener,
-        ConflictResolutionDialogFragment.ConflictResolutionListener
+        ConflictResolutionDialogFragment.ConflictResolutionListener,
+        EditProjectDialogFragment.EditProjectListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -1200,6 +1201,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     public List<Conflict> getConflicts() {
         return currConflict.getValue();
+    }
+
+    @Override
+    public void updateProject(Project p) {
+        actions.updateProject(p);
     }
 
 //    private static void saveNewProjects(final MainActivity activity) {

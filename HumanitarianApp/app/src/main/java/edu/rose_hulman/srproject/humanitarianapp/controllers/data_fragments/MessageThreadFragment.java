@@ -26,7 +26,6 @@ import java.util.HashMap;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
-import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -50,7 +49,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
     private Comparator<MessageListMessage> comparator=new Comparator<MessageListMessage>() {
         @Override
         public int compare(MessageListMessage lhs, MessageListMessage rhs) {
-            return rhs.getMessage().getTime().compareTo(lhs.getMessage().getTime());
+            return rhs.getMessage().getDateTimeModified().compareTo(lhs.getMessage().getDateTimeModified());
         }
     };
 
@@ -93,7 +92,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
                 nameField.setText(item.getPerson());
                 textField.setText(item.message.getItem());
-                timeField.setText(item.message.getTime());
+                timeField.setText(item.message.getDateTimeModified());
                 if(mListener.getUserID().equals(item.personID)){
                     layout.setBackgroundColor(getResources().getColor(R.color.SenderBlue));
 
@@ -184,7 +183,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                         if (source != null) {
                             MessageThread.Message m = new MessageThread.Message((String) source.get("text"),
                                     (String) source.get("personID"), (String) source.get("sentDate"));
-                            m.setItemID(Long.parseLong((String) map.get("_id")));
+                            m.setID(Long.parseLong((String) map.get("_id")));
                             messageThread.addItem(m);
                             final MessageListMessage m2=new MessageListMessage(m, "", (String)source.get("personID"));
                             messages2.add(m2);

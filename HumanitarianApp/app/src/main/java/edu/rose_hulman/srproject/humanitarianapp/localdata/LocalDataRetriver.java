@@ -210,7 +210,10 @@ public class LocalDataRetriver {
             result = ApplicationWideData.getMessageThreadByID(ID);
         } else if(type.equals("Note")) {
             result = ApplicationWideData.getNoteByID(ID);
-        } else
+        } else if(type.equals("Message")){
+            result = ApplicationWideData.getMessageByID(ID);
+        }
+        else
         {
             Log.wtf("Attempted to retrive item of type ", type);
         }

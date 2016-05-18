@@ -55,7 +55,7 @@ public class NonLocalDataService {
         service.addNewThread(thread.getID() + "", changerID, new TypedJsonString(thread.toJSON()), callback);
     }
     public void addNewMessage(String parentID, MessageThread.Message message,  String changerID,Callback<Response> callback){
-        service.addNewMessage(parentID, message.getItemID() + "", changerID, new TypedJsonString(message.toJSON()), callback);
+        service.addNewMessage(parentID, message.getID() + "", changerID, new TypedJsonString(message.toJSON()), callback);
     }
     public void addNewProject(Project project, String changerID,Callback<Response> callback){
         service.addNewProject(project.getID() + "", changerID, new TypedJsonString(project.toJSON()), callback);

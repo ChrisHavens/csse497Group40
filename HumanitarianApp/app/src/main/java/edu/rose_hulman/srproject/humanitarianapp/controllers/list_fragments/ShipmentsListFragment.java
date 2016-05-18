@@ -152,7 +152,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 //                    String[] split=((String) source.get("pickupTime")).split(" ");
 //                    if (split.length==2) {
 //                        s.setDate(split[0]);
-//                        s.setTime(split[1]);
+//                        s.setDateTimeModified(split[1]);
 //                    }
 //                    s.setStatus((String) source.get("status"));
                     shipments.put(s.getID(), s);

@@ -1,14 +1,9 @@
 package edu.rose_hulman.srproject.humanitarianapp.controllers;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -158,17 +153,23 @@ public class MainServiceActions {
         this.selectedNote.setLastModified(ApplicationWideData.getCurrentTime());
         this.selectedNote.setTitle(title);
         this.selectedNote.setBody(body);
-        service.updateNote(this.selectedNote, userID, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            service.updateNote(this.selectedNote, userID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.w("RetrofitError", error.getMessage());
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.w("RetrofitError", error.getMessage());
+                }
+            });
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedNote, "Note");
+        }
+        LocalDataSaver.saveNote(selectedNote);
     }
 
     public void addNewPerson(final String name, String phone, String email) {
@@ -198,20 +199,27 @@ public class MainServiceActions {
         if (groupID != -1) {
             p.addGroupID(groupID);
         }
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        //NonLocalDataService service=new NonLocalDataService();
-        service.addNewPerson(p,  userID, responseCallback);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            //NonLocalDataService service=new NonLocalDataService();
+            service.addNewPerson(p, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(p, "Person");
+        }
+        LocalDataSaver.savePerson(p);
+
     }
     public void addPersonToProjectOrGroup(final Person p) {
         long projectID=selectedProject.getID();
@@ -231,79 +239,102 @@ public class MainServiceActions {
         if (getSelectedGroup()!=null){
             final long groupID=getSelectedGroup().getID();
             p.removeGroupID(groupID);
-            Callback<Response> responseCallback = new Callback<Response>() {
-                @Override
-                public void success(Response response, Response response2) {
-                    Toast.makeText(context, "Successful removal of person: " + p.getName()+" from group "+groupID, Toast.LENGTH_SHORT).show();
-                    context.refreshLists();
-                }
+            if (!ApplicationWideData.manualSnyc) {
+                Callback<Response> responseCallback = new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Toast.makeText(context, "Successful removal of person: " + p.getName() + " from group " + groupID, Toast.LENGTH_SHORT).show();
+                        context.refreshLists();
+                    }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
-                    Log.e("RetrofitError", error.getUrl());
-                }
-            };
-            service.removePersonFromGroup(p.getID() + "", groupID + "", userID + "", responseCallback);
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("RetrofitError", error.getMessage());
+                        Log.e("RetrofitError", error.getUrl());
+                    }
+                };
+                service.removePersonFromGroup(p.getID() + "", groupID + "", userID + "", responseCallback);
+            }
+            else{
+                LocalDataSaver.addUpdatedSelectable(p, "Person");
+            }
+            LocalDataSaver.savePerson(p);
         }
         else{
             p.removeProjectID(projectID);
-            Callback<Response> responseCallback = new Callback<Response>() {
-                @Override
-                public void success(Response response, Response response2) {
-                    Toast.makeText(context, "Successful removal of person: " + p.getName()+" from project "+projectID, Toast.LENGTH_SHORT).show();
-                    context.refreshLists();
-                }
+            if (!ApplicationWideData.manualSnyc) {
+                Callback<Response> responseCallback = new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Toast.makeText(context, "Successful removal of person: " + p.getName() + " from project " + projectID, Toast.LENGTH_SHORT).show();
+                        context.refreshLists();
+                    }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
-                    Log.e("RetrofitError", error.getUrl());
-                }
-            };
-            service.removePersonFromProject(p.getID() + "", projectID + "", userID + "", responseCallback);
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("RetrofitError", error.getMessage());
+                        Log.e("RetrofitError", error.getUrl());
+                    }
+                };
+                service.removePersonFromProject(p.getID() + "", projectID + "", userID + "", responseCallback);
+            }
+            else{
+                LocalDataSaver.addUpdatedSelectable(p, "Person");
+            }
+            LocalDataSaver.savePerson(p);
         }
     }
     private void addPersonToProject(final Person p, final long projectID){
 
 
         p.addProjectID(projectID);
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new person: " + p.getName() + " to project " + projectID, Toast.LENGTH_SHORT).show();
+                    context.refreshLists();
+                }
 
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to project "+projectID, Toast.LENGTH_SHORT).show();
-                context.refreshLists();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                //Log.e("RetrofitError", error.g)
-                Log.e("RetrofitError", error.getMessage());
-                Log.e("RetrofitError", error.getUrl());
-            }
-        };
+                @Override
+                public void failure(RetrofitError error) {
+                    //Log.e("RetrofitError", error.g)
+                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", error.getUrl());
+                }
+            };
 //        //NonLocalDataService service=new NonLocalDataService();
-        service.addPersonToProject(p.getID()+"",projectID+"",  userID, responseCallback);
+            service.addPersonToProject(p.getID() + "", projectID + "", userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(p, "Person");
+        }
+        LocalDataSaver.savePerson(p);
     }
     private void addPersonToGroup(final Person p, long projectID, final long groupID){
         if (!p.isInProject(projectID)){
             addPersonToProject(p, projectID);
         }
         p.addGroupID(groupID);
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to group "+groupID, Toast.LENGTH_SHORT).show();
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new person: " + p.getName() + " to group " + groupID, Toast.LENGTH_SHORT).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addPersonToGroup(p.getID() + "", groupID + "", userID, responseCallback);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            service.addPersonToGroup(p.getID() + "", groupID + "", userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(p, "Person");
+        }
+        LocalDataSaver.savePerson(p);
     }
 
     public void addNewProject(final String name) {
@@ -333,11 +364,39 @@ public class MainServiceActions {
         if (!ApplicationWideData.getManualSync()) {
             service.addNewProject(p, userID, responseCallback);
         }
+        else{
+            LocalDataSaver.addNewSelectable(p, "Project");
+        }
             LocalDataSaver.saveProject(p);
             Log.wtf("Added project", "to added table");
-            LocalDataSaver.addNewSelectable(p, "Project");
-            Log.wtf("Size of added table", LocalDataRetriver.getAllAdded().size()+"");
 
+
+            Log.wtf("Size of added table", LocalDataRetriver.getAllAdded().size() + "");
+
+    }
+    public void updateProject(final Project p){
+        LocalDataSaver.saveProject(p);
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            StringBuilder sb = new StringBuilder();
+            sb.append("{\"doc\":"+p.getName()+"}");
+            service.updateProject(p, sb.toString(), userID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Log.wtf("s40", "Successful edit of project " + p.getName());
+                    context.refreshLists();
+                    //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("s40 RetroFitError", error.getResponse().getStatus()+"");
+                    //Log.e("s40 RetroFitE")
+                }
+            });
+        } else {
+            LocalDataSaver.addUpdatedSelectable(p, "Project");
+        }
     }
 
 
@@ -349,6 +408,8 @@ public class MainServiceActions {
         Group g= new Group(i);
         g.setName(name);
         g.setProject(selectedProject);
+        selectedProject.getGroupIDs().add(g.getID());
+
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -361,22 +422,17 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
+        if (!ApplicationWideData.getManualSync()) {
+            service.addNewGroup(g, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(g, "Group");
+            LocalDataSaver.addUpdatedSelectable(selectedProject, "Project");
+        }
 
-        service.addNewGroup(g,  userID, responseCallback);
-        Callback<Response> responseCallback2 = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful editing of project", Toast.LENGTH_LONG).show();
-                context.refreshLists();
 
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewProject(selectedProject,  userID, responseCallback);
+        LocalDataSaver.saveGroup(g);
+        LocalDataSaver.saveProject(selectedProject);
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
@@ -388,21 +444,27 @@ public class MainServiceActions {
 
 
     public void addNewLocation(final Location l) {
+        if (!ApplicationWideData.manualSnyc) {
 
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new location: "+l.getName(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new location: " + l.getName(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
 
-        service.addNewLocation(l,  userID, responseCallback);
+            service.addNewLocation(l, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(l, "Location");
+        }
+        LocalDataSaver.saveLocation(l);
 
     }
 
@@ -422,35 +484,47 @@ public class MainServiceActions {
 //        String s=sdf.format(date);
 //        //LocalDateTime time;
 //        note.setLastModified(s);
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new note: "+note.getTitle(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new note: " + note.getTitle(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewNote(note,  userID, responseCallback);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            service.addNewNote(note, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(note, "Note");
+        }
+        LocalDataSaver.saveNote(note);
     }
 
     public void addNewShipment(final Shipment l) {
-        Callback<Response> responseCallback=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new shipment: "+l.getName(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new shipment: " + l.getName(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        service.addNewShipment(l,  userID, responseCallback);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            service.addNewShipment(l, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(l, "Shipment");
+        }
+        LocalDataSaver.saveShipment(l);
     }
     public void addNewChecklist(final Checklist checklist) {
         Random rand = new Random();
@@ -458,21 +532,26 @@ public class MainServiceActions {
         i += 700000;
         checklist.setID(i);
         checklist.setItemIDs();
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new checklist: " + checklist.getTitle(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new checklist: " + checklist.getTitle(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-
-        service.addNewChecklist(checklist, userID, responseCallback);
+            service.addNewChecklist(checklist, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(checklist, "Checklist");
+        }
+        LocalDataSaver.saveChecklist(checklist);
     }
     public void addNewMessageThread(final MessageThread m){
 
@@ -481,65 +560,87 @@ public class MainServiceActions {
         i += 700000;
         m.setID(i);
         m.setItemIDs();
-        Callback<Response> responseCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Successful adding of new thread: " + m.getTitle(), Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> responseCallback = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Successful adding of new thread: " + m.getTitle(), Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-            }
-        };
-        Log.d("ED","inside of addNewMessageThread");
-        service.addNewThread(m, userID, responseCallback);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("RetrofitError", error.getMessage());
+                }
+            };
+            Log.d("ED", "inside of addNewMessageThread");
+            service.addNewThread(m, userID, responseCallback);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(m, "Message Thread");
+        }
+        LocalDataSaver.saveMessageThread(m);
 
 
     }
     public void addNewMessage(String message, String userID){
         Log.wtf("s40", userID);
-        Callback<Response> addResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(context, "Message sent", Toast.LENGTH_SHORT).show();
-                context.refreshLists();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("Retrofit Error", error.getUrl());
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        };
-        MessageThread.Message message1=new MessageThread.Message(message, userID);
-        Log.wtf("s40",message1.getTime());
-        message1=getSelectedMessageThread().addBuildNewMessage(message1);
+        MessageThread.Message message1 = new MessageThread.Message(message, userID);
+        Log.wtf("s40", message1.getDateTimeModified());
+        message1 = getSelectedMessageThread().addBuildNewMessage(message1);
         //Log.wtf("s40-6", message1.)
         Log.wtf("s40-4", getSelectedMessageThread().getID() + "");
-        Log.wtf("s40-3", message1.getItemID() + "");
-        service.addNewMessage(getSelectedMessageThread().getID() + "", message1, userID, addResponse);
+        Log.wtf("s40-3", message1.getID() + "");
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> addResponse = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Toast.makeText(context, "Message sent", Toast.LENGTH_SHORT).show();
+                    context.refreshLists();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.wtf("Retrofit Error", error.getUrl());
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            };
+
+            service.addNewMessage(getSelectedMessageThread().getID() + "", message1, userID, addResponse);
+        }
+        else{
+            LocalDataSaver.addNewSelectable(message1, "Message");
+        }
+        LocalDataSaver.saveMessage(message1);
     }
     public void hideProject() {
-        Callback<Response> hideResponse=new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                //Toast.makeText(context, "Successfully hid project", Toast.LENGTH_LONG).show();
-                context.refreshLists();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
-
-            }
-        };
         String hideOrShow = "hide";
         if(selectedProject.isHidden())
             hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
+            Callback<Response> hideResponse = new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    //Toast.makeText(context, "Successfully hid project", Toast.LENGTH_LONG).show();
+                    context.refreshLists();
+                }
 
-        service.changeVisibilityProject(selectedProject.getID() + "", hideOrShow, userID, hideResponse);
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.wtf("s40", error.getMessage());
+
+                }
+            };
+            service.changeVisibilityProject(selectedProject.getID() + "", hideOrShow, userID, hideResponse);
+
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedProject, "Project");
+        }
+        LocalDataSaver.saveProject(selectedProject);
+
+
+
         //hide("project", selectedProject.getID() + "", hideResponse);
     }
 
@@ -710,7 +811,7 @@ public class MainServiceActions {
         String type="";
         if (s instanceof Project){
             type="project";
-            service.resolveConflict(type,s.getID()+"",((Project)s).toJSON(), hideResponse);
+            service.resolveConflict(type, s.getID() + "", ((Project) s).toJSON(), hideResponse);
         }
         else if (s instanceof Group){
             type="group";
@@ -726,6 +827,7 @@ public class MainServiceActions {
         }
 
     }
+
 
 //    public void resolveConflicts(List<Conflict> conflicts){
 //        //resolved=conflicts;

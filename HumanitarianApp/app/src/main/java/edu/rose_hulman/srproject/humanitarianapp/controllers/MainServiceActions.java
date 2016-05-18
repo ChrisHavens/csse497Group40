@@ -647,6 +647,10 @@ public class MainServiceActions {
 
 
     public void hideGroup() {
+        String hideOrShow = "hide";
+        if(selectedGroup.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -660,16 +664,23 @@ public class MainServiceActions {
 
             }
         };
-        String hideOrShow = "hide";
-        if(selectedGroup.isHidden())
-            hideOrShow = "show";
 
         service.changeVisibilityGroup(selectedGroup.getID() + "", hideOrShow, userID, hideResponse);
+
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedGroup, "Group");
+        }
+        LocalDataSaver.saveGroup(selectedGroup);
 //        service.hide("group", selectedGroup.getID() + "", hideResponse);
     }
 
 
     public void hideChecklist() {
+        String hideOrShow = "hide";
+        if(selectedChecklist.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -683,15 +694,22 @@ public class MainServiceActions {
 
             }
         };
-        String hideOrShow = "hide";
-        if(selectedChecklist.isHidden())
-            hideOrShow = "show";
 
         service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow, userID, hideResponse);
+
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedChecklist, "Checklist");
+        }
+        LocalDataSaver.saveChecklist(selectedChecklist);
     }
 
 
     public void hideLocation() {
+        String hideOrShow = "hide";
+        if(selectedLocation.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -705,16 +723,22 @@ public class MainServiceActions {
 
             }
         };
-        String hideOrShow = "hide";
-        if(selectedLocation.isHidden())
-            hideOrShow = "show";
 
         service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow, userID, hideResponse);
 //        service.hide("location", selectedLocation.getID()+"", hideResponse);
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedLocation, "Location");
+        }
+        LocalDataSaver.saveLocation(selectedLocation);
     }
 
 
     public void hideNote() {
+        String hideOrShow = "hide";
+        if(selectedNote.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -727,16 +751,23 @@ public class MainServiceActions {
                 Log.wtf("s40", error.getMessage());
 
             }
+
         };
-        String hideOrShow = "hide";
-        if(selectedNote.isHidden())
-            hideOrShow = "show";
 
         service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow, userID, hideResponse);
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedNote, "Note");
+        }
+        LocalDataSaver.saveNote(selectedNote);
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
     public void hidePerson() {
+        String hideOrShow = "hide";
+        if(selectedPerson.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -750,17 +781,22 @@ public class MainServiceActions {
 
             }
         };
-        String hideOrShow = "hide";
-        if(selectedPerson.isHidden())
-            hideOrShow = "show";
 
         service.changeVisibilityPerson(selectedPerson.getID() + "", hideOrShow, userID, hideResponse);
-
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedPerson, "Person");
+        }
+        LocalDataSaver.savePerson(selectedPerson);
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
 
 
     public void hideShipment() {
+        String hideOrShow = "hide";
+        if(selectedShipment.isHidden())
+            hideOrShow = "show";
+        if (!ApplicationWideData.manualSnyc) {
         Callback<Response> hideResponse=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
@@ -774,7 +810,12 @@ public class MainServiceActions {
 
             }
         };
-        service.changeVisibilityShipment(selectedShipment.getID() + "", "hide", userID, hideResponse);
+        service.changeVisibilityShipment(selectedShipment.getID() + "", hideOrShow, userID, hideResponse);
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(selectedShipment, "Shipment");
+        }
+        LocalDataSaver.saveShipment(selectedShipment);
 //        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
 
     }

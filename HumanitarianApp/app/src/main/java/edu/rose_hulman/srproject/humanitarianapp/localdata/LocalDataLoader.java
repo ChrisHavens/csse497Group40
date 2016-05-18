@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 
 /**
@@ -76,10 +77,14 @@ public class LocalDataLoader {
     }
 
     public static void loadEverything() {
-        List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
+        //List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
+        //List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
+        List<Project> projects = LocalDataRetriver.getStoredProjects();
+        List<Group> groups = LocalDataRetriver.getStoredGroups();
+        List<Person> people = LocalDataRetriver.getStoredPeopleSecond();
         ApplicationWideData.initialProjects(projects);
-        List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
         ApplicationWideData.initialGroups(groups);
+        ApplicationWideData.initialPeople(people);
         loadPersons();
         loadLocations();
         loadChecklists();

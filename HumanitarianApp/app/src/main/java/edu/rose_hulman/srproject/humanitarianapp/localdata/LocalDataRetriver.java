@@ -58,7 +58,7 @@ public class LocalDataRetriver {
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);
             Project project = null;
-            //project = Project.fromJSON(id, text);
+            project = Project.fromJSON(id, text);
             projects.add(project);
         }
         return projects;

@@ -80,10 +80,13 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         }
         else{
             Project p= mListener.getSelectedProject();
-            List<Long> longs=p.getGroupIDs();
-            for (Long l: longs){
-                groups.add(ApplicationWideData.getGroupByID(l));
-            }
+            long l = p.getID();
+            List<Group> localGroups = ApplicationWideData.getGroupsByProjectID(l);
+            groups.addAll(localGroups);
+//            List<Long> longs=p.getGroupIDs();
+//            for (Long l: longs){
+//                groups.add(ApplicationWideData.getGroupByID(l));
+//            }
         }
         //}
         //else {

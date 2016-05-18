@@ -85,7 +85,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             List<Note> allNotes=ApplicationWideData.getAllNotes();
             for (Note c: allNotes){
                 if (c.getParentID()==gId){
-                    checklists.add(c);
+                    notes.add(c);
                 }
             }
         }

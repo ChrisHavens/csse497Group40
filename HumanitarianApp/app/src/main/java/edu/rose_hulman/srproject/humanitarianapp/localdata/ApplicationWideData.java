@@ -123,10 +123,24 @@ public class ApplicationWideData {
     public static void overwriteChecklists(Collection<Checklist> checklists){
         knownChecklists.clear();
         knownChecklists.addAll(checklists);
-
         for(Checklist checklist: knownChecklists){
             LocalDataSaver.saveChecklist(checklist);
         }
+    }
+
+    public static void initialProjects(List<Project> projects){
+        knownProjects.clear();
+        knownProjects.addAll(projects);
+    }
+
+    public static void initialGroups(List<Group> groups){
+        knownGroups.clear();
+        knownGroups.addAll(groups);
+    }
+
+    public static void initialPeople(List<Person> people){
+        knownPersons.clear();
+        knownPersons.addAll(people);
     }
 
     public static void addNewGroup(Group group) {

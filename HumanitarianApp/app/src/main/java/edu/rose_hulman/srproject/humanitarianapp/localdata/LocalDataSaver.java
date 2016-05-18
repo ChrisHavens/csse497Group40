@@ -25,6 +25,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Checklist");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveProject(Project project){
@@ -34,6 +36,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Project");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveGroup(Group group){
@@ -43,6 +47,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Group");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void savePerson(Person person){
@@ -52,6 +58,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Person");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveLocation(Location location){
@@ -61,6 +69,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Location");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveShipment(Shipment shipment){
@@ -70,6 +80,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Shipment");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveMessage(MessageThread.Message message){
@@ -79,6 +91,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "Message");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveMessageThread(MessageThread messageThread){
@@ -88,6 +102,8 @@ public class LocalDataSaver {
         values.put("ID", id);
         values.put("Type", "MessageThread");
         values.put("Body", body);
+        String tableName = "[AllData]";
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void updateProject(Project project) {

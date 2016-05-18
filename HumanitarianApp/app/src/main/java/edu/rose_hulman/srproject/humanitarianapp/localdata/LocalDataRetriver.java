@@ -23,7 +23,7 @@ import retrofit.client.Response;
 public class LocalDataRetriver {
 
     private static String allProjectsQuery = "Select * From [Project]";
-    private static String mostDataQuery = "Select * From [AllData] Where Type = ?";
+    private static String mostDataQuery = "Select * From [AllData] Where Type =?";
     private static String allGroupsQuery = "Select * From [Group]";
     private static String allUpdatedQuery = "Select * From [UpdatedIDs]";
     private static String allAddedQuery = "Select * From [AddedIDs]";
@@ -54,16 +54,24 @@ public class LocalDataRetriver {
         String[] params = {"Project"};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
+
+        Log.wtf("Load projects", length + "");
         cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
-            String text = cursor.getString(2);
+            String text = cursor.getString(3);
             Project project = null;
+
+            Log.wtf("Parse projects", Long.toString(id));
+            Log.wtf("Parse projects", text);
             project = Project.fromJSON(id, text);
+            Log.wtf("Parse projects", Boolean.toString(project == null));
             if(project != null) {
                 projects.add(project);
             }
         }
+
+        Log.wtf("Parse projects", projects.size() + "");
         return projects;
     }
     public static List<Group> getStoredGroupsSecond(){
@@ -74,7 +82,7 @@ public class LocalDataRetriver {
         cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
-            String text = cursor.getString(2);
+            String text = cursor.getString(3);
             Group group = null;
             group = Group.fromJSON(id, text);
 
@@ -95,7 +103,7 @@ public class LocalDataRetriver {
         cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
-            String text = cursor.getString(2);
+            String text = cursor.getString(3);
             Person person = null;
             person = Person.fromJSON(id, text);
             if (person!=null) {
@@ -159,7 +167,7 @@ public class LocalDataRetriver {
         for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
             Long id = cursor.getLong(0);
             Long projectID = cursor.getLong(1);
-            String name = cursor.getString(2);
+            String name = cursor.getString(3);
             String description = cursor.getString(3);
             boolean[] isDirty = new boolean[9];
             Arrays.fill(isDirty, false);

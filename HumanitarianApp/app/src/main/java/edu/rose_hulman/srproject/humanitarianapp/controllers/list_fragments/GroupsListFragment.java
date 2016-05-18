@@ -6,6 +6,7 @@ import android.app.Application;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,8 +80,10 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
     @Override
     public void updateItems() {
+
         Project p= mListener.getSelectedProject();
         List<Long> longs=p.getGroupIDs();
+        Toast.makeText(getActivity(), "Size: "+longs.size(), Toast.LENGTH_LONG).show();
         for (Long l: longs){
             groups.put(l, ApplicationWideData.getGroupByID(l));
         }
@@ -130,6 +133,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map: list){
+                    Log.wtf("Found a group", map.toString());
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
 

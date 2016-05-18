@@ -58,15 +58,16 @@ public class TakeAHugeDump {
 
                     Project p=Project.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
+                    if (p!=null) {
+                        if (!projectList.containsKey(p.getID())) {
+                            projectList.put(p.getID(), p);
+                        }
+                        LocalDataSaver.saveProject(p);
+                        service.service.getGroupList(userID, false, p.getID() + "", new GroupListCallback());
 
-                    if(!projectList.containsKey(p.getID())) {
-                        projectList.put(p.getID(), p);
+                        service.service.getPersonListByProjectID(false, p.getID() + "", new PersonListCallback());
+                        service.service.getLocationListByProjectID(false, p.getID() + "", new LocationListCallback());
                     }
-                    LocalDataSaver.saveProject(p);
-                    service.service.getGroupList(userID, false, p.getID()+"", new GroupListCallback());
-
-                    service.service.getPersonListByProjectID(false, p.getID() + "", new PersonListCallback());
-                    service.service.getLocationListByProjectID(false, p.getID()+"", new LocationListCallback());
 
                 }
 
@@ -156,8 +157,10 @@ public class TakeAHugeDump {
                     if(!personList.containsKey(p.getID())) {
                         personList.put(p.getID(), p);
                     }
+                    LocalDataSaver.savePerson(p);
 
                 }
+                ApplicationWideData.addPersonHashMap(personList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -195,8 +198,10 @@ public class TakeAHugeDump {
                     if(!locationList.containsKey(l.getID())) {
                         locationList.put(l.getID(), l);
                     }
+                    LocalDataSaver.saveLocation(l);
 
                 }
+                ApplicationWideData.addLocationHashMap(locationList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -234,8 +239,10 @@ public class TakeAHugeDump {
                     if(!noteList.containsKey(n.getID())) {
                         noteList.put(n.getID(), n);
                     }
+                    LocalDataSaver.saveNote(n);
 
                 }
+                ApplicationWideData.addNoteHashMap(noteList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -273,8 +280,10 @@ public class TakeAHugeDump {
                     if(!checklistList.containsKey(c.getID())) {
                         checklistList.put(c.getID(), c);
                     }
+                    LocalDataSaver.saveChecklist(c);
 
                 }
+                ApplicationWideData.addChecklistMap(checklistList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -311,8 +320,10 @@ public class TakeAHugeDump {
                     if(!shipmentList.containsKey(c.getID())) {
                         shipmentList.put(c.getID(), c);
                     }
+                    LocalDataSaver.saveShipment(c);
 
                 }
+                ApplicationWideData.addShipmentHashMap(shipmentList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -351,9 +362,11 @@ public class TakeAHugeDump {
                         //threadList.put(c.getID(), c);
                         service.service.getMessagesList(c.getID() + "", null, null, null, new MessageListCallback(c));
                     }
+                    LocalDataSaver.saveMessageThread(c);
 
 
                 }
+                ApplicationWideData.addMessageThreadHashMap(threadList);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -387,6 +400,7 @@ public class TakeAHugeDump {
                 HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                 ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                 List<MessageThread.Message> messages=new ArrayList<>();
+                HashMap<Long, MessageThread.Message> messageHashMap=new HashMap<>();
                 for (HashMap<String, Object> map : list) {
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
@@ -395,12 +409,15 @@ public class TakeAHugeDump {
 
                     if (!messages.contains(c)){
                         messages.add(c);
+                        messageHashMap.put(c.getItemID(), c);
                     }
+                    LocalDataSaver.saveMessage(c);
 
 
                 }
                 thread.setItemList(messages);
                 threadList.put(thread.getID(), thread);
+                ApplicationWideData.addMessageHashMap(messageHashMap);
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -32,6 +32,20 @@ public class LocalDataSaver {
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
+    public static void saveNote(Note note){
+        long id = note.getID();
+        String type = "Note";
+        String body = note.toJSON();
+        ContentValues values = new ContentValues();
+        values.put("ID", id);
+        values.put("Type", type);
+        values.put("DateModified", note.getDateTimeModified());
+        values.put("Body", body);
+        String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
+        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
 
     public static void saveProject(Project project){
         long id = project.getID();
@@ -361,6 +375,8 @@ public class LocalDataSaver {
 
         //Save all of the subchecklists, going to take lots of time
     }
+
+
 
     public static boolean addChecklist(Checklist checklist) {
         String name = checklist.getTitle();

@@ -76,8 +76,14 @@ public class LocalDataRetriver {
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);
             Group group = null;
-            //group = Group.fromJSON(id, text);
-            groups.add(group);
+            group = Group.fromJSON(id, text);
+
+            if (group!=null) {
+                groups.add(group);
+            }
+            else{
+                Log.wtf("getStoredGroupsSecond", id+" "+text);
+            }
         }
         return groups;
     }
@@ -91,8 +97,10 @@ public class LocalDataRetriver {
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);
             Person person = null;
-            //person = Person.fromJSON(id, text);
-            people.add(person);
+            person = Person.fromJSON(id, text);
+            if (person!=null) {
+                people.add(person);
+            }
         }
         return people;
     }

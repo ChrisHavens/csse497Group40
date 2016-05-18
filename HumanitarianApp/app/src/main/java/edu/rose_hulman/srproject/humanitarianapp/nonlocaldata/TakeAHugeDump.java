@@ -62,6 +62,7 @@ public class TakeAHugeDump {
                     if(!projectList.containsKey(p.getID())) {
                         projectList.put(p.getID(), p);
                     }
+                    LocalDataSaver.saveProject(p);
                     service.service.getGroupList(userID, false, p.getID()+"", new GroupListCallback());
 
                     service.service.getPersonListByProjectID(false, p.getID() + "", new PersonListCallback());
@@ -107,6 +108,7 @@ public class TakeAHugeDump {
                     if(!groupList.containsKey(g.getID())) {
                         groupList.put(g.getID(), g);
                     }
+                    LocalDataSaver.saveGroup(g);
                     service.service.getPersonListByGroupID(false, g.getID() + "", new PersonListCallback());
                     service.service.getNoteList(false, g.getID() + "", new NoteListCallback());
                     service.service.getChecklistList(false, g.getID() + "", new ChecklistListCallback());

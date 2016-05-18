@@ -155,7 +155,7 @@ public class MainServiceActions {
 
     public void saveNote(String title, String body){
         body=body.replaceAll("\n", "\\\n");
-        this.selectedNote.setLastModified(MessageThread.getCurrTime());
+        this.selectedNote.setLastModified(ApplicationWideData.getCurrentTime());
         this.selectedNote.setTitle(title);
         this.selectedNote.setBody(body);
         service.updateNote(this.selectedNote, userID, new Callback<Response>() {

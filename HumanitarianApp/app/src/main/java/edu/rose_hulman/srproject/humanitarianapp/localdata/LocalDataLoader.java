@@ -77,10 +77,10 @@ public class LocalDataLoader {
     }
 
     public static void loadEverything() {
-        //List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
-        //List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
-        List<Project> projects = LocalDataRetriver.getStoredProjects();
-        List<Group> groups = LocalDataRetriver.getStoredGroups();
+        List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
+        List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
+        //List<Project> projects = LocalDataRetriver.getStoredProjects();
+        //List<Group> groups = LocalDataRetriver.getStoredGroups();
         List<Person> people = LocalDataRetriver.getStoredPeopleSecond();
         ApplicationWideData.initialProjects(projects);
         ApplicationWideData.initialGroups(groups);

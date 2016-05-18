@@ -37,6 +37,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
+import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.TakeAHugeDump;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -416,6 +417,8 @@ public class ApplicationWideData {
         service.service.getProjectList(Long.toString(userID), false, new ProjectListCallback(updated, activity));
         String time = PreferencesManager.getSyncTime();
         getDeletedList(time);
+        TakeAHugeDump dump = new TakeAHugeDump(userID);
+
 
     }
 
@@ -438,7 +441,7 @@ public class ApplicationWideData {
             }
         }
         if (LocalDataRetriver.getAllUpdated().size()==0){
-            String time = MessageThread.getCurrTime();
+            String time = getCurrentTime();
             PreferencesManager.setSyncDate(time);
         }
     }
@@ -571,14 +574,14 @@ public class ApplicationWideData {
         NonLocalDataService service= new NonLocalDataService();
         service.updateProject(project, "{\"doc\":" + project.toJSON() + "}", userID + "",
                 new Callback<Response>() {
-            @Override
-            public void success (Response response, Response response2){
-                LocalDataSaver.deleteUpdatedProject(project);
-                if (LocalDataRetriver.getAllUpdated().size()==0){
-                    String time = MessageThread.getCurrTime();
-                    PreferencesManager.setSyncDate(time);
-                }
-            }
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.deleteUpdatedProject(project);
+                        if (LocalDataRetriver.getAllUpdated().size() == 0) {
+                            String time = getCurrentTime();
+                            PreferencesManager.setSyncDate(time);
+                        }
+                    }
 
                     @Override
                     public void failure(RetrofitError error) {
@@ -591,6 +594,13 @@ public class ApplicationWideData {
                         Log.wtf("RetroFitError", "Do Update Project" + error.getMessage());
                     }
                 });
+    }
+
+    public static String getCurrentTime(){
+        Calendar cal=Calendar.getInstance();
+        return cal.get(Calendar.YEAR)+"-"+String.format("%02d", cal.get(Calendar.MONTH)+1)+"-"
+                +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
+                " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
     }
 
 }

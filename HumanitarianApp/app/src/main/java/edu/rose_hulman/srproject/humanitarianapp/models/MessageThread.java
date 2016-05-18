@@ -303,7 +303,7 @@ public class MessageThread implements Selectable{
         public Message(String item, String senderID){
             this.item = item;
             this.sender = senderID;
-            this.time=getCurrTime();
+            this.time=ApplicationWideData.getCurrentTime();
 
         }
         public Message(String item, String senderID, String time){
@@ -400,12 +400,6 @@ public class MessageThread implements Selectable{
         public void setTime(String time) {
             this.time = time;
         }
-    }
-    public static String getCurrTime(){
-        Calendar cal=Calendar.getInstance();
-        return cal.get(Calendar.YEAR)+"-"+String.format("%02d", cal.get(Calendar.MONTH)+1)+"-"
-                +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
-                " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
     }
 
     public static Person getPersonNameFromID(String personID){

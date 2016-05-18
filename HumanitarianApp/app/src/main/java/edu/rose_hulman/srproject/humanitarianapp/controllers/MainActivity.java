@@ -294,8 +294,6 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             int duration = Toast.LENGTH_SHORT;
             String text = PreferencesManager.getSyncTime();
 
-            String time = MessageThread.getCurrTime();
-            //PreferencesManager.setSyncDate(time);
             Toast toast = Toast.makeText(context, PreferencesManager.getSyncTime(), duration);
             toast.show();
             return true;
@@ -844,7 +842,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
         newFragment.show(getFragmentManager(), "conflictResolution");
-        String time = MessageThread.getCurrTime();
+        String time = ApplicationWideData.getCurrentTime();
         PreferencesManager.setSyncDate(time);
     }
     private void showNextConflictResolution(){

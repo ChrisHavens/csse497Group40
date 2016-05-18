@@ -54,6 +54,7 @@ public class LocalDataRetriver {
         String[] params = {"Project"};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
+        cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);
@@ -68,6 +69,7 @@ public class LocalDataRetriver {
         String[] params = {"Group"};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
+        cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);
@@ -82,6 +84,7 @@ public class LocalDataRetriver {
         String[] params = {"People"};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
+        cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
             String text = cursor.getString(2);

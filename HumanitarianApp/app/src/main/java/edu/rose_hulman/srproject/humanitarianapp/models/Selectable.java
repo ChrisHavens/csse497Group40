@@ -5,4 +5,5 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
  */
 public interface Selectable {
     public boolean isHidden();
+    public long getID();
 }

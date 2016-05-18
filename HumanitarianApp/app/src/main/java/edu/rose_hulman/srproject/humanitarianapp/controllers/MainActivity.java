@@ -25,8 +25,11 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -72,12 +75,12 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
+import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 
@@ -115,7 +118,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         android.support.v4.app.FragmentManager.OnBackStackChangedListener,
         MessageThreadFragment.ThreadFragmentListener, MessageThreadsListFragment.ThreadsListListener,
                 GoogleApiClient.OnConnectionFailedListener,
-        AddPersonDialogFragment.AddPersonListener
+        AddPersonDialogFragment.AddPersonListener,
+        ConflictResolutionDialogFragment.ConflictResolutionListener
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -129,6 +133,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     private boolean showHidden=false;
     private String userID;
     private CoordinatesGetter coordGetter;
+    private HashMap<Selectable, List<Conflict>> conflictsMap=new HashMap<Selectable, List<Conflict>>();
+    private HashMap<Selectable, List<Conflict>> resolvedConflictsMap=new HashMap<Selectable, List<Conflict>>();
+    private Iterator<Map.Entry<Selectable, List<Conflict>>> conflictsIterator;
+    private Map.Entry<Selectable, List<Conflict>> currConflict;
 
 
 
@@ -189,6 +197,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.forceSync).setTitle("Last Sync Time:/n"+PreferencesManager.getSyncTime(null));
         setVisibilityAdd(true);
         setVisibilityEdit(false);
         setVisibilityShow(false);
@@ -682,10 +691,10 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public String getSelectedProjectOrGroup() {
 
         if (actions.getSelectedGroup()==null){
-            return actions.getSelectedProject().getId()+"";
+            return actions.getSelectedProject().getID()+"";
         }
         else{
-            return actions.getSelectedGroup().getId()+"";
+            return actions.getSelectedGroup().getID()+"";
         }
     }
 
@@ -740,7 +749,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddChecklistDialogFragment();
 
         Bundle b=new Bundle();
-        b.putLong("parentID", actions.getSelectedGroup().getId());
+        b.putLong("parentID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addChecklist");
     }
@@ -749,7 +758,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddMessageThreadDialogFragment();
 
         Bundle b=new Bundle();
-        b.putLong("parentID", actions.getSelectedGroup().getId());
+        b.putLong("parentID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addMessageThread");
         //newFragment.show(getFragmentManager(), "addMessageThread");
@@ -759,7 +768,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void addLocation() {
         DialogFragment newFragment = new AddLocationDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addLocation");
     }
@@ -769,7 +778,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         DialogFragment newFragment = new AddNoteDialogFragment();
 
 //        Bundle b=new Bundle();
-//        b.putLong("parentID", g.getId());
+//        b.putLong("parentID", g.getID());
 //        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addNote");
     }
@@ -784,10 +793,25 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void addShipment() {
         DialogFragment newFragment = new AddShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "addShipment");
+    }
+
+    public void showConflictResolution(HashMap<Selectable, List<Conflict>> conflicts){
+        this.conflictsMap=conflicts;
+        conflictsIterator=conflictsMap.entrySet().iterator();
+        currConflict=conflictsIterator.next();
+        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+
+        newFragment.show(getFragmentManager(), "conflictResolution");
+    }
+    private void showConflictResolution(){
+        currConflict=conflictsIterator.next();
+        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+
+        newFragment.show(getFragmentManager(), "conflictResolution");
     }
 
 
@@ -795,20 +819,20 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
 
     public void showEditProject() {
-        //Log.wtf("ProjectID", selectedProject.getId()+"");
+        //Log.wtf("ProjectID", selectedProject.getID()+"");
         DialogFragment newFragment = new EditProjectDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editProject");
     }
 
 
     public void showEditGroup() {
-        //Log.wtf("GroupID", selectedGroup.getId()+"");
+        //Log.wtf("GroupID", selectedGroup.getID()+"");
         DialogFragment newFragment = new EditGroupDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editGroup");
     }
@@ -820,7 +844,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         DialogFragment newFragment = new EditChecklistDialogFragment();
 //        Bundle b=new Bundle();
-//        b.putLong("checklistID", c.getId());
+//        b.putLong("checklistID", c.getID());
 //        newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editChecklist");
     }
@@ -857,8 +881,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void showEditShipment() {
         DialogFragment newFragment = new EditShipmentDialogFragment();
         Bundle b=new Bundle();
-        b.putLong("groupID", actions.getSelectedGroup().getId());
-        b.putLong("projectID", actions.getSelectedProject().getId());
+        b.putLong("groupID", actions.getSelectedGroup().getID());
+        b.putLong("projectID", actions.getSelectedProject().getID());
         newFragment.setArguments(b);
         newFragment.show(getFragmentManager(), "editShipment");
     }
@@ -1104,6 +1128,29 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         return p.getName();
     }
 
+    @Override
+    public void resolveConflicts(List<Conflict> conflicts) {
+        currConflict.setValue(conflicts);
+        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+        if (conflictsIterator.hasNext()){
+            showConflictResolution();
+        }
+        else{
+            //
+        }
+
+    }
+
+    @Override
+    public List<Conflict> getConflicts() {
+        return currConflict.getValue();
+    }
 
 
+
+
+//    @Override
+//    public List<ConflictResolutionDialogFragment.Conflict> getConflicts() {
+//        return null;
+//    }
 }

@@ -2,8 +2,6 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
 
 //import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,10 +115,10 @@ public class Person implements Serializable, Selectable {
             //person.addLocation(initialAssignment);
         }
         if (initialProject != null) {
-            person.projectIDs.add(initialProject.getId());
+            person.projectIDs.add(initialProject.getID());
         }
         if (initialGroup != null) {
-            person.groupIDs.add(initialGroup.getId());
+            person.groupIDs.add(initialGroup.getID());
         }
         return person;
 

@@ -12,7 +12,7 @@ public class SerilizationConstants {
     public static final int COUNTER_LOCATION = 0;
 
     //Leaving PROJECT_NUM as the operation rather than just 0 to follow the pattern.
-    public static final long PROJECT_NUM = ((long) 0);
+    public static final long PROJECT_NUM = ((long) 6);
     public static final long GROUP_NUM = ((long) 1);
     public static final long PERSON_NUM = ((long) 2);
     public static final long SHIPMENT_NUM = ((long) 3);

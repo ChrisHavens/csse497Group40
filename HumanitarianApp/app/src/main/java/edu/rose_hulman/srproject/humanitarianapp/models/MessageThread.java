@@ -24,6 +24,7 @@ public class MessageThread implements Selectable{
     private boolean isHidden=false;
     private HashMap<String, Message> itemList=new HashMap<String, Message>();
     private int dirtyBits = 0;
+    private int count=0;
     private Comparator<Message> comparator= new Comparator<Message>() {
         @Override
         public int compare(Message lhs, Message rhs) {
@@ -185,7 +186,9 @@ public class MessageThread implements Selectable{
         Log.wtf("s40-5", itemList.size()+"");
 
         long base=this.id*1000;
-        long base2=(base+itemList.size()+1);
+        count++;
+        long base2=(base+count+1);
+
         message.setItemID(base2);
         Log.wtf("s40-2", message.getTime());
         itemList.put(message.getItemID()+"", message);
@@ -211,6 +214,14 @@ public class MessageThread implements Selectable{
 
     public void setDirtyBits(int dirtyBits) {
         this.dirtyBits = dirtyBits;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public static class Message{

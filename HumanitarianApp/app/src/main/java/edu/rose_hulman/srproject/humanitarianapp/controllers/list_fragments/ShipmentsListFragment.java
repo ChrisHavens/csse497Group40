@@ -16,9 +16,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -79,7 +77,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         }
         service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
-        service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getId()+"", new ShipmentListCallback());
+        service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getID()+"", new ShipmentListCallback());
 //        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 

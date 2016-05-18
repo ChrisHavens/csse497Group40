@@ -2,7 +2,6 @@ package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -20,7 +19,7 @@ public class LocalDataSaver {
     public static void updateProject(Project project) {
         String name = project.getName();
         String description = project.getDescription();
-        long id = project.getId();
+        long id = project.getID();
         int dirtyBits = project.getDirtyBits();
 
         //Save the above to the project table
@@ -40,7 +39,7 @@ public class LocalDataSaver {
     public static boolean addProject(Project project) {
         String name = project.getName();
         String description = project.getDescription();
-        long id = project.getId();
+        long id = project.getID();
         int dirtyBits = project.getDirtyBits();
 
         //Save the above to the project table
@@ -92,7 +91,7 @@ public class LocalDataSaver {
 
     public static void updateGroup(Group group) {
         String name = group.getName();
-        long id = group.getId();
+        long id = group.getID();
         long projectId = group.getProjectId();
         int dirtyBits = group.getDirtyBits();
 
@@ -112,7 +111,7 @@ public class LocalDataSaver {
 
     public static boolean addGroup(Group group) {
         String name = group.getName();
-        long id = group.getId();
+        long id = group.getID();
         long projectId = group.getProjectId();
         int dirtyBits = group.getDirtyBits();
 

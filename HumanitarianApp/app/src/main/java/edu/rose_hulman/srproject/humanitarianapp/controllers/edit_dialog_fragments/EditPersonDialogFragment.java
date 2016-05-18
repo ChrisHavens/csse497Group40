@@ -143,7 +143,7 @@ public class EditPersonDialogFragment extends DialogFragment {
 
     public View onCreateView(LayoutInflater inflater) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_person_to_something_dialog, null);
+        View view= inflater.inflate(R.layout.fragment_add_person_dialog, null);
         nameField=(EditText) view.findViewById(R.id.nameField);
         nameField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,13 +208,17 @@ public class EditPersonDialogFragment extends DialogFragment {
                     person.setEmail((String) source.get("email"));
                     person.setPhoneNumber((String) source.get("phone"));
                     //Log.w("Type of lastLocation", .get("lastLocation"))
-                    HashMap<String, Object> lastLoc = (HashMap) source.get("lastLocation");
-                    Person.PersonLocation personLoc = new Person.PersonLocation();
-                    personLoc.setLat(Float.parseFloat((String) lastLoc.get("lat")));
-                    personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
-                    personLoc.setName((String) lastLoc.get("name"));
-                    personLoc.setTime((String) lastLoc.get("time"));
-                    person.setLastCheckin(personLoc);
+                    if (source.containsKey("lastLocation") ){
+
+                        HashMap<String, Object> lastLoc = (HashMap) source.get("lastLocation");
+                        Person.PersonLocation personLoc = new Person.PersonLocation();
+                        personLoc.setLat(Float.parseFloat((String) lastLoc.get("lat")));
+                        personLoc.setLng(Float.parseFloat((String) lastLoc.get("lng")));
+                        personLoc.setName((String) lastLoc.get("name"));
+                        personLoc.setTime((String) lastLoc.get("time"));
+
+                        person.setLastCheckin(personLoc);
+                    }
                     nameField.setText(person.getName());
                     phoneField.setText(person.getPhoneNumber());
                     emailField.setText(person.getEmail());

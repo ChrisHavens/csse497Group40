@@ -81,7 +81,7 @@
 //        }
 //        assertTrue(success);/*
 //        success = false;
-//        service.service.getProject(p.getId() + "", responseCallback);
+//        service.service.getProject(p.getID() + "", responseCallback);
 //        try {
 //            Thread.sleep(1000);
 //        }catch(Exception e){
@@ -121,7 +121,7 @@
 //        assertTrue(success);
 //
 //        success = false;
-//        service.service.getGroup(g.getId() + "", responseCallback);
+//        service.service.getGroup(g.getID() + "", responseCallback);
 //        try {
 //            Thread.sleep(1000);
 //        }catch(Exception e){

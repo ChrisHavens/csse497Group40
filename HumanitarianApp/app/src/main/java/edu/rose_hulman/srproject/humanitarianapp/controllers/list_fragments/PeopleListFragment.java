@@ -2,10 +2,10 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments;
 
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +19,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -86,11 +84,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
         showHidden=mListener.getShowHidden();
         if (mListener.isFromProject()) {
-            service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getId() + "", new PeopleListCallback());
+            Toast.makeText(activity, mListener.getSelectedProject().getID()+"", Toast.LENGTH_SHORT).show();
+            service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new PeopleListCallback());
 //            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
         }
         else{
-            service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getId()+"", new PeopleListCallback());
+            service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID()+"", new PeopleListCallback());
 //            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
         }
     }

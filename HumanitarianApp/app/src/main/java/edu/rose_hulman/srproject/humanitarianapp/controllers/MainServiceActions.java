@@ -4,19 +4,24 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
+import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
+import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -42,6 +47,8 @@ public class MainServiceActions {
     private boolean isFromProject=false;
     private Context context;
     private String userID;
+
+    //private List<Conflict> resolved;
     public MainServiceActions(Context context, String userID){
         this.service=new NonLocalDataService();
         this.context=context;
@@ -136,6 +143,15 @@ public class MainServiceActions {
         this.isFromProject = isFromProject;
     }
 
+
+//    public HashMap<Selectable, List<Conflict>> getConflicts() {
+//        return conflicts;
+//    }
+//
+//    public void setConflicts(HashMap<Selectable, List<Conflict>> conflicts) {
+//        this.conflicts = conflicts;
+//    }
+
     public void saveNote(String title, String body){
         body=body.replaceAll("\n", "\\\n");
         this.selectedNote.setTitle(title);
@@ -154,10 +170,10 @@ public class MainServiceActions {
     }
 
     public void addNewPerson(final String name, String phone, String email) {
-        long projectID=selectedProject.getId();
+        long projectID=selectedProject.getID();
         long groupID=-1;
         if (getSelectedGroup()!=null) {
-            groupID = getSelectedGroup().getId();
+            groupID = getSelectedGroup().getID();
         }
         Person p=new Person(((long)((int)Calendar.getInstance().getTimeInMillis())), name, phone, email);
 
@@ -195,10 +211,11 @@ public class MainServiceActions {
         service.addNewPerson(p,  userID, responseCallback);
     }
     public void addPersonToProjectOrGroup(final Person p) {
-        long projectID=selectedProject.getId();
+        long projectID=selectedProject.getID();
 
         if (getSelectedGroup()!=null) {
-            addPersonToGroup(p, projectID, getSelectedGroup().getId());
+            Log.wtf("Adding to group", getSelectedGroup().getID()+"");
+            addPersonToGroup(p, projectID, getSelectedGroup().getID());
         }
         else{
             addPersonToProject(p, projectID);
@@ -206,9 +223,9 @@ public class MainServiceActions {
 
     }
     public void removePersonFromProjectOrGroup(final Person p){
-        final long projectID=selectedProject.getId();
+        final long projectID=selectedProject.getID();
         if (getSelectedGroup()!=null){
-            final long groupID=getSelectedGroup().getId();
+            final long groupID=getSelectedGroup().getID();
             p.removeGroupID(groupID);
             Callback<Response> responseCallback = new Callback<Response>() {
                 @Override
@@ -222,7 +239,7 @@ public class MainServiceActions {
                     Log.e("RetrofitError", error.getUrl());
                 }
             };
-            service.removePersonFromGroup(p.getID()+"", groupID+"", userID+"", responseCallback);
+            service.removePersonFromGroup(p.getID() + "", groupID + "", userID + "", responseCallback);
         }
         else{
             p.removeProjectID(projectID);
@@ -254,7 +271,9 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
+                //Log.e("RetrofitError", error.g)
                 Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", error.getUrl());
             }
         };
 //        //NonLocalDataService service=new NonLocalDataService();
@@ -276,7 +295,7 @@ public class MainServiceActions {
                 Log.e("RetrofitError", error.getMessage());
             }
         };
-        service.addPersonToGroup(p.getID()+"", groupID+"",  userID, responseCallback);
+        service.addPersonToGroup(p.getID() + "", groupID + "", userID, responseCallback);
     }
 
     public void addNewProject(final String name) {
@@ -344,7 +363,7 @@ public class MainServiceActions {
 //        sb.append("{\"doc\": {");
 //        sb.append(project.getGroupString());
 //        sb.append("}}");
-        //service.updateProject(project.getId(), sb.toString(), responseCallback2);
+        //service.updateProject(project.getID(), sb.toString(), responseCallback2);
 
 
     }
@@ -376,7 +395,7 @@ public class MainServiceActions {
         long i= rand.nextInt(90000)+10000;
         i+=500000;
         final Note note=new Note(i);
-        note.setParentID(selectedGroup.getId());
+        note.setParentID(selectedGroup.getID());
         note.setTitle(name);
         note.setBody(contents);
 //        Date date=new Date();
@@ -432,7 +451,7 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewChecklist(checklist,  userID, responseCallback);
+        service.addNewChecklist(checklist, userID, responseCallback);
     }
     public void addNewMessageThread(final MessageThread m){
 
@@ -453,7 +472,7 @@ public class MainServiceActions {
             }
         };
         Log.d("ED","inside of addNewMessageThread");
-        service.addNewThread(m,  userID, responseCallback);
+        service.addNewThread(m, userID, responseCallback);
 
 
     }
@@ -475,9 +494,9 @@ public class MainServiceActions {
         Log.wtf("s40",message1.getTime());
         message1=getSelectedMessageThread().addBuildNewMessage(message1);
         //Log.wtf("s40-6", message1.)
-        Log.wtf("s40-4", getSelectedMessageThread().getID()+"");
-        Log.wtf("s40-3", message1.getItemID()+"");
-        service.addNewMessage(getSelectedMessageThread().getID()+"", message1, userID,  addResponse);
+        Log.wtf("s40-4", getSelectedMessageThread().getID() + "");
+        Log.wtf("s40-3", message1.getItemID() + "");
+        service.addNewMessage(getSelectedMessageThread().getID() + "", message1, userID, addResponse);
     }
     public void hideProject() {
         Callback<Response> hideResponse=new Callback<Response>() {
@@ -496,8 +515,8 @@ public class MainServiceActions {
         if(selectedProject.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityProject(selectedProject.getId() + "", hideOrShow,  userID, hideResponse);
-        //hide("project", selectedProject.getId() + "", hideResponse);
+        service.changeVisibilityProject(selectedProject.getID() + "", hideOrShow, userID, hideResponse);
+        //hide("project", selectedProject.getID() + "", hideResponse);
     }
 
 
@@ -519,8 +538,8 @@ public class MainServiceActions {
         if(selectedGroup.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityGroup(selectedGroup.getId() + "", hideOrShow,  userID, hideResponse);
-//        service.hide("group", selectedGroup.getId() + "", hideResponse);
+        service.changeVisibilityGroup(selectedGroup.getID() + "", hideOrShow, userID, hideResponse);
+//        service.hide("group", selectedGroup.getID() + "", hideResponse);
     }
 
 
@@ -541,7 +560,7 @@ public class MainServiceActions {
         if(selectedChecklist.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow,  userID, hideResponse);
+        service.changeVisibilityChecklist(selectedChecklist.getID() + "", hideOrShow, userID, hideResponse);
     }
 
 
@@ -562,7 +581,7 @@ public class MainServiceActions {
         if(selectedLocation.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow,  userID, hideResponse);
+        service.changeVisibilityLocation(selectedLocation.getID() + "", hideOrShow, userID, hideResponse);
 //        service.hide("location", selectedLocation.getID()+"", hideResponse);
     }
 
@@ -584,7 +603,7 @@ public class MainServiceActions {
         if(selectedNote.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow,  userID, hideResponse);
+        service.changeVisibilityNote(selectedNote.getID() + "", hideOrShow, userID, hideResponse);
 //        service.hide("note", selectedNote.getID() + "", hideResponse);
     }
 
@@ -605,7 +624,7 @@ public class MainServiceActions {
         if(selectedPerson.isHidden())
             hideOrShow = "show";
 
-        service.changeVisibilityPerson(selectedPerson.getID()+"", hideOrShow,  userID, hideResponse);
+        service.changeVisibilityPerson(selectedPerson.getID() + "", hideOrShow, userID, hideResponse);
 
 //        service.hide("person", selectedPerson.getID()+"", hideResponse);
     }
@@ -624,7 +643,7 @@ public class MainServiceActions {
 
             }
         };
-        service.changeVisibilityShipment(selectedShipment.getID() + "", "hide",  userID, hideResponse);
+        service.changeVisibilityShipment(selectedShipment.getID() + "", "hide", userID, hideResponse);
 //        service.hide("shipment", selectedShipment.getID() + "", hideResponse);
 
     }
@@ -641,6 +660,13 @@ public class MainServiceActions {
             }
         };
 
-        service.addNewChecklist(c,  userID, responseCallback);
+        service.addNewChecklist(c, userID, responseCallback);
     }
+
+//    public void resolveConflicts(List<Conflict> conflicts){
+//        //resolved=conflicts;
+//        //WHATEVERS
+//
+//    }
+
 }

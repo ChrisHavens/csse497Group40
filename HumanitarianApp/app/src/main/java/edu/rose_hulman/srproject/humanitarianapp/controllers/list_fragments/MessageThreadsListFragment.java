@@ -16,10 +16,8 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
-import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -71,7 +69,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         NonLocalDataService service=new NonLocalDataService();
         showHidden=mListener.getShowHidden();
         Log.wtf("s40", "Here");
-        service.service.getThreadList(showHidden, mListener.getSelectedGroup().getId() + "", new ThreadListCallback());
+        service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
     }
 
     @Override

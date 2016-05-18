@@ -34,7 +34,7 @@ import retrofit.client.Response;
  */
 public class NotesListFragment extends AbstractListFragment<Note>{
     protected NotesListListener mListener;
-    ArrayList<Note> notes=new ArrayList<>();
+    HashMap<Long, Note> notes=new HashMap<>();
     ListArrayAdapter<Note> adapter;
     private boolean showHidden=false;
     public NotesListFragment(){
@@ -85,7 +85,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             List<Note> allNotes=ApplicationWideData.getAllNotes();
             for (Note c: allNotes){
                 if (c.getParentID()==gId){
-                    checklists.add(c);
+                    notes.put(c.getID(), c);
                 }
             }
         }
@@ -113,8 +113,9 @@ public class NotesListFragment extends AbstractListFragment<Note>{
     }
 
     public List<Note> getItems(){
-
-        return notes;
+        List<Note> l=new ArrayList<>();
+        l.addAll(notes.values());
+        return l;
     }
     public class NoteListCallback implements Callback<Response> {
 
@@ -135,7 +136,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
 
                     Note n=Note.parseJSON(Long.parseLong((String)map.get("_id")), source);
 
-                    notes.add(n);
+                    notes.put(n.getID(), n);
                     //LocalDataSaver.addNote(n);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

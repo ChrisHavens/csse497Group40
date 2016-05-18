@@ -32,7 +32,7 @@ import retrofit.client.Response;
 
 public class LocationsListFragment extends AbstractListFragment<Location>{
     protected LocationsListListener mListener;
-    ArrayList<Location> locations=new ArrayList<>();
+    HashMap<Long, Location> locations=new HashMap<>();
     ListArrayAdapter<Location> adapter;
     private boolean showHidden=false;
     public LocationsListFragment(){
@@ -96,7 +96,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             List<Location> allLocs=ApplicationWideData.getAllLocations();
             for (Location c: allLocs){
                 if (c.getProjectIDs().contains(gId)){
-                    locations.add(c);
+                    locations.put(c.getID(), c);
                 }
             }
         }
@@ -109,8 +109,9 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         mListener = null;
     }
     public List<Location> getItems(){
-
-        return locations;
+        List<Location> l=new ArrayList<>();
+        l.addAll(locations.values());
+        return l;
     }
     public class LocationListCallback implements Callback<Response> {
 
@@ -131,7 +132,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
 
                     long id = Long.parseLong(((String)map.get("_id")));
                     Location l= Location.parseJSON(id, source);
-                    locations.add(l);
+                    locations.put(l.getID(), l);
                     //LocalDataSaver.addLocation(l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

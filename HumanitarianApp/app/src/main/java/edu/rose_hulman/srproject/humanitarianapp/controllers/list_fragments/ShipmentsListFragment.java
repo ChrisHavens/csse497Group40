@@ -16,6 +16,7 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
@@ -34,7 +35,7 @@ import retrofit.client.Response;
  */
 public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     protected ShipmentsListListener mListener;
-    ArrayList<Shipment> shipments=new ArrayList<>();
+    HashMap<Long, Shipment> shipments=new HashMap<>();
     NonLocalDataService service;
     ListArrayAdapter<Shipment> adapter;
     private boolean showHidden=false;
@@ -102,8 +103,9 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     }
 
     public List<Shipment> getItems(){
-
-        return shipments;
+        List<Shipment> l=new ArrayList<>();
+        l.addAll(shipments.values());
+        return l;
     }
     public class ShipmentListCallback implements Callback<Response> {
 
@@ -136,7 +138,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 //                        s.setTime(split[1]);
 //                    }
 //                    s.setStatus((String) source.get("status"));
-                    shipments.add(s);
+                    shipments.put(s.getID(), s);
                     //LocalDataSaver.addShipment(s);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

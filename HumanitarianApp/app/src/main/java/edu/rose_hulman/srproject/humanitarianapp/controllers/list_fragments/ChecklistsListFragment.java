@@ -36,7 +36,7 @@ import retrofit.client.Response;
 public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
     protected ChecklistsListListener mListener;
     ListArrayAdapter<Checklist> adapter;
-    ArrayList<Checklist> checklists=new ArrayList<>();
+    HashMap<Long, Checklist> checklists=new HashMap<>();
     private boolean showHidden=false;
     public ChecklistsListFragment(){
     }
@@ -68,21 +68,22 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<Checklist> allChecklists=ApplicationWideData.getAllChecklists();
+        for (Checklist c: allChecklists){
+            if (c.getParentID()==gId){
+                checklists.put(c.getID(), c);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID() + "", new ChecklistListCallback());
         }
-        else{
-            Group g= mListener.getSelectedGroup();
-            long gId=g.getID();
-            List<Checklist> allChecklists=ApplicationWideData.getAllChecklists();
-            for (Checklist c: allChecklists){
-                if (c.getParentID()==gId){
-                    checklists.add(c);
-                }
-            }
-        }
+
+
+
     }
 
     @Override
@@ -106,8 +107,9 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
 
 
     public List<Checklist> getItems(){
-
-        return checklists;
+        List<Checklist> l=new ArrayList<>();
+        l.addAll(checklists.values());
+        return l;
     }
     public class ChecklistListCallback implements Callback<Response> {
 
@@ -128,7 +130,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
                     Checklist l= Checklist.parseJSON(Long.parseLong((String)map.get("_id")), source);
 
 
-                    checklists.add(l);
+                    checklists.put(l.getID(), l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

@@ -36,7 +36,7 @@ import retrofit.client.Response;
 public class MessageThreadsListFragment extends AbstractListFragment<MessageThread> {
     protected ThreadsListListener mListener;
     ListArrayAdapter<MessageThread> adapter;
-    ArrayList<MessageThread> threads=new ArrayList<>();
+    HashMap<Long, MessageThread> threads=new HashMap<>();
     private boolean showHidden=false;
     public MessageThreadsListFragment(){
     }
@@ -80,7 +80,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
             List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
             for (MessageThread thread: allThreads){
                 if (thread.getParentID()==gId){
-                    threads.add(thread);
+                    threads.put(thread.getID(), thread);
                 }
             }
         }
@@ -108,8 +108,9 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 
 
     public List<MessageThread> getItems(){
-
-        return threads;
+        List<MessageThread> l=new ArrayList<>();
+        l.addAll(threads.values());
+        return l;
     }
     public class ThreadListCallback implements Callback<Response> {
 
@@ -160,7 +161,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 //
 //                        l.addItem(threadItem);
 //                    }
-                    threads.add(l);
+                    threads.put(l.getID(), l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

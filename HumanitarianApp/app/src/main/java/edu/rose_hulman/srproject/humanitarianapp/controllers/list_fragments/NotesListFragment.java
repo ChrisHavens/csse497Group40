@@ -18,6 +18,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Note;
@@ -85,6 +86,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         long gId=g.getID();
         List<Note> allNotes=ApplicationWideData.getAllNotes();
         Toast.makeText(getActivity(), allNotes.size()+"", Toast.LENGTH_SHORT).show();
+        //adapter.clear();
         for (Note c: allNotes){
             if (c.getParentID()==gId){
                 notes.put(c.getID(), c);
@@ -94,7 +96,13 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID() + "", new NoteListCallback());
-        }
+        } else{
+            for (long l: notes.keySet()) {
+                Note n = notes.get(l);
+                adapter.add(n);
+                adapter.notifyDataSetChanged();
+                }
+            }
     }
 
     @Override
@@ -142,13 +150,16 @@ public class NotesListFragment extends AbstractListFragment<Note>{
                     Note n=Note.parseJSON(Long.parseLong((String)map.get("_id")), source);
 
                     notes.put(n.getID(), n);
-                    //LocalDataSaver.addNote(n);
-                    adapter.notifyDataSetChanged();
-                    //adapter.add(p);
+                    LocalDataSaver.saveNote(n);
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            for (long l: notes.keySet()) {
+                Note n = notes.get(l);
+                adapter.add(n);
+                adapter.notifyDataSetChanged();
             }
         }
 

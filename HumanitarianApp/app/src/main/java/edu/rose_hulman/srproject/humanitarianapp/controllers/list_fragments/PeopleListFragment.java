@@ -110,12 +110,13 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
             showHidden = mListener.getShowHidden();
             if (mListener.isFromProject()) {
-                //Toast.makeText(activity, mListener.getSelectedProject().getID() + "", Toast.LENGTH_SHORT).show();
                 service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new PeopleListCallback());
-//            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
             } else {
                 service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID() + "", new PeopleListCallback());
-//            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
+            }
+        } else{
+            for(long l: persons.keySet()){
+                adapter.add(persons.get(l));
             }
         }
     }
@@ -159,6 +160,8 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 HashMap<String, Object> o=mapper.readValue(response.getBody().in(), typeReference);
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
+
+                Toast.makeText(getActivity(), "Person count: " + list.size(), Toast.LENGTH_SHORT);
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
@@ -212,6 +215,11 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            for(long l: persons.keySet()){
+                Person person = persons.get(l);
+                adapter.add(person);
+                Toast.makeText(getActivity(), "Person with name: " + person.getName(), Toast.LENGTH_SHORT);
             }
         }
 

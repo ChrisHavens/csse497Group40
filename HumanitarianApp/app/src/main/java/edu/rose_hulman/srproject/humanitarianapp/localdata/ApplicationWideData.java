@@ -134,54 +134,144 @@ public class ApplicationWideData {
 
     public static void addProjectHashMap(HashMap<Long, Project> projects){
         for(Long l: projects.keySet()){
+            Project conflictingProj = null;
+            for(Project existingProj: knownProjects){
+                if(existingProj.getID() == l){
+                    conflictingProj = existingProj;
+                    break;
+                }
+            }
+            if(conflictingProj != null){
+                knownProjects.remove(conflictingProj);
+            }
             knownProjects.add(projects.get(l));
         }
     }
 
     public static void addGroupHashMap(HashMap<Long, Group> groups){
         for(Long l: groups.keySet()){
+            Group conflictingGroup = null;
+            for(Group existingProj: knownGroups){
+                if(existingProj.getID() == l){
+                    conflictingGroup = existingProj;
+                    break;
+                }
+            }
+            if(conflictingGroup != null){
+                knownGroups.remove(conflictingGroup);
+            }
             knownGroups.add(groups.get(l));
         }
     }
 
     public static void addPersonHashMap(HashMap<Long, Person> people){
         for(Long l: people.keySet()){
+            Person conflictingGroup = null;
+            for(Person existingProj: knownPersons){
+                if(existingProj.getID() == l){
+                    conflictingGroup = existingProj;
+                    break;
+                }
+            }
+            if(conflictingGroup != null){
+                knownPersons.remove(conflictingGroup);
+            }
             knownPersons.add(people.get(l));
         }
     }
 
     public static void addLocationHashMap(HashMap<Long, Location> locations){
         for(Long l: locations.keySet()){
+            Location conflictingGroup = null;
+            for(Location existingProj: knownLocations){
+                if(existingProj.getID() == l){
+                    conflictingGroup = existingProj;
+                    break;
+                }
+            }
+            if(conflictingGroup != null){
+                knownLocations.remove(conflictingGroup);
+            }
             knownLocations.add(locations.get(l));
         }
     }
 
     public static void addShipmentHashMap(HashMap<Long, Shipment> shipments){
         for(Long l: shipments.keySet()){
-            knownShipments.add(shipments.get(l));
+            Shipment conflictingGroup = null;
+        for(Shipment existingProj: knownShipments){
+        if(existingProj.getID() == l){
+        conflictingGroup = existingProj;
+        break;
+        }
+        }
+        if(conflictingGroup != null){
+            knownShipments.remove(conflictingGroup);
+        }
+        knownShipments.add(shipments.get(l));
         }
     }
 
     public static void addNoteHashMap(HashMap<Long, Note> notes){
         for(Long l: notes.keySet()){
+            Note conflictingGroup = null;
+            for(Note existingProj: knownNotes){
+                if(existingProj.getID() == l){
+                    conflictingGroup = existingProj;
+                    break;
+                }
+            }
+            if(conflictingGroup != null){
+                knownNotes.remove(conflictingGroup);
+            }
             knownNotes.add(notes.get(l));
         }
     }
 
     public static void addMessageThreadHashMap(HashMap<Long, MessageThread> messages){
         for(Long l: messages.keySet()){
+            MessageThread conflictingMessage = null;
+            for(MessageThread existingProj: knownMessageThreads){
+                if(existingProj.getID() == l){
+                    conflictingMessage = existingProj;
+                    break;
+                }
+            }
+            if(conflictingMessage != null){
+                knownGroups.remove(conflictingMessage);
+            }
             knownMessageThreads.add(messages.get(l));
         }
     }
 
     public static void addMessageHashMap(HashMap<Long, MessageThread.Message> messages){
         for(Long l: messages.keySet()){
+            MessageThread.Message conflictingMessage = null;
+            for(MessageThread.Message existingProj: knownMessages){
+                if(existingProj.getID() == l){
+                    conflictingMessage = existingProj;
+                    break;
+                }
+            }
+            if(conflictingMessage != null){
+                knownMessages.remove(conflictingMessage);
+            }
             knownMessages.add(messages.get(l));
         }
     }
 
     public static void addChecklistHashMap(HashMap<Long, Checklist> checklists){
         for (Long l: checklists.keySet()){
+            Checklist conflictingChecklist = null;
+            for(Checklist existingProj: knownChecklists){
+                if(existingProj.getID() == l){
+                    conflictingChecklist = existingProj;
+                    break;
+                }
+            }
+            if(conflictingChecklist != null){
+                knownChecklists.remove(conflictingChecklist);
+            }
             knownChecklists.add(checklists.get(l));
         }
     }

@@ -36,7 +36,7 @@ import retrofit.client.Response;
 public class MessageThreadsListFragment extends AbstractListFragment<MessageThread> {
     protected ThreadsListListener mListener;
     ListArrayAdapter<MessageThread> adapter;
-    ArrayList<MessageThread> threads=new ArrayList<>();
+    HashMap<Long, MessageThread> threads=new HashMap<>();
     private boolean showHidden=false;
     public MessageThreadsListFragment(){
     }
@@ -68,22 +68,21 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
+        for (MessageThread thread: allThreads){
+            if (thread.getParentID()==gId){
+                threads.put(thread.getID(), thread);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             Log.wtf("s40", "Here");
             service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
         }
-        else{
-            Group g= mListener.getSelectedGroup();
-            long gId=g.getID();
-            List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
-            for (MessageThread thread: allThreads){
-                if (thread.getParentID()==gId){
-                    threads.add(thread);
-                }
-            }
-        }
+
     }
 
     @Override
@@ -108,8 +107,9 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 
 
     public List<MessageThread> getItems(){
-
-        return threads;
+        List<MessageThread> l=new ArrayList<>();
+        l.addAll(threads.values());
+        return l;
     }
     public class ThreadListCallback implements Callback<Response> {
 
@@ -160,7 +160,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
 //
 //                        l.addItem(threadItem);
 //                    }
-                    threads.add(l);
+                    threads.put(l.getID(), l);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);
 

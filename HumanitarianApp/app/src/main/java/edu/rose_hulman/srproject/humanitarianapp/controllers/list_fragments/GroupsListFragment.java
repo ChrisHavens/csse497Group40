@@ -20,6 +20,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -37,7 +38,7 @@ import retrofit.client.Response;
  */
 public class GroupsListFragment extends AbstractListFragment<Group>{
     protected GroupsListListener mListener;
-    ArrayList<Group> groups=new ArrayList<>();
+    HashMap<Long, Group> groups=new HashMap<>();
     ListArrayAdapter<Group> adapter;
     private boolean showHidden=false;
     public GroupsListFragment(){
@@ -48,7 +49,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     @Override
     public ListArrayAdapter<Group> getAdapter() {
         adapter=new ListArrayAdapter<Group>(getActivity(),
-                android.R.layout.simple_list_item_1, groups){
+                android.R.layout.simple_list_item_1, getItems()){
 
             @Override
             public View customiseView(View v, Group group) {
@@ -72,30 +73,17 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Project p= mListener.getSelectedProject();
+        List<Long> longs=p.getGroupIDs();
+        for (Long l: longs){
+            groups.put(l, ApplicationWideData.getGroupByID(l));
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             //if (mListener.getUserID().equals("-1")){
             service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
         }
-        else{
-            Project p= mListener.getSelectedProject();
-            long l = p.getID();
-            List<Group> localGroups = ApplicationWideData.getGroupsByProjectID(l);
-            groups.addAll(localGroups);
-//            List<Long> longs=p.getGroupIDs();
-//            for (Long l: longs){
-//                groups.add(ApplicationWideData.getGroupByID(l));
-//            }
-        }
-        //}
-        //else {
-        //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
-        //}
-//        Group a=new Group("Group 40", mListener.getSelectedProject());
-//        Group b=new Group("Group 41", mListener.getSelectedProject());
-//        groups.add(a);
-//        groups.add(b);
 
     }
 
@@ -119,8 +107,9 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     }
 
     public List<Group> getItems(){
-
-        return groups;
+        List<Group> l=new ArrayList<>();
+        l.addAll(groups.values());
+        return l;
     }
     public class GroupListCallback implements Callback<Response> {
 
@@ -141,7 +130,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
                     long id = Long.parseLong((String)map.get("_id"));
                     Group g= Group.parseJSON(id, source);
-                    groups.add(g);
+                    groups.put(g.getID(), g);
                     //LocalDataSaver.addGroup(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

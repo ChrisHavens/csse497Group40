@@ -19,6 +19,8 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
@@ -40,7 +42,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     protected PeopleListListener mListener;
     private boolean isFromProject;
     ListArrayAdapter<Person> adapter;
-    ArrayList<Person> persons =new ArrayList<>();
+    HashMap<Long, Person> persons =new HashMap<>();
     private boolean showHidden=false;
     public PeopleListFragment(){
     }
@@ -80,18 +82,37 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        NonLocalDataService service=new NonLocalDataService();
-
-        showHidden=mListener.getShowHidden();
-        if (mListener.isFromProject()) {
-            Toast.makeText(activity, mListener.getSelectedProject().getID()+"", Toast.LENGTH_SHORT).show();
-            service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new PeopleListCallback());
-//            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
+        List<Person> allPersons=ApplicationWideData.getAllPersons();
+        if (mListener.isFromProject()){
+            long projectID=mListener.getSelectedProject().getID();
+            for (Person p: allPersons){
+                if (p.isInProject(projectID)){
+                    persons.put(p.getID(), p);
+                }
+            }
         }
         else{
-            service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID()+"", new PeopleListCallback());
-//            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
+            long groupID= mListener.getSelectedGroup().getID();
+            for (Person p: allPersons){
+                if (p.isInGroup(groupID)){
+                    persons.put(p.getID(), p);
+                }
+            }
         }
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+
+            showHidden = mListener.getShowHidden();
+            if (mListener.isFromProject()) {
+                Toast.makeText(activity, mListener.getSelectedProject().getID() + "", Toast.LENGTH_SHORT).show();
+                service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new PeopleListCallback());
+//            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
+            } else {
+                service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID() + "", new PeopleListCallback());
+//            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
+            }
+        }
+
     }
 
     @Override
@@ -115,8 +136,9 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     }
 
     public List<Person> getItems(){
-
-        return persons;
+        List<Person> l=new ArrayList<>();
+        l.addAll(persons.values());
+        return l;
     }
     public class PeopleListCallback implements Callback<Response> {
 
@@ -177,7 +199,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 //
 
                     Log.d("ED", p.toJSON());
-                    persons.add(p);
+                    persons.put(p.getID(), p);
                     //LocalDataSaver.addPerson(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

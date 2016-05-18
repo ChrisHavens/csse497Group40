@@ -23,6 +23,7 @@ import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataLoader;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -39,7 +40,7 @@ import retrofit.client.Response;
  */
 public class ProjectsListFragment extends AbstractListFragment<Project> {
     protected ProjectsListListener mListener;
-    private List<Project> projects = new ArrayList<>();
+    private HashMap<Long, Project> projects = new HashMap<>();
     ListArrayAdapter<Project> adapter;
     private boolean showHidden=false;
     public ProjectsListFragment(){
@@ -49,7 +50,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     @Override
     public ListArrayAdapter<Project> getAdapter() {
         adapter = new ListArrayAdapter<Project>(getActivity(),
-                android.R.layout.simple_list_item_1, this.projects) {
+                android.R.layout.simple_list_item_1, getItems()) {
 
             @Override
             public View customiseView(View v, Project project) {
@@ -73,16 +74,14 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         if (mListener == null) {
             throw new NullPointerException("Parent fragment is null");
         }
-        if (this.adapter != null) {
-            this.projects = this.adapter.getList();
-        }
+
         List<Project> overallProjects = ApplicationWideData.getAllProjects();
         List<Project> storedProjects = new ArrayList<>();
         //Yes the big theta is horrid and makes CSs cry but getting it coded
         // fast is more important than getting it coded right.
         for(Project existingProject: overallProjects){
             boolean included = false;
-            for(Project project: this.projects) {
+            for(Project project: this.getItems()) {
                 if (project.getID() == existingProject.getID()) {
                     included = true;
                     break;
@@ -90,10 +89,11 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             }
             if(!included){
                 storedProjects.add(existingProject);
+                projects.put(existingProject.getID(), existingProject);
             }
         }
-        this.projects.addAll(storedProjects);
-        for (Project project : this.projects) {
+
+        for (Project project : this.getItems()) {
             Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
         }
         if (this.adapter != null) {
@@ -134,10 +134,9 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     }
 
     public List<Project> getItems() {
-        if (this.adapter != null) {
-            this.projects = this.adapter.getList();
-        }
-        return this.projects;
+        List<Project> l=new ArrayList<>();
+        l.addAll(projects.values());
+        return l;
     }
 
     public interface ProjectsListListener extends Interfaces.UserIDGetter{
@@ -158,7 +157,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             if (adapter != null) {
                 projectList = adapter.getList();
             } else {
-                projectList = projects;
+                projectList = getItems();
             }
             TypeReference<HashMap<String, Object>> typeReference =
                     new TypeReference<HashMap<String, Object>>() {

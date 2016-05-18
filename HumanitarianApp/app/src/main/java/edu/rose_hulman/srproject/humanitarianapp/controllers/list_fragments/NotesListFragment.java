@@ -34,7 +34,7 @@ import retrofit.client.Response;
  */
 public class NotesListFragment extends AbstractListFragment<Note>{
     protected NotesListListener mListener;
-    ArrayList<Note> notes=new ArrayList<>();
+    HashMap<Long, Note> notes=new HashMap<>();
     ListArrayAdapter<Note> adapter;
     private boolean showHidden=false;
     public NotesListFragment(){
@@ -74,20 +74,18 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<Note> allNotes=ApplicationWideData.getAllNotes();
+        for (Note c: allNotes){
+            if (c.getParentID()==gId){
+                notes.put(c.getID(), c);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID() + "", new NoteListCallback());
-        }
-        else{
-            Group g= mListener.getSelectedGroup();
-            long gId=g.getID();
-            List<Note> allNotes=ApplicationWideData.getAllNotes();
-            for (Note c: allNotes){
-                if (c.getParentID()==gId){
-                    notes.add(c);
-                }
-            }
         }
 //        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
@@ -113,8 +111,9 @@ public class NotesListFragment extends AbstractListFragment<Note>{
     }
 
     public List<Note> getItems(){
-
-        return notes;
+        List<Note> l=new ArrayList<>();
+        l.addAll(notes.values());
+        return l;
     }
     public class NoteListCallback implements Callback<Response> {
 
@@ -135,7 +134,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
 
                     Note n=Note.parseJSON(Long.parseLong((String)map.get("_id")), source);
 
-                    notes.add(n);
+                    notes.put(n.getID(), n);
                     //LocalDataSaver.addNote(n);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

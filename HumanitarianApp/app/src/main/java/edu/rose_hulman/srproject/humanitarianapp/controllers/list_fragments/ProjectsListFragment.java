@@ -85,6 +85,9 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         //Yes the big theta is horrid and makes CSs cry but getting it coded
         // fast is more important than getting it coded right.
         for(Project existingProject: overallProjects){
+            if(existingProject == null){
+                continue;
+            }
             boolean included = false;
             for(Project project: this.getItems()) {
                 if (project.getID() == existingProject.getID()) {

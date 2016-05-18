@@ -60,7 +60,9 @@ public class LocalDataRetriver {
             String text = cursor.getString(2);
             Project project = null;
             project = Project.fromJSON(id, text);
-            projects.add(project);
+            if(project != null) {
+                projects.add(project);
+            }
         }
         return projects;
     }

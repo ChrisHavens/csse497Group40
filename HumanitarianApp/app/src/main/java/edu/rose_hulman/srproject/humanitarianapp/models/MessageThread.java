@@ -336,16 +336,16 @@ public class MessageThread implements Selectable{
     }
 
     public static Person getPersonNameFromID(String personID){
-        try {
+//        try {
             Person p;
-            p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
-            if (p == null) {
+//            p = ApplicationWideData.getPersonByID(Long.parseLong(personID));
+//            if (p == null) {
                 p = new Person("Shadow Broker", null);
-            }
+//            }
             return p;
-        }catch (Exception e){
-            return new Person("Shadow Broker", null);
-        }
+//        }catch (Exception e){
+//            return new Person("Shadow Broker", null);
+//        }
     }
 
 

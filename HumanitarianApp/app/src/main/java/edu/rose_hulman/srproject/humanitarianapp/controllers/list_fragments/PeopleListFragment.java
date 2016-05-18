@@ -73,6 +73,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Toast.makeText(getActivity(), "Somebody???", Toast.LENGTH_SHORT);
         try {
             mListener = (PeopleListListener) activity;
         } catch (ClassCastException e) {
@@ -83,12 +84,16 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
             throw new NullPointerException("Parent fragment is null");
         }
 
+        updateItems();
 
     }
 
     @Override
     public void updateItems() {
+
+        Toast.makeText(getActivity(), "We are doing something, right?", Toast.LENGTH_SHORT);
         List<Person> allPersons=ApplicationWideData.getAllPersons();
+        Toast.makeText(getActivity(), "FPeople in local: " + allPersons.size(), Toast.LENGTH_SHORT);
         if (mListener.isFromProject()){
             long projectID=mListener.getSelectedProject().getID();
             for (Person p: allPersons){
@@ -115,9 +120,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID() + "", new PeopleListCallback());
             }
         } else{
+            adapter.clear();
             for(long l: persons.keySet()){
                 adapter.add(persons.get(l));
             }
+            Toast.makeText(getActivity(), "From local", Toast.LENGTH_SHORT);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -194,6 +202,10 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                             } catch (Exception e) {
 
                             }
+                            adapter.clear();
+                            for(long l: persons.keySet()){
+                                adapter.add(persons.get(l));
+                            }
                         }
 
                         @Override
@@ -209,7 +221,6 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                     Log.d("ED", p.toJSON());
                     persons.put(p.getID(), p);
                     //LocalDataSaver.addPerson(p);
-                    adapter.notifyDataSetChanged();
                     //adapter.add(p);
 
                 }
@@ -221,6 +232,8 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 adapter.add(person);
                 Toast.makeText(getActivity(), "Person with name: " + person.getName(), Toast.LENGTH_SHORT);
             }
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "From callback", Toast.LENGTH_SHORT);
         }
 
         @Override

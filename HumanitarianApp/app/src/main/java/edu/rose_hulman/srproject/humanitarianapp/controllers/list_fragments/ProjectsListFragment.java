@@ -81,43 +81,34 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     @Override
     public void updateItems() {
         List<Project> overallProjects = ApplicationWideData.getAllProjects();
-        List<Project> storedProjects = new ArrayList<>();
         //Yes the big theta is horrid and makes CSs cry but getting it coded
         // fast is more important than getting it coded right.
         for(Project existingProject: overallProjects){
             if(existingProject == null){
                 continue;
             }
-            boolean included = false;
-            for(Project project: this.getItems()) {
-                if (project.getID() == existingProject.getID()) {
-                    included = true;
-                    break;
-                }
-            }
-            if(!included){
-                storedProjects.add(existingProject);
-                projects.put(existingProject.getID(), existingProject);
-            }
+            projects.put(existingProject.getID(), existingProject);
         }
 
         for (Project project : this.getItems()) {
             Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
         }
-        if (this.adapter != null) {
-            this.adapter.addAll(storedProjects);
-            this.adapter.notifyDataSetChanged();
-        }
-
-        Toast.makeText(this.getActivity(), "Displayed projects: " + this.projects.size(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this.getActivity(), "Added projects: " + storedProjects.size(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this.getActivity(), "Saved projects: " + overallProjects.size(), Toast.LENGTH_LONG).show();
         if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             Log.wtf(mListener.getUserID(), "USER ID");
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
+        } else{
+            loadList();
         }
+    }
+
+    public void loadList(){
+        adapter.clear();
+        for(Long l: projects.keySet()){
+            adapter.add(projects.get(l));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -180,21 +171,21 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                     Project p=Project.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
                     ApplicationWideData.addExistingProject(p);
-                    //LocalDataSaver.updateProject(p);
-                    if(!projectList.contains(p)) {
-                        projectList.add(p);
-                    }
+                    LocalDataSaver.saveProject(p);
+                    projects.put(p.getID(),p);
 
                 }
                 adapter.notifyDataSetChanged();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitErrorPLF", error.getMessage());
+            loadList();
         }
     }
 

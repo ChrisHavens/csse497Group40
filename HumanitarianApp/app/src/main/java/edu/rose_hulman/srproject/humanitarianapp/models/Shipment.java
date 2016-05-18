@@ -391,7 +391,9 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         StringBuilder sb=new StringBuilder();
         sb.append("{");
         sb.append("\"contents\": \""+getContents()+"\",");
-        sb.append("\"lastLocationID\": \"lcn"+getLastLocation().getID()+"\",");
+        if(getLastLocation() != null) {
+            sb.append("\"lastLocationID\": \"lcn" + getLastLocation().getID() + "\",");
+        }
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"parentID\": \""+getParentID()+"\",");
         sb.append("\"fromLocationID\": \""+getFrom()+"\",");

@@ -94,9 +94,18 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-            //if (mListener.getUserID().equals("-1")){
             service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
+        } else{
+            loadList();
         }
+    }
+
+    public void loadList(){
+        adapter.clear();
+        for(Long l: groups.keySet()){
+            adapter.add(groups.get(l));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -145,17 +154,17 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
                     Group g= Group.parseJSON(id, source);
                     groups.put(g.getID(), g);
                     LocalDataSaver.saveGroup(g);
-                    adapter.notifyDataSetChanged();
-                    adapter.add(g);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", error.getMessage());
+            loadList();
         }
     }
     public interface GroupsListListener extends Interfaces.UserIDGetter{

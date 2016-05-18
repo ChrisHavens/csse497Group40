@@ -17,6 +17,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -87,7 +88,17 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
             showHidden = mListener.getShowHidden();
             Log.wtf("s40", "Here");
             service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
+        } else{
+            loadList();
         }
+    }
+
+    public void loadList(){
+        adapter.clear();
+        for(long l: threads.keySet()){
+            adapter.add(threads.get(l));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -143,21 +154,22 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
                 for (HashMap<String, Object> map: list){
                     //Log.wtf("s40", "object");
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    MessageThread l= MessageThread.parseJSON(Long.parseLong((String)map.get("_id")),source);
-                    threads.put(l.getID(), l);
-                    adapter.notifyDataSetChanged();
-                    //adapter.add(p);
+                    MessageThread thread= MessageThread.parseJSON(Long.parseLong((String)map.get("_id")),source);
+                    threads.put(thread.getID(), thread);
+                    LocalDataSaver.saveMessageThread(thread);
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", error.getMessage());
             Log.wtf("RetrofitError", error.getUrl());
+            loadList();
         }
     }
     public interface ThreadsListListener extends Interfaces.UserIDGetter{

@@ -20,97 +20,121 @@ public class LocalDataSaver {
 
     public static void saveChecklist(Checklist checklist){
         long id = checklist.getID();
+        String type = "Checklist";
         String body = checklist.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Checklist");
+        values.put("Type", type);
         values.put("DateModified", checklist.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveProject(Project project){
         long id = project.getID();
+        String type = "Project";
         String body = project.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Project");
+        values.put("Type", type);
         values.put("DateModified", project.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveGroup(Group group){
         long id = group.getID();
+        String type = "Group";
         String body = group.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Group");
+        values.put("Type", type);
         values.put("DateModified", group.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void savePerson(Person person){
         long id = person.getID();
+        String type = "Person";
         String body = person.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Person");
+        values.put("Type", type);
         values.put("Body", body);
         values.put("DateModified", person.getDateTimeModified());
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveLocation(Location location){
         long id = location.getID();
+        String type = "Location";
         String body = location.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Location");
+        values.put("Type", type);
         values.put("Body", body);
         values.put("DateModified", location.getDateTimeModified());
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveShipment(Shipment shipment){
         long id = shipment.getID();
+        String type = "Shipment";
         String body = shipment.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Shipment");
+        values.put("Type", type);
         values.put("DateModified", shipment.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveMessage(MessageThread.Message message){
         long id = message.getItemID();
+        String type = "Message";
         String body = message.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "Message");
+        values.put("Type", type);
         values.put("Body", body);
         values.put("DateModified", message.getTime());
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static void saveMessageThread(MessageThread messageThread){
         long id = messageThread.getID();
+        String type = "MessageThread";
         String body = messageThread.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);
-        values.put("Type", "MessageThread");
+        values.put("Type",type );
         values.put("DateModified", messageThread.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(id), type};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+
 /**
  * Created by daveyle on 10/4/2015.
  */
@@ -249,7 +251,11 @@ public class Checklist implements Selectable{
 
     @Override
     public String getDateTimeModified() {
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
+
     }
 
     @Override

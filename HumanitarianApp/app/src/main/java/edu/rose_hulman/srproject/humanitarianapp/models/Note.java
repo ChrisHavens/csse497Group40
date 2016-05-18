@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+
 /**
  * Created by daveyle on 10/4/2015.
  */
@@ -76,6 +78,9 @@ public class Note implements Selectable{
 
     @Override
     public String getDateTimeModified() {
+        if(date == null || date.equals("") || time==null || time.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return date+" "+time;
     }
 

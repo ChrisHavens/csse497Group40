@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ColorPrimary</item>
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
@@ -10,11 +10,12 @@
 
 
     </style>
-    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:titleTextStyle">@style/TitleTextStyle</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
     <style name="TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>

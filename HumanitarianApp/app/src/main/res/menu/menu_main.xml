@@ -26,7 +26,7 @@
         android:id="@+id/button2"
         android:orderInCategory="500"
         android:title="Check in"
-        android:icon="@drawable/ic_menu_mylocation"
+        android:icon="@drawable/ic_gps_fixed_white_48dp"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/switchSync"

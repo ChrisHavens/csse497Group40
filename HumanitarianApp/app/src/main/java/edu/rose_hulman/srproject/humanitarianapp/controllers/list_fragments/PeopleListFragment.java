@@ -120,13 +120,16 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                 service.service.getPersonListByGroupID(showHidden, mListener.getSelectedGroup().getID() + "", new PeopleListCallback());
             }
         } else{
-            adapter.clear();
-            for(long l: persons.keySet()){
-                adapter.add(persons.get(l));
-            }
-            Toast.makeText(getActivity(), "From local", Toast.LENGTH_SHORT);
-            adapter.notifyDataSetChanged();
+            loadList();
         }
+    }
+
+    public void loadList(){
+        adapter.clear();
+        for(long l: persons.keySet()){
+            adapter.add(persons.get(l));
+        }
+        ApplicationWideData.addPersonHashMap(persons);
     }
 
     @Override
@@ -202,15 +205,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                             } catch (Exception e) {
 
                             }
-                            adapter.clear();
-                            for(long l: persons.keySet()){
-                                adapter.add(persons.get(l));
-                            }
+                            loadList();
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
-
+                            loadList();
                         }
                     };
                     service.getPersonLocationsListSize(p.getID()+"", 10, subCallback);
@@ -220,25 +220,19 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
                     Log.d("ED", p.toJSON());
                     persons.put(p.getID(), p);
-                    //LocalDataSaver.addPerson(p);
-                    //adapter.add(p);
+
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for(long l: persons.keySet()){
-                Person person = persons.get(l);
-                adapter.add(person);
-                Toast.makeText(getActivity(), "Person with name: " + person.getName(), Toast.LENGTH_SHORT);
-            }
-            adapter.notifyDataSetChanged();
-            Toast.makeText(getActivity(), "From callback", Toast.LENGTH_SHORT);
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", error.getMessage());
+            loadList();
         }
     }
     public interface PeopleListListener extends Interfaces.UserIDGetter{

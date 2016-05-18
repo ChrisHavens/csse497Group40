@@ -102,6 +102,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
     public void loadList(){
         adapter.clear();
+        ApplicationWideData.addGroupHashMap(groups);
         for(Long l: groups.keySet()){
             adapter.add(groups.get(l));
         }

@@ -73,6 +73,7 @@ public class ApplicationWideData {
         knownNotes = new ArrayList();
         knownMessageThreads = new ArrayList();
         knownMessages = new ArrayList();
+        manualSnyc = PreferencesManager.getSyncType();
 
 
         //Pull these numbers from local storage only when a user is known
@@ -86,6 +87,9 @@ public class ApplicationWideData {
             createdObjectCounter = rand.nextInt();
         }
         LocalDataLoader.loadEverything();
+        Toast.makeText(activity.getApplicationContext(), "Loaded project count: " + knownProjects.size(), Toast.LENGTH_SHORT).show();
+        List<Project> projects2 = LocalDataRetriver.getStoredProjectsSecond();
+        Toast.makeText(activity.getApplicationContext(), "Saved projects count: " + projects2.size(), Toast.LENGTH_SHORT).show();
         if (!manualSnyc) {
             sync(activity);
         }
@@ -278,7 +282,9 @@ public class ApplicationWideData {
 
     public static void initialProjects(List<Project> projects){
         knownProjects.clear();
-        knownProjects.addAll(projects);
+        for(Project proj: projects){
+            knownProjects.add(proj);
+        }
     }
 
     public static void initialGroups(List<Group> groups){

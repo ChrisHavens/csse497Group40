@@ -85,6 +85,13 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
+
+     //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
+    }
+
+    @Override
+    public void updateItems() {
         Project p= mListener.getSelectedProject();
         long gId=p.getID();
         List<Location> allLocs=ApplicationWideData.getAllLocations();
@@ -98,8 +105,6 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             showHidden = mListener.getShowHidden();
             service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new LocationListCallback());
         }
-
-     //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 
     @Override

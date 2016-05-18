@@ -68,6 +68,13 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
+
+
+
+    }
+    @Override
+    public void updateItems(){
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<Checklist> allChecklists=ApplicationWideData.getAllChecklists();
@@ -81,9 +88,6 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             showHidden = mListener.getShowHidden();
             service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID() + "", new ChecklistListCallback());
         }
-
-
-
     }
 
     @Override

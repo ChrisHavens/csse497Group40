@@ -73,6 +73,12 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
+
+    }
+
+    @Override
+    public void updateItems() {
         Project p= mListener.getSelectedProject();
         List<Long> longs=p.getGroupIDs();
         for (Long l: longs){
@@ -84,7 +90,6 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
             //if (mListener.getUserID().equals("-1")){
             service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
         }
-
     }
 
     @Override

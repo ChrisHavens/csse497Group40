@@ -11,6 +11,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 
@@ -87,6 +89,14 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
     private String getItemName(){
         return getTitle().toLowerCase();
     }
+    public abstract List<T> getItems();
+
+    public void refresh(){
+        mAdapter.clear();
+        updateItems();
+        mAdapter.addAll(getItems());
+    }
+    public abstract void updateItems();
 
 
     /**

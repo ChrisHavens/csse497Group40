@@ -68,6 +68,12 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+       updateItems();
+
+    }
+
+    @Override
+    public void updateItems() {
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
@@ -82,7 +88,6 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
             Log.wtf("s40", "Here");
             service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
         }
-
     }
 
     @Override

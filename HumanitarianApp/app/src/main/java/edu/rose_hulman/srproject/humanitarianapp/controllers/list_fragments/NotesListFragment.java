@@ -74,6 +74,12 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
+//        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
+    }
+
+    @Override
+    public void updateItems() {
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<Note> allNotes=ApplicationWideData.getAllNotes();
@@ -87,7 +93,6 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             showHidden = mListener.getShowHidden();
             service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID() + "", new NoteListCallback());
         }
-//        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 
     @Override

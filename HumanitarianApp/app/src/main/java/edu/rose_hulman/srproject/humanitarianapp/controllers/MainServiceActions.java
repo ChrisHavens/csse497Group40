@@ -46,11 +46,11 @@ public class MainServiceActions {
     private long parentID;
     private List<Project> storedProjects;
     private boolean isFromProject=false;
-    private Context context;
+    private MainActivity context;
     private String userID;
 
     //private List<Conflict> resolved;
-    public MainServiceActions(Context context, String userID){
+    public MainServiceActions(MainActivity context, String userID){
         this.service=new NonLocalDataService();
         this.context=context;
         this.userID=userID;
@@ -161,7 +161,7 @@ public class MainServiceActions {
         service.updateNote(this.selectedNote, userID, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-
+                context.refreshLists();
             }
 
             @Override
@@ -202,6 +202,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -216,8 +217,9 @@ public class MainServiceActions {
         long projectID=selectedProject.getID();
 
         if (getSelectedGroup()!=null) {
-            Log.wtf("Adding to group", getSelectedGroup().getID()+"");
+            Log.wtf("Adding to group", getSelectedGroup().getID() + "");
             addPersonToGroup(p, projectID, getSelectedGroup().getID());
+
         }
         else{
             addPersonToProject(p, projectID);
@@ -233,6 +235,7 @@ public class MainServiceActions {
                 @Override
                 public void success(Response response, Response response2) {
                     Toast.makeText(context, "Successful removal of person: " + p.getName()+" from group "+groupID, Toast.LENGTH_SHORT).show();
+                    context.refreshLists();
                 }
 
                 @Override
@@ -249,6 +252,7 @@ public class MainServiceActions {
                 @Override
                 public void success(Response response, Response response2) {
                     Toast.makeText(context, "Successful removal of person: " + p.getName()+" from project "+projectID, Toast.LENGTH_SHORT).show();
+                    context.refreshLists();
                 }
 
                 @Override
@@ -269,6 +273,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to project "+projectID, Toast.LENGTH_SHORT).show();
+                context.refreshLists();
             }
 
             @Override
@@ -290,6 +295,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new person: " + p.getName()+" to group "+groupID, Toast.LENGTH_SHORT).show();
+                context.refreshLists();
             }
 
             @Override
@@ -311,6 +317,7 @@ public class MainServiceActions {
         Callback<Response> responseCallback = new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
+                context.refreshLists();
             }
 
             @Override
@@ -346,6 +353,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new group: " + name, Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -359,6 +367,8 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful editing of project", Toast.LENGTH_LONG).show();
+                context.refreshLists();
+
             }
 
             @Override
@@ -383,6 +393,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new location: "+l.getName(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -415,6 +426,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new note: "+note.getTitle(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -430,6 +442,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new shipment: "+l.getName(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -450,6 +463,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new checklist: " + checklist.getTitle(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -471,6 +485,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful adding of new thread: " + m.getTitle(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -489,6 +504,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Message sent", Toast.LENGTH_SHORT).show();
+                context.refreshLists();
             }
 
             @Override
@@ -510,6 +526,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid project", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -533,6 +550,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid group", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -555,6 +573,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid checklist", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -576,6 +595,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid location", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -598,6 +618,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid note", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -619,6 +640,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid person", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -642,6 +664,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid shipment", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -659,6 +682,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(context, "Successful editing of checklist: "+c.getTitle(), Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override
@@ -674,6 +698,7 @@ public class MainServiceActions {
             @Override
             public void success(Response response, Response response2) {
                 //Toast.makeText(context, "Successfully hid shipment", Toast.LENGTH_LONG).show();
+                context.refreshLists();
             }
 
             @Override

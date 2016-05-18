@@ -82,6 +82,12 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+
+
+    }
+
+    @Override
+    public void updateItems() {
         List<Person> allPersons=ApplicationWideData.getAllPersons();
         if (mListener.isFromProject()){
             long projectID=mListener.getSelectedProject().getID();
@@ -104,7 +110,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
             showHidden = mListener.getShowHidden();
             if (mListener.isFromProject()) {
-                Toast.makeText(activity, mListener.getSelectedProject().getID() + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, mListener.getSelectedProject().getID() + "", Toast.LENGTH_SHORT).show();
                 service.service.getPersonListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new PeopleListCallback());
 //            service.getAllPeople(mListener.getSelectedProject(), showHidden,new PeopleListCallback());
             } else {
@@ -112,7 +118,6 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 //            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
             }
         }
-
     }
 
     @Override

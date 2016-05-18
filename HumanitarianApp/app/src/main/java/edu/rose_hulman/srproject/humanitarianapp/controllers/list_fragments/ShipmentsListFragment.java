@@ -79,6 +79,12 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
+//        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
+    }
+
+    @Override
+    public void updateItems() {
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<Shipment> allShipments=ApplicationWideData.getAllShipments();
@@ -92,7 +98,6 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             showHidden = mListener.getShowHidden();
             service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getID() + "", new ShipmentListCallback());
         }
-//        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 
     @Override

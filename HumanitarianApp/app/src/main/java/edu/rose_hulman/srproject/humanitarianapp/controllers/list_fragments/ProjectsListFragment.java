@@ -74,7 +74,12 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         if (mListener == null) {
             throw new NullPointerException("Parent fragment is null");
         }
+        updateItems();
 
+    }
+
+    @Override
+    public void updateItems() {
         List<Project> overallProjects = ApplicationWideData.getAllProjects();
         List<Project> storedProjects = new ArrayList<>();
         //Yes the big theta is horrid and makes CSs cry but getting it coded
@@ -104,10 +109,10 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
         Toast.makeText(this.getActivity(), "Displayed projects: " + this.projects.size(), Toast.LENGTH_LONG).show();
         Toast.makeText(this.getActivity(), "Added projects: " + storedProjects.size(), Toast.LENGTH_LONG).show();
         Toast.makeText(this.getActivity(), "Saved projects: " + overallProjects.size(), Toast.LENGTH_LONG).show();
-         if (!ApplicationWideData.getManualSync()){
+        if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-             Log.wtf(mListener.getUserID(), "USER ID");
+            Log.wtf(mListener.getUserID(), "USER ID");
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
         }
     }

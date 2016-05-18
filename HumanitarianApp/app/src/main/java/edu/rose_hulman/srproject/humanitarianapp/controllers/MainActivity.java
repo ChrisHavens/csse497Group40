@@ -61,6 +61,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragmen
 import edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragments.EditShipmentDialogFragment;
 
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.AbstractListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ChecklistsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.GroupsListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.LocationsListFragment;
@@ -162,7 +163,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         //LocalDataSaver.clearAddedSelectables();
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
-        actions=new MainServiceActions(getApplicationContext(), userID);
+        actions=new MainServiceActions(this, userID);
         actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);
@@ -370,10 +371,17 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         setVisibilityHide(true);
         setVisibilityShowHidden(false);
     }
+    public void refreshLists(){
+        Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+        if (fragment instanceof AbstractListFragment){
+            ((AbstractListFragment)fragment).refresh();
+        }
+    }
 
     private void refreshContent(){
         Log.d("TAG", "GOT Refreshed");
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
+
         if (fragment instanceof ProjectsListFragment){
             changeFragmentToListNoBackStack(new ProjectsListFragment());
             actions.setSelectedGroup(null);

@@ -24,6 +24,7 @@ public class LocalDataSaver {
         ContentValues values = new ContentValues();
         values.put("ID", id);
         values.put("Type", "Checklist");
+        values.put("DateModified", checklist.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -83,6 +84,7 @@ public class LocalDataSaver {
         ContentValues values = new ContentValues();
         values.put("ID", id);
         values.put("Type", "Shipment");
+        values.put("DateModified", shipment.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -106,6 +108,7 @@ public class LocalDataSaver {
         ContentValues values = new ContentValues();
         values.put("ID", id);
         values.put("Type", "MessageThread");
+        values.put("DateModified", messageThread.getDateTimeModified());
         values.put("Body", body);
         String tableName = "[AllData]";
         ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);

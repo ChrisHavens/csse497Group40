@@ -331,13 +331,13 @@ public class MainServiceActions {
             Toast.makeText(context, "Successful adding of new project: " + name + " to local database", Toast.LENGTH_LONG).show();
         }
         if (!ApplicationWideData.getManualSync()) {
-            service.addNewProject(p,  userID, responseCallback);
+            service.addNewProject(p, userID, responseCallback);
         }
-        else{
+            LocalDataSaver.saveProject(p);
             Log.wtf("Added project", "to added table");
             LocalDataSaver.addNewSelectable(p, "Project");
             Log.wtf("Size of added table", LocalDataRetriver.getAllAdded().size()+"");
-        }
+
     }
 
 

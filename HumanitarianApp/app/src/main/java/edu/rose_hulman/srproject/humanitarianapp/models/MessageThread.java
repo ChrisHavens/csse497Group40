@@ -417,6 +417,9 @@ public class MessageThread implements Selectable{
 
     @Override
     public String getDateTimeModified() {
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
     }
 

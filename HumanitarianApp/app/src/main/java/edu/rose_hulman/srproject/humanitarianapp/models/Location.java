@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+
 public class Location implements Selectable{
     private String datetime;
     private long ID;                //0
@@ -198,6 +200,9 @@ public class Location implements Selectable{
     }
     @Override
     public String getDateTimeModified() {
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
     }
 

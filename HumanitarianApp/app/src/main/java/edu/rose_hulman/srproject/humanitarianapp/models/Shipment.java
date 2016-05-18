@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 
 /**
@@ -466,6 +467,9 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
     }
     @Override
     public String getDateTimeModified() {
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
     }
 

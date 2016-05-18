@@ -351,6 +351,10 @@ public class Group implements Serialisable, Selectable {
     }
     @Override
     public String getDateTimeModified() {
+
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
     }
 

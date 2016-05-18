@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
@@ -434,6 +435,9 @@ public class Person implements Serializable, Selectable {
     }
     @Override
     public String getDateTimeModified() {
+        if(datetime == null || datetime.equals("")){
+            return ApplicationWideData.getCurrentTime();
+        }
         return datetime;
     }
 

@@ -31,7 +31,7 @@ import retrofit.client.Response;
 public class EditGroupDialogFragment extends DialogFragment {
 
 
-    private Interfaces.UserIDGetter mListener;
+    private EditGroupCallbacks mListener;
     private EditText nameField;
     private long groupID;
     private Group group;
@@ -62,22 +62,9 @@ public class EditGroupDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String name=nameField.getText().toString();
+                        group.setName(name);
+                        mListener.updateGroup(group);
 
-                        NonLocalDataService service=new NonLocalDataService();
-                        StringBuilder sb=new StringBuilder();
-                        sb.append("{\"doc\":{\"name\": \""+name+"\"}}");
-                        service.updateGroup(group, sb.toString(),mListener.getUserID(),  new Callback<Response>() {
-                            @Override
-                            public void success(Response response, Response response2) {
-                                Log.wtf("s40", "Successful edit of group " + group.getName());
-                                //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e("s40 RetroFitError", error.getMessage());
-                            }
-                        });
                         EditGroupDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -105,7 +92,7 @@ public class EditGroupDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (Interfaces.UserIDGetter) activity;
+            mListener = (EditGroupCallbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -129,5 +116,7 @@ public class EditGroupDialogFragment extends DialogFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-
+        public interface EditGroupCallbacks{
+        public void updateGroup(Group g);
+    }
 }

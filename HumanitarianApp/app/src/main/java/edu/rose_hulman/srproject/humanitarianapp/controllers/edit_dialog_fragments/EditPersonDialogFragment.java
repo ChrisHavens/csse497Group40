@@ -39,7 +39,7 @@ import retrofit.client.Response;
 public class EditPersonDialogFragment extends DialogFragment {
 
 
-    private Interfaces.UserIDGetter mListener;
+    private EditPersonListener mListener;
     private EditText nameField;
     private EditText phoneField;
     private EditText emailField;
@@ -78,43 +78,32 @@ public class EditPersonDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 if (nameEdited || phoneEdited || emailEdited) {
-                                    StringBuilder sb = new StringBuilder();
-                                    sb.append("{\"doc\":{");
+//                                    StringBuilder sb = new StringBuilder();
+//                                    sb.append("{\"doc\":{");
                                     if (nameEdited) {
                                         String name = nameField.getText().toString();
-                                        sb.append("\"name\": \"" + name + "\"");
+//                                        sb.append("\"name\": \"" + name + "\"");
                                         person.setName(name);
-                                        if (phoneEdited || emailEdited) {
-                                            sb.append(",");
-                                        }
+//                                        if (phoneEdited || emailEdited) {
+//                                            sb.append(",");
+//                                        }
                                     }
                                     if (phoneEdited) {
                                         String phone = phoneField.getText().toString();
-                                        sb.append("\"phone\": \"" + phone + "\"");
+//                                        sb.append("\"phone\": \"" + phone + "\"");
                                         person.setPhoneNumber(phone);
-                                        if (emailEdited) {
-                                            sb.append(",");
-                                        }
+//                                        if (emailEdited) {
+//                                            sb.append(",");
+//                                        }
                                     }
                                     if (emailEdited) {
                                         String email = emailField.getText().toString();
-                                        sb.append("\"email\": \"" + email + "\"");
+//                                        sb.append("\"email\": \"" + email + "\"");
                                         person.setName(email);
                                     }
-                                    sb.append("}}");
-                                    NonLocalDataService service = new NonLocalDataService();
-                                    Log.d("ED", sb.toString());
-                                    service.updatePerson(person, sb.toString(), mListener.getUserID(),new Callback<Response>() {
-                                        @Override
-                                        public void success(Response response, Response response2) {
-                                            Log.wtf("s40", "Successful edit of person " + person.getName());
-                                        }
+//                                    sb.append("}}");
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            Log.e("s40 RetroFitError", error.getMessage());
-                                        }
-                                    });
+
                                 }
                                 //mListener.editPerson(name, phone, email, role, personToEditID);
                                 EditPersonDialogFragment.this.getDialog().dismiss();
@@ -243,7 +232,7 @@ public class EditPersonDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (Interfaces.UserIDGetter) activity;
+            mListener = (EditPersonListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -270,27 +259,10 @@ public class EditPersonDialogFragment extends DialogFragment {
 //        public void editPerson(String name, String phone, String email, Roles.PersonRoles role, long personID);
 //    }
     //
-    private class RoleSpinnerAdapter extends ArrayAdapter<String> {
-        private final String[] objects;
-        private final int layout;
-
-
-        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
-            super(context, resource, objects);
-            this.objects=objects;
-            this.layout=resource;
-
-        }
-        public View getView(int position, View convertView, ViewGroup parent){
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(layout, parent, false);
-            TextView line1=(TextView) view.findViewById(android.R.id.text1);
-            line1.setText(objects[position]);
-            return view;
-
-        }
+    public interface EditPersonListener{
+        public void updatePerson(Person p);
     }
+
 
 
 }

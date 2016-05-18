@@ -827,6 +827,70 @@ public class MainServiceActions {
         }
 
     }
+    public void updateGroup(final Group group){
+        if (!ApplicationWideData.manualSnyc) {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("{\"doc\":" + group.toJSON() + "}");
+            service.updateGroup(group, sb.toString(), userID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Log.wtf("s40", "Successful edit of group " + group.getName());
+                    //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("s40 RetroFitError", error.getMessage());
+                }
+            });
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(group, "Group");
+        }
+        LocalDataSaver.saveGroup(group);
+    }
+    public void updateLocation(final Location location){
+        if (!ApplicationWideData.manualSnyc) {
+            String doc = "{\"doc\":" + location.toJSON() + "}";
+            service.updateLocation(location, doc, userID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Log.wtf("s40", "Successful edit of location " + location.getName());
+                    //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("s40 RetroFitError", error.getMessage());
+                }
+            });
+        }else{
+            LocalDataSaver.addUpdatedSelectable(location, "Location");
+        }
+        LocalDataSaver.saveLocation(location);
+
+    }
+    public void updatePerson(final Person person){
+        if (!ApplicationWideData.manualSnyc) {
+            String json = "{\"doc\":" + person.toJSON() + "}";
+            service.updatePerson(person, json, userID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    Log.wtf("s40", "Successful edit of person " + person.getName());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("s40 RetroFitError", error.getMessage());
+                }
+            });
+        }
+        else{
+            LocalDataSaver.addUpdatedSelectable(person, "Person");
+        }
+        LocalDataSaver.savePerson(person);
+    }
 
 
 //    public void resolveConflicts(List<Conflict> conflicts){

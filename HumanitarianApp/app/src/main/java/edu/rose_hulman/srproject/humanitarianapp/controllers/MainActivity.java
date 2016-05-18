@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         AddProjectDialogFragment.AddProjectListener,
         AddGroupDialogFragment.AddGroupListener,
         AddChecklistDialogFragment.AddChecklistListener,
-        //EditPersonDialogFragment.EditPersonListener,
+        EditPersonDialogFragment.EditPersonListener,
         AddLocationDialogFragment.AddLocationListener,
         EditChecklistDialogFragment.EditChecklistListener,
         AddNoteDialogFragment.AddNoteListener,
@@ -123,7 +123,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
                 GoogleApiClient.OnConnectionFailedListener,
         AddPersonDialogFragment.AddPersonListener,
         ConflictResolutionDialogFragment.ConflictResolutionListener,
-        EditProjectDialogFragment.EditProjectListener
+        EditProjectDialogFragment.EditProjectListener,
+        EditGroupDialogFragment.EditGroupCallbacks
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -1206,6 +1207,15 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     public void updateProject(Project p) {
         actions.updateProject(p);
+    }
+
+    @Override
+    public void updateGroup(Group g) {
+        actions.updateGroup(g);
+    }
+    @Override
+    public void updatePerson(Person p){
+        actions.updatePerson(p);
     }
 
 //    private static void saveNewProjects(final MainActivity activity) {

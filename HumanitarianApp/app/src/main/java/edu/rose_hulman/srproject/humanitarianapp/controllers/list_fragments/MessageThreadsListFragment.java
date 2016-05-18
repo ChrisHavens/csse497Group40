@@ -68,22 +68,21 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
+        for (MessageThread thread: allThreads){
+            if (thread.getParentID()==gId){
+                threads.put(thread.getID(), thread);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             Log.wtf("s40", "Here");
             service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
         }
-        else{
-            Group g= mListener.getSelectedGroup();
-            long gId=g.getID();
-            List<MessageThread> allThreads=ApplicationWideData.getAllMessageThreads();
-            for (MessageThread thread: allThreads){
-                if (thread.getParentID()==gId){
-                    threads.put(thread.getID(), thread);
-                }
-            }
-        }
+
     }
 
     @Override

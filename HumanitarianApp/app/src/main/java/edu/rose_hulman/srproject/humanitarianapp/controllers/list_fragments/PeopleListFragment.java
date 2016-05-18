@@ -82,6 +82,23 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        List<Person> allPersons=ApplicationWideData.getAllPersons();
+        if (mListener.isFromProject()){
+            long projectID=mListener.getSelectedProject().getID();
+            for (Person p: allPersons){
+                if (p.isInProject(projectID)){
+                    persons.put(p.getID(), p);
+                }
+            }
+        }
+        else{
+            long groupID= mListener.getSelectedGroup().getID();
+            for (Person p: allPersons){
+                if (p.isInGroup(groupID)){
+                    persons.put(p.getID(), p);
+                }
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
 
@@ -95,26 +112,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 //            service.getAllPeople(mListener.getSelectedGroup(), showHidden, new PeopleListCallback());
             }
         }
-        else{
 
-            List<Person> allPersons=ApplicationWideData.getAllPersons();
-            if (mListener.isFromProject()){
-                long projectID=mListener.getSelectedProject().getID();
-                for (Person p: allPersons){
-                    if (p.isInProject(projectID)){
-                        persons.put(p.getID(), p);
-                    }
-                }
-            }
-            else{
-                long groupID= mListener.getSelectedGroup().getID();
-                for (Person p: allPersons){
-                    if (p.isInGroup(groupID)){
-                        persons.put(p.getID(), p);
-                    }
-                }
-            }
-        }
     }
 
     @Override

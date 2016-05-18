@@ -16,9 +16,11 @@ import java.util.List;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -77,9 +79,19 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
-        service=new NonLocalDataService();
-        showHidden=mListener.getShowHidden();
-        service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getID()+"", new ShipmentListCallback());
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<Shipment> allShipments=ApplicationWideData.getAllShipments();
+        for (Shipment c: allShipments){
+            if (c.getParentID()==gId){
+                shipments.put(c.getID(), c);
+            }
+        }
+        if (!ApplicationWideData.manualSnyc) {
+            service = new NonLocalDataService();
+            showHidden = mListener.getShowHidden();
+            service.service.getShipmentList(showHidden, mListener.getSelectedGroup().getID() + "", new ShipmentListCallback());
+        }
 //        service.getAllShipments(mListener.getSelectedGroup(), showHidden, new ShipmentListCallback());
     }
 

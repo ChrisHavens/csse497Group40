@@ -73,19 +73,18 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Project p= mListener.getSelectedProject();
+        List<Long> longs=p.getGroupIDs();
+        for (Long l: longs){
+            groups.put(l, ApplicationWideData.getGroupByID(l));
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             //if (mListener.getUserID().equals("-1")){
             service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
         }
-        else{
-            Project p= mListener.getSelectedProject();
-            List<Long> longs=p.getGroupIDs();
-            for (Long l: longs){
-                groups.put(l, ApplicationWideData.getGroupByID(l));
-            }
-        }
+
         //}
         //else {
         //    service.service.getGroupList(mListener.getUserID(), showHidden, mListener.getSelectedProject().getID() + "", new GroupListCallback());
@@ -140,7 +139,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
                     long id = Long.parseLong((String)map.get("_id"));
                     Group g= Group.parseJSON(id, source);
-                    groups.put(g.getID(),g);
+                    groups.put(g.getID(), g);
                     //LocalDataSaver.addGroup(p);
                     adapter.notifyDataSetChanged();
                     //adapter.add(p);

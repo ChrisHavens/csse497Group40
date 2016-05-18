@@ -85,21 +85,20 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Project p= mListener.getSelectedProject();
+        long gId=p.getID();
+        List<Location> allLocs=ApplicationWideData.getAllLocations();
+        for (Location c: allLocs){
+            if (c.getProjectIDs().contains(gId)){
+                locations.put(c.getID(), c);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new LocationListCallback());
         }
-        else{
-            Project p= mListener.getSelectedProject();
-            long gId=p.getID();
-            List<Location> allLocs=ApplicationWideData.getAllLocations();
-            for (Location c: allLocs){
-                if (c.getProjectIDs().contains(gId)){
-                    locations.put(c.getID(), c);
-                }
-            }
-        }
+
      //   service.getAllLocations(mListener.getSelectedProject(), showHidden, new LocationListCallback());
     }
 

@@ -74,21 +74,20 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         if (mListener==null){
             throw new NullPointerException("Parent fragment is null");
         }
+        Group g= mListener.getSelectedGroup();
+        long gId=g.getID();
+        List<Note> allNotes=ApplicationWideData.getAllNotes();
+        for (Note c: allNotes){
+            if (c.getParentID()==gId){
+                notes.put(c.getID(), c);
+            }
+        }
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getNoteList(showHidden, mListener.getSelectedGroup().getID() + "", new NoteListCallback());
         }
-        else{
-            Group g= mListener.getSelectedGroup();
-            long gId=g.getID();
-            List<Note> allNotes=ApplicationWideData.getAllNotes();
-            for (Note c: allNotes){
-                if (c.getParentID()==gId){
-                    notes.put(c.getID(), c);
-                }
-            }
-        }
+
 //        service.getAllNotes(mListener.getSelectedGroup(), showHidden, new NoteListCallback());
     }
 

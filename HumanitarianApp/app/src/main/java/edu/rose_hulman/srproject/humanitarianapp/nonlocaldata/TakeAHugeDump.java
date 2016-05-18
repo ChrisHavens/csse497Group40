@@ -24,7 +24,6 @@ public class TakeAHugeDump {
     NonLocalDataService service=new NonLocalDataService();
     String userID;
     HashMap<Long, Project> projectList = new HashMap<>();
-    HashMap<Long, Group> groupList = new HashMap<>();
     HashMap<Long, Checklist> checklistList = new HashMap<>();
     HashMap<Long, Location> locationList = new HashMap<>();
     HashMap<Long, MessageThread> threadList = new HashMap<>();
@@ -33,6 +32,7 @@ public class TakeAHugeDump {
     HashMap<Long, Shipment> shipmentList = new HashMap<>();
     public TakeAHugeDump(long userID){
         this.userID=userID+"";
+        getAllProjects();
     }
     private void getAllProjects(){
         service.service.getProjectList(userID, new ProjectListCallback());
@@ -72,6 +72,7 @@ public class TakeAHugeDump {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            ApplicationWideData.addProjectHashMap(projectList);
         }
 
         @Override
@@ -94,6 +95,7 @@ public class TakeAHugeDump {
                     new TypeReference<HashMap<String, Object>>() {
                     };
             try {
+                HashMap<Long, Group> groupList = new HashMap<>();
                 HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                 ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map : list) {
@@ -113,6 +115,8 @@ public class TakeAHugeDump {
 
 
                 }
+
+                ApplicationWideData.addGroupHashMap(groupList);
 
             } catch (IOException e) {
                 e.printStackTrace();

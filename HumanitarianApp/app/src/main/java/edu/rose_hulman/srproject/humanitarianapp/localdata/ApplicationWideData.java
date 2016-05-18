@@ -84,7 +84,6 @@ public class ApplicationWideData {
             Random rand = new Random();
             createdObjectCounter = rand.nextInt();
         }
-        //manualSnyc = PreferencesManager.getSyncType();
         LocalDataLoader.loadEverything();
         if (!manualSnyc) {
             sync(activity);
@@ -117,15 +116,71 @@ public class ApplicationWideData {
 
     public static List<Checklist> getAllChecklists() {
         return knownChecklists;
-
     }
 
-    public static void overwriteChecklists(Collection<Checklist> checklists){
-        knownChecklists.clear();
-        knownChecklists.addAll(checklists);
-        for(Checklist checklist: knownChecklists){
-            LocalDataSaver.saveChecklist(checklist);
+    public static void clearEverything(){
+        LocalDataSaver.clearAll();
+        knownChecklists = new ArrayList();
+        knownGroups = new ArrayList();
+        knownLocations = new ArrayList();
+        knownPersons = new ArrayList();
+        knownProjects = new ArrayList();
+        knownShipments = new ArrayList();
+        knownNotes = new ArrayList();
+        knownMessageThreads = new ArrayList();
+        knownMessages = new ArrayList();
+    }
+
+    public static void addProjectHashMap(HashMap<Long, Project> projects){
+        for(Long l: projects.keySet()){
+            knownProjects.add(projects.get(l));
         }
+    }
+
+    public static void addGroupHashMap(HashMap<Long, Group> groups){
+        for(Long l: groups.keySet()){
+            knownGroups.add(groups.get(l));
+        }
+    }
+
+    public static void addPersonHashMap(HashMap<Long, Person> people){
+        for(Long l: people.keySet()){
+            knownPersons.add(people.get(l));
+        }
+    }
+
+    public static void addLocationHashMap(HashMap<Long, Location> locations){
+        for(Long l: locations.keySet()){
+            knownLocations.add(locations.get(l));
+        }
+    }
+
+    public static void addShipmentHashMap(HashMap<Long, Shipment> shipments){
+        for(Long l: shipments.keySet()){
+            knownShipments.add(shipments.get(l));
+        }
+    }
+
+    public static void addNoteHashMap(HashMap<Long, Note> notes){
+        for(Long l: notes.keySet()){
+            knownNotes.add(notes.get(l));
+        }
+    }
+
+    public static void addMessageThreadHashMap(HashMap<Long, MessageThread> messages){
+        for(Long l: messages.keySet()){
+            knownMessageThreads.add(messages.get(l));
+        }
+    }
+
+    public static void addMessageHashMap(HashMap<Long, MessageThread.Message> messages){
+        for(Long l: messages.keySet()){
+            knownMessages.add(messages.get(l));
+        }
+    }
+
+    public static void addChecklistMap(HashMap<Long, Checklist> checklists){
+
     }
 
     public static void initialProjects(List<Project> projects){

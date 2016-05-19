@@ -1,13 +1,10 @@
 
 <title>Group: {{group._source.name}}</title>
-<link rel="shortcut icon" type="image/png" href="icon.png"/>
-<link href="login.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="imagebanner">
-			<img src="icon.png" alt="ICON" height="42" width="42" />
-		</div>
-		<h1 id="title"> HMA ADMIN</h1>
- <div class="temp">
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/groups">Groups</a> > {{group._source.name}}
+</div>
+<div class="temp">
 <h1>{{group._source.name}}</h1>
 <ul class="specs">
 
@@ -19,13 +16,15 @@
 		<span>Name: </span>
 		{{group._source.name}}
     </li>
-  
+	<li>Project ID:<a href="#/projects/{{group._source.projectID}}">{{group._source.projectID}}</a>
+
+	</li>
   
   <li>
   <span>Hidden: {{group._source | checkmark}}
   </span>
   </li>
   <input type="button" id="delete" value="Delete Group" ng-click="DeleteGroup()" />
+  <a href="#/groups/{{group._id}}/edit">Edit this group</a>
   
 </ul>
-</div>

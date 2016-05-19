@@ -1,13 +1,10 @@
 <head>
-<link rel="shortcut icon" type="image/png" href="icon.png"/>
-<link href="login.css" type="text/css" rel="stylesheet" />
 <title>Thread: {{thread._source.name}}</title>
 </head>
-<div id="imagebanner">
-			<img src="icon.png" alt="ICON" height="42" width="42" />
-		</div>
-		<h1 id="title"> HMA ADMIN</h1>
- <div class="temp">
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/threads">Threads</a> > {{thread._source.name}}
+</div>
+<div class="temp">
 <h1>{{thread._source.name}}</h1>
 <ul class="specs">
 <li class="ID">ID: {{thread._id}}</li>
@@ -37,4 +34,3 @@
   <input type="button" id="delete" value="Delete Thread" ng-click="DeleteThread()" />
   
 </ul>
-</div>

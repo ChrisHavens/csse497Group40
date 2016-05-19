@@ -1,0 +1,23 @@
+<head>
+<title>Create Location</title>
+</head>
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/locations">Locations</a> > Create Location
+</div>
+<div class="temp">
+<h1>Create Location</h1>
+<ul class="specs">
+	
+
+
+	<li>
+		<span>Name:<input type="text" ng-model="locName"></span>
+    </li>
+	
+	<li>Latitude:<input type="text" ng-model="locLat"></li>
+	<li>Longitude:<input type="text" ng-model="locLng"></li>
+	<li>Parent ID:<input type="text" ng-model="locParent"></li>  
+  <input type="button" id="submit" value="Submit" ng-click="CreateLocation(locName,locLat,locLng,locParent)" />
+  
+  
+</ul>

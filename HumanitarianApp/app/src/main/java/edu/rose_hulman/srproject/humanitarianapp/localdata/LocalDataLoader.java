@@ -31,6 +31,11 @@ public class LocalDataLoader {
         ApplicationWideData.initialProjects(projects);
         ApplicationWideData.initialGroups(groups);
         ApplicationWideData.initialPeople(people);
-        //ApplicationWideData.initialNotes(notes);
+        ApplicationWideData.initialNotes(notes);
+        ApplicationWideData.initialChecklists(checklists);
+        ApplicationWideData.initialLocations(locations);
+        ApplicationWideData.initialMessages(messages);
+        ApplicationWideData.initialMessageThreads(messageThreads);
+        ApplicationWideData.initialShipments(shipments);
     }
 }

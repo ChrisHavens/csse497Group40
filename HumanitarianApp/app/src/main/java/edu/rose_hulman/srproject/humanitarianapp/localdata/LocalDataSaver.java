@@ -30,7 +30,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
     public static void saveNote(Note note){
         long id = note.getID();
@@ -44,7 +44,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName,null, values);
     }
 
     public static void saveProject(Project project){
@@ -59,7 +59,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void saveGroup(Group group){
@@ -74,7 +74,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void savePerson(Person person){
@@ -89,7 +89,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void saveLocation(Location location){
@@ -104,7 +104,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void saveShipment(Shipment shipment){
@@ -119,7 +119,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void saveMessage(MessageThread.Message message){
@@ -134,7 +134,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
     public static void saveMessageThread(MessageThread messageThread){
@@ -149,7 +149,7 @@ public class LocalDataSaver {
         String tableName = "[AllData]";
         String[] whereArgs = {Long.toString(id), type};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
-        ApplicationWideData.db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        ApplicationWideData.db.insert(tableName, null, values);
     }
 
 

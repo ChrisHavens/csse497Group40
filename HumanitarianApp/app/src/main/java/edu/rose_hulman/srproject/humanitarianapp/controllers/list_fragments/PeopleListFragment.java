@@ -125,7 +125,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     }
 
     public void loadList(){
-        if(adapter != null) {
+        if(adapter == null) {
             return;
         }
         adapter.clear();

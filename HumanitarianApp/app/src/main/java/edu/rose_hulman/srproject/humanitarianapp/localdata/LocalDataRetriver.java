@@ -35,7 +35,8 @@ public class LocalDataRetriver {
 
     public static List<Project> getStoredProjectsSecond(){
         List<Project> projects = new ArrayList<Project>();
-        String[] params = {"Project"};
+        String type = "Project";
+        String[] params = {type};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
 
@@ -48,6 +49,8 @@ public class LocalDataRetriver {
             if(project != null) {
                 projects.add(project);
             }
+                Log.wtf("Load project", text);
+
         }
         return projects;
     }
@@ -66,9 +69,7 @@ public class LocalDataRetriver {
             if (group!=null) {
                 groups.add(group);
             }
-            else{
-                Log.wtf("getStoredGroupsSecond", id + " " + text);
-            }
+                Log.wtf("Load Group", text);
         }
         return groups;
     }
@@ -86,6 +87,8 @@ public class LocalDataRetriver {
             if (person!=null) {
                 people.add(person);
             }
+                Log.wtf("Load Person", text);
+
         }
         return people;
     }
@@ -104,6 +107,8 @@ public class LocalDataRetriver {
             if (person!=null) {
                 people.add(person);
             }
+                Log.wtf("Load Checklist", text);
+
         }
         return people;
     }
@@ -122,6 +127,8 @@ public class LocalDataRetriver {
             if (location!=null) {
                 locations.add(location);
             }
+                Log.wtf("Load Location", text);
+
         }
         return locations;
     }
@@ -140,6 +147,8 @@ public class LocalDataRetriver {
             if (messageThread!=null) {
                 messageThreads.add(messageThread);
             }
+                Log.wtf("Load MessageThread", text);
+
         }
         return messageThreads;
     }
@@ -158,6 +167,8 @@ public class LocalDataRetriver {
             if (message!=null) {
                 people.add(message);
             }
+                Log.wtf("Load Message", text);
+
         }
         return people;
     }
@@ -176,6 +187,8 @@ public class LocalDataRetriver {
             if (note!=null) {
                 notes.add(note);
             }
+                Log.wtf("Load Note", text);
+
         }
         return notes;
     }
@@ -194,6 +207,8 @@ public class LocalDataRetriver {
             if (shipment!=null) {
                 shipments.add(shipment);
             }
+                Log.wtf("Load shipment", text);
+
         }
         return shipments;
     }

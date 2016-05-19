@@ -104,6 +104,9 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getLocationListByProjectID(showHidden, mListener.getSelectedProject().getID() + "", new LocationListCallback());
+        } else {
+
+            loadList();
         }
     }
 
@@ -145,11 +148,13 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", "LocationsListCallback: "+error.getMessage());
+            loadList();
         }
     }
 

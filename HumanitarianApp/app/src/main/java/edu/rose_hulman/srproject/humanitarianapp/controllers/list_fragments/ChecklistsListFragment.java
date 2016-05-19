@@ -88,6 +88,8 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
             service.service.getChecklistList(showHidden, mListener.getSelectedGroup().getID() + "", new ChecklistListCallback());
+        }else {
+            loadList();
         }
     }
 
@@ -143,11 +145,13 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", "ChecklistsListCallback: "+error.getMessage());
+            loadList();
         }
     }
     public interface ChecklistsListListener extends Interfaces.UserIDGetter{

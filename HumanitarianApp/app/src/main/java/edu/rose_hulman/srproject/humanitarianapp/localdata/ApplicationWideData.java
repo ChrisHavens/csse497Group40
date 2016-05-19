@@ -712,11 +712,5 @@ public class ApplicationWideData {
                 +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
                 " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
     }
-    public static void hesNotTheMessiahHesAVeryNaughtyBoy(AbstractListFragment fragment){
-        //heIsNotTheMassighHeIsAVeryNaughtyBoy();
-        VeryNaughtyBoy Brian = new VeryNaughtyBoy(fragment);
-        //Brian.run();
-        fragment.loadList();
-    }
 
 }

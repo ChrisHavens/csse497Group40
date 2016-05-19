@@ -102,7 +102,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
     public void loadList(){
         if(adapter == null) {
-            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
+
             return;
         }
         adapter.clear();

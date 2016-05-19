@@ -126,8 +126,9 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
     public void loadList(){
         if(adapter != null) {
-            adapter.clear();
+            return;
         }
+        adapter.clear();
         for(long l: persons.keySet()){
             adapter.add(persons.get(l));
         }

@@ -177,7 +177,6 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
     }
     public void loadList(){
         if(adapter == null) {
-            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
             return;
         }
         adapter.clear();

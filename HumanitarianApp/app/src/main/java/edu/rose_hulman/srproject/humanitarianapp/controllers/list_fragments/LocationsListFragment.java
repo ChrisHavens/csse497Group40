@@ -158,8 +158,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
         }
     }
     public void loadList(){
-        if(adapter == null) {
-            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
+            if(adapter == null) {
             return;
         }
         adapter.clear();

@@ -64,6 +64,7 @@ public class TakeAHugeDump {
                             projectList.put(p.getID(), p);
                         }
                         LocalDataSaver.saveProject(p);
+                        //Log.wtf("Save project", p.getName() + p.getID());
                         service.service.getGroupList(userID, false, p.getID() + "", new GroupListCallback());
 
                         service.service.getPersonListByProjectID(false, p.getID() + "", new PersonListCallback());
@@ -111,6 +112,8 @@ public class TakeAHugeDump {
                         groupList.put(g.getID(), g);
                     }
                     LocalDataSaver.saveGroup(g);
+
+                    //Log.wtf("Save group", g.getName() + g.getID());
                     service.service.getPersonListByGroupID(false, g.getID() + "", new PersonListCallback());
                     service.service.getNoteList(false, g.getID() + "", new NoteListCallback());
                     service.service.getChecklistList(false, g.getID() + "", new ChecklistListCallback());
@@ -159,6 +162,7 @@ public class TakeAHugeDump {
                         personList.put(p.getID(), p);
                     }
                     LocalDataSaver.savePerson(p);
+                    //Log.wtf("Save person", p.getName() + p.getID());
 
                 }
                 ApplicationWideData.addPersonHashMap(personList);
@@ -200,6 +204,7 @@ public class TakeAHugeDump {
                         locationList.put(l.getID(), l);
                     }
                     LocalDataSaver.saveLocation(l);
+                    //Log.wtf("Save location", l.getName() + l.getID());
 
                 }
                 ApplicationWideData.addLocationHashMap(locationList);
@@ -242,6 +247,8 @@ public class TakeAHugeDump {
                     }
                     LocalDataSaver.saveNote(n);
 
+                    //Log.wtf("Save note", n.getTitle() + n.getID());
+
                 }
                 ApplicationWideData.addNoteHashMap(noteList);
 
@@ -282,6 +289,7 @@ public class TakeAHugeDump {
                         checklistList.put(c.getID(), c);
                     }
                     LocalDataSaver.saveChecklist(c);
+                    //Log.wtf("Save checklist", c.getTitle() + c.getID());
 
                 }
                 ApplicationWideData.addChecklistHashMap(checklistList);
@@ -316,13 +324,14 @@ public class TakeAHugeDump {
                 for (HashMap<String, Object> map : list) {
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    Shipment c=Shipment.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
+                    Shipment shipment=Shipment.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
 
-                    if(!shipmentList.containsKey(c.getID())) {
-                        shipmentList.put(c.getID(), c);
+                    if(!shipmentList.containsKey(shipment.getID())) {
+                        shipmentList.put(shipment.getID(), shipment);
                     }
-                    LocalDataSaver.saveShipment(c);
+                    LocalDataSaver.saveShipment(shipment);
+                    //Log.wtf("Save shipment", shipment.getName() + shipment.getID());
 
                 }
                 ApplicationWideData.addShipmentHashMap(shipmentList);
@@ -357,14 +366,15 @@ public class TakeAHugeDump {
                 for (HashMap<String, Object> map : list) {
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    MessageThread c=MessageThread.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
+                    MessageThread messageThread=MessageThread.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
 
-                    if(!threadList.containsKey(c.getID())) {
+                    if(!threadList.containsKey(messageThread.getID())) {
                         //threadList.put(c.getID(), c);
-                        service.service.getMessagesList(c.getID() + "", null, null, null, new MessageListCallback(c));
+                        service.service.getMessagesList(messageThread.getID() + "", null, null, null, new MessageListCallback(messageThread));
                     }
-                    LocalDataSaver.saveMessageThread(c);
+                    LocalDataSaver.saveMessageThread(messageThread);
+                    Log.wtf("Save thread", messageThread.getTitle() + messageThread.getID());
 
 
                 }
@@ -406,14 +416,16 @@ public class TakeAHugeDump {
                 for (HashMap<String, Object> map : list) {
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    MessageThread.Message c=MessageThread.Message.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
+                    MessageThread.Message message=MessageThread.Message.parseJSON(Long.parseLong(((String) map.get("_id"))), source);
 
 
-                    if (!messages.contains(c)){
-                        messages.add(c);
-                        messageHashMap.put(c.getID(), c);
+                    if (!messages.contains(message)){
+                        messages.add(message);
+                        messageHashMap.put(message.getID(), message);
                     }
-                    LocalDataSaver.saveMessage(c);
+                    LocalDataSaver.saveMessage(message);
+
+                    //Log.wtf("Save message", message.getItem() + message.getID());
 
 
                 }

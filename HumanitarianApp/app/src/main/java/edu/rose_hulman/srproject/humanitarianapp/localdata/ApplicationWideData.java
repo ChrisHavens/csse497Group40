@@ -298,6 +298,35 @@ public class ApplicationWideData {
         knownPersons.addAll(people);
     }
 
+    public static void initialChecklists(List<Checklist> people){
+        knownChecklists.clear();
+        knownChecklists.addAll(people);
+    }
+
+    public static void initialLocations(List<Location> people){
+        knownLocations.clear();
+        knownLocations.addAll(people);
+    }
+
+    public static void initialMessageThreads(List<MessageThread> people){
+        knownMessageThreads.clear();
+        knownMessageThreads.addAll(people);
+    }
+
+    public static void initialMessages(List<MessageThread.Message> people){
+        knownMessages.clear();
+        knownMessages.addAll(people);
+    }
+    public static void initialNotes(List<Note> people){
+        knownNotes.clear();
+        knownNotes.addAll(people);
+    }
+
+    public static void initialShipments(List<Shipment> people){
+        knownShipments.clear();
+        knownShipments.addAll(people);
+    }
+
     public static void addNewGroup(Group group) {
         knownGroups.add(group);
     }

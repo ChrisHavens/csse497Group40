@@ -181,9 +181,7 @@ public class EditLocationDialogFragment extends DialogFragment {
                 try {
                     HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
                     HashMap<String, Object> source = (HashMap) map.get("_source");
-                    for (String s : source.keySet()) {
-                        Log.e("Result", s);
-                    }
+
                     location = new Location(Integer.parseInt(((String) map.get("_id"))));
                     location.setName((String) source.get("name"));
                     location.setLat(Float.parseFloat((String) source.get("lat")));

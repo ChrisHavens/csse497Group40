@@ -42,7 +42,7 @@ public class EditProjectDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (getArguments()!=null){
             projectID=getArguments().getLong("projectID");
-            Log.w("Got projectID", "" + projectID);
+//            Log.w("Got projectID", "" + projectID);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

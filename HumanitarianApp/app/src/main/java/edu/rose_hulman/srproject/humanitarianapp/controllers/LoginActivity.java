@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,18 +31,10 @@ import java.util.HashMap;
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.PUT;
-import retrofit.http.Path;
-import retrofit.http.Query;
-import retrofit.mime.TypedInput;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -451,7 +442,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void addNewPerson(final String name, String phone, String email, Roles.PersonRoles role) {
+    public void addNewPerson(final String name, String phone, String email) {
 
 
             Person p=new Person(name, phone, email, Long.parseLong(personID));

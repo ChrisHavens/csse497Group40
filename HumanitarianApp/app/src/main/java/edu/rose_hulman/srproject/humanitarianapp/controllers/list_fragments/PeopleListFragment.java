@@ -164,7 +164,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
         @Override
         public void success(Response response, Response response2) {
-            Log.e("here", "success");
+//            Log.e("here", "success");
             ObjectMapper mapper=new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference=
                     new TypeReference<HashMap<String, Object>>() {
@@ -195,9 +195,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                                 for (HashMap<String, Object> map : list) {
 
                                     HashMap<String, Object> source = (HashMap) map.get("_source");
-                                    for (String s : source.keySet()) {
-                                        Log.e("Result", s);
-                                    }
+
                                     Person.PersonLocation personLoc = new Person.PersonLocation();
                                     personLoc.setLat(Float.parseFloat((String) source.get("lat")));
                                     personLoc.setLng(Float.parseFloat((String) source.get("lng")));
@@ -219,7 +217,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 //                    HashMap<String, Object> lastLoc=(HashMap)source.get("lastLocation");
 //
 
-                    Log.d("ED", p.toJSON());
+//                    Log.d("ED", p.toJSON());
                     persons.put(p.getID(), p);
 
 

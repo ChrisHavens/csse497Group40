@@ -86,7 +86,7 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
         if (!ApplicationWideData.manualSnyc) {
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-            Log.wtf("s40", "Here");
+//            Log.wtf("s40", "Here");
             service.service.getThreadList(showHidden, mListener.getSelectedGroup().getID() + "", new ThreadListCallback());
         } else{
             loadList();

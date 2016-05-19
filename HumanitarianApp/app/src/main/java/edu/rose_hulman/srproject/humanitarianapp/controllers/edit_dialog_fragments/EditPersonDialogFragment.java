@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,11 +11,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -62,7 +56,7 @@ public class EditPersonDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (getArguments()!=null){
             personToEditID=getArguments().getLong("personID");
-            Log.w("Got personID", "" + personToEditID);
+//            Log.w("Got personID", "" + personToEditID);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
@@ -184,9 +178,7 @@ public class EditPersonDialogFragment extends DialogFragment {
                 try {
                     HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
                     HashMap<String, Object> source = (HashMap) map.get("_source");
-                    for (String s : source.keySet()) {
-                        Log.e("Result", s);
-                    }
+
                     person = new Person(Integer.parseInt(((String) map.get("_id"))));
                     person.setName((String) source.get("name"));
                     person.setEmail((String) source.get("email"));

@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
-import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
  * Created by Chris Havens on 10/4/2015.
  */
-public class Group implements Serialisable, Selectable {
+public class Group implements Selectable {
 //    private long id;
 //    private long projectID;
 //    private String name;
@@ -115,15 +114,7 @@ public class Group implements Serialisable, Selectable {
         ApplicationWideData.addNewGroup(this);
     }
 
-    @Override
-    public String serialise() {
-        return null;
-    }
 
-    @Override
-    public Serialisable deserialise(String s) {
-        return null;
-    }
 
     public long getID() {
         return id;

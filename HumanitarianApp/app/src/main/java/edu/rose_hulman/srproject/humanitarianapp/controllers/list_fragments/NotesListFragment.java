@@ -145,7 +145,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
 
         @Override
         public void success(Response response, Response response2) {
-            Log.e("here", "success");
+//            Log.e("here", "success");
             ObjectMapper mapper=new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference=
                     new TypeReference<HashMap<String, Object>>() {

@@ -4,26 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
-import edu.rose_hulman.srproject.humanitarianapp.models.Roles;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +55,7 @@ public class NewUserDialogFragment extends DialogFragment {
                         String phone=phoneField.getText().toString();
                         String email=emailField.getText().toString();
                         //Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
-                        mListener.addNewPerson(name, phone, email, Roles.PersonRoles.WORKER);
+                        mListener.addNewPerson(name, phone, email);
                         NewUserDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -148,31 +136,10 @@ public class NewUserDialogFragment extends DialogFragment {
     public interface AddPersonListener {
         // TODO: Update argument type and name
         String getEmail();
-        void addNewPerson(String name, String phone, String email, Roles.PersonRoles role);
+        void addNewPerson(String name, String phone, String email);
 
     }
-    //
-    private class RoleSpinnerAdapter extends ArrayAdapter<String>{
-        private final String[] objects;
-        private final int layout;
 
-
-        public RoleSpinnerAdapter(Context context, int resource, String[] objects) {
-            super(context, resource, objects);
-            this.objects=objects;
-            this.layout=resource;
-
-        }
-        public View getView(int position, View convertView, ViewGroup parent){
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(layout, parent, false);
-            TextView line1=(TextView) view.findViewById(android.R.id.text1);
-            line1.setText(objects[position]);
-            return view;
-
-        }
-    }
 
 
 }

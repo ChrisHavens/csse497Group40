@@ -102,7 +102,7 @@ public class NonLocalDataService {
     public void updateNote(Note note, String changerID,Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
         sb.append("{\"doc\":{\"contents\": \""+note.getBody()+"\", \"title\": \""+note.getTitle()+"\"}}");
-        Log.w("Note:", note.getID()+" "+sb.toString());
+//        Log.w("Note:", note.getID()+" "+sb.toString());
 
         service.updateNote(note.getID() + "", changerID, note.getDateTimeModified(),new TypedJsonString(sb.toString()), callback);
     }
@@ -173,12 +173,12 @@ public class NonLocalDataService {
         if (json!=null && json!="") {
             String my_json = "json=" + json;
             String res=String.format("%s&%s&%s", uri, method, my_json);
-            Log.w("SearchPayload: ", res);
+//            Log.w("SearchPayload: ", res);
             return new TypedJsonString(res);
         }
         else{
             String res=String.format("%s&%s", uri, method);
-            Log.w("SearchPayload: ", res);
+//            Log.w("SearchPayload: ", res);
             return new TypedJsonString(res);
         }
     }

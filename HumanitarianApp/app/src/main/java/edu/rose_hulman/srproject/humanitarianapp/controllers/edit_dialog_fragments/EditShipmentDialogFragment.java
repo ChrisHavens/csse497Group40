@@ -2,44 +2,34 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.edit_dialog_fragme
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
-import edu.rose_hulman.srproject.humanitarianapp.controllers.widgets.TextPicker;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
@@ -195,13 +185,13 @@ public class EditShipmentDialogFragment extends DialogFragment
         toSpinner.setAdapter(toSpinnerAdapter);
         fromSpinner.setAdapter(fromSpinnerAdapter);
         if (shipment!=null && shipment.getTo()!=null && !shipment.getTo().equals("")){
-            Log.wtf("s40","Setting selection TO: "+shipment.getTo());
+//            Log.wtf("s40","Setting selection TO: "+shipment.getTo());
 
             toSpinner.setSelection(toSpinnerAdapter.getPositionByID(shipment.getTo()));
         }
         if (shipment!=null && shipment.getFrom()!=null && !shipment.getFrom().equals("")){
-            Log.wtf("s40","Setting selection FROM: "+shipment.getFrom());
-            Log.wtf("s40", fromSpinnerAdapter.getPositionByID(shipment.getFrom())+"");
+//            Log.wtf("s40","Setting selection FROM: "+shipment.getFrom());
+//            Log.wtf("s40", fromSpinnerAdapter.getPositionByID(shipment.getFrom())+"");
             fromSpinner.setSelection(fromSpinnerAdapter.getPositionByID(shipment.getFrom()));
         }
 
@@ -361,7 +351,7 @@ public class EditShipmentDialogFragment extends DialogFragment
         public int getPositionByID(String id){
             for (int i=0; i<objects.size(); i++){
                 Location l= objects.get(i);
-                Log.wtf("s40", l.getID()+"");
+//                Log.wtf("s40", l.getID()+"");
                 if ((l.getID()+"").equals(id)){
                     return i;
                 }
@@ -387,9 +377,7 @@ public class EditShipmentDialogFragment extends DialogFragment
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
-                    for (String s: source.keySet()){
-                        Log.e("Result", s);
-                    }
+
                     Location l=new Location(Integer.parseInt(((String)map.get("_id"))));
                     l.setName((String) source.get("name"));
                     l.setLat(Float.parseFloat((String) source.get("lat")));

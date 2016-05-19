@@ -74,7 +74,7 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.wtf("s40", "Selected item");
+//        Log.wtf("s40", "Selected item");
         onItemSelected(mAdapter.getItem(position));
     }
     public abstract ListArrayAdapter<T> getAdapter();

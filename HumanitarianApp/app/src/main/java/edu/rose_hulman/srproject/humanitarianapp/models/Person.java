@@ -23,7 +23,7 @@ public class Person implements Serializable, Selectable {
     private String name;
     private String phoneNumber;
     private String email;
-    private Roles.PersonRoles role;
+
     private PersonLocation lastCheckin;
     private Date lastCheckinTime;
     //private List<PersonLocation> lastLocations=new ArrayList<>();
@@ -367,13 +367,7 @@ public class Person implements Serializable, Selectable {
             }
         }
     }
-    public Roles.PersonRoles getRole() {
-        return role;
-    }
 
-    public void setRole(Roles.PersonRoles role) {
-        this.role = role;
-    }
 
     @Override
     public boolean isHidden() {

@@ -161,6 +161,7 @@ public class LocalDataSaver {
         ContentValues values=new ContentValues();
         values.put("Type", type);
         values.put("ID",selectable.getID()+"");
+        values.put("DateModified", ApplicationWideData.getCurrentTime());
         ApplicationWideData.db.insertWithOnConflict("[AddedIDs]", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         return true;
     }
@@ -168,6 +169,7 @@ public class LocalDataSaver {
         ContentValues values=new ContentValues();
         values.put("Type", type);
         values.put("ID",selectable.getID()+"");
+        values.put("DateModified", ApplicationWideData.getCurrentTime());
         ApplicationWideData.db.insertWithOnConflict("[UpdatedIDs]", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         return true;
     }

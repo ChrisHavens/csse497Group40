@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            //switchToMain("3105");
+            switchToMain("3105");
             if (this.getIntent()!=null && this.getIntent().getExtras()!=null) {
                 logMeOut = this.getIntent().getExtras().getBoolean("logMeOut", false);
             }

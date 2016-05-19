@@ -92,8 +92,8 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
     public abstract List<T> getItems();
 
     public void refresh(){
-        mAdapter.clear();
         updateItems();
+        mAdapter.clear();
         mAdapter.addAll(getItems());
     }
     public abstract void updateItems();

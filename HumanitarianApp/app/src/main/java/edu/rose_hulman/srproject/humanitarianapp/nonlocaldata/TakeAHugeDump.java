@@ -45,6 +45,7 @@ public class TakeAHugeDump {
         @Override
         public void success(Response response, Response response2) {
             ObjectMapper mapper = new ObjectMapper();
+            LocalDataSaver.clearAll();
 
 
 

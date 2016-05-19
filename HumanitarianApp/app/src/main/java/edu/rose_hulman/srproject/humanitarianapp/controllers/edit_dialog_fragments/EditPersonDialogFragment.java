@@ -260,7 +260,7 @@ public class EditPersonDialogFragment extends DialogFragment {
 //    }
     //
     public interface EditPersonListener{
-        public void updatePerson(Person p);
+        void updatePerson(Person p);
     }
 
 

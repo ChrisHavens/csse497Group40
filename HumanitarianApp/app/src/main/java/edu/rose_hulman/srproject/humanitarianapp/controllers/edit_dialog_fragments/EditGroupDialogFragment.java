@@ -117,6 +117,6 @@ public class EditGroupDialogFragment extends DialogFragment {
      */
 
         public interface EditGroupCallbacks{
-        public void updateGroup(Group g);
+        void updateGroup(Group g);
     }
 }

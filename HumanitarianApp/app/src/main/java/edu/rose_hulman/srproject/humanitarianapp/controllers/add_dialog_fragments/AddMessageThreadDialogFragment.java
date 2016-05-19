@@ -110,7 +110,7 @@ public class AddMessageThreadDialogFragment extends DialogFragment {
      */
     public interface AddMessageThreadListener {
         // TODO: Update argument type and name
-        public void addNewMessageThread(MessageThread messageThread);
+        void addNewMessageThread(MessageThread messageThread);
     }
 }
 

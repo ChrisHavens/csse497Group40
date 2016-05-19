@@ -115,7 +115,7 @@ public class GroupFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public Group getSelectedGroup();
+        Group getSelectedGroup();
         void showPeople(boolean fromProjects);
         void showNotes();
         void showChecklists();

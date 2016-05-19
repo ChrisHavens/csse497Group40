@@ -108,7 +108,7 @@ public class NoteFragment extends Fragment {
      */
     public interface NoteFragmentListener {
 
-        public Note getSelectedNote();
+        Note getSelectedNote();
         void saveNote(String title, String body);
 
     }

@@ -84,7 +84,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
         Project p= mListener.getSelectedProject();
         List<Long> longs=p.getGroupIDs();
-        Toast.makeText(getActivity(), "Size: "+longs.size(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), "Size: "+longs.size(), Toast.LENGTH_LONG).show();
         for (Long l: longs){
             Group g=ApplicationWideData.getGroupByID(l);
             if (g!=null) {
@@ -108,7 +108,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
             adapter.add(groups.get(l));
         }
         ApplicationWideData.addGroupHashMap(groups);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
 
     @Override

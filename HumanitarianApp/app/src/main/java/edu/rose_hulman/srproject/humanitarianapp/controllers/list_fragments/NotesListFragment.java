@@ -85,7 +85,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
         Group g= mListener.getSelectedGroup();
         long gId=g.getID();
         List<Note> allNotes=ApplicationWideData.getAllNotes();
-        Toast.makeText(getActivity(), allNotes.size()+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), allNotes.size()+"", Toast.LENGTH_SHORT).show();
         //adapter.clear();
         for (Note c: allNotes){
             if (c.getParentID()==gId){
@@ -113,7 +113,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             adapter.add(notes.get(l));
         }
         ApplicationWideData.addNoteHashMap(notes);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
 
     @Override

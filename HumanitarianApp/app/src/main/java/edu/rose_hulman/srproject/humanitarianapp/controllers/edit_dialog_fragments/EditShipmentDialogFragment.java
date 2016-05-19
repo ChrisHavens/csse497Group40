@@ -326,8 +326,8 @@ public class EditShipmentDialogFragment extends DialogFragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface EditShipmentListener extends Interfaces.UserIDGetter{
-        public void addNewShipment(Shipment l);
-        public Shipment getSelectedShipment();
+        void addNewShipment(Shipment l);
+        Shipment getSelectedShipment();
     }
     private class LocationSpinnerAdapter extends ArrayAdapter<Location> {
         private final List<Location> objects;

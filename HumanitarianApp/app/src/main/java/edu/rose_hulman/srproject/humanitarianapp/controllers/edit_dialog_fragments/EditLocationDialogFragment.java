@@ -230,7 +230,7 @@ public class EditLocationDialogFragment extends DialogFragment {
         mListener = null;
     }
     public interface EditLocationCallbacks{
-        public void updateLocation(Location l);
+        void updateLocation(Location l);
     }
 
 

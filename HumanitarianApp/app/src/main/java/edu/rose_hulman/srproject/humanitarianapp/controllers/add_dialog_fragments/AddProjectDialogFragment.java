@@ -94,7 +94,7 @@ public class AddProjectDialogFragment extends DialogFragment{
 
     public interface AddProjectListener {
         // TODO: Update argument type and name
-        public void addNewProject(String name);
+        void addNewProject(String name);
     }
 
 }

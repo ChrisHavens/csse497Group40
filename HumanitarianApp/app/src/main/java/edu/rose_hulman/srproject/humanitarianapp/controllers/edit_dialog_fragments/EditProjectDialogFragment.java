@@ -114,7 +114,7 @@ public class EditProjectDialogFragment extends DialogFragment {
      */
     public interface EditProjectListener {
         // TODO: Update argument type and name
-        public void updateProject(Project p);
+        void updateProject(Project p);
 
     }
 

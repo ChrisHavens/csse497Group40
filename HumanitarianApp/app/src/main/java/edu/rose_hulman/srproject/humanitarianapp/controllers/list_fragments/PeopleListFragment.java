@@ -73,7 +73,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Toast.makeText(getActivity(), "Somebody???", Toast.LENGTH_SHORT);
+//        Toast.makeText(getActivity(), "Somebody???", Toast.LENGTH_SHORT);
         try {
             mListener = (PeopleListListener) activity;
         } catch (ClassCastException e) {
@@ -91,9 +91,9 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     @Override
     public void updateItems() {
 
-        Toast.makeText(getActivity(), "We are doing something, right?", Toast.LENGTH_SHORT);
+//        Toast.makeText(getActivity(), "We are doing something, right?", Toast.LENGTH_SHORT);
         List<Person> allPersons=ApplicationWideData.getAllPersons();
-        Toast.makeText(getActivity(), "FPeople in local: " + allPersons.size(), Toast.LENGTH_SHORT);
+//        Toast.makeText(getActivity(), "FPeople in local: " + allPersons.size(), Toast.LENGTH_SHORT);
         if (mListener.isFromProject()){
             long projectID=mListener.getSelectedProject().getID();
             for (Person p: allPersons){
@@ -132,7 +132,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
             adapter.add(persons.get(l));
         }
         ApplicationWideData.addPersonHashMap(persons);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -175,7 +175,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
 
-                Toast.makeText(getActivity(), "Person count: " + list.size(), Toast.LENGTH_SHORT);
+//                Toast.makeText(getActivity(), "Person count: " + list.size(), Toast.LENGTH_SHORT);
                 for (HashMap<String, Object> map: list){
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");

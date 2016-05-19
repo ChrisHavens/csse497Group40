@@ -5,7 +5,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers;
  */
 public class Interfaces {
 
-    public static interface UserIDGetter{
-        public String getUserID();
+    public interface UserIDGetter{
+        String getUserID();
     }
 }

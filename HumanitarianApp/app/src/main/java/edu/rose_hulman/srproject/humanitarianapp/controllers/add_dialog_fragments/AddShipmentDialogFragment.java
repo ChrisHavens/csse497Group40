@@ -328,7 +328,7 @@ public class AddShipmentDialogFragment extends DialogFragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface AddShipmentListener {
-        public void addNewShipment(Shipment l);
+        void addNewShipment(Shipment l);
     }
     private class LocationSpinnerAdapter extends ArrayAdapter<Location> {
         private final List<Location> objects;

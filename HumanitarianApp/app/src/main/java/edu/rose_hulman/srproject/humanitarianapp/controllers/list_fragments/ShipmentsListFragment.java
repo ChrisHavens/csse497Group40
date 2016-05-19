@@ -183,7 +183,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             adapter.add(shipments.get(l));
         }
         ApplicationWideData.addShipmentHashMap(shipments);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
     public class ShipmentToLocationCallbacks implements Callback<Response>{
         private Shipment s;

@@ -21,7 +21,7 @@ public class SerilizationConstants {
 
     public static long generateID(long objectEnum) {
         long value = objectEnum << TYPE_LOCATION;
-        value = value | ((long) ApplicationWideData.userID) << CREATER_LOCATION;
+        value = value | ApplicationWideData.userID << CREATER_LOCATION;
         value = value | ((long) ApplicationWideData.createdObjectCounter) << COUNTER_LOCATION;
         ApplicationWideData.createdObjectCounter ++;
         return value;

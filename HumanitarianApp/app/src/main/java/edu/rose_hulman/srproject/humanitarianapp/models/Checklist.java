@@ -197,7 +197,7 @@ public class Checklist implements Selectable{
                     Checklist.SublistItem sublistItem = new Checklist.SublistItem((String) subitem.get("task"));
                     //TODO:
                     //sublistItem.setAssigned();
-                    if (subitem.containsKey("sublistItemID") && !((String) subitem.get("sublistItemID")).equals("null")) {
+                    if (subitem.containsKey("sublistItemID") && !subitem.get("sublistItemID").equals("null")) {
                         sublistItem.setItemID(Long.parseLong((String) subitem.get("sublistItemID")));
                     }
                     if (subitem.containsKey("isDone")) {
@@ -206,7 +206,7 @@ public class Checklist implements Selectable{
                     checklistItem.addNewSublistItem(sublistItem);
 
                 }
-                if (item.containsKey("checklistItemID") && !((String) item.get("checklistItemID")).equals("null")) {
+                if (item.containsKey("checklistItemID") && !item.get("checklistItemID").equals("null")) {
                     checklistItem.setItemID(Long.parseLong((String) item.get("checklistItemID")));
                 }
                 if (item.containsKey("isDone")) {

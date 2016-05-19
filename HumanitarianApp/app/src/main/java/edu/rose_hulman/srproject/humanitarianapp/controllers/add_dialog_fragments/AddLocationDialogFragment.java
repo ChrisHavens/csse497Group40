@@ -123,7 +123,7 @@ public class AddLocationDialogFragment extends DialogFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface AddLocationListener {
-        public void addNewLocation(Location l);
+        void addNewLocation(Location l);
     }
     //
 

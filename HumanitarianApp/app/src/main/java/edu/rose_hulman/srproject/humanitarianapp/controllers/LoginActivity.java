@@ -468,7 +468,7 @@ public class LoginActivity extends AppCompatActivity implements
                 @Override
                 public void success(Response response, Response response2) {
                     Log.wtf("s40-login", "Successful Add!");
-                    Toast.makeText(getApplicationContext(), "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Successful adding of new person: " + name, Toast.LENGTH_LONG).show();
                     switchToMain(personID);
                 }
 

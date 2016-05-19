@@ -250,7 +250,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
      */
     public interface EditChecklistListener {
         // TODO: Update argument type and name
-        public void editChecklist(Checklist checklist);
-        public Checklist getSelectedChecklist();
+        void editChecklist(Checklist checklist);
+        Checklist getSelectedChecklist();
     }
 }

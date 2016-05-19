@@ -153,7 +153,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         Intent intent=getIntent();
         userID=intent.getStringExtra("userID");
-        Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "User id: "+userID, Toast.LENGTH_LONG).show();
         ApplicationWideData.userID = Integer.parseInt(userID);
         // Startup Code Here
         PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
@@ -333,8 +333,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
         CharSequence text = "Location is " + loc.getLatitude() + " " + loc.getLongitude() + " " + city + ", " + country;
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+//        Toast.makeText(context, text, duration).show();
+
 
 
         //TODO, replace hard coded ID with actual one
@@ -1126,7 +1126,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             } else if (f instanceof ShipmentFragment) {
                 actions.hideShipment();
             }
-        Toast.makeText(this, "Visibility was changed", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Visibility was changed", Toast.LENGTH_LONG).show();
 
         }
     @Override

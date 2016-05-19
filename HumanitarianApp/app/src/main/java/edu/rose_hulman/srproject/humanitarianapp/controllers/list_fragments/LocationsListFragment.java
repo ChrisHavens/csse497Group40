@@ -165,7 +165,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             adapter.add(locations.get(l));
         }
         ApplicationWideData.addLocationHashMap(locations);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
 
     public interface LocationsListListener extends Interfaces.UserIDGetter{

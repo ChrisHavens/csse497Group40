@@ -162,7 +162,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             adapter.add(checklists.get(l));
         }
         ApplicationWideData.addChecklistHashMap(checklists);
-        adapter.notifyDataSetChanged();;
+        adapter.notifyDataSetChanged();
     }
     public interface ChecklistsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Checklist t);

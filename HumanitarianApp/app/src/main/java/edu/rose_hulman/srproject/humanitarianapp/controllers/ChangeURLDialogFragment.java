@@ -186,7 +186,7 @@ public class ChangeURLDialogFragment extends DialogFragment {
     public interface ChangeURLListener {
         // TODO: Update argument type and name
 
-        public void setURL(String url);
+        void setURL(String url);
 
     }
     public static class BadURLDialogFragment extends DialogFragment {

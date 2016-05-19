@@ -151,8 +151,8 @@ public class ConflictResolutionDialogFragment extends DialogFragment {
         mListener = null;
     }
     public interface ConflictResolutionListener{
-        public void resolveConflicts(List<Conflict> conflicts);
-        public List<Conflict> getConflicts();
+        void resolveConflicts(List<Conflict> conflicts);
+        List<Conflict> getConflicts();
 
     }
 

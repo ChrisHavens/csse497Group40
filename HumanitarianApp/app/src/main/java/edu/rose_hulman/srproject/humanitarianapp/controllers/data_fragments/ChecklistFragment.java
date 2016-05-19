@@ -170,8 +170,8 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
      */
     public interface ChecklistFragmentListener {
 
-       public Checklist getSelectedChecklist();
-        public void editChecklist(Checklist c);
+       Checklist getSelectedChecklist();
+        void editChecklist(Checklist c);
     }
 
 }

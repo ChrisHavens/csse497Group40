@@ -38,7 +38,7 @@ public class CoordinatesGetter {
         //essentially, trigger a single update, then get the most recent location
         locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null);
         mLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        Log.d("location", mLocation.toString());
+//        Log.d("location", mLocation.toString());
         return mLocation;
     }
 }

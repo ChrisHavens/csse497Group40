@@ -105,7 +105,7 @@ public class AddNoteDialogFragment extends DialogFragment {
      */
     public interface AddNoteListener {
         // TODO: Update argument type and name
-        public void addNewNote(String name, String text);
+        void addNewNote(String name, String text);
     }
 
 }

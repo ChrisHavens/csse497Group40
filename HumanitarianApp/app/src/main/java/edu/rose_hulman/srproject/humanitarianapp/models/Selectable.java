@@ -4,8 +4,8 @@ package edu.rose_hulman.srproject.humanitarianapp.models;
  * Created by daveyle on 12/1/2015.
  */
 public interface Selectable {
-    public boolean isHidden();
-    public long getID();
-    public String getDateTimeModified();
-    public void setDateTimeModified(String dateTime);
+    boolean isHidden();
+    long getID();
+    String getDateTimeModified();
+    void setDateTimeModified(String dateTime);
 }

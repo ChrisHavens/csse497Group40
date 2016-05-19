@@ -81,7 +81,7 @@ public class LocationFragment extends Fragment {
      */
     public interface LocationFragmentListener {
 
-        public Location getSelectedLocation();
+        Location getSelectedLocation();
 
     }
 }

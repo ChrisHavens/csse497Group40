@@ -171,7 +171,7 @@ public class PersonFragment extends Fragment {
      */
     public interface WorkerFragmentListener {
 
-        public Person getSelectedPerson();
+        Person getSelectedPerson();
     }
 
 }

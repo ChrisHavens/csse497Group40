@@ -96,10 +96,10 @@ public class ProjectFragment extends Fragment{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface ProjectFragmentListener {
-        public Project getSelectedProject();
-        public void showGroups();
-        public void showPeople(boolean fromProjects);
-        public void showLocations();
+        Project getSelectedProject();
+        void showGroups();
+        void showPeople(boolean fromProjects);
+        void showLocations();
     }
 
 

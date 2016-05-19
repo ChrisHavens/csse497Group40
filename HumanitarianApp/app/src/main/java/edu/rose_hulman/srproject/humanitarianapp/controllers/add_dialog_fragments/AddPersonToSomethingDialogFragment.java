@@ -240,7 +240,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
                         boolean in = false;
                         if (parentIDs != null){
                             for (HashMap m : parentIDs) {
-                                if (((String) m.get("parentID")).equals(mListener.getSelectedProjectOrGroup())) {
+                                if (m.get("parentID").equals(mListener.getSelectedProjectOrGroup())) {
                                     in = true;
                                 }
                             }
@@ -394,9 +394,9 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
      */
     public interface AddPersonListener {
         // TODO: Update argument type and name
-        public void addPersonToProjectOrGroup(Person p);
-        public void removePersonFromProjectOrGroup(Person p);
-        public String getSelectedProjectOrGroup();
+        void addPersonToProjectOrGroup(Person p);
+        void removePersonFromProjectOrGroup(Person p);
+        String getSelectedProjectOrGroup();
 
     }
 

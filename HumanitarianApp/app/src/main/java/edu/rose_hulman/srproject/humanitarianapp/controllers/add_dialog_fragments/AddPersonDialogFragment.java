@@ -144,7 +144,7 @@ public class AddPersonDialogFragment extends DialogFragment {
     public interface AddPersonListener {
         // TODO: Update argument type and name
 
-        public void addNewPerson(String name, String phone, String email);
+        void addNewPerson(String name, String phone, String email);
 
     }
     //

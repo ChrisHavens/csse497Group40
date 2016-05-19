@@ -98,7 +98,7 @@ public class AddGroupDialogFragment extends DialogFragment {
      */
     public interface AddGroupListener {
         // TODO: Update argument type and name
-        public void addNewGroup(String name);
+        void addNewGroup(String name);
     }
 
 }

@@ -87,9 +87,9 @@ public class ApplicationWideData {
             createdObjectCounter = rand.nextInt();
         }
         LocalDataLoader.loadEverything();
-        Toast.makeText(activity.getApplicationContext(), "Loaded project count: " + knownProjects.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity.getApplicationContext(), "Loaded project count: " + knownProjects.size(), Toast.LENGTH_SHORT).show();
         List<Project> projects2 = LocalDataRetriver.getStoredProjectsSecond();
-        Toast.makeText(activity.getApplicationContext(), "Saved projects count: " + projects2.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity.getApplicationContext(), "Saved projects count: " + projects2.size(), Toast.LENGTH_SHORT).show();
         if (!manualSnyc) {
             sync(activity);
         }
@@ -506,7 +506,7 @@ public class ApplicationWideData {
 
         //saveNewProjects(activity);
         List<Selectable> added= LocalDataRetriver.getAllAdded();
-        Toast.makeText(activity, added.size()+"", Toast.LENGTH_LONG).show();
+//        Toast.makeText(activity, added.size()+"", Toast.LENGTH_LONG).show();
         addNewItems(added);
         LocalDataSaver.clearAddedSelectables();
         NonLocalDataService service = new NonLocalDataService();
@@ -518,7 +518,7 @@ public class ApplicationWideData {
                 updated.put(s.getID()+"", (Project)s);
             }
         }
-        Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
         Log.wtf(userID + "", "USER ID2");
         service.service.getProjectList(Long.toString(userID), false, new ProjectListCallback(updated, activity));
         String time = PreferencesManager.getSyncTime();
@@ -596,7 +596,7 @@ public class ApplicationWideData {
                 }
                 for (String entry: updated.keySet()){
                     if (!ids.contains(entry)){
-                        Toast.makeText(activity, "Deleting: "+entry, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(activity, "Deleting: "+entry, Toast.LENGTH_SHORT).show();
                         ApplicationWideData.deleteProjectByID(Long.parseLong(entry));
                     }
                 }
@@ -710,6 +710,11 @@ public class ApplicationWideData {
         return cal.get(Calendar.YEAR)+"-"+String.format("%02d", cal.get(Calendar.MONTH)+1)+"-"
                 +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
                 " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
+    }
+    public static void hesNotTheMessiahHesAVeryNaughtyBoy(){
+        //heIsNotTheMassighHeIsAVeryNaughtyBoy();
+
+
     }
 
 }

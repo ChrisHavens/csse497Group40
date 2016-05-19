@@ -248,6 +248,7 @@ public class Checklist implements Selectable{
     public long getID() {
         return id;
     }
+    public String getType(){return "Checklist";}
 
     @Override
     public String getDateTimeModified() {

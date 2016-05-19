@@ -2,6 +2,8 @@ package edu.rose_hulman.srproject.humanitarianapp.localdata;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
@@ -168,9 +170,10 @@ public class LocalDataSaver {
     public static boolean addUpdatedSelectable(Selectable selectable, String type){
         ContentValues values=new ContentValues();
         values.put("Type", type);
-        values.put("ID",selectable.getID()+"");
+        values.put("ID", selectable.getID() + "");
         values.put("DateModified", ApplicationWideData.getCurrentTime());
         ApplicationWideData.db.insertWithOnConflict("[UpdatedIDs]", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        Log.wtf("Size of Updated", LocalDataRetriver.getAllUpdated().size() + "");
         return true;
     }
 
@@ -179,6 +182,12 @@ public class LocalDataSaver {
 
     public static boolean clearUpdatedSelectables(){
         ApplicationWideData.db.delete("[UpdatedIDs]", null, null);
+        return true;
+    }
+    public static boolean clearUpdatedSelectable(Selectable s){
+        String tableName = "[AllData]";
+        String[] whereArgs = {Long.toString(s.getID()), s.getType()};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         return true;
     }
     public static boolean clearAddedSelectables(){

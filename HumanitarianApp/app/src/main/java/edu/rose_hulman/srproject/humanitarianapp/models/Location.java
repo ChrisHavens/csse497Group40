@@ -63,7 +63,7 @@ public class Location implements Selectable{
         this.projectIDs=new ArrayList<>();
         this.groupIDs=new ArrayList<>();
     }
-
+    public String getType(){return "Location";}
     public long getID() {
         return ID;
     }

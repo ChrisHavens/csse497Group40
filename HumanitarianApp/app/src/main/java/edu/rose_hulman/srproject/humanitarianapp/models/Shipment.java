@@ -383,6 +383,7 @@ public class Shipment implements Selectable {
     public void setToName(String toName) {
         this.toName = toName;
     }
+    public String getType(){return "Shipment";}
 
     public String toJSON(){
         StringBuilder sb=new StringBuilder();

@@ -157,12 +157,13 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         ApplicationWideData.userID = Integer.parseInt(userID);
         // Startup Code Here
         PreferencesManager.setPreferencesFile(getPreferences(Context.MODE_PRIVATE));
+        PreferencesManager.setID(userID);
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
         Log.wtf("In Manual Sync Mode", ApplicationWideData.manualSnyc+"");
         //LocalDataSaver.clearAll();
-        //LocalDataSaver.clearUpdatedSelectables();
+        LocalDataSaver.clearUpdatedSelectables();
         //LocalDataSaver.clearAddedSelectables();
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
@@ -838,18 +839,22 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         //Toast.makeText(this, "Let's resolve a conflict", Toast.LENGTH_SHORT).show();
         this.conflictsMap=conflicts;
         conflictsIterator=conflictsMap.entrySet().iterator();
-        currConflict=conflictsIterator.next();
-        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+        if (conflictsIterator.hasNext()) {
 
+            resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
 
-        DialogFragment newFragment = new ConflictResolutionDialogFragment();
+            currConflict = conflictsIterator.next();
+            DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
-        newFragment.show(getFragmentManager(), "conflictResolution");
+            newFragment.show(getFragmentManager(), "conflictResolution");
+        }
         String time = ApplicationWideData.getCurrentTime();
         PreferencesManager.setSyncDate(time);
     }
     private void showNextConflictResolution(){
+        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
         if (conflictsIterator.hasNext()){
+
             currConflict=conflictsIterator.next();
             DialogFragment newFragment = new ConflictResolutionDialogFragment();
 

@@ -407,6 +407,7 @@ public class Project implements Selectable {
         return ApplicationWideData.getAllProjects();
     }
 
+    public String getType(){return "Project";}
     /*
     {
   "name": "Stop the Reapers",

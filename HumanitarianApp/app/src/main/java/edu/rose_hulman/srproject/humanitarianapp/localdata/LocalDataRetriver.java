@@ -228,7 +228,7 @@ public class LocalDataRetriver {
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++, cursor.moveToNext()){
             Long id= cursor.getLong(0);
-            String type= cursor.getString(1);
+            String type= cursor.getString(2);
             items.add(retrieveItem(id, type));
         }
         return items;
@@ -239,7 +239,7 @@ public class LocalDataRetriver {
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++, cursor.moveToNext()){
             Long id= cursor.getLong(0);
-            String type= cursor.getString(1);
+            String type= cursor.getString(2);
             items.add(retrieveItem(id, type));
         }
         return items;

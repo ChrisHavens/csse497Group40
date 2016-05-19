@@ -8,4 +8,5 @@ public interface Selectable {
     long getID();
     String getDateTimeModified();
     void setDateTimeModified(String dateTime);
+    String getType();
 }

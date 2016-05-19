@@ -39,7 +39,7 @@ public class Note implements Selectable{
 
         this.body = body;
     }
-
+    public String getType(){return "Note";}
     public String getTitle() {
         return title;
     }

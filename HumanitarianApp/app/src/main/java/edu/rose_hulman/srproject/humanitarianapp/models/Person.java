@@ -362,6 +362,7 @@ public class Person implements Serializable, Selectable {
     public void setHidden(boolean hidden) {
         this.isHidden = hidden;
     }
+    public String getType(){return "Person";}
 
     public static class PersonLocation{
         private float lat;

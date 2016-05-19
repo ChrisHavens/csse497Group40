@@ -312,7 +312,9 @@ public class Group implements Selectable {
         //sb.append("]");
         return sb.toString();
     }
-
+    public String getType(){
+        return "Group";
+    }
 
 
     public static List<Group> getKnownGroups() {

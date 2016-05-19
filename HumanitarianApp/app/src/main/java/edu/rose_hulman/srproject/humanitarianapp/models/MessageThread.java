@@ -272,6 +272,8 @@ public class MessageThread implements Selectable{
         this.count = count;
     }
 
+    public String getType(){return "MessageThread";}
+
     public static class Message implements Selectable{
         private long itemID;
         private String item;
@@ -356,7 +358,7 @@ public class MessageThread implements Selectable{
             }
             return message;
         }
-
+        public String getType(){return "Message";}
 
         public String getSender() {
             return sender;

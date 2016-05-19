@@ -106,9 +106,10 @@ public class NotesListFragment extends AbstractListFragment<Note>{
     }
 
     public void loadList(){
-        if(adapter != null) {
-            adapter.clear();
+        if(adapter == null) {
+            return;
         }
+        adapter.clear();
         for(long l: notes.keySet()){
             adapter.add(notes.get(l));
         }

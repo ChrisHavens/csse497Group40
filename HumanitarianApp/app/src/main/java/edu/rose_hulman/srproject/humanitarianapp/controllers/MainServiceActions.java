@@ -388,9 +388,10 @@ public class MainServiceActions {
     public void updateProject(final Project p){
         LocalDataSaver.saveProject(p);
         if (!ApplicationWideData.manualSnyc) {
+            Toast.makeText(context, "Auto Sync On!", Toast.LENGTH_SHORT).show();
             NonLocalDataService service = new NonLocalDataService();
             StringBuilder sb = new StringBuilder();
-            sb.append("{\"doc\":"+p.getName()+"}");
+            sb.append("{\"doc\":{\"name\":\""+p.getName()+"\"}}");
             service.updateProject(p, sb.toString(), userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
@@ -402,10 +403,12 @@ public class MainServiceActions {
                 @Override
                 public void failure(RetrofitError error) {
                     Log.e("s40 RetroFitError", error.getResponse().getStatus()+"");
+                    Log.e("s40 RetroFitError", error.getUrl());
                     //Log.e("s40 RetroFitE")
                 }
             });
         } else {
+            Toast.makeText(context, "Adding updated item to table: ", Toast.LENGTH_SHORT).show();
             LocalDataSaver.addUpdatedSelectable(p, "Project");
             context.refreshLists();
         }
@@ -904,15 +907,19 @@ public class MainServiceActions {
         }
         else if (s instanceof Group){
             type="group";
+            service.resolveConflict(type, s.getID() + "", ((Group) s).toJSON(), hideResponse);
         }
         else if (s instanceof Person){
             type="person";
+            service.resolveConflict(type, s.getID() + "", ((Person) s).toJSON(), hideResponse);
         }
         else if (s instanceof Note){
             type="note";
+            service.resolveConflict(type, s.getID() + "", ((Note) s).toJSON(), hideResponse);
         }
         else if (s instanceof Shipment){
             type="shipment";
+            service.resolveConflict(type, s.getID() + "", ((Shipment) s).toJSON(), hideResponse);
         }
 
     }

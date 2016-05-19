@@ -237,7 +237,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
                         }
                     }
-                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -280,9 +280,9 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
      */
     public interface ThreadFragmentListener {
 
-        public MessageThread getSelectedThread();
-        public String getUserID();
-        public void sendMessage(String message);
+        MessageThread getSelectedThread();
+        String getUserID();
+        void sendMessage(String message);
         //public void addNewMessage(MessageThread.Message message);
 
     }

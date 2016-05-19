@@ -62,16 +62,16 @@ public class LocalDataRetriver {
             String text = cursor.getString(3);
             Project project = null;
 
-            Log.wtf("Parse projects", Long.toString(id));
-            Log.wtf("Parse projects", text);
+//            Log.wtf("Parse projects", Long.toString(id));
+//            Log.wtf("Parse projects", text);
             project = Project.fromJSON(id, text);
-            Log.wtf("Parse projects", Boolean.toString(project == null));
+//            Log.wtf("Parse projects", Boolean.toString(project == null));
             if(project != null) {
                 projects.add(project);
             }
         }
 
-        Log.wtf("Parse projects", projects.size() + "");
+//        Log.wtf("Parse projects", projects.size() + "");
         return projects;
     }
     public static List<Group> getStoredGroupsSecond(){

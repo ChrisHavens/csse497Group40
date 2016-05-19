@@ -27,8 +27,7 @@ public class Person implements Serializable, Selectable {
     private PersonLocation lastCheckin;
     private Date lastCheckinTime;
     //private List<PersonLocation> lastLocations=new ArrayList<>();
-    private List<Long> groupIDs =  new ArrayList<Long>();
-    private List<Long> projectIDs =  new ArrayList<Long>();
+    private List<Long> parentIDs =  new ArrayList<Long>();
     private List<PersonLocation> locations =  new ArrayList<PersonLocation>();
     private long ID;
     private boolean isHidden=false;
@@ -58,8 +57,8 @@ public class Person implements Serializable, Selectable {
      private String email;
      private PersonLocation lastCheckin;
 
-     private List<Long> groupIDs =  new ArrayList<Long>();
-     private List<Long> projectIDs =  new ArrayList<Long>();
+     private List<Long> parentIDs =  new ArrayList<Long>();
+     private List<Long> parentIDs =  new ArrayList<Long>();
      private List<Location> locations =  new ArrayList<Location>();
 
      */
@@ -121,10 +120,10 @@ public class Person implements Serializable, Selectable {
         if (initialAssignment != null) {
         }
         if (initialProject != null) {
-            person.projectIDs.add(initialProject.getID());
+            person.parentIDs.add(initialProject.getID());
         }
         if (initialGroup != null) {
-            person.groupIDs.add(initialGroup.getID());
+            person.parentIDs.add(initialGroup.getID());
         }
         return person;
 
@@ -188,10 +187,10 @@ public class Person implements Serializable, Selectable {
     }
 
     public boolean isInProject(long projectID){
-        return this.projectIDs.contains(projectID);
+        return this.parentIDs.contains(projectID);
     }
     public boolean isInGroup(long groupID){
-        return this.groupIDs.contains(groupID);
+        return this.parentIDs.contains(groupID);
     }
 
     public long getID(){
@@ -226,25 +225,25 @@ public class Person implements Serializable, Selectable {
     }
 
     public void updateGroupIDs(long oldID, long newID){
-        if (this.groupIDs.contains(oldID)) {
-            this.groupIDs.remove(oldID);
-            this.groupIDs.add(newID);
+        if (this.parentIDs.contains(oldID)) {
+            this.parentIDs.remove(oldID);
+            this.parentIDs.add(newID);
         }
     }
     public void addGroupID(long id){
-        this.groupIDs.add(id);
+        this.parentIDs.add(id);
     }
     public void addProjectID(long id){
-        this.projectIDs.add(id);
+        this.parentIDs.add(id);
     }
-    public void removeGroupID(long id){this.groupIDs.remove(id);}
-    public void removeProjectID(long id){this.projectIDs.remove(id);}
+    public void removeGroupID(long id){this.parentIDs.remove(id);}
+    public void removeProjectID(long id){this.parentIDs.remove(id);}
 
 
     public void updateProjectIDs(long oldID, long newID){
-        if (this.projectIDs.contains(oldID)) {
-            this.projectIDs.remove(oldID);
-            this.projectIDs.add(newID);
+        if (this.parentIDs.contains(oldID)) {
+            this.parentIDs.remove(oldID);
+            this.parentIDs.add(newID);
         }
     }
     public String getEmail() {
@@ -289,27 +288,13 @@ public class Person implements Serializable, Selectable {
     public String getParentString(){
         StringBuilder sb=new StringBuilder();
         sb.append("\"parentIDs\": [");
-
-
-        for (int i=0; i<projectIDs.size()-1; i++){
-
-            sb.append("{\"parentID\": \""+projectIDs.get(i)+"\"},");
-        }
-        if (projectIDs.size()>0){
-            long proj=projectIDs.get(projectIDs.size() - 1);
-            //String formatted = String.format("prj%05d", proj);
-            sb.append("{\"parentID\": \""+proj+"\"}");
-            if (groupIDs.size()>0){
-                sb.append(",");
-            }
-        }
-        for (int i=0; i<groupIDs.size()-1; i++){
+        for (int i=0; i<parentIDs.size()-1; i++){
             //String formatted = String.format("grp%05d", );
-            sb.append("{\"parentID\": \""+groupIDs.get(i)+"\"},");
+            sb.append("{\"parentID\": \""+parentIDs.get(i)+"\"},");
         }
-        if (groupIDs.size()>0){
+        if (parentIDs.size()>0){
             //String formatted = String.format("grp%05d",);
-            sb.append("{\"parentID\": \""+groupIDs.get(groupIDs.size()-1)+"\"}");
+            sb.append("{\"parentID\": \""+parentIDs.get(parentIDs.size()-1)+"\"}");
         }
         sb.append("]");
         return sb.toString();
@@ -363,7 +348,7 @@ public class Person implements Serializable, Selectable {
         if (list!=null) {
             for (HashMap<String, Object> item : list) {
                 String itemID = (String) item.get("parentID");
-                //TODO: add to proper group/parent
+                p.addGroupID(Long.parseLong(itemID));
             }
         }
     }

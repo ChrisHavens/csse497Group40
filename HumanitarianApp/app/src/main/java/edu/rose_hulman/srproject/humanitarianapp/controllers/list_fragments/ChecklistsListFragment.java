@@ -154,6 +154,16 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
             loadList();
         }
     }
+    public void loadList(){
+        if(adapter != null) {
+            adapter.clear();
+        }
+        for(long l: checklists.keySet()){
+            adapter.add(checklists.get(l));
+        }
+        ApplicationWideData.addChecklistHashMap(checklists);
+        adapter.notifyDataSetChanged();;
+    }
     public interface ChecklistsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Checklist t);
         boolean getShowHidden();

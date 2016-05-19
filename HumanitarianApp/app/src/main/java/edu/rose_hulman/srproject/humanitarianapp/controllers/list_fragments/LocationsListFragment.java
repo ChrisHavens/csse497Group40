@@ -157,6 +157,16 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             loadList();
         }
     }
+    public void loadList(){
+        if(adapter != null) {
+            adapter.clear();
+        }
+        for(long l: locations.keySet()){
+            adapter.add(locations.get(l));
+        }
+        ApplicationWideData.addLocationHashMap(locations);
+        adapter.notifyDataSetChanged();;
+    }
 
     public interface LocationsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Location t);

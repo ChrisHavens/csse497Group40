@@ -1,8 +1,9 @@
 <head>
 <title>Checklist: {{clist._source.name}}</title>
-<link href="login.css" type="text/css" rel="stylesheet" />
 </head>
-
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/checklists">Checklists</a> > {{clist._source.name}}
+</div>
 <div class="temp">
 <h1>{{clist._source.name}}</h1>
 <ul class="specs">
@@ -38,4 +39,3 @@
   <input type="button" id="delete" value="Delete Checklist" ng-click="DeleteChecklist()" />
   
 </ul>
-</div>

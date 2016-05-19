@@ -1,0 +1,31 @@
+<head>
+<title>Note: {{note._source.name}}</title>
+</head>
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/notes">Notes</a> > <a href="#/notes/{{note._id}}">{{note._source.name}}</a> > Edit Note
+</div>
+<div class="temp">
+<h1>{{note._source.name}}</h1>
+<ul class="specs">
+<!--<li>{{note}}</li>-->
+<li class="ID">ID: {{note._id}}</li>
+	
+
+
+	<li>
+		<span>Name: </span>
+		{{note._source.name}}
+		<input type="text" ng-model="noteName">
+		
+    </li>
+	
+	<div style="white-space:pre-wrap;" onload = "init()"><li>Contents:<p class="thumbnail"><textarea name="Text1" cols="40" rows="5" ... ng-model="note._source.contents"></textarea></p></div></li>
+	<li>Parent ID: <a href="#/groups/{{note._source.parentID}}">{{note._source.parentID}}</a></li>
+  <li>
+  <span>Hidden: {{note._source | checkmark}}
+  </span>
+  </li>
+  
+  <input type="button" id="delete" value="Submit" ng-click="EditNote(noteName,note._source.contents)" />
+  
+</ul>

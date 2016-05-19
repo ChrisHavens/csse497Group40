@@ -1,9 +1,10 @@
 <head>
 <title>Location: {{loc._source.name}}</title>
-<link href="login.css" type="text/css" rel="stylesheet" />
 </head>
-
-		 <div class="temp">
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/locations">Locations</a> > {{loc._source.name}}
+</div>
+<div class="temp">
 <h1>{{loc._source.name}}</h1>
 <ul class="specs">
 <!--<li>{{loc}}</li>-->
@@ -18,7 +19,14 @@
 	
 	<li>Latitude: {{loc._source.lat}}</li>
 	<li>Longitude: {{loc._source.lng}}</li>
-  
+  <li>Parent IDs:
+	<ul class="parentIDs">
+	<dd ng-repeat="parent in loc._source.parentIDs"><li>
+	ID: {{parent.parentID}}
+	</li>
+	</dd>
+	</ul>
+	</li>
   
   <li>
   <span>Hidden: {{loc._source | checkmark}}
@@ -26,6 +34,5 @@
   </li>
   
   <input type="button" id="delete" value="Delete Location" ng-click="DeleteLocation()" />
-  
+  <a href="#/locations/{{loc._id}}/edit">Edit this location</a>
 </ul>
-</div>

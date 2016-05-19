@@ -1,0 +1,37 @@
+<head>
+<title>Project: {{project._source.name}}</title>
+</head>
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/projects">Projects</a> > <a href="#/projects/{{project._id}}">{{project._source.name}}</a> > Edit Project
+</div>
+<form>
+<div class="temp">
+<h1>{{project._source.name}}
+  </h1>
+<ul class="specs" >
+<li class="ID">ID: {{project._id}}</li>
+
+
+
+	<li>
+		<span>Name: </span><input type="text" ng-model="projName" placeholder="{{project._source.name}}" value="{{project._source.name}}">
+    </li>
+	<li>Group IDs:
+	<ul class="subIDs">
+	<dd ng-repeat="group in project._source.groupIDs"><li>
+	ID: <a href="#/groups/{{group.groupID}}">{{group.groupID}}</a>
+	</li>
+	</dd>
+	</ul>
+	</li>
+	
+  
+  <li>
+  <span>Hidden: {{project._source | checkmark}}
+  </span>
+  </li>
+  
+  <input type="button" id="submit" value="Submit" ng-click="EditProject(projName)" />
+  
+</ul>
+</form>

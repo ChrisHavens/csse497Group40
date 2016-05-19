@@ -1,8 +1,10 @@
 <head>
 <title>Project: {{project._source.name}}</title>
-<link href="login.css" type="text/css" rel="stylesheet" />
 </head>
- <div class="temp">
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/projects">Projects</a> > {{project._source.name}}
+</div>
+<div class="temp">
 <h1>{{project._source.name}}</h1>
 <ul class="specs">
 <li class="ID">ID: {{project._id}}</li>
@@ -13,7 +15,7 @@
 		<span>Name: </span>
 		{{project._source.name}}
     </li>
-	
+	{{gname}}
 	<li>Group IDs:
 	<ul class="subIDs">
 	<dd ng-repeat="group in project._source.groupIDs"><li>
@@ -30,6 +32,5 @@
   </li>
   
   <input type="button" id="delete" value="Delete Project" ng-click="DeleteProject()" />
-  
+  <a href="#/projects/{{project._id}}/edit">Edit this project</a>
 </ul>
-</div>

@@ -1,8 +1,10 @@
 <head>
-<link href="login.css" type="text/css" rel="stylesheet" />
 <title>Shipment: {{ship._source.name}}</title>
 </head>
- <div class="temp">
+<div class="navbarpls">
+<a href="#/home">Home</a> > <a href="#/shipments">Shipments</a> > {{ship._source.name}}
+</div>
+<div class="temp">
 <h1>{{ship._source.name}}</h1>
 <ul class="specs">
 <!--<li>{{ship}}</li>-->
@@ -28,4 +30,3 @@
   <input type="button" id="delete" value="Delete Shipment" ng-click="DeleteShipment()" />
   
 </ul>
-</div>

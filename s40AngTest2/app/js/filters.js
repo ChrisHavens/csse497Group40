@@ -13,12 +13,10 @@ angular.module('phonecatFilters', []).filter('checkmark', function(){
 	};
 
 
-})/*.filter('dereference',function() {
-	return function(ID, set){
-		var log = [];
-		angular.forEach(set, function(value, key) {
-			if value._id === ID
-			this.push(value._source.name);
-	}, log);
+}).filter('checkismarked', function(){
+	return function(input){
+	return input.hasOwnProperty('dateArchived') ? true : false;
 	};
-})*/;
+
+
+})

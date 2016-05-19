@@ -396,14 +396,14 @@ public class ApplicationWideData {
             }
         }
         knownProjects.add(project);
-        LocalDataSaver.addProject(project);
+//        LocalDataSaver.addProject(project);
     }
 
     public static boolean deleteProjectByID(long id){
         for(Project existingProject: knownProjects){
             if (id == existingProject.getID()){
                 boolean bool = knownProjects.remove(existingProject);
-                bool = bool && LocalDataSaver.deleteProject(id);
+//                bool = bool && LocalDataSaver.deleteProject(id);
                 return bool;
             }
         }
@@ -592,7 +592,7 @@ public class ApplicationWideData {
                             p.setHidden(true);
                         }
                         ApplicationWideData.addExistingProject(p);
-                        LocalDataSaver.updateProject(p);
+//                        LocalDataSaver.updateProject(p);
                     }
                 }
                 for (String entry: updated.keySet()){
@@ -686,7 +686,7 @@ public class ApplicationWideData {
                 new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
-                        LocalDataSaver.deleteUpdatedProject(project);
+//                        LocalDataSaver.deleteUpdatedProject(project);
                         if (LocalDataRetriver.getAllUpdated().size() == 0) {
                             String time = getCurrentTime();
                             PreferencesManager.setSyncDate(time);
@@ -711,12 +711,6 @@ public class ApplicationWideData {
         return cal.get(Calendar.YEAR)+"-"+String.format("%02d", cal.get(Calendar.MONTH)+1)+"-"
                 +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
                 " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
-    }
-    public static void hesNotTheMessiahHesAVeryNaughtyBoy(AbstractListFragment fragment){
-        //heIsNotTheMassighHeIsAVeryNaughtyBoy();
-        VeryNaughtyBoy Brian = new VeryNaughtyBoy(fragment);
-        //Brian.run();
-        fragment.loadList();
     }
 
 }

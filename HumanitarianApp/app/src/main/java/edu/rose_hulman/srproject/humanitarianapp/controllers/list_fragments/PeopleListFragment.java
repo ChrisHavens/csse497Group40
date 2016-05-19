@@ -125,11 +125,14 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
     }
 
     public void loadList(){
-        adapter.clear();
+        if(adapter != null) {
+            adapter.clear();
+        }
         for(long l: persons.keySet()){
             adapter.add(persons.get(l));
         }
         ApplicationWideData.addPersonHashMap(persons);
+        adapter.notifyDataSetChanged();;
     }
 
     @Override
@@ -205,12 +208,10 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
                             } catch (Exception e) {
 
                             }
-                            loadList();
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
-                            loadList();
                         }
                     };
                     service.getPersonLocationsListSize(p.getID()+"", 10, subCallback);

@@ -105,6 +105,17 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             }
     }
 
+    public void loadList(){
+        if(adapter != null) {
+            adapter.clear();
+        }
+        for(long l: notes.keySet()){
+            adapter.add(notes.get(l));
+        }
+        ApplicationWideData.addNoteHashMap(notes);
+        adapter.notifyDataSetChanged();;
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -156,16 +167,13 @@ public class NotesListFragment extends AbstractListFragment<Note>{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (long l: notes.keySet()) {
-                Note n = notes.get(l);
-                adapter.add(n);
-                adapter.notifyDataSetChanged();
-            }
+            loadList();
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", "NotesListCallback: "+error.getMessage());
+            loadList();
         }
     }
     public interface NotesListListener extends Interfaces.UserIDGetter{

@@ -101,9 +101,11 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
     }
 
     public void loadList(){
-        if(adapter != null) {
-            adapter.clear();
+        if(adapter == null) {
+            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
+            return;
         }
+        adapter.clear();
         for(long l: groups.keySet()){
             adapter.add(groups.get(l));
         }

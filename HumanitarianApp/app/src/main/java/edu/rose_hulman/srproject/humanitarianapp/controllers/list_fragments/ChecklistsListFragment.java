@@ -155,9 +155,11 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
         }
     }
     public void loadList(){
-        if(adapter != null) {
-            adapter.clear();
+        if(adapter == null) {
+            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
+            return;
         }
+        adapter.clear();
         for(long l: checklists.keySet()){
             adapter.add(checklists.get(l));
         }

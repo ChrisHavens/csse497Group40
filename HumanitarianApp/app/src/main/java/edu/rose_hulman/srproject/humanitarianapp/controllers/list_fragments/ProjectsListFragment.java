@@ -104,8 +104,8 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
     }
 
     public void loadList(){
-        if(adapter != null) {
-            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy();
+        if(adapter == null) {
+            ApplicationWideData.hesNotTheMessiahHesAVeryNaughtyBoy(this);
             return;
         }
         adapter.clear();

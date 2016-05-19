@@ -16,7 +16,7 @@ body {
 	text-shadow: 3px 3px #999999;
 }
 .col-md-6 {
-	font-size: 8pt;
+	font-size: 15pt;
 	font-weight: bold;
 	background-color: #E8DC9B;
 	border: 2px gray solid;
@@ -30,7 +30,7 @@ body {
     margin-right: auto;
 }
 .col-md-10 {
-	font-size: 8pt;
+	font-size: 15pt;
 	font-weight: bold;
 	background-color: #E8DC9B;
 	border: 2px gray solid;
@@ -44,7 +44,7 @@ body {
     margin-right: auto;
 }
 .col-md-2 {
-	font-size: 8pt;
+	font-size: 15pt;
 	font-weight: bold;
 	background-color: #E8DC9B;
 	border: 2px gray solid;

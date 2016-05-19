@@ -163,7 +163,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.w("RetrofitError", error.getMessage());
+                    Log.w("RetrofitError", "Actions: SaveNote: "+error.getMessage());
                 }
             });
         }
@@ -212,7 +212,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewPerson: "+error.getMessage());
                 }
             };
             //NonLocalDataService service=new NonLocalDataService();
@@ -254,8 +254,8 @@ public class MainServiceActions {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.e("RetrofitError", error.getMessage());
-                        Log.e("RetrofitError", error.getUrl());
+                        Log.e("RetrofitError", "Actions: RemovePersonFromProjectOrGroup: "+error.getMessage());
+                        Log.e("RetrofitError", "Actions: RemovePersonFromProjectOrGroup: "+error.getUrl());
                     }
                 };
                 service.removePersonFromGroup(p.getID() + "", groupID + "", userID + "", responseCallback);
@@ -277,8 +277,8 @@ public class MainServiceActions {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.e("RetrofitError", error.getMessage());
-                        Log.e("RetrofitError", error.getUrl());
+                        Log.e("RetrofitError", "Actions: RemovePersonFromProjectOrGroup: "+error.getMessage());
+                        Log.e("RetrofitError", "Actions: RemovePersonFromProjectOrGroup: "+error.getUrl());
                     }
                 };
                 service.removePersonFromProject(p.getID() + "", projectID + "", userID + "", responseCallback);
@@ -306,8 +306,8 @@ public class MainServiceActions {
                 @Override
                 public void failure(RetrofitError error) {
                     //Log.e("RetrofitError", error.g)
-                    Log.e("RetrofitError", error.getMessage());
-                    Log.e("RetrofitError", error.getUrl());
+                    Log.e("RetrofitError", "Actions: AddPersonToProject: "+error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddPersonToProject: "+error.getUrl());
                 }
             };
 //        //NonLocalDataService service=new NonLocalDataService();
@@ -335,7 +335,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddPersonToGroup: "+error.getMessage());
                 }
             };
             service.addPersonToGroup(p.getID() + "", groupID + "", userID, responseCallback);
@@ -363,7 +363,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", "Actions: AddNewProject: "+error.getMessage());
             }
         };
 
@@ -433,7 +433,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", "Actions: AddNewGroup: "+error.getMessage());
             }
         };
         if (!ApplicationWideData.getManualSync()) {
@@ -470,7 +470,8 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewLocation: "+error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewLocation: "+error.getUrl());
                 }
             };
 
@@ -511,7 +512,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewNote: "+error.getMessage());
                 }
             };
             service.addNewNote(note, userID, responseCallback);
@@ -535,7 +536,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewShipment: "+error.getMessage());
                 }
             };
             service.addNewShipment(l, userID, responseCallback);
@@ -563,7 +564,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewChecklist: "+error.getMessage());
                 }
             };
 
@@ -593,7 +594,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: AddNewThread: "+error.getMessage());
                 }
             };
             Log.d("ED", "inside of addNewMessageThread");
@@ -871,7 +872,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "Actions: EditChecklist: "+error.getMessage());
                 }
             };
 

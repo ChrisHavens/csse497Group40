@@ -149,7 +149,7 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "LocationsListCallback: "+error.getMessage());
         }
     }
 

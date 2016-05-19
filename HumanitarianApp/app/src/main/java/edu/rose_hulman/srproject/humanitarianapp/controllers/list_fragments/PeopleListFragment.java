@@ -231,7 +231,7 @@ public class PeopleListFragment extends AbstractListFragment<Person>{
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "PeopleListCallback: "+error.getMessage());
             loadList();
         }
     }

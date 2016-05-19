@@ -474,7 +474,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.e("RetrofitError", error.getMessage());
+                    Log.e("RetrofitError", "LoginActivityAddNewPerson :"+error.getMessage());
                 }
             };
             //NonLocalDataService service=new NonLocalDataService();

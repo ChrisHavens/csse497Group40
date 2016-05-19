@@ -165,7 +165,7 @@ public class NotesListFragment extends AbstractListFragment<Note>{
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "NotesListCallback: "+error.getMessage());
         }
     }
     public interface NotesListListener extends Interfaces.UserIDGetter{

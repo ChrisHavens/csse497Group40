@@ -17,6 +17,7 @@ import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
@@ -156,9 +157,10 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 //                    }
 //                    s.setStatus((String) source.get("status"));
                     shipments.put(s.getID(), s);
-                    //LocalDataSaver.addShipment(s);
+                    LocalDataSaver.addShipment(s);
+                    adapter.add(s);
                     adapter.notifyDataSetChanged();
-                    //adapter.add(p);
+
 
                 }
             } catch (IOException e) {
@@ -168,7 +170,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "ShipmentsListCallback: "+error.getMessage());
         }
     }
     public class ShipmentToLocationCallbacks implements Callback<Response>{
@@ -204,7 +206,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "ShipmentsListCallback: ToLoc: "+error.getMessage());
         }
     }
     public class ShipmentFromLocationCallbacks implements Callback<Response>{
@@ -240,7 +242,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "ShipmentsListCallback: FromLoc: "+error.getMessage());
         }
     }
     public interface ShipmentsListListener extends Interfaces.UserIDGetter{

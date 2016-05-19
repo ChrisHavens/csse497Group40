@@ -353,7 +353,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", "Main: CheckInUser: "+error.getMessage());
             }
         };
         long r=rand.nextInt(100)+(100*ID);

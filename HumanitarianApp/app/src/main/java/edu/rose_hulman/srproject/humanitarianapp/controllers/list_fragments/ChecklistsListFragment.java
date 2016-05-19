@@ -147,7 +147,7 @@ public class ChecklistsListFragment extends AbstractListFragment<Checklist> {
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "ChecklistsListCallback: "+error.getMessage());
         }
     }
     public interface ChecklistsListListener extends Interfaces.UserIDGetter{

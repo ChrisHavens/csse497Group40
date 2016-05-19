@@ -110,8 +110,13 @@ public class AddShipmentDialogFragment extends DialogFragment
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
-                        mListener.addNewShipment(createShipment());
+                        createShipment();
+                        if (shipment == null) {
+                            Log.wtf("Shipment is Null!", "That's bad!");
+                        } else {
+                            Log.wtf("Shipment: ", shipment.toJSON());
+                        }
+                        mListener.addNewShipment(shipment);
                         AddShipmentDialogFragment.this.getDialog().dismiss();
                     }
                 })
@@ -141,7 +146,7 @@ public class AddShipmentDialogFragment extends DialogFragment
 
         return view;
     }
-    private Shipment createShipment(){
+    private void createShipment(){
         shipment.setName(nameField.getText().toString());
         shipment.setContents(contentsField.getText().toString());
 
@@ -158,7 +163,7 @@ public class AddShipmentDialogFragment extends DialogFragment
 //        l.setName(name);
 //        l.setLat(lat);
 //        l.setLng(lng);
-        return shipment;
+
     }
 
 
@@ -394,7 +399,7 @@ public class AddShipmentDialogFragment extends DialogFragment
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "AddShipDF: "+error.getMessage());
         }
     }
 

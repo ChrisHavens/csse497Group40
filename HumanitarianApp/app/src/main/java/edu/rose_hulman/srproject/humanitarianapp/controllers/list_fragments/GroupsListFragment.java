@@ -164,7 +164,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "GroupListCallback: "+error.getMessage());
             loadList();
         }
     }

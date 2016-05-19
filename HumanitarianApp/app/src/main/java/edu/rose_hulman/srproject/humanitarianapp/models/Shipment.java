@@ -320,6 +320,10 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         this.date = date;
     }
 
+    public String getDateTime(){
+        return getDate()+" "+getTime();
+    }
+
     @Override
     public String serialise() {
         return null;
@@ -392,13 +396,13 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         sb.append("{");
         sb.append("\"contents\": \""+getContents()+"\",");
         if(getLastLocation() != null) {
-            sb.append("\"lastLocationID\": \"lcn" + getLastLocation().getID() + "\",");
+            sb.append("\"lastLocationID\": \"" + getLastLocation().getID() + "\",");
         }
         sb.append("\"name\": \""+getName()+"\",");
         sb.append("\"parentID\": \""+getParentID()+"\",");
         sb.append("\"fromLocationID\": \""+getFrom()+"\",");
         sb.append("\"toLocationID\": \""+getTo()+"\",");
-        sb.append("\"pickupTime\": \""+getDate()+"\",");
+        sb.append("\"pickupTime\": \""+getDateTime()+"\",");
         sb.append("\"status\": \""+getStatus()+"\"");
 
 

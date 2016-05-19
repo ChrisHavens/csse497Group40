@@ -414,7 +414,7 @@ public class EditShipmentDialogFragment extends DialogFragment
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e("RetrofitError", error.getMessage());
+            Log.e("RetrofitError", "EditShipDF: "+error.getMessage());
         }
     }
 

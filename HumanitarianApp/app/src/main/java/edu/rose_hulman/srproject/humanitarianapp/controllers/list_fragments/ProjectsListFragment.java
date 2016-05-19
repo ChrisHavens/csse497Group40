@@ -105,8 +105,10 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
     public void loadList(){
         if(adapter != null) {
-            adapter.clear();
+            ApplicationWideData.heIsNotTheMassighHeIsAVeryNaughtyBoy();
+            return;
         }
+        adapter.clear();
         for(Long l: projects.keySet()){
             adapter.add(projects.get(l));
         }

@@ -203,9 +203,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             try{
                 HashMap<String, Object> map=mapper.readValue(response.getBody().in(), typeReference);
                 HashMap<String, Object> source=(HashMap)map.get("_source");
-                for (String s: source.keySet()){
-                    Log.e("Result", s);
-                }
+
 //                Location l=new Location(Integer.parseInt(((String)map.get("_id")).substring(3)));
 //                l.setName((String) source.get("name"));
 //                l.setLat(Float.parseFloat((String) source.get("lat")));
@@ -239,9 +237,7 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
             try{
                 HashMap<String, Object> map=mapper.readValue(response.getBody().in(), typeReference);
                 HashMap<String, Object> source=(HashMap)map.get("_source");
-                for (String s: source.keySet()){
-                    Log.e("Result", s);
-                }
+
 //                Location l=new Location(Integer.parseInt(((String)map.get("_id")).substring(3)));
 //                l.setName((String) source.get("name"));
 //                l.setLat(Float.parseFloat((String) source.get("lat")));

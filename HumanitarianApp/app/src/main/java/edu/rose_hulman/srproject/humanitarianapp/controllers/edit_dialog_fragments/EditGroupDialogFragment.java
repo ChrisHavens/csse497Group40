@@ -45,7 +45,7 @@ public class EditGroupDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (getArguments()!=null){
             groupID=getArguments().getLong("groupID");
-            Log.w("Got groupID", ""+groupID);
+//            Log.w("Got groupID", ""+groupID);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

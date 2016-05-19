@@ -90,13 +90,11 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
             projects.put(existingProject.getID(), existingProject);
         }
 
-        for (Project project : this.getItems()) {
-            Log.wtf("s40 List fragment", "Found this many things " + Integer.toString(project.getGroups().size()));
-        }
+
         if (!ApplicationWideData.getManualSync()){
             NonLocalDataService service = new NonLocalDataService();
             showHidden = mListener.getShowHidden();
-            Log.wtf(mListener.getUserID(), "USER ID");
+//            Log.wtf(mListener.getUserID(), "USER ID");
             service.service.getProjectList(mListener.getUserID(), showHidden, new ProjectListCallback());
         } else{
             loadList();
@@ -129,7 +127,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
     @Override
     public void onItemSelected(Project project) {
-        Log.wtf("s40", "Project Selected");
+//        Log.wtf("s40", "Project Selected");
         mListener.onItemSelected(project);
     }
 
@@ -153,8 +151,8 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
 
         @Override
         public void success(Response response, Response response2) {
-            Log.wtf("URL", response.getUrl());
-            Log.wtf("SUCCESS", "PRJListCallbacks");
+//            Log.wtf("URL", response.getUrl());
+//            Log.wtf("SUCCESS", "PRJListCallbacks");
             ObjectMapper mapper = new ObjectMapper();
             List<Project> projectList;
 
@@ -170,7 +168,7 @@ public class ProjectsListFragment extends AbstractListFragment<Project> {
                 HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                 ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map : list) {
-                    Log.w("Found a project", map.toString());
+//                    Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
 
                     Project p=Project.parseJSON(Long.parseLong(((String) map.get("_id"))), source);

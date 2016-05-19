@@ -520,7 +520,7 @@ public class ApplicationWideData {
             }
         }
 //        Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
-        Log.wtf(userID + "", "USER ID2");
+//        Log.wtf(userID + "", "USER ID2");
         service.service.getProjectList(Long.toString(userID), false, new ProjectListCallback(updated, activity));
         String time = PreferencesManager.getSyncTime();
         getDeletedList(time);
@@ -542,7 +542,7 @@ public class ApplicationWideData {
                     }
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.wtf("s40 Adding New Projects", error.getMessage());
+                        Log.e("s40 Adding New Projects", error.getMessage());
                     }
                 });
             }
@@ -573,7 +573,7 @@ public class ApplicationWideData {
                 ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map : list) {
                     ids.add((String) map.get("_id"));
-                    Log.w("Found a project", map.toString());
+//                    Log.w("Found a project", map.toString());
                     HashMap<String, Object> source = (HashMap) map.get("_source");
                     String idString = (String) map.get("_id");
                     if (updated.containsKey(idString)){

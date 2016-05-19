@@ -141,7 +141,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
         @Override
         public void success(Response response, Response response2) {
-            Log.e("here", "success");
+//            Log.e("here", "success");
             ObjectMapper mapper=new ObjectMapper();
             TypeReference<HashMap<String, Object>> typeReference=
                     new TypeReference<HashMap<String, Object>>() {
@@ -151,7 +151,7 @@ public class GroupsListFragment extends AbstractListFragment<Group>{
 
                 ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
                 for (HashMap<String, Object> map: list){
-                    Log.wtf("Found a group", map.toString());
+//                    Log.wtf("Found a group", map.toString());
 
                     HashMap<String, Object> source=(HashMap)map.get("_source");
 

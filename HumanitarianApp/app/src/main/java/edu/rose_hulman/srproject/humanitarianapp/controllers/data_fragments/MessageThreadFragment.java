@@ -174,7 +174,7 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
                     HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
                     HashMap<String, Object> m1=(HashMap) o.get("hits");
                     int count=(Integer) m1.get("total");
-                    Log.wtf("Count: ", count+"");
+//                    Log.wtf("Count: ", count+"");
                     messageThread.setCount(count);
                     ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
                     for (int i = 0; i< list.size(); i++) {
@@ -225,8 +225,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
                                     @Override
                                     public void failure(RetrofitError error) {
-                                        Log.wtf("s40", error.getMessage());
-                                        Log.wtf("s40", error.getUrl());
+                                        Log.e("s40", error.getMessage());
+                                        Log.e("s40", error.getUrl());
                                         m2.setPerson("Shadow Broker");
                                         messages.add(m2);
                                         Collections.sort(messages, comparator);
@@ -245,8 +245,8 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("RetrofitError", error.getMessage());
-                Log.wtf("RetrofitError", error.getUrl());
+                Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", error.getUrl());
             }
         });
 //        Log.wtf("s40", messages2.size() + "");

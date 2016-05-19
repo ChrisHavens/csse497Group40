@@ -231,14 +231,14 @@ public class MessageThread implements Selectable{
         }
     }
     public Message addBuildNewMessage(Message message){
-        Log.wtf("s40-5", itemList.size()+"");
+//        Log.wtf("s40-5", itemList.size()+"");
 
         long base=this.id*1000;
         count++;
         long base2=(base+count+1);
 
         message.setID(base2);
-        Log.wtf("s40-2", message.getDateTimeModified());
+//        Log.wtf("s40-2", message.getDateTimeModified());
         itemList.put(message.getID()+"", message);
         //2016-01-10 > 2016-01-09
 
@@ -319,7 +319,7 @@ public class MessageThread implements Selectable{
             sb.append("\"text\": \""+getItem()+"\"");
 
             sb.append("}");
-            Log.wtf("S40", sb.toString());
+//            Log.wtf("S40", sb.toString());
             return sb.toString();
         }
 

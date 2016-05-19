@@ -98,7 +98,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
 //                        Roles.PersonRoles role= Roles.PersonRoles.valueOf(((String)roleSpinner.getSelectedItem()).toUpperCase());
                         //mListener.addNewPerson(name, phone, email, role);
                         for (Person person : p.keySet()) {
-                            Log.wtf(person.getName(), p.get(person)+"");
+//                            Log.wtf(person.getName(), p.get(person)+"");
                             if (p.get(person)) {
                                 mListener.addPersonToProjectOrGroup(person);
                             }
@@ -208,7 +208,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
         adapter.clear();
         adapter.notifyDataSetChanged();
         String name=nameField.getText().toString();
-        Log.w("Check", name);
+//        Log.w("Check", name);
         searchNames(name);
 
 
@@ -229,7 +229,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
 
                     ArrayList<HashMap<String, Object>> list=(ArrayList)((HashMap) o.get("hits")).get("hits");
                     for (HashMap<String, Object> map: list) {
-                        Log.wtf("MAP: ", map.toString());
+//                        Log.wtf("MAP: ", map.toString());
                         HashMap<String, Object> source = (HashMap) map.get("_source");
 //                        for (String s: source.keySet()){
 //                            Log.e("Result", s);
@@ -293,7 +293,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
                     if (adapter.getCount()>0){
                         listView.setVisibility(View.VISIBLE);
                     }
-                    Log.w("Size:", adapter.getCount()+"");
+//                    Log.w("Size:", adapter.getCount()+"");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -301,8 +301,8 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("APtSDF", error.getMessage());
-                Log.wtf("APtSDF", error.getUrl());
+                Log.e("APtSDF", error.getMessage());
+                Log.e("APtSDF", error.getUrl());
             }
         };
         if (!name.isEmpty()) {

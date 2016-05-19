@@ -172,7 +172,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         toolbar.setTitleTextColor(0xFFFFFFFF);
         toolbar.setSubtitleTextColor(0xFFFFFFFF);
         setSupportActionBar(toolbar);
-        Log.d("TAG", "Does it get here?");
+        //Log.d("TAG", "Does it get here?");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -196,7 +196,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1)
             super.onBackPressed();
-        Log.d("TAG", "About to refresh content after back button");
+        //Log.d("TAG", "About to refresh content after back button");
         refreshContent();
 
 
@@ -234,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         else if(id== android.R.id.home)
         {
-            Log.d("ED", "they pressed the android back button");
+            //Log.d("ED", "they pressed the android back button");
             //refreshContent();
             this.onBackPressed();
             return true;
@@ -253,7 +253,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
                 checkInUser();
             }
             catch (IOException e) {
-                Log.d("ED","failed to check in user");
+                //Log.d("ED","failed to check in user");
             }
             return true;
         }
@@ -325,7 +325,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         String city = "";
         String country = "";
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
-        Log.d("ED", date);
+        //Log.d("ED", date);
         List<Address> addresses = gcd.getFromLocation(lat, lng , 1);
         if (addresses.size() > 0) {
             city = addresses.get(0).getLocality();
@@ -344,11 +344,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
         //String JSONed = String.format("{\"doc\":{\"lastLocation\":{\"lat\":\"%s\",\"lng\":\"%s\",\"name\":\"%s\",\"time\":\"%s\"}}}", lat, lng, city + ", " + country, date);
 
-        Log.d("ED", JSONed);
+        //Log.d("ED", JSONed);
         Callback<Response> responseCallback=new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
-                Log.d("ED", "successfully changed person location");
+                //Log.d("ED", "successfully changed person location");
             }
 
             @Override
@@ -379,7 +379,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     }
 
     private void refreshContent(){
-        Log.d("TAG", "GOT Refreshed");
+        //Log.d("TAG", "GOT Refreshed");
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
 
         if (fragment instanceof ProjectsListFragment){
@@ -387,7 +387,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             actions.setSelectedGroup(null);
         }
         else if(fragment instanceof ProjectFragment){
-            Log.d("TAG", "ProjectFragment");
+            //Log.d("TAG", "ProjectFragment");
             actions.setSelectedGroup(null);
             resetToolbar();
         }
@@ -434,7 +434,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         }
     }
     private void changeFragmentToSelected(Fragment fragment, Selectable selected) {
-        Log.d("ED", "changing fragments");
+        //Log.d("ED", "changing fragments");
         setVisibilityAdd(false);
         setVisibilityEdit(true);
         setVisibilityHide(true);
@@ -486,7 +486,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         transaction.commit();
     }
     private void changeFragmentToListNoBackStack(Fragment fragment){
-        Log.d("TAG", "This is a certain type of fragment");
+        //Log.d("TAG", "This is a certain type of fragment");
         setVisibilityAdd(true);
         setVisibilityEdit(false);
         if(fragment instanceof PeopleListFragment){
@@ -761,7 +761,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     @Override
     public void addNewMessageThread(final MessageThread m) {
-        Log.d("ED", "Got into the addNewMessageCall");
+        //Log.d("ED", "Got into the addNewMessageCall");
         actions.addNewMessageThread(m);
     }
 
@@ -1054,7 +1054,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             addGroup();
         }
         else if (f instanceof ChecklistsListFragment){
-            Log.d("ED", "Inside ofvvvvv if statement thread");
+            //Log.d("ED", "Inside ofvvvvv if statement thread");
             addChecklist();
         }
         else if (f instanceof LocationsListFragment){
@@ -1070,7 +1070,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
             addShipment();
         }
         else if(f instanceof MessageThreadsListFragment){
-            Log.d("ED", "Inside of if statement thread");
+            //Log.d("ED", "Inside of if statement thread");
             addMessageThread();
         }
 
@@ -1166,7 +1166,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
-        Log.d("s40", "onConnectionFailed:" + connectionResult);
+        //Log.d("s40", "onConnectionFailed:" + connectionResult);
     }
     public static String getPersonNameFromID(String personID){
         Person p;

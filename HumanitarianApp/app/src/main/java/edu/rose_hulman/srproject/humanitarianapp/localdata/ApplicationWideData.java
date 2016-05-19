@@ -24,6 +24,7 @@ import java.util.Set;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainServiceActions;
 
+import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.AbstractListFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.ProjectsListFragment;
 
 import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
@@ -711,10 +712,18 @@ public class ApplicationWideData {
                 +String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))+
                 " "+String.format("%02d", cal.get(Calendar.HOUR_OF_DAY))+":"+String.format("%02d", cal.get(Calendar.MINUTE));
     }
-    public static void hesNotTheMessiahHesAVeryNaughtyBoy(){
+    public static void hesNotTheMessiahHesAVeryNaughtyBoy(AbstractListFragment fragment){
         //heIsNotTheMassighHeIsAVeryNaughtyBoy();
-
-
+        long s=System.currentTimeMillis();
+        int n=10;
+        long sum=0;
+        for (int i=1; i<=n; i++){
+            sum+=i;
+        }
+        long s2=System.currentTimeMillis();
+        long diff=s2-s;
+        Log.i("Monty Python", "He's not the Messiah, he's a very naughty boy! "+diff);
+        fragment.loadList();
     }
 
 }

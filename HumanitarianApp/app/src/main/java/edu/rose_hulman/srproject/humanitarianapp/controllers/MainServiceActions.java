@@ -597,7 +597,7 @@ public class MainServiceActions {
                     Log.e("RetrofitError", "Actions: AddNewThread: "+error.getMessage());
                 }
             };
-            Log.d("ED", "inside of addNewMessageThread");
+            //Log.d("ED", "inside of addNewMessageThread");
             service.addNewThread(m, userID, responseCallback);
         }
         else{
@@ -609,13 +609,13 @@ public class MainServiceActions {
 
     }
     public void addNewMessage(String message, String userID){
-        Log.wtf("s40", userID);
+        //Log.wtf("s40", userID);
         MessageThread.Message message1 = new MessageThread.Message(message, userID);
-        Log.wtf("s40", message1.getDateTimeModified());
+        //Log.wtf("s40", message1.getDateTimeModified());
         message1 = getSelectedMessageThread().addBuildNewMessage(message1);
         //Log.wtf("s40-6", message1.)
-        Log.wtf("s40-4", getSelectedMessageThread().getID() + "");
-        Log.wtf("s40-3", message1.getID() + "");
+        //Log.wtf("s40-4", getSelectedMessageThread().getID() + "");
+        //Log.wtf("s40-3", message1.getID() + "");
         LocalDataSaver.saveMessage(message1);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> addResponse = new Callback<Response>() {
@@ -627,7 +627,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.wtf("Retrofit Error", error.getUrl());
+                    Log.e("Retrofit Error", error.getUrl());
                     Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             };
@@ -655,7 +655,7 @@ public class MainServiceActions {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.wtf("s40", error.getMessage());
+                    //Log.wtf("s40", error.getMessage());
 
                 }
             };
@@ -690,7 +690,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                Log.e("s40", error.getMessage());
 
             }
         };
@@ -722,7 +722,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                //Log.wtf("s40", error.getMessage());
 
             }
         };
@@ -753,7 +753,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                Log.e("s40", error.getMessage());
 
             }
         };
@@ -784,7 +784,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                //Log.wtf("s40", error.getMessage());
 
             }
 
@@ -815,7 +815,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                Log.e("s40", error.getMessage());
 
             }
         };
@@ -846,7 +846,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40", error.getMessage());
+                //Log.wtf("s40", error.getMessage());
 
             }
         };
@@ -893,7 +893,7 @@ public class MainServiceActions {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.wtf("s40R", error.getMessage());
+                Log.e("s40R", error.getMessage());
 
             }
         };
@@ -925,7 +925,7 @@ public class MainServiceActions {
             service.updateGroup(group, sb.toString(), userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
-                    Log.wtf("s40", "Successful edit of group " + group.getName());
+                    //Log.wtf("s40", "Successful edit of group " + group.getName());
                     context.refreshLists();
                     //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
                 }
@@ -949,7 +949,7 @@ public class MainServiceActions {
             service.updateLocation(location, doc, userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
-                    Log.wtf("s40", "Successful edit of location " + location.getName());
+                    //Log.wtf("s40", "Successful edit of location " + location.getName());
                     context.refreshLists();
                     //Toast.makeText(getActivity(), "Successful edit of project "+p.getName(), Toast.LENGTH_LONG).show();
                 }
@@ -973,7 +973,7 @@ public class MainServiceActions {
             service.updatePerson(person, json, userID, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
-                    Log.wtf("s40", "Successful edit of person " + person.getName());
+                    //Log.wtf("s40", "Successful edit of person " + person.getName());
                     context.refreshLists();
                 }
 

@@ -714,15 +714,8 @@ public class ApplicationWideData {
     }
     public static void hesNotTheMessiahHesAVeryNaughtyBoy(AbstractListFragment fragment){
         //heIsNotTheMassighHeIsAVeryNaughtyBoy();
-        long s=System.currentTimeMillis();
-        int n=10;
-        long sum=0;
-        for (int i=1; i<=n; i++){
-            sum+=i;
-        }
-        long s2=System.currentTimeMillis();
-        long diff=s2-s;
-        Log.i("Monty Python", "He's not the Messiah, he's a very naughty boy! "+diff);
+        VeryNaughtyBoy Brian = new VeryNaughtyBoy(fragment);
+        //Brian.run();
         fragment.loadList();
     }
 

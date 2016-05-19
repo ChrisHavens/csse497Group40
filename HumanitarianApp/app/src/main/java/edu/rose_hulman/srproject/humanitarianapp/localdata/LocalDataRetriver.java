@@ -50,6 +50,7 @@ public class LocalDataRetriver {
                 projects.add(project);
             }
                 Log.wtf("Load project", text);
+            cursor.moveToNext();
 
         }
         return projects;
@@ -70,6 +71,8 @@ public class LocalDataRetriver {
                 groups.add(group);
             }
                 Log.wtf("Load Group", text);
+
+            cursor.moveToNext();
         }
         return groups;
     }
@@ -89,6 +92,7 @@ public class LocalDataRetriver {
             }
                 Log.wtf("Load Person", text);
 
+            cursor.moveToNext();
         }
         return people;
     }
@@ -109,6 +113,7 @@ public class LocalDataRetriver {
             }
                 Log.wtf("Load Checklist", text);
 
+            cursor.moveToNext();
         }
         return people;
     }
@@ -129,6 +134,7 @@ public class LocalDataRetriver {
             }
                 Log.wtf("Load Location", text);
 
+            cursor.moveToNext();
         }
         return locations;
     }
@@ -149,6 +155,7 @@ public class LocalDataRetriver {
             }
                 Log.wtf("Load MessageThread", text);
 
+            cursor.moveToNext();
         }
         return messageThreads;
     }
@@ -169,6 +176,7 @@ public class LocalDataRetriver {
             }
                 Log.wtf("Load Message", text);
 
+            cursor.moveToNext();
         }
         return people;
     }
@@ -188,6 +196,7 @@ public class LocalDataRetriver {
                 notes.add(note);
             }
                 Log.wtf("Load Note", text);
+            cursor.moveToNext();
 
         }
         return notes;
@@ -208,6 +217,7 @@ public class LocalDataRetriver {
                 shipments.add(shipment);
             }
                 Log.wtf("Load shipment", text);
+            cursor.moveToNext();
 
         }
         return shipments;

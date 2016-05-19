@@ -167,7 +167,6 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         setContentView(R.layout.activity_main);
         ApplicationWideData.initilizeKnownVariables(this);
         actions=new MainServiceActions(this, userID);
-        actions.setStoredProjects(LocalDataRetriver.getStoredProjects());
         toolbar=(Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.ic_ab_back_holo_dark_am);
         toolbar.setTitleTextColor(0xFFFFFFFF);

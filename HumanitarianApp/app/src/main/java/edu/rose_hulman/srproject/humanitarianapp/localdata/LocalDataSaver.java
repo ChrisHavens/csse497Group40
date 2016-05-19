@@ -79,7 +79,7 @@ public class LocalDataSaver {
 
     public static void savePerson(Person person){
         long id = person.getID();
-        String type = "Person";
+        String type = "People";
         String body = person.toJSON();
         ContentValues values = new ContentValues();
         values.put("ID", id);

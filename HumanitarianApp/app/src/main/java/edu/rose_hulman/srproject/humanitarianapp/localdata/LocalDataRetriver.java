@@ -11,10 +11,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
+import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
+import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import retrofit.client.Response;
 
 /**
@@ -28,50 +33,22 @@ public class LocalDataRetriver {
     private static String allUpdatedQuery = "Select * From [UpdatedIDs]";
     private static String allAddedQuery = "Select * From [AddedIDs]";
 
-    public static List<Project> getStoredProjects() {
-        List<Project> projects = new ArrayList<Project>();
-        Cursor cursor = ApplicationWideData.db.rawQuery(allProjectsQuery, null);
-        cursor.moveToFirst();
-        for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
-            Long id = cursor.getLong(0);
-            String name = cursor.getString(1);
-            String description = cursor.getString(2);
-            boolean[] isDirty = new boolean[9];
-            Arrays.fill(isDirty, false);
-            int dirtyBits = cursor.getInt(3);
-            for (int j = 0; j < 9; j++){
-                isDirty[j] = (dirtyBits & (1 << j)) > 0;
-            }
-            boolean onServer = isDirty[0];
-            Project project = new Project(id, name, description, isDirty, onServer);
-            projects.add(project);
-        }
-        return projects;
-    }
-
     public static List<Project> getStoredProjectsSecond(){
         List<Project> projects = new ArrayList<Project>();
         String[] params = {"Project"};
         Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
         int length = cursor.getCount();
 
-        Log.wtf("Load projects", length + "");
         cursor.moveToFirst();
         for(int i = 0; i < length; i++){
             Long id = cursor.getLong(0);
             String text = cursor.getString(3);
             Project project = null;
-
-//            Log.wtf("Parse projects", Long.toString(id));
-//            Log.wtf("Parse projects", text);
             project = Project.fromJSON(id, text);
-//            Log.wtf("Parse projects", Boolean.toString(project == null));
             if(project != null) {
                 projects.add(project);
             }
         }
-
-//        Log.wtf("Parse projects", projects.size() + "");
         return projects;
     }
     public static List<Group> getStoredGroupsSecond(){
@@ -90,7 +67,7 @@ public class LocalDataRetriver {
                 groups.add(group);
             }
             else{
-                Log.wtf("getStoredGroupsSecond", id+" "+text);
+                Log.wtf("getStoredGroupsSecond", id + " " + text);
             }
         }
         return groups;
@@ -112,6 +89,115 @@ public class LocalDataRetriver {
         }
         return people;
     }
+
+    public static List<Checklist> getStoredChecklistSecond(){
+        List<Checklist> people = new ArrayList<Checklist>();
+        String[] params = {"Checklist"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            Checklist person = null;
+            person = Checklist.fromJSON(id, text);
+            if (person!=null) {
+                people.add(person);
+            }
+        }
+        return people;
+    }
+
+    public static List<Location> getStoredLocationSecond(){
+        List<Location> locations = new ArrayList<Location>();
+        String[] params = {"Location"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            Location location = null;
+            location = Location.fromJSON(id, text);
+            if (location!=null) {
+                locations.add(location);
+            }
+        }
+        return locations;
+    }
+
+    public static List<MessageThread> getStoredMessageThreadSecond(){
+        List<MessageThread> messageThreads = new ArrayList<MessageThread>();
+        String[] params = {"MessageThread"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            MessageThread messageThread = null;
+            messageThread = MessageThread.fromJSON(id, text);
+            if (messageThread!=null) {
+                messageThreads.add(messageThread);
+            }
+        }
+        return messageThreads;
+    }
+
+    public static List<MessageThread.Message> getStoredMessageSecond(){
+        List<MessageThread.Message> people = new ArrayList<MessageThread.Message>();
+        String[] params = {"Message"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            MessageThread.Message message = null;
+            message = MessageThread.Message.fromJSON(id, text);
+            if (message!=null) {
+                people.add(message);
+            }
+        }
+        return people;
+    }
+
+    public static List<Note> getStoredNoteSecond(){
+        List<Note> notes = new ArrayList<Note>();
+        String[] params = {"Note"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            Note note = null;
+            note = Note.fromJSON(id, text);
+            if (note!=null) {
+                notes.add(note);
+            }
+        }
+        return notes;
+    }
+
+    public static List<Shipment> getStoredShipmentSecond(){
+        List<Shipment> shipments = new ArrayList<Shipment>();
+        String[] params = {"Shipment"};
+        Cursor cursor = ApplicationWideData.db.rawQuery(mostDataQuery, params);
+        int length = cursor.getCount();
+        cursor.moveToFirst();
+        for(int i = 0; i < length; i++){
+            Long id = cursor.getLong(0);
+            String text = cursor.getString(3);
+            Shipment shipment = null;
+            shipment = Shipment.fromJSON(id, text);
+            if (shipment!=null) {
+                shipments.add(shipment);
+            }
+        }
+        return shipments;
+    }
+
     public static List<Selectable> getAllUpdated(){
         List<Selectable> items= new ArrayList<>();
         Cursor cursor= ApplicationWideData.db.rawQuery(allUpdatedQuery, null);
@@ -157,48 +243,6 @@ public class LocalDataRetriver {
         }
         return null;
 
-    }
-
-
-    public static List<Group> getStoredGroups() {
-        List<Group> groups = new ArrayList<Group>();
-        Cursor cursor = ApplicationWideData.db.rawQuery(allGroupsQuery, null);
-        cursor.moveToFirst();
-        for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
-            Long id = cursor.getLong(0);
-            Long projectID = cursor.getLong(1);
-            String name = cursor.getString(3);
-            String description = cursor.getString(3);
-            boolean[] isDirty = new boolean[9];
-            Arrays.fill(isDirty, false);
-            int dirtyBits = cursor.getInt(3);
-            for (int j = 0; j < 9; j++){
-                isDirty[j] = (dirtyBits & (1 << j)) > 0;
-            }
-            boolean onServer = isDirty[0];
-            Group group = Group.createFullGroup(id, projectID, name, description, isDirty, onServer);
-            groups.add(group);
-        }
-
-
-
-        return groups;
-    }
-
-    public static List<Long> getGroupIDsForProject(long projectId) {
-        List<Long> groupIds = new ArrayList<>();
-        String tableName = "[Group]";
-        String selection = "SuperID=?";
-        String[] selectionArgs = {Long.toString(projectId)};
-        String[] columns = {"ID", "SuperID"};
-        Cursor cursor = ApplicationWideData.db.query(tableName, columns, selection, selectionArgs, null, null, "ID");
-        cursor.moveToFirst();
-        for(int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
-            Long id = cursor.getLong(0);
-            groupIds.add(id);
-        }
-
-        return groupIds;
     }
     public static Selectable retrieveItem(Long ID, String type){
         Selectable result = null;

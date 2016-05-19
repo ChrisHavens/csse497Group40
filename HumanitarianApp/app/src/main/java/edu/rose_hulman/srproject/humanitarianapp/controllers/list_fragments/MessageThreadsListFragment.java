@@ -94,10 +94,13 @@ public class MessageThreadsListFragment extends AbstractListFragment<MessageThre
     }
 
     public void loadList(){
-        adapter.clear();
+        if(adapter != null) {
+            adapter.clear();
+        }
         for(long l: threads.keySet()){
             adapter.add(threads.get(l));
         }
+        ApplicationWideData.addMessageThreadHashMap(threads);
         adapter.notifyDataSetChanged();
     }
 

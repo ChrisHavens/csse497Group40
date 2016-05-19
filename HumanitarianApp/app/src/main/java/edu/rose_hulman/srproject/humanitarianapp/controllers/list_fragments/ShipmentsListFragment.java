@@ -176,11 +176,14 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         }
     }
     public void loadList(){
-        adapter.clear();
+        if(adapter != null) {
+            adapter.clear();
+        }
         for(long l: shipments.keySet()){
             adapter.add(shipments.get(l));
         }
         ApplicationWideData.addShipmentHashMap(shipments);
+        adapter.notifyDataSetChanged();;
     }
     public class ShipmentToLocationCallbacks implements Callback<Response>{
         private Shipment s;

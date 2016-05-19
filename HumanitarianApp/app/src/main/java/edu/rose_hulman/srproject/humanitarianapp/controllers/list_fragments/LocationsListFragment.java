@@ -152,6 +152,16 @@ public class LocationsListFragment extends AbstractListFragment<Location>{
             Log.e("RetrofitError", "LocationsListCallback: "+error.getMessage());
         }
     }
+    public void loadList(){
+        if(adapter != null) {
+            adapter.clear();
+        }
+        for(long l: locations.keySet()){
+            adapter.add(locations.get(l));
+        }
+        ApplicationWideData.addLocationHashMap(locations);
+        adapter.notifyDataSetChanged();;
+    }
 
     public interface LocationsListListener extends Interfaces.UserIDGetter{
         void onItemSelected(Location t);

@@ -1,7 +1,5 @@
 package edu.rose_hulman.srproject.humanitarianapp.models;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,17 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
-import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataSaver;
-import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 import edu.rose_hulman.srproject.humanitarianapp.serialisation.SerilizationConstants;
 
 /**
  * Created by Chris Havens on 10/4/2015.
  */
-public class Project implements Serialisable, Selectable {
+public class Project implements Selectable {
 
 
      // A flag for each field denoting if it needs to be updated on the server.
@@ -427,15 +422,7 @@ public class Project implements Serialisable, Selectable {
 }
      */
 
-    @Override
-    public String serialise() {
-        return null;
-    }
 
-    @Override
-    public Serialisable deserialise(String s) {
-        return null;
-    }
 
     public String toJSON() {
         StringBuilder sb = new StringBuilder();

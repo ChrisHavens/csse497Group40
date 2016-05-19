@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
-import edu.rose_hulman.srproject.humanitarianapp.serialisation.Serialisable;
 
 /**
  * Created by daveyle on 9/21/2015.
  */
-public class Shipment implements Serialisable<Shipment>, Selectable {
+public class Shipment implements Selectable {
     String contents;
     String from;
     String to;
@@ -324,15 +323,6 @@ public class Shipment implements Serialisable<Shipment>, Selectable {
         return getDate()+" "+getTime();
     }
 
-    @Override
-    public String serialise() {
-        return null;
-    }
-
-    @Override
-    public Shipment deserialise(String s) {
-        return null;
-    }
 
     public long getID() {
         return ID;

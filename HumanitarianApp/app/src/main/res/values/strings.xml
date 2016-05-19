@@ -98,5 +98,7 @@
     <string name="other">Other</string>
     <string name="choose_other">Other Value</string>
     <string name="changedVersion">Changed Version:</string>
+    <string name="changeURL">Change URL</string>
+    <string name="go">Go</string>
 </resources>
 

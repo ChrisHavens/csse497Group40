@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            switchToMain("3105");
+            //switchToMain("3105");
             if (this.getIntent()!=null && this.getIntent().getExtras()!=null) {
                 logMeOut = this.getIntent().getExtras().getBoolean("logMeOut", false);
             }
@@ -326,6 +326,8 @@ public class LoginActivity extends AppCompatActivity implements
             }
         }
     public void go(){
+        Log.wtf("URL",PreferencesManager.getURL());
+        Log.wtf("ID", PreferencesManager.getID());
         if(isNetworkAvailable()) {
             checkValidity(googleID, emailAddress);
         }
@@ -360,7 +362,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void failure(RetrofitError error) {
                 if (error.getResponse()!=null){
-                    //Log.wtf("login", error.getResponse().getStatus()+"");
+                    Log.wtf("login", error.getResponse().getStatus()+"");
                     //Log.wtf("login", token);
                     if (error.getResponse().getStatus()==420){
                         //Log.wtf("login", "Signup");
@@ -431,6 +433,8 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void changeURL(){
+        DialogFragment fragment=new ChangeURLDialogFragment();
+        fragment.show(getFragmentManager(), "changeURL");
 
     }
     public void addPerson() {

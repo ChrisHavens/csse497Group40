@@ -18,6 +18,38 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
  */
 public class LocalDataLoader {
 
+    /*
+    All of the loadInitialXXXXX load only the data stored in each table, none of the relations, this
+    means everything except for the lists.
+     */
+
+    public static void loadChecklists() {
+        //loadInitialChecklists();
+
+    }
+
+
+    public static void loadLocations() {
+        //loadInitialLocations();
+
+    }
+
+    public static void loadNotes() {
+        //loadInitialNotes();
+
+    }
+
+    public static void loadPersons() {
+        //loadInitialPersons();
+
+    }
+
+    public static void loadShipments() {
+        //loadInitialShipments();
+
+    }
+
+
     public static void loadEverything() {
         List<Project> projects = LocalDataRetriver.getStoredProjectsSecond();
         List<Group> groups = LocalDataRetriver.getStoredGroupsSecond();
@@ -31,11 +63,11 @@ public class LocalDataLoader {
         ApplicationWideData.initialProjects(projects);
         ApplicationWideData.initialGroups(groups);
         ApplicationWideData.initialPeople(people);
-        ApplicationWideData.initialNotes(notes);
-        ApplicationWideData.initialChecklists(checklists);
-        ApplicationWideData.initialLocations(locations);
-        ApplicationWideData.initialMessages(messages);
-        ApplicationWideData.initialMessageThreads(messageThreads);
-        ApplicationWideData.initialShipments(shipments);
+
+        loadPersons();
+        loadLocations();
+        loadChecklists();
+        loadShipments();
+        loadNotes();
     }
 }

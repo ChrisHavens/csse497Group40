@@ -32,7 +32,6 @@ public class LocalDataRetriver {
     private static String allGroupsQuery = "Select * From [Group]";
     private static String allUpdatedQuery = "Select * From [UpdatedIDs]";
     private static String allAddedQuery = "Select * From [AddedIDs]";
-
     public static List<Project> getStoredProjectsSecond(){
         List<Project> projects = new ArrayList<Project>();
         String type = "Project";
@@ -269,6 +268,7 @@ public class LocalDataRetriver {
         return null;
 
     }
+
     public static Selectable retrieveItem(Long ID, String type){
         Selectable result = null;
         if (type.equals("Project")){

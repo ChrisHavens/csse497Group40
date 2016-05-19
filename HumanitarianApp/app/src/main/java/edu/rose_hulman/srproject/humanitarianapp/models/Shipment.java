@@ -320,6 +320,9 @@ public class Shipment implements Selectable {
     }
 
     public String getDateTime(){
+        if (getDate()==null ||getTime()==null || getDate().isEmpty() || getTime().isEmpty()){
+            return ApplicationWideData.getCurrentTime();
+        }
         return getDate()+" "+getTime();
     }
 

@@ -23,6 +23,8 @@ import java.util.HashMap;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.Interfaces;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.models.Location;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
@@ -170,46 +172,59 @@ public class EditLocationDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-        NonLocalDataService service=new NonLocalDataService();
-        service.service.getLocation("" + ID, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                ObjectMapper mapper = new ObjectMapper();
-                TypeReference<HashMap<String, Object>> typeReference =
-                        new TypeReference<HashMap<String, Object>>() {
-                        };
-                try {
-                    HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
-                    HashMap<String, Object> source = (HashMap) map.get("_source");
+        if (!ApplicationWideData.manualSnyc) {
+            NonLocalDataService service = new NonLocalDataService();
+            service.service.getLocation("" + ID, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    TypeReference<HashMap<String, Object>> typeReference =
+                            new TypeReference<HashMap<String, Object>>() {
+                            };
+                    try {
+                        HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
+                        HashMap<String, Object> source = (HashMap) map.get("_source");
 
-                    location = new Location(Integer.parseInt(((String) map.get("_id"))));
-                    location.setName((String) source.get("name"));
-                    location.setLat(Float.parseFloat((String) source.get("lat")));
-                    location.setLng(Float.parseFloat((String) source.get("lng")));
-                    //Log.w("Type of lastLocation", .get("lastLocation"))
-                    ArrayList<HashMap<String, Object>> parents = (ArrayList) source.get("parentIDs");
-                    for (HashMap parent : parents) {
-                        if (parent.containsKey("projectID")) {
-                            location.addNewProjectID(Long.parseLong((String) parent.get("projectID")));
-                        } else if (parent.containsKey("groupID")) {
-                            location.addNewGroupID(Long.parseLong((String) parent.get("groupID")));
+                        location = new Location(Integer.parseInt(((String) map.get("_id"))));
+                        location.setName((String) source.get("name"));
+                        location.setLat(Float.parseFloat((String) source.get("lat")));
+                        location.setLng(Float.parseFloat((String) source.get("lng")));
+                        //Log.w("Type of lastLocation", .get("lastLocation"))
+                        ArrayList<HashMap<String, Object>> parents = (ArrayList) source.get("parentIDs");
+                        for (HashMap parent : parents) {
+                            if (parent.containsKey("projectID")) {
+                                location.addNewProjectID(Long.parseLong((String) parent.get("projectID")));
+                            } else if (parent.containsKey("groupID")) {
+                                location.addNewGroupID(Long.parseLong((String) parent.get("groupID")));
+                            }
                         }
+                        setLocationDetails();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    nameField.setText(location.getName());
-                    latField.setText(location.getLat() + "");
-                    lngField.setText(location.getLng() + "");
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("s40 RetrofitError", error.getMessage());
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("s40 RetrofitError", error.getMessage());
+                }
+            });
+        }
+        else{
+            Location l=ApplicationWideData.getLocationByID(ID);
+            if (l!=null){
+                location=l;
+                setLocationDetails();
             }
-        });
+        }
         return view;
+    }
+    private void setLocationDetails(){
+        nameField.setText(location.getName());
+        latField.setText(location.getLat() + "");
+        lngField.setText(location.getLng() + "");
     }
     @Override
     public void onAttach(Activity activity) {

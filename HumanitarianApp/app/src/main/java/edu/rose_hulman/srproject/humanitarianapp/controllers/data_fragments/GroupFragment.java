@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Group;
  * to handle interaction events.
  *
  */
-public class GroupFragment extends Fragment {
+public class GroupFragment extends Fragment implements AbstractDataFragment{
 
     private Group group;
 
@@ -101,6 +102,12 @@ public class GroupFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
 
 

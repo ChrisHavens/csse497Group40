@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.adapters.ListArrayAdapter;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.LocalDataRetriver;
 import edu.rose_hulman.srproject.humanitarianapp.models.MessageThread;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -38,12 +43,12 @@ import retrofit.client.Response;
  * to handle interaction events.
 
  */
-public class MessageThreadFragment extends Fragment implements AbsListView.OnItemClickListener{
+public class MessageThreadFragment extends Fragment implements AbsListView.OnItemClickListener, AbstractDataFragment{
 
     private ThreadFragmentListener mListener;
     private MessageThread messageThread;
     private ArrayList<MessageListMessage> messages=new ArrayList<>();
-    private ArrayList<MessageListMessage> messages2=new ArrayList<>();
+//    private ArrayList<MessageListMessage> messages2=new ArrayList<>();
     private EditText mEditText;
     private Button mSendButton;
     private Comparator<MessageListMessage> comparator=new Comparator<MessageListMessage>() {
@@ -162,97 +167,48 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         if (this.mAdapter != null) {
             this.mAdapter.notifyDataSetChanged();
         }
-        final NonLocalDataService service = new NonLocalDataService();
-        service.getMessagesList(mListener.getSelectedThread().getID() + "", new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                ObjectMapper mapper = new ObjectMapper();
-                TypeReference<HashMap<String, Object>> typeReference =
-                        new TypeReference<HashMap<String, Object>>() {
-                        };
-                try {
-                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
-                    HashMap<String, Object> m1=(HashMap) o.get("hits");
-                    int count=(Integer) m1.get("total");
-//                    Log.wtf("Count: ", count+"");
-                    messageThread.setCount(count);
-                    ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
-                    for (int i = 0; i< list.size(); i++) {
-                        HashMap<String, Object> map = list.get(i);
-                        HashMap<String, Object> source = (HashMap) map.get("_source");
-                        if (source != null) {
-                            MessageThread.Message m = new MessageThread.Message((String) source.get("text"),
-                                    (String) source.get("personID"), (String) source.get("sentDate"));
-                            m.setID(Long.parseLong((String) map.get("_id")));
-                            messageThread.addItem(m);
-                            final MessageListMessage m2=new MessageListMessage(m, "", (String)source.get("personID"));
-                            messages2.add(m2);
-                            Collections.sort(messages, comparator);
-                            Collections.sort(messages2, comparator);
-
-                            if (mAdapter != null) {
-                                mAdapter.notifyDataSetChanged();
-
-                            }
-
-                                Callback<Response> callback= new Callback<Response>() {
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        ObjectMapper mapper = new ObjectMapper();
-                                        TypeReference<HashMap<String, Object>> typeReference =
-                                                new TypeReference<HashMap<String, Object>>() {
-                                                };
-                                        try {
-                                            HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
-                                            HashMap<String, Object> source = (HashMap) map.get("_source");
-                                            if (source != null) {
-                                                String name = (String) source.get("name");
-                                                m2.setPerson(name);
-                                                messages.add(m2);
-                                                Collections.sort(messages, comparator);
-                                            }
-                                            else{
-                                                m2.setPerson("Shadow Broker");
-                                                messages.add(m2);
-                                                Collections.sort(messages, comparator);
-                                            }
-                                            mAdapter.notifyDataSetChanged();
-
-                                        } catch (Exception e) {
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Log.e("s40", error.getMessage());
-                                        Log.e("s40", error.getUrl());
-                                        m2.setPerson("Shadow Broker");
-                                        messages.add(m2);
-                                        Collections.sort(messages, comparator);
-                                    }
-                                };
-                                service.service.getPerson(m2.personID, callback);
-
-
-                        }
+        if (!ApplicationWideData.manualSnyc) {
+            final NonLocalDataService service = new NonLocalDataService();
+            service.getMessagesList(mListener.getSelectedThread().getID() + "", new MessageThreadCallback());
+        }
+        else{
+            if (mAdapter!=null) {
+                mAdapter.clear();
+                List<MessageThread.Message> mess = messageThread.getItemList();
+                for (MessageThread.Message m : mess) {
+                    Person p=ApplicationWideData.getPersonByID(Long.parseLong(m.getSender()));
+                    if (p!=null){
+                        MessageListMessage listMessage=new MessageListMessage(m,p.getName(), m.getSender());
+                        messages.add(listMessage);
+                        mAdapter.add(listMessage);
+                        mAdapter.notifyDataSetChanged();
                     }
-//                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
+
                 }
             }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("RetrofitError", error.getMessage());
-                Log.e("RetrofitError", error.getUrl());
-            }
-        });
+        }
 //        Log.wtf("s40", messages2.size() + "");
 //        Log.wtf("s40", messageThread.getItemList().size()+"");
 
 
+
+    }
+//    public void loadList(){
+//        if(mAdapter == null) {
+//
+//            return;
+//        }
+//        mAdapter.clear();
+//        for(MessageListMessage m: messages){
+//            mAdapter.add(m);
+//        }
+//        ApplicationWideData.addGroupHashMap(groups);
+//        adapter.notifyDataSetChanged();
+//    }
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
 
     }
 
@@ -314,5 +270,91 @@ public class MessageThreadFragment extends Fragment implements AbsListView.OnIte
         }
     }
 
+    public class MessageThreadCallback implements Callback<Response> {
+            @Override
+            public void success(Response response, Response response2) {
+                final NonLocalDataService service = new NonLocalDataService();
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference =
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> o = mapper.readValue(response.getBody().in(), typeReference);
+                    HashMap<String, Object> m1 = (HashMap) o.get("hits");
+                    int count = (Integer) m1.get("total");
+//                    Log.wtf("Count: ", count+"");
+                    messageThread.setCount(count);
+                    ArrayList<HashMap<String, Object>> list = (ArrayList) ((HashMap) o.get("hits")).get("hits");
+                    for (int i = 0; i < list.size(); i++) {
+                        HashMap<String, Object> map = list.get(i);
+                        HashMap<String, Object> source = (HashMap) map.get("_source");
+                        if (source != null) {
+                            MessageThread.Message m = new MessageThread.Message((String) source.get("text"),
+                                    (String) source.get("personID"), (String) source.get("sentDate"));
+                            m.setID(Long.parseLong((String) map.get("_id")));
+                            messageThread.addItem(m);
+                            final MessageListMessage m2 = new MessageListMessage(m, "", (String) source.get("personID"));
+                            messages.add(m2);
+                            Collections.sort(messages, comparator);
 
+
+                            if (mAdapter != null) {
+                                mAdapter.notifyDataSetChanged();
+
+                            }
+
+                            Callback<Response> callback = new Callback<Response>() {
+                                @Override
+                                public void success(Response response, Response response2) {
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    TypeReference<HashMap<String, Object>> typeReference =
+                                            new TypeReference<HashMap<String, Object>>() {
+                                            };
+                                    try {
+                                        HashMap<String, Object> map = mapper.readValue(response.getBody().in(), typeReference);
+                                        HashMap<String, Object> source = (HashMap) map.get("_source");
+                                        if (source != null) {
+                                            String name = (String) source.get("name");
+                                            m2.setPerson(name);
+                                            messages.add(m2);
+                                            Collections.sort(messages, comparator);
+                                        } else {
+                                            m2.setPerson("Shadow Broker");
+                                            messages.add(m2);
+                                            Collections.sort(messages, comparator);
+                                        }
+                                        mAdapter.notifyDataSetChanged();
+
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Log.e("s40", error.getMessage());
+                                    Log.e("s40", error.getUrl());
+                                    m2.setPerson("Shadow Broker");
+                                    messages.add(m2);
+                                    Collections.sort(messages, comparator);
+                                }
+                            };
+                            service.service.getPerson(m2.personID, callback);
+
+
+                        }
+                    }
+//                    Toast.makeText(getActivity(), "Size: "+messages2.size(), Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("RetrofitError", error.getMessage());
+                Log.e("RetrofitError", error.getUrl());
+            }
+
+    }
 }

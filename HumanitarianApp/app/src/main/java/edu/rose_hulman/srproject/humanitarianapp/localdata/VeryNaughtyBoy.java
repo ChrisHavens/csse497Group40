@@ -14,10 +14,15 @@ import java.util.Queue;
 
 import edu.rose_hulman.srproject.humanitarianapp.controllers.MainActivity;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.list_fragments.AbstractListFragment;
+import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
 import edu.rose_hulman.srproject.humanitarianapp.models.Conflict;
 import edu.rose_hulman.srproject.humanitarianapp.models.Group;
+import edu.rose_hulman.srproject.humanitarianapp.models.Location;
+import edu.rose_hulman.srproject.humanitarianapp.models.Note;
+import edu.rose_hulman.srproject.humanitarianapp.models.Person;
 import edu.rose_hulman.srproject.humanitarianapp.models.Project;
 import edu.rose_hulman.srproject.humanitarianapp.models.Selectable;
+import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
 import edu.rose_hulman.srproject.humanitarianapp.nonlocaldata.NonLocalDataService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -72,6 +77,21 @@ public class VeryNaughtyBoy {
         }
         else if (s.getType().equals("Group")){
             service.updateGroup((Group)s, "{\"doc\":" + ((Group) s).toJSON() + "}", PreferencesManager.getID(), callback);
+        }
+        else if (s.getType().equals("Checklist")){
+            service.addNewChecklist((Checklist) s, PreferencesManager.getID(), callback);
+        }
+        else if (s.getType().equals("Location")){
+            service.updateLocation((Location) s, "{\"doc\":" + ((Location) s).toJSON() + "}", PreferencesManager.getID(), callback);
+        }
+        else if (s.getType().equals("Person")){
+            service.updatePerson((Person) s, "{\"doc\":" + ((Person) s).toJSON() + "}", PreferencesManager.getID(), callback);
+        }
+        else if (s.getType().equals("Note")){
+            service.updateNote((Note) s, PreferencesManager.getID(), callback);
+        }
+        else if (s.getType().equals("Shipment")){
+            service.addNewShipment((Shipment) s, PreferencesManager.getID(), callback);
         }
 
     }

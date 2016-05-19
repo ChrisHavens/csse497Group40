@@ -541,7 +541,7 @@ public class ApplicationWideData {
         LocalDataSaver.clearAddedSelectables();
         NonLocalDataService service = new NonLocalDataService();
 
-        HashMap<String, Selectable> updated=new HashMap<>();
+        //HashMap<String, Selectable> updated=new HashMap<>();
         List<Selectable> selectables=LocalDataRetriver.getAllUpdated();
         doUpdates(selectables, activity);
 //        Toast.makeText(activity, updated.keySet().toString(), Toast.LENGTH_LONG).show();
@@ -560,9 +560,11 @@ public class ApplicationWideData {
         NonLocalDataService service=new NonLocalDataService();
         for (Selectable s: added){
             if (s instanceof Project){
-                service.addNewProject((Project) s, userID + "", new Callback<Response>() {
+                final Project p=(Project)s;
+                service.addNewProject(p, userID + "", new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
                     }
                     @Override
                     public void failure(RetrofitError error) {
@@ -570,6 +572,103 @@ public class ApplicationWideData {
                     }
                 });
             }
+            else if (s instanceof Group){
+                final Group p=(Group)s;
+                service.addNewGroup(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Groups", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof Person){
+                final Person p=(Person)s;
+                service.addNewPerson(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Persons", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof Checklist){
+                final Checklist p=(Checklist)s;
+                service.addNewChecklist(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Lists", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof Location){
+                final Location p=(Location)s;
+                service.addNewLocation(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Locs", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof MessageThread){
+                final MessageThread p=(MessageThread)s;
+                service.addNewThread(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Threads", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof Note){
+                final Note p=(Note)s;
+                service.addNewNote(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Notes", error.getMessage());
+                    }
+                });
+            }
+            else if (s instanceof Shipment){
+                final Shipment p=(Shipment)s;
+                service.addNewShipment(p, userID + "", new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        LocalDataSaver.clearAddedSelectable(p);
+                    }
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("s40 Adding New Shipment", error.getMessage());
+                    }
+                });
+            }
+            
+            
         }
         if (LocalDataRetriver.getAllUpdated().size()==0){
             String time = getCurrentTime();
@@ -630,31 +729,7 @@ public class ApplicationWideData {
         };
         service.getDeleted(time, callback);
     }
-    public static void doUpdateProject(final Project project, final MainActivity activity) {
-//        NonLocalDataService service= new NonLocalDataService();
-//        service.updateProject(project, "{\"doc\":" + project.toJSON() + "}", userID + "",
-//                new Callback<Response>() {
-//                    @Override
-//                    public void success(Response response, Response response2) {
-////                        LocalDataSaver.deleteUpdatedProject(project);
-//                        if (LocalDataRetriver.getAllUpdated().size() == 0) {
-//                            String time = getCurrentTime();
-//                            PreferencesManager.setSyncDate(time);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void failure(RetrofitError error) {
-////                        if (error.getResponse().getStatus() == 418) {
-//////                    Log.wtf("Conflict FOUND:", error.getResponse().getBody().toString());
-////                            HashMap<Selectable, List<Conflict>> conflicts = ApplicationWideData.getConflicts(project, error.getResponse());
-////                            Log.wtf("Conflicts: ", conflicts.toString());
-////                            activity.showConflictResolution(conflicts);
-////                        }
-//                        Log.wtf("RetroFitError", "Do Update Project" + error.getMessage());
-//                    }
-//                });
-    }
+
 
     public static String getCurrentTime(){
         Calendar cal=Calendar.getInstance();

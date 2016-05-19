@@ -3,6 +3,7 @@ package edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
 /**
  * Created by daveyle on 10/6/2015.
  */
-public class LocationFragment extends Fragment {
+public class LocationFragment extends Fragment implements AbstractDataFragment{
 
     private LocationFragmentListener mListener;
     private Location location;
@@ -47,7 +48,7 @@ public class LocationFragment extends Fragment {
         TextView lat=(TextView)view.findViewById(R.id.latField);
         lat.setText(location.getLat()+"");
         TextView lng=(TextView) view.findViewById(R.id.longField);
-        lng.setText(location.getLng()+"");
+        lng.setText(location.getLng() + "");
 
         return view;
     }
@@ -67,6 +68,12 @@ public class LocationFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
 
     /**

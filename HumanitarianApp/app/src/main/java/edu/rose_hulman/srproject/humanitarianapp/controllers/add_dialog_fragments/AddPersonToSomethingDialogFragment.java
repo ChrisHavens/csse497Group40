@@ -310,7 +310,7 @@ public class AddPersonToSomethingDialogFragment extends DialogFragment implement
             service.searchPersons(s, callback);
         }
         else{
-            service.service.getPersonList(callback);
+            service.service.getPersonList(true, callback);
         }
     }
 

@@ -25,7 +25,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Shipment;
  * to handle interaction events.
  *
  */
-public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
+public class ShipmentFragment extends Fragment implements OnMapReadyCallback, AbstractDataFragment{
 
 
     private ShipmentFragmentListener mListener;
@@ -92,6 +92,12 @@ public class ShipmentFragment extends Fragment implements OnMapReadyCallback {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void refreshContent() {
+        android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
     private void attachMapFragment(){
 //        MapFragment myMapFragment = MapFragment.newInstance();

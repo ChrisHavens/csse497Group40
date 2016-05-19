@@ -37,7 +37,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Person;
  * to handle interaction events.
  *
  */
-public class PersonFragment extends Fragment {
+public class PersonFragment extends Fragment implements AbstractDataFragment{
 
     private WorkerFragmentListener mListener;
     private GoogleMap map;
@@ -157,6 +157,12 @@ public class PersonFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
 
     /**

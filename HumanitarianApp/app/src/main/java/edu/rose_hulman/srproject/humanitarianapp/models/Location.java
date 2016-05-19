@@ -119,7 +119,46 @@ public class Location implements Selectable{
         this.groupIDs.add(groupID);
     }
 
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c: conflictList){
+            if (c.fieldName.equals("name")){
+                this.setName(c.getChosenVersion());
+            }
+            else if (c.fieldName.equals("lat")){
+                this.setLat(Float.parseFloat(c.getChosenVersion()));
+            }
+            else if (c.fieldName.equals("lng")){
+                this.setLng(Float.parseFloat(c.getChosenVersion()));
+            }
+            else if (c.fieldName.equals("lat")){
+                this.setLat(Float.parseFloat(c.getChosenVersion()));
+            }
+            else if (c.fieldName.equals("parentIDs")){
+                ObjectMapper mapper=new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference=
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> source = mapper.readValue(c.getChosenVersion(), typeReference);
+                    List<Long> parentIDs=new ArrayList<>();
+                    ArrayList<HashMap<String, Object>> list=(ArrayList<HashMap<String, Object>>)source.get("parentIDs");
+                    if (list!=null) {
+                        for (HashMap<String, Object> parent :list) {
+                            if (parent.containsKey("parentID")) {
+                                parentIDs.add(Long.parseLong((String) parent.get("parentID")));
+                            }
+                        }
+                    }
+                    setProjectIDs(parentIDs);
+                }catch (Exception e){
 
+                }
+            }else if (c.fieldName.equals("timeModified")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
+    }
     public String toJSON(){
         StringBuilder sb=new StringBuilder();
         sb.append("{");

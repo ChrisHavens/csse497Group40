@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +28,12 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Checklist;
  * to handle interaction events.
 
  */
-public class ChecklistFragment extends Fragment implements AbsListView.OnItemClickListener{
+public class ChecklistFragment extends Fragment implements AbsListView.OnItemClickListener, AbstractDataFragment{
 
     private ChecklistFragmentListener mListener;
     private Checklist checklist;
+    TextView title;
+    Button b;
 
     /**
      * The fragment's ListView/GridView.
@@ -115,8 +118,8 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_checklist, container, false);
-        TextView title=(TextView) view.findViewById(R.id.title);
-        Button b= (Button) view.findViewById(R.id.okButton);
+        title=(TextView) view.findViewById(R.id.title);
+        b= (Button) view.findViewById(R.id.okButton);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +160,14 @@ public class ChecklistFragment extends Fragment implements AbsListView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

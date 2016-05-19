@@ -45,6 +45,7 @@ import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragment
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddPersonToSomethingDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddProjectDialogFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.add_dialog_fragments.AddShipmentDialogFragment;
+import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.AbstractDataFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.ChecklistFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.GroupFragment;
 import edu.rose_hulman.srproject.humanitarianapp.controllers.data_fragments.LocationFragment;
@@ -124,7 +125,8 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         AddPersonDialogFragment.AddPersonListener,
         ConflictResolutionDialogFragment.ConflictResolutionListener,
         EditProjectDialogFragment.EditProjectListener,
-        EditGroupDialogFragment.EditGroupCallbacks
+        EditGroupDialogFragment.EditGroupCallbacks,
+        EditLocationDialogFragment.EditLocationCallbacks
         //,
         //EditProjectDialogFragment.EditProjectListener,
         //EditGroupDialogFragment.AddGroupListener
@@ -138,8 +140,6 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     private boolean showHidden=false;
     private String userID;
     private CoordinatesGetter coordGetter;
-    private HashMap<Selectable, List<Conflict>> conflictsMap=new HashMap<Selectable, List<Conflict>>();
-    private HashMap<Selectable, List<Conflict>> resolvedConflictsMap=new HashMap<Selectable, List<Conflict>>();
     private Iterator<Map.Entry<Selectable, List<Conflict>>> conflictsIterator;
     private Map.Entry<Selectable, List<Conflict>> currConflict;
 
@@ -161,6 +161,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
+        ApplicationWideData.manualSnyc=PreferencesManager.getSyncType();
         Log.wtf("In Manual Sync Mode", ApplicationWideData.manualSnyc+"");
         //LocalDataSaver.clearAll();
         LocalDataSaver.clearUpdatedSelectables();
@@ -377,6 +378,9 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.tabContentContainer);
         if (fragment instanceof AbstractListFragment){
             ((AbstractListFragment)fragment).refresh();
+        }
+        if (fragment instanceof AbstractDataFragment){
+            ((AbstractDataFragment)fragment).refreshContent();
         }
     }
 
@@ -837,22 +841,26 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
     public void showConflictResolution(HashMap<Selectable, List<Conflict>> conflicts){
         //Toast.makeText(this, "Let's resolve a conflict", Toast.LENGTH_SHORT).show();
-        this.conflictsMap=conflicts;
-        conflictsIterator=conflictsMap.entrySet().iterator();
+        HashMap<Selectable, List<Conflict>> conflictsMap = conflicts;
+        conflictsIterator= conflictsMap.entrySet().iterator();
         if (conflictsIterator.hasNext()) {
 
-            resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+//            resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
 
             currConflict = conflictsIterator.next();
             DialogFragment newFragment = new ConflictResolutionDialogFragment();
 
             newFragment.show(getFragmentManager(), "conflictResolution");
         }
+        else{
+            this.conflictsIterator=null;
+            this.currConflict=null;
+        }
         String time = ApplicationWideData.getCurrentTime();
         PreferencesManager.setSyncDate(time);
     }
     private void showNextConflictResolution(){
-        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
+//        resolvedConflictsMap.put(currConflict.getKey(), currConflict.getValue());
         if (conflictsIterator.hasNext()){
 
             currConflict=conflictsIterator.next();
@@ -860,6 +868,13 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
 
             newFragment.show(getFragmentManager(), "conflictResolution");
         }
+        else{
+            this.conflictsIterator=null;
+            this.currConflict=null;
+        }
+        String time = ApplicationWideData.getCurrentTime();
+        PreferencesManager.setSyncDate(time);
+
 
 
 
@@ -1222,6 +1237,11 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
     @Override
     public void updatePerson(Person p){
         actions.updatePerson(p);
+    }
+
+    @Override
+    public void updateLocation(Location l) {
+        actions.updateLocation(l);
     }
 
 //    private static void saveNewProjects(final MainActivity activity) {

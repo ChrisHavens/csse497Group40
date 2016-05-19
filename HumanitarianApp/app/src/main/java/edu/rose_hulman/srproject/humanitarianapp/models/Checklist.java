@@ -251,6 +251,11 @@ public class Checklist implements Selectable{
     public String getType(){return "Checklist";}
 
     @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+
+    }
+
+    @Override
     public String getDateTimeModified() {
         if(datetime == null || datetime.equals("")){
             return ApplicationWideData.getCurrentTime();

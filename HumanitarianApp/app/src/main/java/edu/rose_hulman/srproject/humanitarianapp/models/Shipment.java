@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 
@@ -428,6 +429,7 @@ public class Shipment implements Selectable {
         s.setFrom((String) source.get("fromLocationID"));
         s.setTo((String) source.get("toLocationID"));
         s.setName((String) source.get("name"));
+        s.setParentID(Long.parseLong((String)source.get("parentID")));
         String[] split=((String) source.get("pickupTime")).split(" ");
         if (split.length==2) {
             s.setDate(split[0]);
@@ -435,6 +437,32 @@ public class Shipment implements Selectable {
         }
         s.setStatus((String) source.get("status"));
         return s;
+    }
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c : conflictList) {
+            if (c.fieldName.equals("name")) {
+                this.setName(c.getChosenVersion());
+            }else if (c.fieldName.equals("contents")){
+                this.setContents(c.getChosenVersion());
+            }else if (c.fieldName.equals("parentID")){
+                this.setParentID(Long.parseLong(c.getChosenVersion()));
+            }else if (c.fieldName.equals("fromLocationID")){
+                this.setFrom(c.getChosenVersion());
+            }else if (c.fieldName.equals("toLocationID")){
+                this.setTo(c.getChosenVersion());
+            }else if (c.fieldName.equals("pickupTime")){
+                String[] split=c.getChosenVersion().split(" ");
+                if (split.length==2) {
+                    setDate(split[0]);
+                    setTime(split[1]);
+                };
+            }else if (c.fieldName.equals("status")){
+                this.setStatus(c.getChosenVersion());
+            }else if (c.fieldName.equals("timeModified")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
     }
 
     public Shipment clone(){
@@ -458,6 +486,10 @@ public class Shipment implements Selectable {
         return isHidden;
     }
 
+    public void setHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+    }
+
     public int getDirtyBits() {
         return dirtyBits;
     }
@@ -477,4 +509,5 @@ public class Shipment implements Selectable {
     public void setDateTimeModified(String dateTime) {
         this.datetime=dateTime;
     }
+
 }

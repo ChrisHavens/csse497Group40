@@ -352,6 +352,42 @@ public class Person implements Serializable, Selectable {
             }
         }
     }
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c : conflictList) {
+            if (c.fieldName.equals("name")) {
+                this.setName(c.getChosenVersion());
+            }else if (c.fieldName.equals("email")){
+                this.setEmail(c.getChosenVersion());
+            }else if (c.fieldName.equals("phone")){
+                this.setPhoneNumber(c.getChosenVersion());
+            }else if (c.fieldName.equals("lastModTime")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }else if (c.fieldName.equals("parentIDs")){
+                ObjectMapper mapper=new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference=
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> source = mapper.readValue(c.getChosenVersion(), typeReference);
+
+                    ArrayList<HashMap<String, Object>> list=(ArrayList<HashMap<String, Object>>)source.get("parentIDs");
+                    if (list!=null) {
+                        for (HashMap<String, Object> parent :list) {
+                            if (parent.containsKey("parentID")) {
+                               addGroupID(Long.parseLong((String) parent.get("parentID")));
+                            }
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+            }else if (c.fieldName.equals("timeModified")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
+    }
 
 
     @Override
@@ -363,6 +399,7 @@ public class Person implements Serializable, Selectable {
         this.isHidden = hidden;
     }
     public String getType(){return "Person";}
+
 
     public static class PersonLocation{
         private float lat;

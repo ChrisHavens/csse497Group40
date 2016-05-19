@@ -101,7 +101,7 @@ public class NonLocalDataService {
     }
     public void updateNote(Note note, String changerID,Callback<Response> callback){
         StringBuilder sb=new StringBuilder();
-        sb.append("{\"doc\":{\"contents\": \""+note.getBody()+"\", \"title\": \""+note.getTitle()+"\"}}");
+        sb.append("{\"doc\":{\"contents\": \""+note.getBody()+"\", \"name\": \""+note.getTitle()+"\"}}");
 //        Log.w("Note:", note.getID()+" "+sb.toString());
 
         service.updateNote(note.getID() + "", changerID, note.getDateTimeModified(),new TypedJsonString(sb.toString()), callback);

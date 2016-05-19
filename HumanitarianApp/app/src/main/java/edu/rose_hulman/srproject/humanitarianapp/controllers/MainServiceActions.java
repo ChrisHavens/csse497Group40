@@ -387,6 +387,7 @@ public class MainServiceActions {
     }
     public void updateProject(final Project p){
         LocalDataSaver.saveProject(p);
+        setSelectedProject(p);
         if (!ApplicationWideData.manualSnyc) {
             Toast.makeText(context, "Auto Sync On!", Toast.LENGTH_SHORT).show();
             NonLocalDataService service = new NonLocalDataService();
@@ -645,9 +646,12 @@ public class MainServiceActions {
     }
     public void hideProject() {
         String hideOrShow = "hide";
-        if(selectedProject.isHidden())
+        boolean curr=selectedProject.isHidden();
+        selectedProject.setHidden(!curr);
+        if(curr)
             hideOrShow = "show";
         LocalDataSaver.saveProject(selectedProject);
+
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> hideResponse = new Callback<Response>() {
                 @Override
@@ -680,6 +684,8 @@ public class MainServiceActions {
 
     public void hideGroup() {
         String hideOrShow = "hide";
+        boolean curr=selectedGroup.isHidden();
+        selectedGroup.setHidden(!curr);
         if(selectedGroup.isHidden())
             hideOrShow = "show";
         LocalDataSaver.saveGroup(selectedGroup);
@@ -712,6 +718,8 @@ public class MainServiceActions {
 
     public void hideChecklist() {
         String hideOrShow = "hide";
+        boolean curr=selectedChecklist.isHidden();
+        selectedChecklist.setHidden(!curr);
         if(selectedChecklist.isHidden())
             hideOrShow = "show";
         LocalDataSaver.saveChecklist(selectedChecklist);
@@ -743,6 +751,8 @@ public class MainServiceActions {
 
     public void hideLocation() {
         String hideOrShow = "hide";
+        boolean curr=selectedLocation.isHidden();
+        selectedLocation.setHidden(!curr);
         if(selectedLocation.isHidden())
             hideOrShow = "show";
         LocalDataSaver.saveLocation(selectedLocation);
@@ -774,6 +784,8 @@ public class MainServiceActions {
 
     public void hideNote() {
         String hideOrShow = "hide";
+        boolean curr=selectedNote.isHidden();
+        selectedNote.setHidden(!curr);
         if(selectedNote.isHidden())
             hideOrShow = "show";
         LocalDataSaver.saveNote(selectedNote);
@@ -805,6 +817,8 @@ public class MainServiceActions {
 
     public void hidePerson() {
         String hideOrShow = "hide";
+        boolean curr=selectedPerson.isHidden();
+        selectedPerson.setHidden(!curr);
         if(selectedPerson.isHidden())
             hideOrShow = "show";
         LocalDataSaver.savePerson(selectedPerson);
@@ -836,6 +850,8 @@ public class MainServiceActions {
 
     public void hideShipment() {
         String hideOrShow = "hide";
+        boolean curr=selectedShipment.isHidden();
+        selectedShipment.setHidden(!curr);
         if(selectedShipment.isHidden())
             hideOrShow = "show";
         LocalDataSaver.saveShipment(selectedShipment);
@@ -864,6 +880,7 @@ public class MainServiceActions {
 
     }
     public void editChecklist(final Checklist c){
+        setSelectedChecklist(c);
         LocalDataSaver.saveChecklist(c);
         if (!ApplicationWideData.manualSnyc) {
             Callback<Response> responseCallback = new Callback<Response>() {
@@ -924,6 +941,7 @@ public class MainServiceActions {
 
     }
     public void updateGroup(final Group group){
+        setSelectedGroup(group);
         LocalDataSaver.saveGroup(group);
         if (!ApplicationWideData.manualSnyc) {
 
@@ -950,6 +968,7 @@ public class MainServiceActions {
 
     }
     public void updateLocation(final Location location){
+        setSelectedLocation(location);
         LocalDataSaver.saveLocation(location);
         if (!ApplicationWideData.manualSnyc) {
             String doc = "{\"doc\":" + location.toJSON() + "}";
@@ -974,6 +993,7 @@ public class MainServiceActions {
 
     }
     public void updatePerson(final Person person){
+        setSelectedPerson(person);
         LocalDataSaver.savePerson(person);
         if (!ApplicationWideData.manualSnyc) {
             String json = "{\"doc\":" + person.toJSON() + "}";

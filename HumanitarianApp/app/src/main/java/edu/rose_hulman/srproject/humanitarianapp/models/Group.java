@@ -316,6 +316,20 @@ public class Group implements Selectable {
         return "Group";
     }
 
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c: conflictList){
+            if (c.fieldName.equals("name")){
+                this.setName(c.getChosenVersion());
+            }
+            else if (c.fieldName.equals("projectID")){
+                this.setProjectID(Long.parseLong(c.getChosenVersion()));
+            }else if (c.fieldName.equals("timeModified")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
+    }
+
 
     public static List<Group> getKnownGroups() {
         return ApplicationWideData.getAllGroups();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import edu.rose_hulman.srproject.humanitarianapp.models.Note;
  * to handle interaction events.
  *
  */
-public class NoteFragment extends Fragment {
+public class NoteFragment extends Fragment implements AbstractDataFragment{
     
     private NoteFragmentListener mListener;
     EditText title;
@@ -94,6 +95,12 @@ public class NoteFragment extends Fragment {
     private void cancelNote(){
         title.setText(note.getTitle());
         body.setText(note.getBody());
+    }
+    @Override
+    public void refreshContent() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
 
     /**

@@ -185,7 +185,13 @@ public class LocalDataSaver {
         return true;
     }
     public static boolean clearUpdatedSelectable(Selectable s){
-        String tableName = "[AllData]";
+        String tableName = "[UpdatedIDs]";
+        String[] whereArgs = {Long.toString(s.getID()), s.getType()};
+        ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
+        return true;
+    }
+    public static boolean clearAddedSelectable(Selectable s){
+        String tableName = "[AddedIDs]";
         String[] whereArgs = {Long.toString(s.getID()), s.getType()};
         ApplicationWideData.db.delete(tableName, "ID = ? and Type = ? ", whereArgs);
         return true;

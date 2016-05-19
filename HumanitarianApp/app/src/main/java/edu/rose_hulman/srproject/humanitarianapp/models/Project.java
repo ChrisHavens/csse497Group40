@@ -502,6 +502,36 @@ public class Project implements Selectable {
             }
         }
     }
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c : conflictList) {
+            if (c.fieldName.equals("name")) {
+                this.setName(c.getChosenVersion());
+            }else if (c.fieldName.equals("parentIDs")){
+                ObjectMapper mapper=new ObjectMapper();
+                TypeReference<HashMap<String, Object>> typeReference=
+                        new TypeReference<HashMap<String, Object>>() {
+                        };
+                try {
+                    HashMap<String, Object> source = mapper.readValue(c.getChosenVersion(), typeReference);
+
+                    ArrayList<HashMap<String, Object>> list=(ArrayList<HashMap<String, Object>>)source.get("parentIDs");
+                    if (list!=null) {
+                        for (HashMap<String, Object> parent :list) {
+                            if (parent.containsKey("parentID")) {
+                                addGroupByID(Long.parseLong((String) parent.get("parentID")));
+                            }
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+            }else if (c.fieldName.equals("timeModified")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
+    }
 
     public String getDescription() {
         return description;

@@ -274,6 +274,10 @@ public class MessageThread implements Selectable{
 
     public String getType(){return "MessageThread";}
 
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+    }
+
     public static class Message implements Selectable{
         private long itemID;
         private String item;
@@ -357,6 +361,9 @@ public class MessageThread implements Selectable{
                 message.setItem((String)source.get("text"));
             }
             return message;
+        }
+        @Override
+        public void updateFromConflicts(List<Conflict> conflictList) {
         }
         public String getType(){return "Message";}
 

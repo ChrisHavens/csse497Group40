@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.rose_hulman.srproject.humanitarianapp.localdata.ApplicationWideData;
 
@@ -103,6 +104,20 @@ public class Note implements Selectable{
 
     public void setParentID(long parentID) {
         this.parentID = parentID;
+    }
+    @Override
+    public void updateFromConflicts(List<Conflict> conflictList) {
+        for (Conflict c : conflictList) {
+            if (c.fieldName.equals("name")) {
+                this.setTitle(c.getChosenVersion());
+            }else if (c.fieldName.equals("contents")){
+                this.setBody(c.getChosenVersion());
+            }else if (c.fieldName.equals("parentID")){
+                this.setParentID(Long.parseLong(c.getChosenVersion()));
+            }else if (c.fieldName.equals("lastModTime")){
+                this.setDateTimeModified(c.getChosenVersion());
+            }
+        }
     }
 
     public String toJSON(){

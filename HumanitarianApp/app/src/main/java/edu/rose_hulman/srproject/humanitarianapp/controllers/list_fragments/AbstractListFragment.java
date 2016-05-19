@@ -98,6 +98,8 @@ public abstract class AbstractListFragment<T> extends Fragment implements AbsLis
     }
     public abstract void updateItems();
 
+    public abstract void loadList();
+
 
     /**
      * This interface must be implemented by activities that contain this

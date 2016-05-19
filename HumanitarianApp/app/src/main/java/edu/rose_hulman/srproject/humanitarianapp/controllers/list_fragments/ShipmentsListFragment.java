@@ -156,8 +156,10 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
 //                        s.setDateTimeModified(split[1]);
 //                    }
 //                    s.setStatus((String) source.get("status"));
+
                     shipments.put(s.getID(), s);
-                    LocalDataSaver.addShipment(s);
+                    LocalDataSaver.saveShipment(s);
+
                     adapter.add(s);
                     adapter.notifyDataSetChanged();
 
@@ -172,6 +174,13 @@ public class ShipmentsListFragment extends AbstractListFragment<Shipment> {
         public void failure(RetrofitError error) {
             Log.e("RetrofitError", "ShipmentsListCallback: "+error.getMessage());
         }
+    }
+    public void loadList(){
+        adapter.clear();
+        for(long l: shipments.keySet()){
+            adapter.add(shipments.get(l));
+        }
+        ApplicationWideData.addShipmentHashMap(shipments);
     }
     public class ShipmentToLocationCallbacks implements Callback<Response>{
         private Shipment s;

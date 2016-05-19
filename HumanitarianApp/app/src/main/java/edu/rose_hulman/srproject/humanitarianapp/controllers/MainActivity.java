@@ -160,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements //TabSwitchListen
         LocalDataDBHelper dbHelper = new LocalDataDBHelper(getBaseContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ApplicationWideData.db = db;
+        Log.wtf("In Manual Sync Mode", ApplicationWideData.manualSnyc+"");
         //LocalDataSaver.clearAll();
         //LocalDataSaver.clearUpdatedSelectables();
         //LocalDataSaver.clearAddedSelectables();

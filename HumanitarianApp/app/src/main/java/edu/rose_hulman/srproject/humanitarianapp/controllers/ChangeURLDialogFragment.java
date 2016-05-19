@@ -11,11 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import edu.rose_hulman.srproject.humanitarianapp.R;
+import edu.rose_hulman.srproject.humanitarianapp.localdata.PreferencesManager;
 
 
 public class ChangeURLDialogFragment extends DialogFragment {
 
-    private ChangeURLListener mListener;
+
     private EditText URLField;
     private AlertDialog alert;
     private boolean result=false;
@@ -49,9 +50,9 @@ public class ChangeURLDialogFragment extends DialogFragment {
                                     .setPositiveButton(R.string.acceptBadURL, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // FIRE ZE MISSILES!
-                                            mListener.setURL(URLField.getText().toString());
+                                            PreferencesManager.setURL(URLField.getText().toString());
                                             alert.dismiss();
-                                            ChangeURLDialogFragment.this.getDialog().dismiss();
+//                                            ChangeURLDialogFragment.this.getDialog().dismiss();
 
                                         }
                                     })
@@ -59,7 +60,7 @@ public class ChangeURLDialogFragment extends DialogFragment {
                                         public void onClick(DialogInterface dialog, int id) {
                                             // User cancelled the dialog
                                             alert.dismiss();
-                                            ChangeURLDialogFragment.this.getDialog().dismiss();
+//                                            ChangeURLDialogFragment.this.getDialog().dismiss();
                                         }
                                     }).create();
 
@@ -67,7 +68,7 @@ public class ChangeURLDialogFragment extends DialogFragment {
                             alert.show();
 
                         } else if (returns == URLCheckReturns.GOOD) {
-                            mListener.setURL(URLField.getText().toString());
+                            PreferencesManager.setURL(URLField.getText().toString());
                             ChangeURLDialogFragment.this.getDialog().dismiss();
                         }
 
@@ -122,56 +123,17 @@ public class ChangeURLDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (ChangeURLListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ChangeURLListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface ChangeURLListener {
-        // TODO: Update argument type and name
-
-        void setURL(String url);
 
     }
-    public static class BadURLDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.badURL)
-                    .setPositiveButton(R.string.acceptBadURL, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
-                        }
-                    })
-                    .setNegativeButton(R.string.rejectBadURL, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
-    }
+
+
+
 
 
 }

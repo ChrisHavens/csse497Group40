@@ -18,61 +18,28 @@ public class LocalDataLoader {
      */
 
     public static void loadChecklists() {
-        loadInitialChecklists();
+        //loadInitialChecklists();
 
     }
 
-    public static void loadGroups() {
-        loadInitialGroups();
-
-    }
 
     public static void loadLocations() {
-        loadInitialLocations();
+        //loadInitialLocations();
 
     }
 
     public static void loadNotes() {
-        loadInitialNotes();
+        //loadInitialNotes();
 
     }
 
     public static void loadPersons() {
-        loadInitialPersons();
+        //loadInitialPersons();
 
-    }
-
-    public static void loadProjects() {
-        loadInitialProjects();
-        loadProjectListFields();
-    }
-
-    private static void loadInitialProjects() {
-        List<Project> projects = LocalDataRetriver.getStoredProjects();
-        for (Project project : projects) {
-            ApplicationWideData.addExistingProject(project);
-        }
-    }
-
-    private static void loadProjectListFields() {
-        List<Project> projects = ApplicationWideData.getAllProjects();
-        List<Group> groups = ApplicationWideData.getAllGroups();
-        Map<Long, Project> projectMap = new HashMap<>();
-        for (Project project : projects) {
-            projectMap.put(project.getID(), project);
-        }
-        for(Group group: groups) {
-            long id = group.getID();
-            long projectId = group.getProjectId();
-            if (projectMap.containsKey(projectId)){
-                Project project = projectMap.get(projectId);
-                project.addGroupIDsMaintain(id);
-            }
-        }
     }
 
     public static void loadShipments() {
-        loadInitialShipments();
+        //loadInitialShipments();
 
     }
 
@@ -88,42 +55,5 @@ public class LocalDataLoader {
         loadChecklists();
         loadShipments();
         loadNotes();
-    }
-
-    public static void loadInitialEverything() {
-        loadInitialProjects();
-        loadInitialGroups();
-        loadInitialPersons();
-        loadInitialLocations();
-        loadInitialChecklists();
-        loadInitialShipments();
-        loadInitialNotes();
-    }
-
-    private static void loadInitialChecklists() {
-        //Going to be a nightmare, leave for later
-    }
-
-    private static void loadInitialGroups() {
-        List<Group> groups = LocalDataRetriver.getStoredGroups();
-        for (Group group : groups) {
-            ApplicationWideData.addExistingGroup(group);
-        }
-    }
-
-    private static void loadInitialLocations() {
-
-    }
-
-    private static void loadInitialNotes() {
-
-    }
-
-    private static void loadInitialPersons() {
-
-    }
-
-    private static void loadInitialShipments() {
-
     }
 }

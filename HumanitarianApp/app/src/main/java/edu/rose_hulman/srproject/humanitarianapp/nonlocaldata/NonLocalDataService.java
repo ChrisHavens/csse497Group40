@@ -27,7 +27,7 @@ import retrofit.mime.TypedString;
 public class NonLocalDataService {
 
     RestAdapter adapter = new RestAdapter.Builder()
-            .setEndpoint("http://"+PreferencesManager.getURL()+":8080/WrappingServer/rest")
+            .setEndpoint(PreferencesManager.getURL()+"/WrappingServer/rest")
             .build();
     public WrapperService service=adapter.create(WrapperService.class);
     final String notHiddenFilter="{\"missing\": {\"field\": \"dateArchived\"}},";
